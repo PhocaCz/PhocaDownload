@@ -1,0 +1,1 @@
+Phoca Download is Joomla! CMS extension. Component which displays downloadable documents on website.
