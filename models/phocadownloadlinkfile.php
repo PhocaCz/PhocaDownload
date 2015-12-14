@@ -10,6 +10,7 @@
  */
 defined('_JEXEC') or die();
 jimport('joomla.application.component.model');
+use Joomla\String\StringHelper;
 
 class PhocaDownloadCpModelPhocaDownloadLinkFile extends JModelLegacy
 {
@@ -93,7 +94,7 @@ class PhocaDownloadCpModelPhocaDownloadLinkFile extends JModelLegacy
 		$filter_order		= $app->getUserStateFromRequest( $this->_context.'.filter_order',	'filter_order',	'a.ordering',	'cmd' );
 		$filter_order_Dir	= $app->getUserStateFromRequest( $this->_context.'.filter_order_Dir',	'filter_order_Dir',	'',	'word' );
 		$search				= $app->getUserStateFromRequest( $this->_context.'.search','search','','string' );
-		$search				= JString::strtolower( $search );
+		$search				= StringHelper::strtolower( $search );
 
 		$where = array();
 

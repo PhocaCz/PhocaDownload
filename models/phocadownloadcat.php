@@ -8,6 +8,7 @@
  */
 defined( '_JEXEC' ) or die();
 jimport('joomla.application.component.modeladmin');
+use Joomla\String\StringHelper;
 
 class PhocaDownloadCpModelPhocaDownloadCat extends JModelAdmin
 {
@@ -616,8 +617,8 @@ class PhocaDownloadCpModelPhocaDownloadCat extends JModelAdmin
 		$table = $this->getTable();
 		while ($table->load(array('alias' => $alias, 'parent_id' => $category_id)))
 		{
-			$title = JString::increment($title);
-			$alias = JString::increment($alias, 'dash');
+			$title = StringHelper::increment($title);
+			$alias = StringHelper::increment($alias, 'dash');
 		}
 
 		return array($title, $alias);
