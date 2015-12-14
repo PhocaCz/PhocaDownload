@@ -10,7 +10,7 @@ defined( '_JEXEC' ) or die();
 jimport( 'joomla.client.helper' );
 jimport( 'joomla.application.component.view' );
 jimport( 'joomla.html.pane' );
-
+use Joomla\String\StringHelper;
 
 class PhocaDownloadViewUser extends JViewLegacy
 {
@@ -207,7 +207,7 @@ class PhocaDownloadViewUser extends JViewLegacy
 		$filter_order_files		= $app->getUserStateFromRequest( $this->_context_files.'.filter_order','filter_order','a.ordering', 'cmd' );
 		$filter_order_Dir_files	= $app->getUserStateFromRequest( $this->_context_files.'.filter_order_Dir','filter_order_Dir',	'',	'word' );
 		$search_files			= $app->getUserStateFromRequest( $this->_context_files.'.search', 'search', '', 'string' );
-		$search_files			= JString::strtolower( $search_files );
+		$search_files			= StringHelper::strtolower( $search_files );
 		
 		// build list of categories
 		$javascript 	= 'class="inputbox" size="1" onchange="document.phocadownloadfilesform.submit();"';
