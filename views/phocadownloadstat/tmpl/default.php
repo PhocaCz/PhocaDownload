@@ -49,7 +49,8 @@ echo $r->startTable('categoryList');
 
 echo $r->startTblHeader();
 
-echo $r->thOrdering('JGRID_HEADING_ORDERING', $listDirn, $listOrder);
+//echo $r->thOrdering('JGRID_HEADING_ORDERING', $listDirn, $listOrder);
+echo '<th class="nowrap center hidden-phone ph-ordering"></th>';
 echo $r->thCheck('JGLOBAL_CHECK_ALL');
 echo '<th class="ph-title">'.JHTML::_('grid.sort',  	$this->t['l'].'_TITLE', 'a.title', $listDirn, $listOrder ).'</th>'."\n";
 echo '<th class="ph-filename-long">'.JHTML::_('grid.sort',  	$this->t['l'].'_FILENAME', 'a.filename', $listDirn, $listOrder ).'</th>'."\n";
@@ -142,7 +143,8 @@ echo '</tbody>'. "\n";
 echo $r->tblFoot($this->pagination->getListFooter(), 5);
 echo $r->endTable();
 
-echo $r->formInputs($listOrder, $originalOrders);
+//echo $r->formInputs($listOrder, $originalOrders);
+echo $r->formInputs($listOrder, $listDirn, $originalOrders);
 echo $r->endMainContainer();
 echo $r->endForm();
 ?>

@@ -15,6 +15,9 @@ $r 			=  new $class();
 <script type="text/javascript">
 Joomla.submitbutton = function(task) {
 	if (task == '<?php echo $this->t['task'] ?>.cancel' || document.formvalidator.isValid(document.id('adminForm'))) {
+		<?php echo $this->form->getField('categories')->save(); ?>
+		<?php echo $this->form->getField('category')->save(); ?>
+		<?php echo $this->form->getField('file')->save(); ?>
 		Joomla.submitform(task, document.getElementById('adminForm'));
 	}
 	else {

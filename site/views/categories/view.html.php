@@ -20,12 +20,11 @@ class PhocaDownloadViewCategories extends JViewLegacy
 		$app								= JFactory::getApplication();
 		$model								= $this->getModel();
 		$document							= JFactory::getDocument();
-		$this->t['dw']						= PhocaDownloadRenderFront::renderPhocaDownload();
 		$this->t['p'] 						= $app->getParams();
 		$this->t['user'] 					= JFactory::getUser();	
 		$this->t['categories']				= $model->getCategoriesList();
 		$this->t['mostvieweddocs']			= $model->getMostViewedDocsList($this->t['p']);
-		
+		$this->t['dev']						= PhocaDownloadRenderFront::renderPhocaDownload();
 		$this->t['displaynew']				= $this->t['p']->get( 'display_new', 0 );
 		$this->t['displayhot']				= $this->t['p']->get( 'display_hot', 0 );
 		$this->t['displaymostdownload']		= $this->t['p']->get( 'display_most_download', 1 );
@@ -38,6 +37,34 @@ class PhocaDownloadViewCategories extends JViewLegacy
 		$this->t['displaymaincatdesc']		= $this->t['p']->get( 'display_main_cat_desc', 0 );
 		$this->t['display_specific_layout']	= $this->t['p']->get( 'display_specific_layout', 0 );
 		
+		
+
+		
+		// Bootstrap 3 Layout
+		$this->tmpl['display_bootstrap3_layout']	= $this->t['p']->get( 'display_bootstrap3_layout', 0 );
+		if ($this->tmpl['display_bootstrap3_layout'] == 1) {
+			
+			JHtml::_('jquery.framework', false);
+			JHTML::stylesheet('media/com_phocadownload/bootstrap/css/bootstrap.min.css' );
+			JHTML::stylesheet('media/com_phocadownload/bootstrap/css/bootstrap.extended.css' );
+			// Loaded by jquery.framework;
+			$document->addScript(JURI::root(true).'/media/com_phocadownload/bootstrap/js/bootstrap.min.js');
+			
+			
+			$document->addScript(JURI::root(true).'/media/com_phocadownload/js/jquery.matchHeight.js');
+			$document->addScriptDeclaration(
+			'jQuery(window).load(function(){
+				jQuery(\'.ph-thumbnail\').matchHeight();
+			});');
+			
+			/*$document->addScript(JURI::root(true).'/media/com_phocadownload/js/jquery.equalheights.min.js');
+			$document->addScriptDeclaration(
+			'jQuery(window).load(function(){
+				jQuery(\'.ph-thumbnail\').equalHeights();
+			});');*/
+
+		}
+		
 		PhocaDownloadRenderFront::renderAllCSS();
 		
 		$imagePath				= PhocaDownloadPath::getPathSet('icon');
@@ -46,7 +73,11 @@ class PhocaDownloadViewCategories extends JViewLegacy
 		$this->t['absfilepath']	= $filePath['orig_abs_ds'];
 
 		$this->_prepareDocument();
-		parent::display($tpl);
+		if ($this->tmpl['display_bootstrap3_layout'] == 1) {
+			parent::display('bootstrap');	
+		} else {
+			parent::display($tpl);	
+		}
 		
 	}
 	

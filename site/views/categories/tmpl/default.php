@@ -200,5 +200,5 @@ if (!empty($this->t['mostvieweddocs']) && $this->t['displaymostdownload'] == 1) 
 	}
 }
 echo '<div class="pd-cb">&nbsp;</div>';
-echo $this->t['dw'];
+echo $this->t['dev'];
 ?>

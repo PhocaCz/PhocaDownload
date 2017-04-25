@@ -30,7 +30,7 @@ class PhocaDownloadMail
 		if (isset($user->name) && $user->name != '') {
 			$name = $user->name;
 		} else {
-			$name = JText::_('Anonymous');
+			$name = JText::_('COM_PHOCADOWNLOAD_ANONYMOUS');
 		}
 		if (isset($user->username) && $user->username != '') {
 			$userName = ' ('.$user->username.')';
@@ -39,19 +39,20 @@ class PhocaDownloadMail
 		}
 		
 		if ($method == 1) {
-			$subject 		= $sitename. ' - ' . JText::_( 'File downloaded' );
-			$title 			= JText::_( 'File downloaded' );
-			$messageText 	= JText::_( 'File') . ' "' .$fileName . '" '.JText::_('was downloaded by'). ' '.$name . $userName.'.';
+			$subject 		= $sitename. ' - ' . JText::_( 'COM_PHOCADOWNLOAD_FILE_DOWNLOADED' );
+			$title 			= JText::_( 'COM_PHOCADOWNLOAD_FILE_DOWNLOADED' );
+			$messageText 	= JText::_( 'COM_PHOCADOWNLOAD_FILE') . ' "' .$fileName . '" '.JText::_('COM_PHOCADOWNLOAD_WAS_DOWNLOADED_BY'). ' '.$name . $userName.'.';
 		} else {
-			$subject 		= $sitename. ' - ' . JText::_( 'File uploaded' );
-			$title 			= JText::_( 'New File uploaded' );
-			$messageText 	= JText::_( 'File') . ' "' .$fileName . '" '.JText::_('was uploaded by'). ' '.$name . $userName.'.';
+			$subject 		= $sitename. ' - ' . JText::_( 'COM_PHOCADOWNLOAD_SUCCESS_FILE_UPLOADED' );
+			$title 			= JText::_( 'COM_PHOCADOWNLOAD_SUCCESS_NEW_FILE_UPLOADED' );
+			$messageText 	= JText::_( 'COM_PHOCADOWNLOAD_FILE') . ' "' .$fileName . '" '.JText::_('COM_PHOCADOWNLOAD_WAS_UPLOADED_BY'). ' '.$name . $userName.'.';
 		}
 		
 		//get all super administrator
 		$query = 'SELECT name, email, sendEmail' .
 		' FROM #__users' .
-		' WHERE id = '.(int)$id;
+		' WHERE id = '.(int)$id .
+		' ORDER BY id';
 		$db->setQuery( $query );
 		$rows = $db->loadObjectList();
 		
@@ -61,14 +62,14 @@ class PhocaDownloadMail
 
 		
 		$message = $title . "\n\n"
-		. JText::_( 'Website' ) . ': '. $sitename . "\n"
-		. JText::_( 'Date' ) . ': '. $date . "\n"
+		. JText::_( 'COM_PHOCADOWNLOAD_WEBSITE' ) . ': '. $sitename . "\n"
+		. JText::_( 'COM_PHOCADOWNLOAD_DATE' ) . ': '. $date . "\n"
 		. 'IP: ' . $_SERVER["REMOTE_ADDR"]. "\n\n"
-		. JText::_( 'Message' ) . ': '."\n"
+		. JText::_( 'COM_PHOCADOWNLOAD_MESSAGE' ) . ': '."\n"
 		. "\n\n"
 		. $messageText
 		. "\n\n"
-		. JText::_( 'Regards' ) .", \n"
+		. JText::_( 'COM_PHOCADOWNLOAD_REGARDS' ) .", \n"
 		. $sitename ."\n";
 					
 		$subject = html_entity_decode($subject, ENT_QUOTES);

@@ -200,6 +200,7 @@ class PhocaDownloadCpModelPhocaDownloadM extends JModelAdmin
 		$totalresult					= new StdClass();
 		$totalresult->files_count 		= 0 ;
 		$totalresult->category_count	= 0 ;
+		$totalresult->image_count		= 0 ;
 				
 		$categoryName 	= basename($path);
 		$id 			= $this->_getCategoryId( $existingCategories, $categoryName, $parentId ) ;
@@ -212,7 +213,7 @@ class PhocaDownloadCpModelPhocaDownloadM extends JModelAdmin
 		
 		// Category doesn't exist
 		if ( $id == -1 ) {
-		  $row =& $this->getTable('phocadownloadcat');
+		  $row = $this->getTable('phocadownloadcat');
 		  
 		  $row->published 	= $data['published'];
 		 // $row->approved	= $data['approved'];
@@ -323,7 +324,7 @@ class PhocaDownloadCpModelPhocaDownloadM extends JModelAdmin
 					strtolower($filename) !== 'index.html' &&
 					!$this->_FileExist($existingImages, $storedfilename, $category_id) ) {
 					
-					$row =& $this->getTable('phocadownload');
+					$row = $this->getTable('phocadownload');
 					
 					$datam = array();
 					$datam['published']		= $data['published'];

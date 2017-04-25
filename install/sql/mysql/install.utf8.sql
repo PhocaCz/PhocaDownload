@@ -94,6 +94,7 @@ CREATE TABLE IF NOT EXISTS `#__phocadownload` (
   `unaccessible_file` int(11) NOT NULL default '0',
   `token` char(64) default NULL,
   `tokenhits` int(11) NOT NULL default 0,
+  `tags_string` varchar(255) NOT NULL default '',
   `params` text,
   `metakey` text,
   `metadesc` text,

@@ -22,7 +22,8 @@ class PhocaDownloadTag
 		$query .= ' FROM #__phocadownload_tags AS a'
 				//.' LEFT JOIN #__phocadownload AS f ON f.id = r.fileid'
 				.' LEFT JOIN #__phocadownload_tags_ref AS r ON a.id = r.tagid'
-			    .' WHERE r.fileid = '.(int) $fileId;
+			    .' WHERE r.fileid = '.(int) $fileId
+				.' ORDER BY a.id';
 		$db->setQuery($query);
 		
 		if (!$db->query()) {
@@ -85,6 +86,7 @@ class PhocaDownloadTag
 		$query = 'SELECT a.id AS value, a.title AS text'
 				.' FROM #__phocadownload_tags AS a'
 				. ' ORDER BY '. $order;
+				//. ' ORDER BY a.id';
 		$db->setQuery($query);
 		
 		if (!$db->query()) {

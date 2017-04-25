@@ -45,6 +45,7 @@ class PhocaDownloadViewFile extends JViewLegacy
 		$this->file				= $model->getFile($fileId, $this->t['limitstarturl']);
 		
 		PhocaDownloadRenderFront::renderAllCSS();
+		
 		$document->addCustomTag('<script type="text/javascript" src="'.JURI::root().'components/com_phocadownload/assets/overlib/overlib_mini.js"></script>');
 		$js	= 'var enableDownloadButtonPD = 0;'
 			 .'function enableDownloadPD() {'
@@ -92,7 +93,7 @@ class PhocaDownloadViewFile extends JViewLegacy
 		
 		// Rating
 		if ($this->t['display_rating_file'] == 2 || $this->t['display_rating_file'] == 3 ) {
-			JHTML::_('behavior.framework', true);
+			JHTML::_('jquery.framework', true);
 			PhocaDownloadRate::renderRateFileJS(1);
 			$this->t['display_rating_file'] = 1;
 		} else {
@@ -139,7 +140,30 @@ class PhocaDownloadViewFile extends JViewLegacy
 		if (isset($this->category[0]) && is_object($this->category[0]) && isset($this->file[0]) && is_object($this->file[0])){
 			$this->_prepareDocument($this->category[0], $this->file[0]);
 		}
-		parent::display($tpl);
+
+		
+		// Bootstrap 3 Layout
+		$this->tmpl['display_bootstrap3_layout']	= $this->t['p']->get( 'display_bootstrap3_layout', 0 );
+		
+		if ($this->tmpl['display_bootstrap3_layout'] == 1) {
+			
+			JHtml::_('jquery.framework', false);
+			JHTML::stylesheet('media/com_phocadownload/bootstrap/css/bootstrap.min.css' );
+			JHTML::stylesheet('media/com_phocadownload/bootstrap/css/bootstrap.extended.css' );
+			// Loaded by jquery.framework;
+			//$document->addScript(JURI::root(true).'/media/com_phocadownload/bootstrap/js/bootstrap.min.js');
+			/*$document->addScript(JURI::root(true).'/media/com_phocadownload/js/jquery.equalheights.min.js');
+			$document->addScriptDeclaration(
+			'jQuery(window).load(function(){
+				jQuery(\'.ph-thumbnail\').equalHeights();
+			});');*/
+		}
+		
+		if ($this->tmpl['display_bootstrap3_layout'] == 1) {
+			parent::display('bootstrap');	
+		} else {
+			parent::display($tpl);	
+		}
 		
 	}
 	

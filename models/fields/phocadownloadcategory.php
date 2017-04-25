@@ -46,7 +46,10 @@ class JFormFieldPhocaDownloadCategory extends JFormField
 		
 		
 		
-		$required	= ((string) $this->element['required'] == 'true') ? TRUE : FALSE;
+		//$required	= ((string) $this->element['required'] == 'true') ? TRUE : FALSE;
+		$attr = '';
+		$attr .= $this->required ? ' required aria-required="true"' : '';
+		$attr .= ' class="inputbox"';
 		
 		$tree = array();
 		$text = '';
@@ -58,7 +61,7 @@ class JFormFieldPhocaDownloadCategory extends JFormField
 		
 			array_unshift($tree, JHTML::_('select.option', '', '- '.JText::_('COM_PHOCADOWNLOAD_SELECT_CATEGORY').' -', 'value', 'text'));
 		//}
-		return JHTML::_('select.genericlist',  $tree,  $this->name, 'class="inputbox"', 'value', 'text', $this->value, $this->id );
+		return JHTML::_('select.genericlist',  $tree,  $this->name, trim($attr), 'value', 'text', $this->value, $this->id );
 	}
 }
 ?>

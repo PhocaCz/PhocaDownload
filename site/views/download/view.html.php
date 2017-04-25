@@ -59,6 +59,7 @@ class PhocaDownloadViewDownload extends JViewLegacy
 		$this->t['displaynew']				= $this->t['p']->get( 'display_new', 0 );
 		$this->t['displayhot']				= $this->t['p']->get( 'display_hot', 0 );
 		$this->t['enable_token_download']	= $this->t['p']->get( 'enable_token_download', 0 );
+		$this->t['display_tags_links'] 		= $this->t['p']->get( 'display_tags_links', 0 );
 		
 		PhocaDownloadRenderFront::renderAllCSS();
 		
@@ -98,8 +99,11 @@ class PhocaDownloadViewDownload extends JViewLegacy
 			// - - - - - - - - - - - - - - - 
 			$download				= $app->input->get( 'download', 0, 'int' );
 			//$licenseAgree			= $app->input->get( 'license_agree', '', 'string' );
-			$downloadId		 		= (int) $this->file[0]->id;
-			if ($download == 1) {
+			$downloadId 	= 0;
+			if (isset($this->file[0]->id)) {
+				$downloadId		= (int) $this->file[0]->id;
+			}
+			if ($download == 1 ) {
 				if (isset($this->file[0]->id)) {
 					$currentLink	= 'index.php?option=com_phocadownload&view=download&id='.htmlspecialchars($downloadToken). $this->t['limitstarturl'] . '&Itemid='. $app->input->get('Itemid', 0, 'int');
 				} else {
@@ -137,7 +141,27 @@ class PhocaDownloadViewDownload extends JViewLegacy
 			}*/
 		}
 		
-		parent::display($tpl);
+		// Bootstrap 3 Layout
+		$this->tmpl['display_bootstrap3_layout']	= $this->t['p']->get( 'display_bootstrap3_layout', 0 );
+		if ($this->tmpl['display_bootstrap3_layout'] == 1) {
+			
+			JHtml::_('jquery.framework', false);
+			JHTML::stylesheet('media/com_phocadownload/bootstrap/css/bootstrap.min.css' );
+			JHTML::stylesheet('media/com_phocadownload/bootstrap/css/bootstrap.extended.css' );
+			// Loaded by jquery.framework;
+			//$document->addScript(JURI::root(true).'/media/com_phocadownload/bootstrap/js/bootstrap.min.js');
+			/*$document->addScript(JURI::root(true).'/media/com_phocadownload/js/jquery.equalheights.min.js');
+			$document->addScriptDeclaration(
+			'jQuery(window).load(function(){
+				jQuery(\'.ph-thumbnail\').equalHeights();
+			});');*/
+		}
+		
+		if ($this->tmpl['display_bootstrap3_layout'] == 1) {
+			parent::display('bootstrap');	
+		} else {
+			parent::display($tpl);	
+		}
 		
 	}
 	

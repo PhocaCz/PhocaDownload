@@ -5,11 +5,17 @@ $l = new PhocaDownloadLayout();
 
 if (!empty($this->files)) {	
 	foreach ($this->files as $v) {
+		
+		
 	
 		if ($this->checkRights == 1) {
 			// USER RIGHT - Access of categories (if file is included in some not accessed category) - - - - -
 			// ACCESS is handled in SQL query, ACCESS USER ID is handled here (specific users)
 			$rightDisplay	= 0;
+			
+			if (!isset($v->cataccessuserid)) {
+				$v->cataccessuserid = 0;
+			}
 			if (isset($v->catid) && isset($v->cataccessuserid) && isset($v->cataccess)) {
 				$rightDisplay = PhocaDownloadAccess::getUserRight('accessuserid', $v->cataccessuserid, $v->cataccess, $this->t['user']->getAuthorisedViewLevels(), $this->t['user']->get('id', 0), 0);
 			}
@@ -19,6 +25,35 @@ if (!empty($this->files)) {
 		}
 		
 		if ($rightDisplay == 1) {
+		
+			// Test if we have information about category - if we are displaying items by e.g. search outcomes - tags
+			// we don't have any ID of category so we need to load it for each file.
+			$this->catitem[$v->id]			= new StdClass();
+			$this->catitem[$v->id]->id 		= 0;
+			$this->catitem[$v->id]->alias 	= '';
+			
+			if (isset($this->category[0]->id) && isset($this->category[0]->alias)) {
+				$this->catitem[$v->id]->id 		= (int)$this->category[0]->id;
+				$this->catitem[$v->id]->alias 	= $this->category[0]->alias;
+			} else {
+				$catDb = PhocaDownloadCategory::getCategoryByFile($v->id);
+				if (isset($catDb->id) && isset($catDb->alias)) {
+					$this->catitem[$v->id]->id 		= (int)$catDb->id;
+					$this->catitem[$v->id]->alias 	= $catDb->alias;	
+				}
+				$categorySetTemp = 1;
+				
+			}
+			
+			$cBtnDanger 	= 'btn btn-danger';
+			$cBtnWarning 	= 'btn btn-warning';
+			$cBtnSuccess	= 'btn btn-success';
+			$cBtnInfo		= 'btn btn-info';
+			
+			/*$cBtnDanger 	= '';
+			$cBtnWarning 	= '';
+			$cBtnSuccess	= '';
+			$cBtnInfo		= '';*/
 		
 			// General
 			$linkDownloadB = '';
@@ -31,7 +66,7 @@ if (!empty($this->files)) {
 					$linkDownloadB = '<a class="" href="'.$v->link_external.'" target="'.$this->t['download_external_link'].'" >';
 					$linkDownloadE ='</a>';
 				} else {
-					$linkDownloadB = '<a class="" href="'. JRoute::_(PhocaDownloadRoute::getFileRoute($v->id,$this->category[0]->id,$v->alias, $this->category[0]->alias, $v->sectionid, 'download').$this->t['limitstarturl']).'" >';
+					$linkDownloadB = '<a class="" href="'. JRoute::_(PhocaDownloadRoute::getFileRoute($v->id, $this->catitem[$v->id]->id,$v->alias, $this->catitem[$v->id]->alias, $v->sectionid, 'download').$this->t['limitstarturl']).'" >';
 					$linkDownloadE ='</a>';
 				}
 			}
@@ -59,6 +94,20 @@ if (!empty($this->files)) {
 				$pdFile .= PhocaDownloadRenderFront::displayNewIcon($v->date, $this->t['displaynew']);
 				$pdFile .= PhocaDownloadRenderFront::displayHotIcon($v->hits, $this->t['displayhot']);
 				
+				// String Tags - title suffix
+				$tagsS = $l->displayTagsString($v->tags_string);
+				if ($tagsS != '') {
+					$pdFile .= '<div class="pd-float">'.$tagsS.'</div>';
+				}
+				
+				// Tags - title suffix
+				if ($this->t['display_tags_links'] == 4 || $this->t['display_tags_links'] == 6) {
+					$tags = $l->displayTags($v->id, 1);
+					if ($tags != '') {
+						$pdFile .= '<div class="pd-float">'.$tags.'</div>';
+					}
+				}
+				
 				//Specific icons
 				if (isset($v->image_filename_spec1) && $v->image_filename_spec1 != '') {
 					$pdFile .= '<div class="pd-float">'.$l->getImageDownload($v->image_filename_spec1).'</div>';
@@ -69,6 +118,10 @@ if (!empty($this->files)) {
 				
 				$pdFile .= '</div></div></div>' . "\n";
 			}
+			
+			
+			
+			
 			
 			// pdbuttonplay
 			$pdButtonPlay = '';
@@ -83,11 +136,12 @@ if (!empty($this->files)) {
 						$buttonPlOptions = $this->t['buttonpl']->optionsmp3;
 					}
 					$playLink = JRoute::_(PhocaDownloadRoute::getFileRoute($v->id,$v->catid,$v->alias, $v->categoryalias,0, 'play').$this->t['limitstarturl']);
+					//class="btn btn-danger"
 					$pdButtonPlay .= '<div class="pd-button-play">';
 					if ($this->t['play_popup_window'] == 1) {
-						$pdButtonPlay .= '<a class="btn btn-danger"  href="'.$playLink.'" onclick="'. $buttonPlOptions.'" >'. JText::_('COM_PHOCADOWNLOAD_PLAY').'</a>';
+						$pdButtonPlay .= '<a class="'.$cBtnDanger.'" href="'.$playLink.'" onclick="'. $buttonPlOptions.'" >'. JText::_('COM_PHOCADOWNLOAD_PLAY').'</a>';
 					} else {	
-						$pdButtonPlay .= '<a class="btn btn-danger pd-modal-button" href="'.$playLink.'" rel="'. $buttonPlOptions.'" >'. JText::_('COM_PHOCADOWNLOAD_PLAY').'</a>';
+						$pdButtonPlay .= '<a class="'.$cBtnDanger.' pd-modal-button" href="'.$playLink.'" rel="'. $buttonPlOptions.'" >'. JText::_('COM_PHOCADOWNLOAD_PLAY').'</a>';
 					}
 					$pdButtonPlay .= '</div>';
 				}
@@ -105,14 +159,14 @@ if (!empty($this->files)) {
 					$pdButtonPreview	.= '<div class="pd-button-preview">';
 					
 					if ($this->t['preview_popup_window'] == 1) {
-						$pdButtonPreview .= '<a  class="btn btn-warning" href="'.$previewLink.'" onclick="'. $this->t['buttonpr']->options.'" >'. JText::_('COM_PHOCADOWNLOAD_PREVIEW').'</a>';
+						$pdButtonPreview .= '<a class="'.$cBtnWarning.'" href="'.$previewLink.'" onclick="'. $this->t['buttonpr']->options.'" >'. JText::_('COM_PHOCADOWNLOAD_PREVIEW').'</a>';
 					} else {	
 						if ($fileExt == 'pdf') {
 							// Iframe - modal
-							$pdButtonPreview .= '<a class="btn btn-warning pd-modal-button" href="'.$previewLink.'" rel="'. $this->t['buttonpr']->options.'" >'. JText::_('COM_PHOCADOWNLOAD_PREVIEW').'</a>';
+							$pdButtonPreview .= '<a class="'.$cBtnWarning.' pd-modal-button" href="'.$previewLink.'" rel="'. $this->t['buttonpr']->options.'" >'. JText::_('COM_PHOCADOWNLOAD_PREVIEW').'</a>';
 						} else {
 							// Image - modal
-							$pdButtonPreview .= '<a class="btn btn-warning pd-modal-button" href="'.$previewLink.'" rel="'. $this->t['buttonpr']->optionsimg.'" >'. JText::_('COM_PHOCADOWNLOAD_PREVIEW').'</a>';
+							$pdButtonPreview .= '<a class="'.$cBtnWarning.' pd-modal-button" href="'.$previewLink.'" rel="'. $this->t['buttonpr']->optionsimg.'" >'. JText::_('COM_PHOCADOWNLOAD_PREVIEW').'</a>';
 						}
 					}
 					$pdButtonPreview	.= '</div>';
@@ -121,7 +175,8 @@ if (!empty($this->files)) {
 			
 			// pdbuttondownload
 			$pdButtonDownload = '<div class="pd-button-download">';
-			$pdButtonDownload .= str_replace('class=""', 'class="btn btn-success"', $linkDownloadB) . JText::_('COM_PHOCADOWNLOAD_DOWNLOAD') .$linkDownloadE;
+			$pdButtonDownload .= str_replace('class=""', 'class="'.$cBtnSuccess.'"', $linkDownloadB) . JText::_('COM_PHOCADOWNLOAD_DOWNLOAD') .$linkDownloadE;
+			
 			$pdButtonDownload .= '</div>';
 			
 			
@@ -290,15 +345,18 @@ if (!empty($this->files)) {
 				$overlib 	= "\n\n" ."onmouseover=\"return overlib('".$textO."', CAPTION, '".JText::_('COM_PHOCADOWNLOAD_DETAILS')."', BELOW, RIGHT, CSSCLASS, TEXTFONTCLASS, 'fontPhocaPDClass', FGCLASS, 'fgPhocaPDClass', BGCLASS, 'bgPhocaPDClass', CAPTIONFONTCLASS,'capfontPhocaPDClass', CLOSEFONTCLASS, 'capfontclosePhocaPDClass', STICKY, MOUSEOFF, CLOSETEXT, '".JText::_('COM_PHOCADOWNLOAD_CLOSE')."');\"";
 				$overlib .= " onmouseout=\"return nd();\"" . "\n";
 			
+		
 				$pdButtonDetails = '<div class="pd-button-details">';
-				$pdButtonDetails .= '<a class="btn btn-info" '.$overlib.' href="#">'. JText::_('COM_PHOCADOWNLOAD_DETAILS').'</a>';
+				$pdButtonDetails .= '<a class="'.$cBtnInfo.'" '.$overlib.' href="#">'. JText::_('COM_PHOCADOWNLOAD_DETAILS').'</a>';
 				$pdButtonDetails .= '</div>';
 			} else if ($this->t['display_detail'] == 2) {
 				$buttonDOptions = $this->t['buttond']->options;
-				$detailLink 	= JRoute::_(PhocaDownloadRoute::getFileRoute($v->id,$this->category[0]->id,$v->alias, $v->categoryalias, 0, 'detail').$this->t['limitstarturl']);
+				$detailLink 	= JRoute::_(PhocaDownloadRoute::getFileRoute($v->id, $this->catitem[$v->id]->id,$v->alias, $this->catitem[$v->id]->alias, 0, 'detail').$this->t['limitstarturl']);
 				$pdButtonDetails = '<div class="pd-button-details">';
-				$pdButtonDetails .= '<a class="btn btn-info pd-modal-button" href="'.$detailLink.'" rel="'. $buttonDOptions.'">'. JText::_('COM_PHOCADOWNLOAD_DETAILS').'</a>';
+				$pdButtonDetails .= '<a class="'.$cBtnInfo.' pd-modal-button" href="'.$detailLink.'" rel="'. $buttonDOptions.'">'. JText::_('COM_PHOCADOWNLOAD_DETAILS').'</a>';
+				
 				$pdButtonDetails .= '</div>';
+				
 			} else {
 				$pdButtonDetails = '';
 			}
@@ -343,10 +401,10 @@ if (!empty($this->files)) {
 			// pdtags
 			$pdTags = '';
 			if ($this->t['display_tags_links'] == 1 || $this->t['display_tags_links'] == 3) {
-				if ($l->displayTags($v->id) != '') {
-					$pdTags .= $l->displayTags($v->id);
+				$tags2 = $l->displayTags($v->id);
+				if ($tags2 != '') {
+					$pdTags .= '<div class="pd-float">'.$tags2.'</div>';
 				}
-			
 			}
 			
 			//pdvideo
@@ -432,9 +490,12 @@ if (!empty($this->files)) {
 					$output		= str_replace($categoryLayoutParams['search'], $replace, $categoryLayout);
 					
 					echo $output;
-				}
+					
+					
 			// ---------------------------------------------------	
 			}
+		
+				}
 		}
 	}
 }

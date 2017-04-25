@@ -192,7 +192,8 @@ class PhocaDownloadFile
 			$db = JFactory::getDBO();
 			$query = 'SELECT a.filename as filename, a.type as type'
 				.' FROM #__phocadownload_styles AS a'
-			    .' WHERE a.id = '.(int) $id;
+			    .' WHERE a.id = '.(int) $id
+				.' ORDER BY a.id';
 			$db->setQuery($query, 0, 1);
 			$filename = $db->loadObject();
 			

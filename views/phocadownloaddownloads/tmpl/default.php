@@ -28,19 +28,22 @@ $sortFields = $this->getSortFields();
 
 echo $r->jsJorderTable($listOrder);
 
-if (isset($this->tmpl['notapproved']->count) && (int)$this->tmpl['notapproved']->count > 0 ) {
-	echo '<div class="alert alert-error"><a class="close" data-dismiss="alert" href="#">&times;</a>'.JText::_($this->t['l'].'_NOT_APPROVED_FILES_COUNT').': '
-	.(int)$this->tmpl['notapproved']->count.'</div>';
-}
+
 
 echo $r->startForm($this->t['o'], $this->t['tasks'], 'adminForm');
-echo $r->startFilter($this->t['l'].'_FILTER');
-echo $r->selectFilterPublished('JOPTION_SELECT_PUBLISHED', $this->state->get('filter.state'));
+echo $r->startFilter();
+//echo $r->selectFilterPublished('JOPTION_SELECT_PUBLISHED', $this->state->get('filter.state'));
 //echo $r->selectFilterLanguage('JOPTION_SELECT_LANGUAGE', $this->state->get('filter.language'));
 //echo $r->selectFilterCategory(PhocaDownloadCategory::options($this->t['o']), 'JOPTION_SELECT_CATEGORY', $this->state->get('filter.category_id'));
 echo $r->endFilter();
 
 echo $r->startMainContainer();
+
+if (isset($this->tmpl['notapproved']->count) && (int)$this->tmpl['notapproved']->count > 0 ) {
+	echo '<div class="alert alert-error"><a class="close" data-dismiss="alert" href="#">&times;</a>'.JText::_($this->t['l'].'_NOT_APPROVED_FILES_COUNT').': '
+	.(int)$this->tmpl['notapproved']->count.'</div>';
+}
+
 echo $r->startFilterBar();
 echo $r->inputFilterSearch($this->t['l'].'_FILTER_SEARCH_LABEL', $this->t['l'].'_FILTER_SEARCH_DESC',
 							$this->escape($this->state->get('filter.search')));
@@ -48,6 +51,11 @@ echo $r->inputFilterSearchClear('JSEARCH_FILTER_SUBMIT', 'JSEARCH_FILTER_CLEAR')
 echo $r->inputFilterSearchLimit('JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC', $this->pagination->getLimitBox());
 echo $r->selectFilterDirection('JFIELD_ORDERING_DESC', 'JGLOBAL_ORDER_ASCENDING', 'JGLOBAL_ORDER_DESCENDING', $listDirn);
 echo $r->selectFilterSortBy('JGLOBAL_SORT_BY', $sortFields, $listOrder);
+
+echo $r->startFilterBar(2);
+echo $r->selectFilterPublished('JOPTION_SELECT_PUBLISHED', $this->state->get('filter.state'));
+echo $r->endFilterBar();
+
 echo $r->endFilterBar();		
 
 echo $r->startTable('categoryList');
@@ -56,7 +64,7 @@ echo $r->startTblHeader();
 
 echo '<th class="nowrap center hidden-phone ph-ordering"></th>';//$r->thOrdering('JGRID_HEADING_ORDERING', $listDirn, $listOrder);
 echo $r->thCheck('JGLOBAL_CHECK_ALL');
-echo '<th class="ph-uploaduser">'.JHTML::_('grid.sort', $this->t['l'].'_USER', 'usernameno', $listDirn, $listOrder ).'</th>'."\n";
+echo '<th class="ph-uploaduser">'.JHTML::_('grid.sort', $this->t['l'].'_USER', 'username', $listDirn, $listOrder ).'</th>'."\n";
 //echo '<th class="ph-title-stat">'.JHTML::_('grid.sort',  	$this->t['l'].'_TITLE', 'd.title', $listDirn, $listOrder ).'</th>'."\n";
 echo '<th class="ph-filename-stat">'.JHTML::_('grid.sort',  	$this->t['l'].'_FILE', 'filename', $listDirn, $listOrder ).'</th>'."\n";
 
@@ -127,7 +135,8 @@ echo $r->endTable();
 
 
 
-echo $r->formInputs($listOrder, $originalOrders);
+//echo $r->formInputs($listOrder, $originalOrders);
+echo $r->formInputs($listOrder, $listDirn, $originalOrders);
 echo $r->endMainContainer();
 echo $r->endForm();
 ?>

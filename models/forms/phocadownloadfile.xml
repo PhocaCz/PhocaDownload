@@ -124,6 +124,8 @@
 
 <field name="tags" type="phocatags" multiple="1" label="COM_PHOCADOWNLOAD_FIELD_TAGS_LABEL" description="COM_PHOCADOWNLOAD_FIELD_TAGS_DESC" class="inputbox" size="1" />
 
+<field name="tags_string" type="text" label="COM_PHOCADOWNLOAD_FIELD_TAGS_STRING_LABEL" description="COM_PHOCADOWNLOAD_FIELD_TAGS_STRING_DESC" class="inputbox" size="1" />
+
 <field name="token" type="phocadownloadtoken" label="COM_PHOCADOWNLOAD_FIELD_TOKEN_LABEL"  description="COM_PHOCADOWNLOAD_FIELD_TOKEN_DESC" class="inputbox" size="40" />
 <field name="tokenhits" type="text" label="COM_PHOCADOWNLOAD_FIELD_TOKENHITS_LABEL"  description="COM_PHOCADOWNLOAD_FIELD_TOKENHITS_DESC" class="inputbox" size="40" />
 

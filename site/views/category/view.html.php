@@ -83,18 +83,23 @@ class PhocaDownloadViewCategory extends JViewLegacy
 		$this->t['fb_comment_lang'] 		= $this->t['p']->get( 'fb_comment_lang', 'en_US' );
 		$this->t['fb_comment_count'] 		= $this->t['p']->get( 'fb_comment_count', '' );
 		$this->t['html5_play']				= $this->t['p']->get( 'html5_play', 0 );
-		
+		$this->t['bt_cat_col_left']			= (int)$this->t['p']->get( 'bt_cat_col_left', 6 );
+		if ($this->t['bt_cat_col_left'] == 12) {
+			$this->t['bt_cat_col_right']		= 12;
+		} else {
+			$this->t['bt_cat_col_right']		= 12 - $this->t['bt_cat_col_left'];
+		}
 		
 		// Rating
 		if ($this->t['display_rating_file'] == 1 || $this->t['display_rating_file'] == 3) {
-			JHTML::_('behavior.framework', true);
+			JHtml::_('jquery.framework', false);
 			PhocaDownloadRate::renderRateFileJS(1);
 			$this->t['display_rating_file'] = 1;
 		} else {
 			$this->t['display_rating_file'] = 0;
 		}
 		
-		$this->t['dg']						= PhocaDownloadRenderFront::renderPhocaDownload();
+		$this->t['afd']						= PhocaDownloadRenderFront::renderPhocaDownload();
 		
 		// DOWNLOAD
 		// - - - - - - - - - - - - - - - 
@@ -113,25 +118,33 @@ class PhocaDownloadViewCategory extends JViewLegacy
 		
 		// DETAIL
 		// - - - - - - - - - - - - - - -
+		
+		// BOOTSTRAP
+		$this->t['bootstrapmodal'] 		= '';
+		PhocaDownloadRenderFront::renderBootstrapModalJs('.pd-modal-button');
+		
 		if ($this->t['display_detail'] == 2) {
 			$this->t['buttond'] = new JObject();
 			$this->t['buttond']->set('methodname', 'modal-button');
 			$this->t['buttond']->set('name', 'detail');
 			$this->t['buttond']->set('modal', true);
 			$this->t['buttond']->set('options', "{handler: 'iframe', size: {x: 600, y: 500}, overlayOpacity: 0.7, classWindow: 'phocadownloaddetailwindow', classOverlay: 'phocadownloaddetailoverlay'}");
+			
+			// BOOTSTRAP
+			$this->t['bootstrapmodal'] .= PhocaDownloadRenderFront::bootstrapModalHtml('phModalDetail' , JText::_('COM_PHOCADOWNLOAD_DETAILS'));
 		}
 		
-		JHTML::_('behavior.modal', 'a.pd-modal-button');
+		
 		// PLAY - - - - - - - - - - - -
 		$windowWidthPl 		= (int)$this->t['playerwidth'] + 20;
 		$windowHeightPl 	= (int)$this->t['playerheight'] + 20;
 		
 		if ($this->t['html5_play'] == 1) {
-			$windowWidthPl 		= (int)$this->t['playerwidth'] + 40;
+			$windowWidthPl 		= (int)$this->t['playerwidth'] + 50;
 		} else {
 			$windowWidthPl 		= (int)$this->t['playerwidth'] + 50;
 		}
-		$windowHeightPlMP3 	= (int)$this->t['playermp3height'] + 20;
+		$windowHeightPlMP3 	= (int)$this->t['playermp3height'] + 30;
 		if ($this->t['play_popup_window'] == 1) {
 			$this->t['buttonpl'] = new JObject();
 			$this->t['buttonpl']->set('methodname', 'js-button');
@@ -148,6 +161,13 @@ class PhocaDownloadViewCategory extends JViewLegacy
 			$this->t['buttonpl']->set('methodname', 'modal-button');
 			$this->t['buttonpl']->set('options', "{handler: 'iframe', size: {x: ".$windowWidthPl.", y: ".$windowHeightPl."}, overlayOpacity: 0.7, classWindow: 'phocadownloadplaywindow', classOverlay: 'phocadownloadplayoverlay'}");
 			$this->t['buttonpl']->set('optionsmp3', "{handler: 'iframe', size: {x: ".$windowWidthPl.", y: ".$windowHeightPlMP3."}, overlayOpacity: 0.7, classWindow: 'phocadownloadplaywindow', classOverlay: 'phocadownloadplayoverlay'}");
+			
+			// BOOTSTRAP
+			$this->t['buttonpl']->set('optionsB', ' data-width-dialog="'.$windowWidthPl.'" data-height-dialog="'.$windowHeightPl.'"');
+			$this->t['buttonpl']->set('optionsmp3B', ' data-width-dialog="'.$windowWidthPl.'" data-height-dialog="'.$windowHeightPlMP3.'"');
+			$this->t['bootstrapmodal'] .= PhocaDownloadRenderFront::bootstrapModalHtml('phModalPlay' , JText::_('COM_PHOCADOWNLOAD_PLAY'));
+		
+			
 		}
 		// - - - - - - - - - - - - - - -
 		// PREVIEW - - - - - - - - - - - -
@@ -168,8 +188,15 @@ class PhocaDownloadViewCategory extends JViewLegacy
 			$this->t['buttonpr']->set('methodname', 'modal-button');
 			$this->t['buttonpr']->set('options', "{handler: 'iframe', size: {x: ".$windowWidthPr.", y: ".$windowHeightPr."}, overlayOpacity: 0.7, classWindow: 'phocadownloadpreviewwindow', classOverlay: 'phocadownloadpreviewoverlay'}");
 			$this->t['buttonpr']->set('optionsimg', "{handler: 'image', size: {x: 200, y: 150}, overlayOpacity: 0.7, classWindow: 'phocadownloadpreviewwindow', classOverlay: 'phocadownloadpreviewoverlay'}");
+			
+			// BOOTSTRAP
+			$this->t['buttonpr']->set('optionsB', ' data-type="document" data-width-dialog="'.$windowWidthPr.'" data-height-dialog="'.$windowHeightPr.'"');
+			$this->t['buttonpr']->set('optionsimgB', 'data-type="image"');
+			$this->t['bootstrapmodal'] .= PhocaDownloadRenderFront::bootstrapModalHtml('phModalPreview' , JText::_('COM_PHOCADOWNLOAD_PREVIEW'));
 		}
 		// - - - - - - - - - - - - - - -
+		
+		$this->t['ordering']	= $model->getFileOrderingSelect();
 		
 		$imagePath				= PhocaDownloadPath::getPathSet('icon');
 		$this->t['cssimgpath']	= str_replace ( '../', JURI::base(true).'/', $imagePath['orig_rel_ds']);
@@ -177,11 +204,37 @@ class PhocaDownloadViewCategory extends JViewLegacy
 		$this->t['absfilepath']	= $filePath['orig_abs_ds'];
 		$this->t['action']		= $uri->toString();
 
+		
+		
+		// Bootstrap 3 Layout
+		$this->tmpl['display_bootstrap3_layout']	= $this->t['p']->get( 'display_bootstrap3_layout', 0 );
+		if ($this->tmpl['display_bootstrap3_layout'] == 1) {
+			
+			JHtml::_('jquery.framework', false);
+			JHTML::stylesheet('media/com_phocadownload/bootstrap/css/bootstrap.min.css' );
+			JHTML::stylesheet('media/com_phocadownload/bootstrap/css/bootstrap.extended.css' );
+			// Loaded by jquery.framework;
+			//$document->addScript(JURI::root(true).'/media/com_phocadownload/bootstrap/js/bootstrap.min.js');
+			/*$document->addScript(JURI::root(true).'/media/com_phocadownload/js/jquery.equalheights.min.js');
+			$document->addScriptDeclaration(
+			'jQuery(window).load(function(){
+				jQuery(\'.ph-thumbnail\').equalHeights();
+			});');*/
+		} else {
+			// Because of modals
+			JHTML::_('behavior.framework', true);
+			JHTML::_('behavior.modal', 'a.pd-modal-button');
+		}
+		
 		if (isset($this->category[0]) && is_object($this->category[0])){
 			$this->_prepareDocument($this->category[0]);
 		}
 		
-		parent::display($tpl);
+		if ($this->tmpl['display_bootstrap3_layout'] == 1) {
+			parent::display('bootstrap');	
+		} else {
+			parent::display($tpl);	
+		}
 		
 	}
 	
@@ -277,24 +330,35 @@ class PhocaDownloadViewCategory extends JViewLegacy
 		}*/
 		
 		// Breadcrumbs TODO (Add the whole tree)
-		$pathway 		= $app->getPathway();
+		
+		
+		// Start comment if problem with duplicated pathway
+		// /*
 		if (isset($this->category[0]->parentid)) {
 			if ($this->category[0]->parentid == 0) {
 				// $pathway->addItem( JText::_('COM_PHOCADOWNLOAD_CATEGORIES'), JRoute::_(PhocaDownloadRoute::getCategoriesRoute()));
+			
 			} else if ($this->category[0]->parentid > 0) {
 				$curpath = $pathway->getPathwayNames();
-				if($this->category[0]->parenttitle != $curpath[count($curpath)-1]){
+				
+				if(isset($this->category[0]->parenttitle) && isset($curpath[count($curpath)-1]) && $this->category[0]->parenttitle != $curpath[count($curpath)-1]){
+					
+					
 				 	$pathway->addItem($this->category[0]->parenttitle, JRoute::_(PhocaDownloadRoute::getCategoryRoute($this->category[0]->parentid, $this->category[0]->parentalias)));
 				}
 			}
 		}
+		// */
+		// End comment when problem with duplicated pathway
 
 		if (!empty($this->category[0]->title)) {
 			$curpath = $pathway->getPathwayNames();
-			if($this->category[0]->title != $curpath[count($curpath)-1]){
+			if(isset($this->category[0]->title) && isset($curpath[count($curpath)-1]) && $this->category[0]->title != $curpath[count($curpath)-1]){
 				$pathway->addItem($this->category[0]->title);
 			}
 		}
+		
+		
 
 	}
 }

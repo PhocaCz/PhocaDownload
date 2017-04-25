@@ -13,6 +13,7 @@ jimport( 'joomla.application.component.view' );
  
 class phocaDownloadCpViewphocaDownloadLinkCats extends JViewLegacy
 {
+	protected $t;
 	function display($tpl = null) {
 		$app	= JFactory::getApplication();
 		JHtml::_('behavior.tooltip');
@@ -32,8 +33,8 @@ class phocaDownloadCpViewphocaDownloadLinkCats extends JViewLegacy
 		JHTML::stylesheet( 'media/com_phocadownload/css/administrator/phocadownload.css' );
 		
 		$eName				= JRequest::getVar('e_name');
-		$tmpl['ename']		= preg_replace( '#[^A-Z0-9\-\_\[\]]#i', '', $eName );
-		$tmpl['backlink']	= $tUri.'index.php?option=com_phocadownload&amp;view=phocadownloadlinks&amp;tmpl=component&amp;e_name='.$tmpl['ename'];
+		$this->t['ename']		= preg_replace( '#[^A-Z0-9\-\_\[\]]#i', '', $eName );
+		$this->t['backlink']	= $tUri.'index.php?option=com_phocadownload&amp;view=phocadownloadlinks&amp;tmpl=component&amp;e_name='.$this->t['ename'];
 		
 		
 		// Category Tree
@@ -64,7 +65,7 @@ class phocaDownloadCpViewphocaDownloadLinkCats extends JViewLegacy
 		$categoriesOutput = JHTML::_('select.genericlist', $tree, $ctrl, $attribs, 'value', 'text', 0, 'hidecategories' );
 		
 		$this->assignRef('categoriesoutput',	$categoriesOutput);
-		$this->assignRef('tmpl',	$tmpl);
+		
 		parent::display($tpl);
 	}
 }
