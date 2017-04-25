@@ -94,6 +94,7 @@ CREATE TABLE IF NOT EXISTS `#__phocadownload` (
   `unaccessible_file` int(11) NOT NULL default '0',
   `token` char(64) default NULL,
   `tokenhits` int(11) NOT NULL default 0,
+  `tags_string` varchar(255) NOT NULL default '',
   `params` text,
   `metakey` text,
   `metadesc` text,
@@ -190,6 +191,7 @@ CREATE TABLE IF NOT EXISTS `#__phocadownload_layout` (
 INSERT INTO `#__phocadownload_layout` (
 `id` ,
 `categories` ,
+`subcategory` ,
 `category` ,
 `file` ,
 `checked_out` ,
@@ -202,7 +204,10 @@ NULL , '<div class="pd-categoriesbox">
 {pdsubcategories}
 {pdclear}
 </div>',
-
+'<div class="pd-subcategory">
+<a href="{pdlink}">{pdtitle}</a>
+<small>{pdnumdocs}</small>
+</div>',
 '<div class="pd-filebox">
 {pdfiledesctop}
 {pdfile}

@@ -236,7 +236,7 @@ class PhocaDownloadModelUser extends JModelLegacy
 		$rightDisplayUpload	= 0;
 		$catAccess	= PhocaDownloadAccess::getCategoryAccess((int)$post['catidfiles']);
 		if (!empty($catAccess)) {
-			$rightDisplayUpload = PhocaDownloadAccess::getUserRight('uploaduserid', $catAccess->uploaduserid, 2, array(0 => 2), $user->get('id', 0), 0);
+			$rightDisplayUpload = PhocaDownloadAccess::getUserRight('uploaduserid', $catAccess->uploaduserid, 2, $user->getAuthorisedViewLevels(), 1, 0);
 		}
 		// - - - - - - - - - - - - - - - - - - - - - -	
 		
@@ -248,7 +248,8 @@ class PhocaDownloadModelUser extends JModelLegacy
 		}*/
 		
 		//$userFolder = substr(md5($user->username),0, 10);
-		$userFolder = htmlspecialchars(strip_tags($user->username));
+		$userFolder = PhocaDownloadUtils::cleanFolderUrlName(htmlspecialchars(strip_tags($user->username)));
+		
 		if ($rightDisplayUpload == 1) {
 
 			// Make the filename safe
@@ -286,7 +287,7 @@ class PhocaDownloadModelUser extends JModelLegacy
 					$fileExists = 1;
 				}
 
-				if (!JFile::upload($file['tmp_name'], $filepath)) {
+				if (!JFile::upload($file['tmp_name'], $filepath, false, true)) {
 					$errUploadMsg = JText::_("COM_PHOCADOWNLOAD_UNABLE_TO_UPLOAD_FILE");
 					return false;
 				} else {

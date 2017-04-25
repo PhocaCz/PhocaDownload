@@ -196,6 +196,7 @@ class PhocaDownloadCpModelPhocaDownloadFile extends JModelAdmin
 		$overwriteExistingFiles = $paramsC->get( 'overwrite_existing_files', 0 );
 		$path		= PhocaDownloadPath::getPathSet();
 		
+		
 		if ($papCopy == 2 || $papCopy == 3) {
 			$canPlay			= PhocaDownloadFile::canPlay($data['filename']);
 			$canPreview 		= PhocaDownloadFile::canPreview($data['filename']);
@@ -212,11 +213,22 @@ class PhocaDownloadCpModelPhocaDownloadFile extends JModelAdmin
 					$uploadPAP = 0; // don't upload if it exists, it is not main file, don't do false and exit
 					
 					if ($canPlay == 1) {
-						$data['filename_play']		=  $data['filename'];
+						// set new file only no other is set
+						if ($data['filename_play'] != '') {
+							$uploadPAP = 0;
+						} else {
+							$data['filename_play']		=  $data['filename'];
+						}
 					} else if ($canPreview == 1) {
-						$data['filename_preview']	=  $data['filename'];
+						// set new file only no other is set
+						if ($data['filename_preview'] != '') {
+							$uploadPAP = 0;
+						} else {
+							$data['filename_preview']	=  $data['filename'];
+						}
 					}
 				}
+				
 				
 				// Overwrite file and add no new item to database
 				$fileExistsPAP = 0;
@@ -224,9 +236,19 @@ class PhocaDownloadCpModelPhocaDownloadFile extends JModelAdmin
 					$fileExistsPAP = 1;
 					
 					if ($canPlay == 1) {
-						$data['filename_play']		=  $data['filename'];
+						// set new file only no other is set or it is the same like currect - to overwrite updated version of the same file
+						if ($data['filename_play'] == '' || $data['filename_play'] == $data['filename']) {
+							$data['filename_play']		=  $data['filename'];
+						} else {
+							$uploadPAP = 0;
+						}
 					} else if ($canPreview == 1) {
-						$data['filename_preview']	=  $data['filename'];
+						// set new file only no other is set or it is the same like currect - to overwrite updated version of the same file
+						if ($data['filename_preview'] == '' || $data['filename_preview'] == $data['filename']) {
+							$data['filename_preview']	=  $data['filename'];
+						} else {
+							$uploadPAP = 0;
+						}
 					}
 				}
 				
@@ -283,6 +305,12 @@ class PhocaDownloadCpModelPhocaDownloadFile extends JModelAdmin
 		//$table->publish_up = $date->toSql();
 		
 		if ($table->id) {
+			
+			// Test Solution add date when it is removed
+			if (!intval($table->date)) {
+				$date	= JFactory::getDate();
+				$table->date = $date->toSql();
+			}
 
 		} else {
 			if (!intval($table->date)) {

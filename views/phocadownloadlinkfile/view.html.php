@@ -13,8 +13,9 @@ jimport( 'joomla.application.component.view' );
  
 class PhocaDownloadCpViewPhocaDownloadLinkFile extends JViewLegacy
 {
-	var $_context 	= 'com_phocadownload.phocadownloadlinkfile';
-
+	public $_context 	= 'com_phocadownload.phocadownloadlinkfile';
+	protected $t;
+	
 	function display($tpl = null) {
 		$app = JFactory::getApplication();
 		JHtml::_('behavior.tooltip');
@@ -36,9 +37,9 @@ class PhocaDownloadCpViewPhocaDownloadLinkFile extends JViewLegacy
 		JHTML::stylesheet( 'media/com_phocadownload/css/administrator/phocadownload.css' );
 		
 		$eName				= JRequest::getVar('e_name');
-		$tmpl['ename']		= preg_replace( '#[^A-Z0-9\-\_\[\]]#i', '', $eName );
-		$tmpl['type']		= JRequest::getVar( 'type', 1, '', 'int' );
-		$tmpl['backlink']	= $tUri.'index.php?option=com_phocadownload&amp;view=phocadownloadlinks&amp;tmpl=component&amp;e_name='.$tmpl['ename'];
+		$this->t['ename']		= preg_replace( '#[^A-Z0-9\-\_\[\]]#i', '', $eName );
+		$this->t['type']		= JRequest::getVar( 'type', 1, '', 'int' );
+		$this->t['backlink']	= $tUri.'index.php?option=com_phocadownload&amp;view=phocadownloadlinks&amp;tmpl=component&amp;e_name='.$this->t['ename'];
 		
 		
 		$params = JComponentHelper::getParams('com_phocadownload') ;
@@ -65,7 +66,7 @@ class PhocaDownloadCpViewPhocaDownloadLinkFile extends JViewLegacy
 		
 		// build list of categories
 	
-		if ($tmpl['type'] != 4) {
+		if ($this->t['type'] != 4) {
 			$javascript = 'class="inputbox" size="1" onchange="submitform( );"';
 		} else {
 			$javascript	= '';
@@ -83,13 +84,13 @@ class PhocaDownloadCpViewPhocaDownloadLinkFile extends JViewLegacy
 				$filter .
 				' ORDER BY cc.ordering';
 				
-		if ($tmpl['type'] != 4) {
+		if ($this->t['type'] != 4) {
              $lists['catid'] = PhocaDownloadCategory::filterCategory($query, $catid, null, true, true);
         } else {
              $lists['catid'] = PhocaDownloadCategory::filterCategory($query, $catid, null, false, true);
         }
 		/*
-		if ($tmpl['type'] != 4) {
+		if ($this->t['type'] != 4) {
 			$lists['catid'] = PhocaDownloadCategory::filterCategory($query, $catid, null, true);
 		} else {
 			$lists['catid'] = PhocaDownloadCategory::filterCategory($query, $catid, null, false);
@@ -118,7 +119,7 @@ class PhocaDownloadCpViewPhocaDownloadLinkFile extends JViewLegacy
 		$uriS = $uri->toString();
 		$this->assignRef('user',		$user);
 		$this->assignRef('lists',		$lists);
-		$this->assignRef('tmpl',		$this->t);
+		
 		$this->assignRef('items',		$items);
 		$this->assignRef('pagination',	$pagination);
 		$this->assignRef('request_url',	$uriS);

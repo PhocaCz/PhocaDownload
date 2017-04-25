@@ -115,5 +115,14 @@ class PhocaDownloadUtils
 		$token = hash('sha256', $salt . time());
 		return $token;
 	}
+	
+	public static function cleanFolderUrlName($string) {
+		$string = str_replace('@', '-', $string);
+		$string = str_replace('?', '-', $string);
+		$string = str_replace('&', '-', $string);
+		$string = str_replace('%', '-', $string);
+		return $string;
+
+	}
 }
 ?>

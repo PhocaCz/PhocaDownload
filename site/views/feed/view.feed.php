@@ -85,7 +85,7 @@ class PhocaDownloadViewFeed extends JViewLegacy
 						. ' FROM #__phocadownload AS c'
 						. ' LEFT JOIN #__phocadownload_categories AS cc ON cc.id = c.catid'
 						. ' WHERE ' . implode( ' AND ', $wheres )
-						. ' ORDER BY c.'.$fileOrdering;
+						. ' ORDER BY '.$fileOrdering;
 						
 
 

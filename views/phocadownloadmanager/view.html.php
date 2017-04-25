@@ -48,7 +48,7 @@ class PhocaDownloadCpViewPhocaDownloadManager extends JViewLegacy
 		$this->t['uploadmaxsize'] 		= $params->get( 'upload_maxsize', 3145728 );
 		$this->t['uploadmaxsizeread'] 	= PhocaDownloadFile::getFileSizeReadable($this->t['uploadmaxsize']);
 		$this->t['enablemultiple'] 		= $params->get( 'enable_multiple_upload_admin', 0 );
-		$this->t['multipleuploadmethod'] = $params->get( 'multiple_upload_method', 1 );
+		$this->t['multipleuploadmethod'] = $params->get( 'multiple_upload_method', 4 );
 
 		$this->currentFolder = '';
 		if (isset($this->folderstate->folder) && $this->folderstate->folder != '') {

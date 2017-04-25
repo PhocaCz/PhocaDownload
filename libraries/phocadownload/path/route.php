@@ -28,120 +28,84 @@ jimport('joomla.application.component.helper');
  */
 class PhocaDownloadRoute
 {
-	/**
-	 * @param	int	The route of the content item
-	 */
-	public static function getFileRoute($id, $catid = 0, $idAlias = '', $catidAlias = '', $sectionid = 0, $type = 'file')
-	{
+	
+	public static function getCategoriesRoute() {
+		// TEST SOLUTION
+		$app 		= JFactory::getApplication();
+		$menu 		= $app->getMenu();
+		$active 	= $menu->getActive();
+
+		$activeId 	= 0;
+		if (isset($active->id)){
+			$activeId    = $active->id;
+		}
+		
+		$itemId 		= 0;
+		$option			= $app->input->get( 'option', '', 'string' );
+		$view			= $app->input->get( 'view', '', 'string' );
+		if ($option == 'com_phocadownload' && $view == 'category') {
+			if ((int)$activeId > 0) {
+				// 2) if there are two menu links, try to select the one active
+				$itemId = $activeId;
+			}
+		}
+		
+		
 		$needles = array(
-			'file'  => (int) $id,
-			'category' => (int) $catid,
-			//'section'  => (int) $sectionid,
 			'categories' => ''
 		);
 		
+		$link = 'index.php?option=com_phocadownload&view=categories';
 		
-		if ($idAlias != '') {
-			$id = $id . ':' . $idAlias;
-		}
-		if ($catidAlias != '') {
-			$catid = $catid . ':' . $catidAlias;
-		}
-		
-		//Create the link
-		
-		switch ($type)
-		{
-			case 'play':
-				$link = 'index.php?option=com_phocadownload&view=play&id='. $id.'&tmpl=component';
-			break;
-			case 'detail':
-				$link = 'index.php?option=com_phocadownload&view=file&id='. $id.'&tmpl=component';
-			break;
-			case 'download':
-				$link = 'index.php?option=com_phocadownload&view=category&download='. $id . '&id='. $catid;
-			break;
-			default:
-				$link = 'index.php?option=com_phocadownload&view=file&id='. $id;
-			break;
-		}
-
-		if($item = self::_findItem($needles)) {
-			if (isset($item->id)) {
-				$link .= '&Itemid='.$item->id;
-			}
-		}
-
-		return $link;
-	}
-	
-	public static function getDownloadRoute($id, $catid, $token, $directDownload = 1)
-	{
-		$needles = array(
-			'download' => '',
-			'categories' => '',
-			'category' => (int) $catid,
-			'file'  => (int) $id			
-		);
-		if ($directDownload == 1) {
-			$link = 'index.php?option=com_phocadownload&view=download&id='. $token.'&download=1&' . JSession::getFormToken() . '=1';
-		} else {
-			$link = 'index.php?option=com_phocadownload&view=download&id='. $token;
-		}
-
-		if($item = self::_findItem($needles)) {
-			if (isset($item->id)) {
-				$link .= '&Itemid='.$item->id;
-			}
-		}
-
-		return $link;
-	}
-
-	public static function getFeedRoute($id, $catid = 0, $sectionid = 0, $type = 'rss')
-	{
-		$needles = array(
-			'categories' => '',
-			//'section'  => (int) $sectionid,
-			'category' => (int) $catid,
-			'file'  => (int) $id
-		);
-		
-	/*	
-		if ($idAlias != '') {
-			$id = $id . ':' . $idAlias;
-		}
-		if ($catidAlias != '') {
-			$catid = $catid . ':' . $catidAlias;
-		}*/
-		
-		//Create the link
-		$link = 'index.php?option=com_phocadownload&view=feed&id='.$id.'&format=feed&type='.$type;
-
 		if($item = self::_findItem($needles, 1)) {
-			if (isset($item->id)) {
-				$link .= '&Itemid='.$item->id;
+			if(isset($item->query['layout'])) {
+				$link .= '&layout='.$item->query['layout'];
 			}
+			
+			// 1) get standard item id if exists
+			if ((int)$itemId > 0) {
+				$link .= '&Itemid='.(int)$itemId;
+			} else if (isset($item->id)) {
+				$link .= '&Itemid='.(int)$item->id;;
+			} 
+			
+			/*if (isset($item->id)) {
+				$link .= '&Itemid='.$item->id;
+			}*/
 		}
 		return $link;
 	}
 	
-	
-	
-	public static function getCategoryRoute($catid, $catidAlias = '')
-	{
-		$needles = array(
-			'category' => (int) $catid,
-			//'section'  => (int) $sectionid,
-			'categories' => ''
-		);
+	public static function getCategoryRoute($catid, $catidAlias = '') {
+		
+		// TEST SOLUTION
+		$app 		= JFactory::getApplication();
+		$menu 		= $app->getMenu();
+		$active 	= $menu->getActive();
+		$option		= $app->input->get( 'option', '', 'string' );
+		
+		$activeId 	= 0;
+		if (isset($active->id)){
+			$activeId    = $active->id;
+		}
+		if ((int)$activeId > 0 && $option == 'com_phocadownload') {
+			$needles 	= array(
+				'category' => (int)$catid,
+				'categories' => (int)$activeId
+			);
+		} else {
+			$needles = array(
+				'category' => (int)$catid,
+				'categories' => ''
+			);
+		}
 		
 		if ($catidAlias != '') {
 			$catid = $catid . ':' . $catidAlias;
 		}
 
 		//Create the link
-		$link = 'index.php?option=com_phocadownload&view=category&id='.$catid;
+		$link = 'index.php?option=com_phocadownload&view=category&id='. $catid;
 
 		if($item = self::_findItem($needles)) {
 			if(isset($item->query['layout'])) {
@@ -196,19 +160,93 @@ class PhocaDownloadRoute
 		return $link;
 	}
 	
-	public static function getCategoriesRoute()
+	
+	public static function getFileRoute($id, $catid = 0, $idAlias = '', $catidAlias = '', $sectionid = 0, $type = 'file', $suffix = '')
 	{
-		$needles = array(
-			'categories' => ''
-		);
+		// TEST SOLUTION
+		$app 		= JFactory::getApplication();
+		$menu 		= $app->getMenu();
+		$active 	= $menu->getActive();
+		$option		= $app->input->get( 'option', '', 'string' );
+		
+		$activeId 	= 0;
+		if (isset($active->id)){
+			$activeId    = $active->id;
+		}
+		
+		if ((int)$activeId > 0 && $option == 'com_phocadownload') {
+
+			$needles = array(
+				'file'  => (int) $id,
+				'category' => (int) $catid,
+				'categories' => (int)$activeId
+			);
+		} else {
+			$needles = array(
+				'file'  => (int) $id,
+				'category' => (int) $catid,
+				'categories' => ''
+			);
+		}
+		
+		if ($idAlias != '') {
+			$id = $id . ':' . $idAlias;
+		}
+		if ($catidAlias != '') {
+			$catid = $catid . ':' . $catidAlias;
+		}
 		
 		//Create the link
-		$link = 'index.php?option=com_phocadownload&view=categories';
+		
+		switch ($type)
+		{
+		
+			
+			case 'play':
+				$link = 'index.php?option=com_phocadownload&view=play&id='. $id.'&tmpl=component';
+			break;
+			case 'detail':
+				$link = 'index.php?option=com_phocadownload&view=file&id='. $id.'&tmpl=component';
+			break;
+			case 'download':
+				$link = 'index.php?option=com_phocadownload&view=category&download='. $id . '&id='. $catid;
+			break;
+			default:
+				$link = 'index.php?option=com_phocadownload&view=file&id='. $id;
+			break;
+			
+		}
+
+		if ($item = self::_findItem($needles)) {
+			if (isset($item->id)) {
+				$link .= '&Itemid='.$item->id;
+			}
+		}
+		
+		if ($suffix != '') {
+			$link .= '&'.$suffix;
+		}
+
+		return $link;
+
+		
+	}
+	
+	public static function getDownloadRoute($id, $catid, $token, $directDownload = 1)
+	{
+		$needles = array(
+			'download' => '',
+			'categories' => '',
+			'category' => (int) $catid,
+			'file'  => (int) $id			
+		);
+		if ($directDownload == 1) {
+			$link = 'index.php?option=com_phocadownload&view=download&id='. $token.'&download=1&' . JSession::getFormToken() . '=1';
+		} else {
+			$link = 'index.php?option=com_phocadownload&view=download&id='. $token;
+		}
 
 		if($item = self::_findItem($needles)) {
-			if(isset($item->query['layout'])) {
-				$link .= '&layout='.$item->query['layout'];
-			}
 			if (isset($item->id)) {
 				$link .= '&Itemid='.$item->id;
 			}
@@ -216,6 +254,53 @@ class PhocaDownloadRoute
 
 		return $link;
 	}
+
+	public static function getFeedRoute($id, $catid = 0, $sectionid = 0, $type = 'rss')
+	{
+		$needles = array(
+			'categories' => '',
+			//'section'  => (int) $sectionid,
+			'category' => (int) $catid,
+			'file'  => (int) $id
+		);
+		
+	/*	
+		if ($idAlias != '') {
+			$id = $id . ':' . $idAlias;
+		}
+		if ($catidAlias != '') {
+			$catid = $catid . ':' . $catidAlias;
+		}*/
+		
+		//Create the link
+		$link = 'index.php?option=com_phocadownload&view=feed&id='.$id.'&format=feed&type='.$type;
+
+		if($item = self::_findItem($needles, 1)) {
+			if (isset($item->id)) {
+				$link .= '&Itemid='.$item->id;
+			}
+		}
+		return $link;
+	}
+	
+	public static function getGuestbookRoute($id, $title)
+	{
+		$needles = array(
+			'guestbook' => (int) $id
+		);
+
+		$link = 'index.php?option=com_phocaguestbook&view=guestbook&cid='.(int)$id.'&reporttitle='.strip_tags($title).'&tmpl=component';
+
+		if($item = self::_findItem($needles, 1, 'com_phocaguestbook')) {
+			if (isset($item->id)) {
+				$link .= '&Itemid='.$item->id;
+			}
+		}
+		return $link;
+	}
+	
+	
+	
 	
 	/*
 	function getSectionRoute($sectionid, $sectionidAlias = '')
@@ -263,12 +348,12 @@ class PhocaDownloadRoute
 		return $link;
 	}*/
 
-	protected static function _findItem($needles, $notCheckId = 0)
+	protected static function _findItem($needles, $notCheckId = 0, $component = 'com_phocadownload')
 	{
 		
 		$app	= JFactory::getApplication();
 		$menus	= $app->getMenu('site', array());
-		$items	= $menus->getItems('component', 'com_phocadownload');
+		$items	= $menus->getItems('component', $component);
 
 		if(!$items) {
 			return $app->input->get('Itemid', 0, '', 'int');

@@ -13,8 +13,9 @@ jimport( 'joomla.application.component.view' );
  
 class PhocaDownloadViewPhocaDownloadLinkFile extends JViewLegacy
 {
-	var $_context 	= 'com_phocadownload.phocadownloadlinkfile';
-
+	public $_context 	= 'com_phocadownload.phocadownloadlinkfile';
+	protected $t;
+	
 	function display($tpl = null) {
 		$app = JFactory::getApplication();
 		$uri		= JFactory::getURI();
@@ -117,7 +118,7 @@ class PhocaDownloadViewPhocaDownloadLinkFile extends JViewLegacy
 		$uriS = $uri->toString();
 		$this->assignRef('user',		$user);
 		$this->assignRef('lists',		$lists);
-		$this->assignRef('tmpl',		$this->t);
+		
 		$this->assignRef('items',		$items);
 		$this->assignRef('pagination',	$pagination);
 		$this->assignRef('request_url',	$uriS);

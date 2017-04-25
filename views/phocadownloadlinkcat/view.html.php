@@ -11,6 +11,9 @@
 jimport('joomla.application.component.view');
 class phocaDownloadCpViewphocaDownloadLinkCat extends JViewLegacy
 {
+	
+	protected $t;
+	
 	function display($tpl = null) {
 		$app	= JFactory::getApplication();
 		$db		= JFactory::getDBO();
@@ -30,8 +33,8 @@ class phocaDownloadCpViewphocaDownloadLinkCat extends JViewLegacy
 		JHTML::stylesheet( 'media/com_phocadownload/css/administrator/phocadownload.css' );
 		
 		$eName				= JRequest::getVar('e_name');
-		$tmpl['ename']		= preg_replace( '#[^A-Z0-9\-\_\[\]]#i', '', $eName );
-		$tmpl['backlink']	= $tUri.'index.php?option=com_phocadownload&amp;view=phocadownloadlinks&amp;tmpl=component&amp;e_name='.$tmpl['ename'];
+		$this->t['ename']		= preg_replace( '#[^A-Z0-9\-\_\[\]]#i', '', $eName );
+		$this->t['backlink']	= $tUri.'index.php?option=com_phocadownload&amp;view=phocadownloadlinks&amp;tmpl=component&amp;e_name='.$this->t['ename'];
 		
 		$model 			= $this->getModel();
 		
@@ -56,7 +59,7 @@ class phocaDownloadCpViewphocaDownloadLinkCat extends JViewLegacy
 		//-----------------------------------------------------------------------
 		
 		$this->assignRef('lists',	$lists);
-		$this->assignRef('tmpl',	$tmpl);
+		
 		parent::display($tpl);
 	}
 }

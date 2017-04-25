@@ -13,6 +13,9 @@ jimport( 'joomla.application.component.view' );
  
 class phocaDownloadViewphocaDownloadLinkCats extends JViewLegacy
 {
+	
+	protected $t;
+	
 	function display($tpl = null) {
 		$app	= JFactory::getApplication();
 		JHtml::_('behavior.tooltip');
@@ -64,7 +67,7 @@ class phocaDownloadViewphocaDownloadLinkCats extends JViewLegacy
 		$categoriesOutput = JHTML::_('select.genericlist', $tree, $ctrl, $attribs, 'value', 'text', 0, 'hidecategories' );
 		
 		$this->assignRef('categoriesoutput',	$categoriesOutput);
-		$this->assignRef('tmpl',	$this->t);
+		//$this->assignRef('tmpl',	$this->t);
 		parent::display($tpl);
 	}
 }

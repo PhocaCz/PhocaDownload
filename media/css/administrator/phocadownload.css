@@ -606,3 +606,11 @@ span.icon-32-approve {
 	margin: 0px 0px 0px 0px !important;
 	padding: 0px 0px 0px 0px !important;
 }
+
+.ph-btn-toolbar-2 {
+	clear: right;
+	padding-top: 10px;
+}
+.ph-select-status {
+	padding-left: 5px;
+}

@@ -17,6 +17,10 @@ Joomla.submitbutton = function(task){
 	if (task != '<?php echo $this->t['task'] ?>.cancel' && document.id('jform_catid').value == '') {
 		alert('<?php echo JText::_('JGLOBAL_VALIDATION_FORM_FAILED', true) . ' - '. JText::_($this->t['l'].'_ERROR_CATEGORY_NOT_SELECTED', true);?>');
 	} else if (task == '<?php echo $this->t['task'] ?>.cancel' || document.formvalidator.isValid(document.id('adminForm'))) {
+		<?php echo $this->form->getField('description')->save(); ?>
+		<?php echo $this->form->getField('features')->save(); ?>
+		<?php echo $this->form->getField('changelog')->save(); ?>
+		<?php echo $this->form->getField('notes')->save(); ?>
 		Joomla.submitform(task, document.getElementById('adminForm'));
 	}
 	else {

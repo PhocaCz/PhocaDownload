@@ -61,5 +61,5 @@ function insertLink() {
 </form>
 
 </fieldset>
-<div style="text-align:left;"><span class="icon-16-edb-back"><a style="text-decoration:underline" href="<?php echo $this->tmpl['backlink'];?>"><?php echo JText::_('COM_PHOCADOWNLOAD_BACK')?></a></span></div>
+<div style="text-align:left;"><span class="icon-16-edb-back"><a style="text-decoration:underline" href="<?php echo $this->t['backlink'];?>"><?php echo JText::_('COM_PHOCADOWNLOAD_BACK')?></a></span></div>
 </div>

@@ -9,6 +9,9 @@
 jimport('joomla.application.component.view');
 class phocaDownloadViewphocaDownloadLinkCat extends JViewLegacy
 {
+	
+	protected $t;
+	
 	function display($tpl = null) {
 		$app	= JFactory::getApplication();
 		$db		= JFactory::getDBO();
@@ -54,7 +57,6 @@ class phocaDownloadViewphocaDownloadLinkCat extends JViewLegacy
 		//-----------------------------------------------------------------------
 		
 		$this->assignRef('lists',	$lists);
-		$this->assignRef('tmpl',	$this->t);
 		parent::display($tpl);
 	}
 }

@@ -17,7 +17,7 @@ class PhocaDownloadCpControllerPhocaDownloadStyles extends JControllerAdmin
 		$this->registerTask('apply', 'save');
 	}
 
-	public function &getModel($name = 'PhocaDownloadStyle', $prefix = 'PhocaDownloadCpModel') {
+	public function &getModel($name = 'PhocaDownloadStyle', $prefix = 'PhocaDownloadCpModel', $config = array()) {
 		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
 		return $model;
 	}
@@ -33,5 +33,7 @@ class PhocaDownloadCpControllerPhocaDownloadStyles extends JControllerAdmin
 		if ($return) { echo "1";}
 		JFactory::getApplication()->close();
 	}
+	
+
 }
 ?>

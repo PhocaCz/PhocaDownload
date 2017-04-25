@@ -232,7 +232,8 @@ class PhocaDownloadDownload
 					header("Content-Transfer-Encoding: binary\n");
 					
 					// TEST TEMP SOLUTION - makes problems on somve server, @ added to prevent from warning
-					@ob_end_clean();
+					// Do problems on some servers
+					//@ob_end_clean();
 					
 					//@readfile($absOrRelFile);
 					

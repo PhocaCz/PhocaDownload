@@ -106,6 +106,7 @@ class PhocaDownloadViewUser extends JViewLegacy
 		$this->t['errorfile'] 		= '';
 		
 		$task 	= $app->input->get( 'task', '', 'string' );
+		
 		if($task == 'upload') {
 			$post['title']			= $app->input->get( 'phocadownloaduploadtitle', '', 'string' );
 			$post['description']	= $app->input->get( 'phocadownloaduploaddescription', '', 'string' );
@@ -151,10 +152,22 @@ class PhocaDownloadViewUser extends JViewLegacy
 			// Upload		
 			$errUploadMsg	= '';	
 			$redirectUrl 	= '';
+			
 			$fileArray 		= JRequest::getVar('Filedata', '', 'files', 'array');
 			
-			if(empty($fileArray) || (isset($fileArray['name']) && $fileArray['name'] == '')) {
-				$this->t['errorfile'] = JText::_('COM_PHOCADOWNLOAD_PLEASE_ADD_FILE');
+			if(empty($fileArray)) {
+				
+				$this->t['errorfile'] = JText::_('COM_PHOCADOWNLOAD_PLEASE_ADD_FILE_OR_IF_ADDED_CHECK_IF_IT_HAS_RIGHT_FORMAT_AND_SIZE');
+				$returnForm = 1;
+				
+			} else if (isset($fileArray[0]) && $fileArray[0] == ''){
+				$this->t['errorfile'] = JText::_('COM_PHOCADOWNLOAD_PLEASE_ADD_FILE_OR_IF_ADDED_CHECK_IF_IT_HAS_RIGHT_FORMAT_AND_SIZE');
+				$returnForm = 1;
+				$fileArray['name'] = '';
+				
+			} else if (isset($fileArray['name']) && $fileArray['name'] == '') {
+				
+				$this->t['errorfile'] = JText::_('COM_PHOCADOWNLOAD_PLEASE_ADD_FILE_OR_IF_ADDED_CHECK_IF_IT_HAS_RIGHT_FORMAT_AND_SIZE');
 				$returnForm = 1;
 			}
 			
@@ -306,7 +319,28 @@ class PhocaDownloadViewUser extends JViewLegacy
 		$this->assignRef( 'params', $this->t['p']);
 		$session = JFactory::getSession();
 		$this->assignRef('session', $session);
-		parent::display($tpl);
+		
+		// Bootstrap 3 Layout
+		$this->tmpl['display_bootstrap3_layout']	= $this->t['p']->get( 'display_bootstrap3_layout', 0 );
+		if ($this->tmpl['display_bootstrap3_layout'] == 1) {
+			
+			JHtml::_('jquery.framework', false);
+			JHTML::stylesheet('media/com_phocadownload/bootstrap/css/bootstrap.min.css' );
+			JHTML::stylesheet('media/com_phocadownload/bootstrap/css/bootstrap.extended.css' );
+			// Loaded by jquery.framework;
+			//$document->addScript(JURI::root(true).'/media/com_phocadownload/bootstrap/js/bootstrap.min.js');
+			$document->addScript(JURI::root(true).'/media/com_phocadownload/js/jquery.equalheights.min.js');
+			$document->addScriptDeclaration(
+			'jQuery(window).load(function(){
+				jQuery(\'.ph-thumbnail\').equalHeights();
+			});');
+		}
+		
+		if ($this->tmpl['display_bootstrap3_layout'] == 1) {
+			parent::display('bootstrap');	
+		} else {
+			parent::display($tpl);	
+		}
 	}
 }
 ?>

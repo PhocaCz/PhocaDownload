@@ -23,8 +23,8 @@ class PhocaDownloadCpModelPhocaDownloadDownloads extends JModelList
 				'checked_out', 'd.checked_out',
 				'checked_out_time', 'd.checked_out_time',
 				'category_id', 'category_id',
-				'usernameno', 
-				'username',
+				'usernameno', 'ua.usernameno',
+				'username', 'ua.username',
 				'ordering', 'a.ordering',
 				
 				'count', 'a.count',
@@ -71,7 +71,7 @@ class PhocaDownloadCpModelPhocaDownloadDownloads extends JModelList
 		$this->setState('params', $params);
 
 		// List state information.
-		parent::populateState('uc.name', 'asc');
+		parent::populateState('username', 'asc');
 	}
 	
 	protected function getStoreId($id = '')
@@ -175,16 +175,19 @@ class PhocaDownloadCpModelPhocaDownloadDownloads extends JModelList
 		$query->group('a.id');
 
 		// Add the list ordering clause.
-		$orderCol	= $this->state->get('list.ordering');
-		$orderDirn	= $this->state->get('list.direction');
+		//$orderCol	= $this->state->get('list.ordering');
+		//$orderDirn	= $this->state->get('list.direction');
+		$orderCol	= $this->state->get('list.ordering', 'username');
+		$orderDirn	= $this->state->get('list.direction', 'asc');
 		
-		if ($orderCol == 'uc.name' ) {
-			$orderCol =  'a.ordering';
+		if ($orderCol == 'a.id' || $orderCol == 'username') {
+			$orderCol = 'ua.username '.$orderDirn.', a.id';
 		}
-		
 		$query->order($db->escape($orderCol.' '.$orderDirn));
+		
 
 		return $query;
+		
 	}
  
 

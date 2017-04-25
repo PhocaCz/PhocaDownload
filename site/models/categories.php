@@ -114,7 +114,7 @@ class PhocaDownloadModelCategories extends JModelLegacy
 				. ($pQ == 1 ? ((count($joins)>0?( " LEFT JOIN " .implode( " LEFT JOIN ", $joins )):"")):"") // GWE MOD
 				. " WHERE " . implode( " AND ", $wheres )
 				. " GROUP BY cc.id"
-				. " ORDER BY cc.".$categoriesOrdering;
+				. " ORDER BY ".$categoriesOrdering;
 		
 		return $query;
 	}
@@ -167,7 +167,7 @@ class PhocaDownloadModelCategories extends JModelLegacy
 				. ($pQ == 1 ? ((count($joins)>0?( " LEFT JOIN " .implode( " LEFT JOIN ", $joins )):"")):"") // GWE MOD
 				. " WHERE " . implode( " AND ", $wheres )
 				. " GROUP BY cc.id"
-				. " ORDER BY cc.".$categoryOrdering;
+				. " ORDER BY ".$categoryOrdering;
 				
 		return $query;
 		
@@ -251,7 +251,7 @@ class PhocaDownloadModelCategories extends JModelLegacy
 			$app						= JFactory::getApplication();
 			$params 					= $app->getParams();
 			$ordering					= $params->get( 'category_ordering', 1 );
-			$this->_category_ordering 	= PhocaDownloadOrdering::getOrderingText($ordering);
+			$this->_category_ordering 	= PhocaDownloadOrdering::getOrderingText($ordering, 2);
 
 		}
 		return $this->_category_ordering;

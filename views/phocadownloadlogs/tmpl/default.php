@@ -33,8 +33,7 @@ if ($this->t['p']->get('enable_logging', 0) == 0) {
 }
 
 echo $r->startForm($this->t['o'], $this->t['tasks'], 'adminForm');
-echo $r->startFilter($this->t['l'].'_FILTER');
-echo $r->selectFilterType($this->t['l'].'_SELECT_TYPE', $this->state->get('filter.type'), array(1 => JText::_($this->t['l'].'_DOWNLOADS'), 2 =>JText::_($this->t['l'].'_UPLOADS')));
+echo $r->startFilter();
 //echo $r->selectFilterLanguage('JOPTION_SELECT_LANGUAGE', $this->state->get('filter.language'));
 //echo $r->selectFilterCategory(PhocaDownloadCategory::options($this->t['o']), 'JOPTION_SELECT_CATEGORY', $this->state->get('filter.category_id'));
 echo $r->endFilter();
@@ -47,6 +46,12 @@ echo $r->inputFilterSearchClear('JSEARCH_FILTER_SUBMIT', 'JSEARCH_FILTER_CLEAR')
 echo $r->inputFilterSearchLimit('JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC', $this->pagination->getLimitBox());
 echo $r->selectFilterDirection('JFIELD_ORDERING_DESC', 'JGLOBAL_ORDER_ASCENDING', 'JGLOBAL_ORDER_DESCENDING', $listDirn);
 echo $r->selectFilterSortBy('JGLOBAL_SORT_BY', $sortFields, $listOrder);
+
+echo $r->startFilterBar(2);
+echo $r->selectFilterType($this->t['l'].'_SELECT_TYPE', $this->state->get('filter.type'), array(1 => JText::_($this->t['l'].'_DOWNLOADS'), 2 =>JText::_($this->t['l'].'_UPLOADS')));
+echo $r->endFilterBar();
+
+
 echo $r->endFilterBar();		
 
 echo $r->startTable('categoryList');
@@ -74,7 +79,7 @@ $j 				= 0;
 
 if (is_array($this->items)) {
 	foreach ($this->items as $i => $item) {
-		if ($i >= (int)$this->pagination->limitstart && $j < (int)$this->pagination->limit) {
+		//if ($i >= (int)$this->pagination->limitstart && $j < (int)$this->pagination->limit) {
 			$j++;
 /*
 $urlEdit		= 'index.php?option='.$this->t['o'].'&task='.$this->t['task'].'.edit&id=';
@@ -127,7 +132,7 @@ echo $r->td($item->id, "small hidden-phone");
 
 echo '</tr>'. "\n";
 						
-		}
+		//}
 	}
 }
 echo '</tbody>'. "\n";
@@ -135,9 +140,8 @@ echo '</tbody>'. "\n";
 echo $r->tblFoot($this->pagination->getListFooter(), 15);
 echo $r->endTable();
 
-
-
-echo $r->formInputs($listOrder, $originalOrders);
+//echo $r->formInputs($listOrder, $originalOrders);
+echo $r->formInputs($listOrder, $listDirn, $originalOrders);
 echo $r->endMainContainer();
 echo $r->endForm();
 ?>
