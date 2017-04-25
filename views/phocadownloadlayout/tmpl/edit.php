@@ -35,22 +35,38 @@ echo $r->navigation($tabs);
 
 echo '<div class="tab-content">'. "\n";
 
-echo '<div class="tab-pane active" id="general">'."\n"; 
+//BEGIN GENERAL TAB
+echo '<div class="tab-pane active" id="general">'."\n";
 
-$formArray = array('categories', 'category', 'file' );
+$formArray = array('categories', 'subcategory', 'category', 'file' );
 echo $r->group($this->form, $formArray, 1);
-echo '</div>'. "\n";
-	
-				
-echo '</div>';//end tab content
+echo '</div>'. "\n";//end general tab content
+echo '</div>';
+
+
 echo '</div>';//end span10
 // Second Column
 echo '<div class="span4">';
 
 echo '<div class="alert alert-error">' . JText::_('COM_PHOCADOWNLOAD_LAYOUT_WARNING').'</div>';
-	
+
 echo '<div class="alert alert-info"><h4>' . JText::_('COM_PHOCADOWNLOAD_CATEGORIES_VIEW').'</h4>';
 $lP = PhocaDownloadSettings::getLayoutParams('categories');
+echo '<div><h3>' . JText::_('COM_PHOCADOWNLOAD_PARAMETERS').'</h3></div>';
+if (isset($lP['search'])) {
+	foreach ($lP['search'] as $k => $v) {
+		echo $v . ' ';
+	}
+}
+echo '<div><h3>' . JText::_('COM_PHOCADOWNLOAD_STYLES').'</h3></div>';
+if (isset($lP['style'])) {
+	foreach ($lP['style'] as $k => $v) {
+		echo $v . ' ';
+	}
+}
+echo '</div>';
+echo '<div class="alert alert-info"><h4>' . JText::_('COM_PHOCADOWNLOAD_SUBCATEGORIES_VIEW').'</h4>';
+$lP = PhocaDownloadSettings::getLayoutParams('subcategory');
 echo '<div><h3>' . JText::_('COM_PHOCADOWNLOAD_PARAMETERS').'</h3></div>';
 if (isset($lP['search'])) {
 	foreach ($lP['search'] as $k => $v) {

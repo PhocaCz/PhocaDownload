@@ -191,6 +191,7 @@ CREATE TABLE IF NOT EXISTS `#__phocadownload_layout` (
 INSERT INTO `#__phocadownload_layout` (
 `id` ,
 `categories` ,
+`subcategory` ,
 `category` ,
 `file` ,
 `checked_out` ,
@@ -203,7 +204,10 @@ NULL , '<div class="pd-categoriesbox">
 {pdsubcategories}
 {pdclear}
 </div>',
-
+'<div class="pd-subcategory">
+<a href="{pdlink}">{pdtitle}</a>
+<small>{pdnumdocs}</small>
+</div>',
 '<div class="pd-filebox">
 {pdfiledesctop}
 {pdfile}
