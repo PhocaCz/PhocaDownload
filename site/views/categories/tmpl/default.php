@@ -42,8 +42,6 @@ if (!empty($this->t['categories'])) {
 					// 	$catOutput  .=' <small>('.$valueCat->numdoc .')</small>';
 					// }
 					// $catOutput 	.= '</div>' . "\n";
-					// $numDoc = (int)$valueCat->numdoc + (int)$numDoc;
-					// $numSubcat++;
 
 					$subcategoriesLayout = PhocaDownloadSettings::getLayoutText('subcategory');
 					if(empty($subcategoriesLayout) || ($this->t['display_specific_layout'] == 0)){
@@ -66,6 +64,8 @@ if (!empty($this->t['categories'])) {
 					$replace	= array($subc_pdlink, $subc_pdtitle, $subc_pdnumdocs);
 					$catOutput .= str_replace($subcategoriesLayoutParams['search'], $replace, $subcategoriesLayout);
 
+					$numDoc = (int)$valueCat->numdoc + (int)$numDoc;
+					$numSubcat++;
 
 				}
 			}
