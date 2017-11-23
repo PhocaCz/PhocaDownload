@@ -21,7 +21,7 @@ class PhocaDownloadCpControllerPhocaDownloadFiles extends JControllerAdmin
 	
 	}
 	
-	public function &getModel($name = 'PhocaDownloadFile', $prefix = 'PhocaDownloadCpModel')
+	public function &getModel($name = 'PhocaDownloadFile', $prefix = 'PhocaDownloadCpModel', $config = array())
 	{
 		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
 		return $model;

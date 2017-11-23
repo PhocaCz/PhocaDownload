@@ -35,6 +35,7 @@ phocadownloadimport('phocadownload.access.access');
 phocadownloadimport('phocadownload.category.category');
 phocadownloadimport('phocadownload.user.user');
 phocadownloadimport('phocadownload.log.log');
+phocadownloadimport('phocadownload.utils.utils');
 
 
 // Require specific controller if requested

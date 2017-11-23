@@ -1,9 +1,9 @@
 <?php
-defined('_JEXEC') or die('Restricted access'); 
+defined('_JEXEC') or die('Restricted access');
 
 echo '<div id="phoca-dl-categories-box" class="pd-categories-view'.$this->t['p']->get( 'pageclass_sfx' ).'">';
 
-if ( $this->t['p']->get( 'show_page_heading' ) ) { 
+if ( $this->t['p']->get( 'show_page_heading' ) ) {
 	echo '<h1>'. $this->escape($this->t['p']->get('page_heading')) . '</h1>';
 }
 
@@ -15,60 +15,83 @@ if ( $this->t['description'] != '') {
 if (!empty($this->t['categories'])) {
 	$i = 1;
 	foreach ($this->t['categories'] as $value) {
-		
+
 		// Categories
 		$numDoc 	= 0;
 		$numSubcat	= 0;
 		$catOutput 	= '';
 		if (!empty($value->subcategories)) {
 			foreach ($value->subcategories as $valueCat) {
-				
+
 				// USER RIGHT - Access of categories - - - - -
 				// ACCESS is handled in SQL query, ACCESS USER ID is handled here (specific users)
 				$rightDisplay	= 0;
 				if (!empty($valueCat)) {
 					$rightDisplay = PhocaDownloadAccess::getUserRight('accessuserid', $valueCat->accessuserid, $valueCat->access, $this->t['user']->getAuthorisedViewLevels(), $this->t['user']->get('id', 0), 0);
-					
+
 				}
 				// - - - - - - - - - - - - - - - - - - - - - -
-				
+
 				if ($rightDisplay == 1) {
-					
-					$catOutput 	.= '<div class="pd-subcategory">';
-					$catOutput 	.= '<a href="'. JRoute::_(PhocaDownloadRoute::getCategoryRoute($valueCat->id, $valueCat->alias))
-								.'">'. $valueCat->title.'</a>';
-				
-					if ($this->t['displaynumdocsecs'] == 1) {
-						$catOutput  .=' <small>('.$valueCat->numdoc .')</small>';
+
+					// $catOutput 	.= '<div class="pd-subcategory">';
+					// $catOutput 	.= '<a href="'. JRoute::_(PhocaDownloadRoute::getCategoryRoute($valueCat->id, $valueCat->alias))
+					// 			.'">'. $valueCat->title.'</a>';
+					//
+					// if ($this->t['displaynumdocsecs'] == 1) {
+					// 	$catOutput  .=' <small>('.$valueCat->numdoc .')</small>';
+					// }
+					// $catOutput 	.= '</div>' . "\n";
+
+					$subcategoriesLayout = PhocaDownloadSettings::getLayoutText('subcategory');
+					if(empty($subcategoriesLayout) || ($this->t['display_specific_layout'] == 0)){
+						$subcategoriesLayout = '<div class="pd-subcategory">
+						<a href="{subc_pdlink}">{subc_pdtitle}</a>
+						<small>{subc_pdnumdocs}</small>
+						</div>';
 					}
-					$catOutput 	.= '</div>' . "\n";
+					$subc_pdlink = JRoute::_(PhocaDownloadRoute::getCategoryRoute($valueCat->id, $valueCat->alias));
+					$subc_pdtitle = $valueCat->title;
+					$subc_pdnumdocs = $valueCat->numdoc;
+					/*'<div class="pd-subcategory">
+					<a href="{subc_pdlink}">{subc_pdtitle}</a>
+					<small>{subc_pdnumdocs}</small>
+					</div>
+					{pdclear}';'
+					*/
+					$subcategoriesLayoutParams 	= PhocaDownloadSettings::getLayoutParams('subcategory');
+
+					$replace	= array($subc_pdlink, $subc_pdtitle, $subc_pdnumdocs);
+					$catOutput .= str_replace($subcategoriesLayoutParams['search'], $replace, $subcategoriesLayout);
+
 					$numDoc = (int)$valueCat->numdoc + (int)$numDoc;
 					$numSubcat++;
+
 				}
 			}
 		}
-		
+
 		// Don't display parent category
 		// - if there is no catoutput
 		// - if there is no rigths for it
-		
+
 		// USER RIGHT - Access of parent category - - - - -
 		// ACCESS is handled in SQL query, ACCESS USER ID is handled here (specific users)
 		$rightDisplay	= 0;
 		if (!empty($value)) {
 			$rightDisplay = PhocaDownloadAccess::getUserRight('accessuserid', $value->accessuserid, $value->access, $this->t['user']->getAuthorisedViewLevels(), $this->t['user']->get('id', 0), 0);
-				
+
 		}
 		// - - - - - - - - - - - - - - - - - - - - - -
-		
+
 		if ($rightDisplay == 1) {
-		
-// =====================================================================================		
+
+// =====================================================================================
 // BEGIN LAYOUT AREA
 // =====================================================================================
-			
+
 			$pdTitle = '<a href="'. JRoute::_(PhocaDownloadRoute::getCategoryRoute($value->id, $value->alias)).'">'. $value->title.'</a>';
-			
+
 			if ($this->t['displaynumdocsecsheader'] == 1) {
 				$numDocAll = (int)$numDoc + (int)$value->numdoc;
 				//$numDoc ... only files in subcategories
@@ -76,8 +99,8 @@ if (!empty($this->t['categories'])) {
 				//$numDocAll ... files in category and in subcategories
 				$pdTitle .= ' <small>('.$numSubcat.'/' . $numDocAll .')</small>';
 			}
-			
-			
+
+
 			$pdDesc = '';
 			$pdSubcategories = '';
 			if ($this->t['displaymaincatdesc']	 == 1) {
@@ -89,16 +112,16 @@ if (!empty($this->t['categories'])) {
 					$pdSubcategories .= '<div class="pd-no-subcat">'.JText::_('COM_PHOCADOWNLOAD_NO_SUBCATEGORIES').'</div>';
 				}
 			}
-			
+
 			$pdClear = '';
 			if ($i%3==0) {
 				$pdClear .= '<div class="pd-cb"></div>';
 			}
 			$i++;
-			
-			
-			
-			
+
+
+
+
 			// ---------------------------------------------------
 			//Convert
 			// ---------------------------------------------------
@@ -111,31 +134,31 @@ if (!empty($this->t['categories'])) {
 				echo $pdClear;
 			} else {
 				$categoriesLayout = PhocaDownloadSettings::getLayoutText('categories');
-				
+
 				/*'<div class="pd-categoriesbox">
 				<div class="pd-title">{pdtitle}</div>
 				{pdsubcategories}
 				{pdclear}
 				</div>';
 				//<div class="pd-desc">{pdDescription}</div>*/
-				
+
 				$categoriesLayoutParams 	= PhocaDownloadSettings::getLayoutParams('categories');
-				
+
 				$replace	= array($pdTitle, $pdDesc, $pdSubcategories, $pdClear);
 				$output		= str_replace($categoriesLayoutParams['search'], $replace, $categoriesLayout);
-				
+
 				echo $output;
 			}
-		}		
+		}
 	}
 }
 echo '</div>'
     .'<div class="pd-cb"></div>';
 
-	
-// - - - - - - - - - - 	
+
+// - - - - - - - - - -
 // Most viewed docs (files)
-// - - - - - - - - - - 
+// - - - - - - - - - -
 $outputFile		= '';
 
 if (!empty($this->t['mostvieweddocs']) && $this->t['displaymostdownload'] == 1) {
@@ -148,7 +171,7 @@ if (!empty($this->t['mostvieweddocs']) && $this->t['displaymostdownload'] == 1) 
 			$rightDisplay = PhocaDownloadAccess::getUserRight('accessuserid', $value->cataccessuserid, $value->cataccess, $this->t['user']->getAuthorisedViewLevels(), $this->t['user']->get('id', 0), 0);
 		}
 		// - - - - - - - - - - - - - - - - - - - - - -
-		
+
 		if ($rightDisplay == 1) {
 			// FILESIZE
 			if ($value->filename !='') {
@@ -159,7 +182,7 @@ if (!empty($this->t['mostvieweddocs']) && $this->t['displaymostdownload'] == 1) 
 					$fileSize = '';
 				}
 			}
-			
+
 			// IMAGE FILENAME
 			//$imageFileName = '';
 			//if ($value->image_filename !='') {
@@ -172,25 +195,25 @@ if (!empty($this->t['mostvieweddocs']) && $this->t['displaymostdownload'] == 1) 
 					$imageFileName = 'style="background: url(\''.$this->t['cssimgpath'].$value->image_filename.'\') 0 center no-repeat;"';
 				}*/
 			//}
-		
+
 			//$outputFile .= '<div class="pd-document'.$this->t['file_icon_size_md'].'" '.$imageFileName.'>';
-		
+
 			$outputFile .= '<div class="pd-filename">'. $imageFileName['filenamethumb']
 					. '<div class="pd-document'.$this->t['file_icon_size_md'].'" '
 					. $imageFileName['filenamestyle'].'>';
-			
+
 			$outputFile .= '<a href="'
 						. JRoute::_(PhocaDownloadRoute::getCategoryRoute($value->categoryid,$value->categoryalias))
 						.'">'. $value->title.'</a>'
 						.' <small>(' .$value->categorytitle.')</small>';
-			
+
 			$outputFile .= PhocaDownloadRenderFront::displayNewIcon($value->date, $this->t['displaynew']);
-			$outputFile .= PhocaDownloadRenderFront::displayHotIcon($value->hits, $this->t['displayhot']);		
+			$outputFile .= PhocaDownloadRenderFront::displayHotIcon($value->hits, $this->t['displayhot']);
 
 			$outputFile .= '</div></div>' . "\n";
 		}
 	}
-	
+
 	if ($outputFile != '') {
 		echo '<div class="pd-hr" style="clear:both">&nbsp;</div>';
 		echo '<div id="phoca-dl-most-viewed-box">';
@@ -200,5 +223,5 @@ if (!empty($this->t['mostvieweddocs']) && $this->t['displaymostdownload'] == 1) 
 	}
 }
 echo '<div class="pd-cb">&nbsp;</div>';
-echo $this->t['dw'];
+echo $this->t['dev'];
 ?>

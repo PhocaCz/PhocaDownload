@@ -133,5 +133,20 @@ class PhocaDownloadCategory
 		return $tree;
 
 	}
+	
+	public static function getCategoryByFile($id = 0) {
+		$db	= JFactory::getDBO();
+		$query = 'SELECT c.id, c.title, c.alias'
+		. ' FROM #__phocadownload_categories AS c'
+		. ' LEFT JOIN #__phocadownload AS a ON a.catid = c.id'
+		//. ' WHERE c.published = 1'
+		. ' WHERE a.id ='.(int)$id
+		. ' ORDER BY c.id'
+		. ' LIMIT 1';
+		$db->setQuery( $query );
+		$item = $db->loadObject();
+		return $item;
+		
+	}
 }
 ?>

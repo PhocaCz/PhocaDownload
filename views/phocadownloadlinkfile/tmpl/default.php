@@ -7,15 +7,15 @@ $ordering = ($this->lists['order'] == 'a.ordering');
 
 JHTML::_('behavior.tooltip');
 
-if ($this->tmpl['type'] == 0) {
+if ($this->t['type'] == 0) {
 	$view = 'file';
-} else if ($this->tmpl['type'] == 1) {
+} else if ($this->t['type'] == 1) {
 	$view = 'fileplaylink';
-}  else if ($this->tmpl['type'] == 2) {
+}  else if ($this->t['type'] == 2) {
 	$view = 'fileplay';
-}  else if ($this->tmpl['type'] == 3) {
+}  else if ($this->t['type'] == 3) {
 	$view = 'filepreviewlink';
-} else if ($this->tmpl['type'] == 4) {
+} else if ($this->t['type'] == 4) {
 	$view = 'filelist';
 }
 
@@ -28,12 +28,12 @@ function insertLink() {
 	if (title != '') {
 		title = "|text="+title;
 	}
-	<?php if ($this->tmpl['type'] == 0) { ?>
+	<?php if ($this->t['type'] == 0) { ?>
 	var target = document.getElementById("target").value;
 	if (target != '') {
 		target = "|target="+target;
 	}
-	<?php } else if ($this->tmpl['type'] == 1 || $this->tmpl['type'] == 2) { ?>
+	<?php } else if ($this->t['type'] == 1 || $this->t['type'] == 2) { ?>
 	var playerwidth = document.getElementById("playerwidth").value;
 	if (playerwidth != '') {
 		playerwidth = "|playerwidth="+playerwidth;
@@ -46,7 +46,7 @@ function insertLink() {
 	if (playerheightmp3 != '') {
 		playerheightmp3 = "|playerheightmp3="+playerheightmp3;
 	}
-	<?php } else if ($this->tmpl['type'] == 3) { ?>
+	<?php } else if ($this->t['type'] == 3) { ?>
 	var previewwidth = document.getElementById("previewwidth").value;
 	if (previewwidth != '') {
 		previewwidth = "|previewwidth="+previewwidth;
@@ -56,7 +56,7 @@ function insertLink() {
 		previewheight = "|previewheight="+previewheight;
 	}
 	
-	<?php } else if ($this->tmpl['type'] == 4) { ?>
+	<?php } else if ($this->t['type'] == 4) { ?>
 	var limit = document.getElementById("limit").value;
 	if (limit != '') {
 		limit = "|limit="+limit;
@@ -85,27 +85,27 @@ function insertLink() {
 	}
 	
 	if (fileIdOutput != '' &&  parseInt(fileid) > 0) {
-		<?php if ($this->tmpl['type'] == 0) { ?>
+		<?php if ($this->t['type'] == 0) { ?>
 			var tag = "{phocadownload view=<?php echo $view ?>"+fileIdOutput+title+target+"}";
-		<?php } else if ($this->tmpl['type'] == 1) { ?>
+		<?php } else if ($this->t['type'] == 1) { ?>
 			var tag = "{phocadownload view=<?php echo $view ?>"+fileIdOutput+title+playerwidth+playerheight+playerheightmp3+"}";
-		<?php } else if ($this->tmpl['type'] == 2) { ?>
+		<?php } else if ($this->t['type'] == 2) { ?>
 			var tag = "{phocadownload view=<?php echo $view ?>"+fileIdOutput+title+playerwidth+playerheight+playerheightmp3+"}";
-		<?php } else if ($this->tmpl['type'] == 3) { ?>
+		<?php } else if ($this->t['type'] == 3) { ?>
 			var tag = "{phocadownload view=<?php echo $view ?>"+fileIdOutput+title+previewwidth+previewheight+"}";
-		<?php } else if ($this->tmpl['type'] == 4) { ?>
+		<?php } else if ($this->t['type'] == 4) { ?>
 			var tag = "{phocadownload view=<?php echo $view ?>"+fileIdOutput+limit+"}";
 		<?php } ?>
-		window.parent.jInsertEditorText(tag, '<?php echo $this->tmpl['ename']; ?>');
+		window.parent.jInsertEditorText(tag, '<?php echo $this->t['ename']; ?>');
 		//window.parent.document.getElementById('sbox-window').close();
 		window.parent.SqueezeBox.close();
 		return false;
 	} else {
-		<?php if ($this->tmpl['type'] == 4) { ?>
+		<?php if ($this->t['type'] == 4) { ?>
 
 		if (categoryIdOutput != '' &&  parseInt(categoryid) > 0) {
 			var tag = "{phocadownload view=<?php echo $view ?>"+categoryIdOutput+limit+"}";
-			window.parent.jInsertEditorText(tag, '<?php echo $this->tmpl['ename']; ?>');
+			window.parent.jInsertEditorText(tag, '<?php echo $this->t['ename']; ?>');
 			window.parent.SqueezeBox.close();
 		} else {
 			alert("<?php echo JText::_( 'COM_PHOCADOWNLOAD_YOU_MUST_SELECT_CATEGORY', true ); ?>");
@@ -124,7 +124,7 @@ function insertLink() {
 
 <legend><?php echo JText::_( 'COM_PHOCADOWNLOAD_FILE' ); ?></legend>
 <form action="<?php echo $this->request_url; ?>" method="post" name="adminForm" id="adminForm">
-		<?php if ($this->tmpl['type'] != 4) { ?>
+		<?php if ($this->t['type'] != 4) { ?>
 		<table class="admintable" width="100%">
 		<tr>
 			<td class="key" align="right" width="20%">
@@ -145,7 +145,7 @@ function insertLink() {
 		</table>
 		<?php } ?>
 
-	<?php if ($this->tmpl['type'] != 4) { ?>
+	<?php if ($this->t['type'] != 4) { ?>
 	<div id="editcell">
 		<table class="adminlist plg-button-tbl">
 			<thead>
@@ -192,18 +192,18 @@ function insertLink() {
 	<?php } ?>
 	
 <input type="hidden" name="controller" value="phocadownloadlinkfile" />
-<input type="hidden" name="type" value="<?php echo $this->tmpl['type']; ?>" />
+<input type="hidden" name="type" value="<?php echo $this->t['type']; ?>" />
 <input type="hidden" name="task" value="" />
 <input type="hidden" name="boxchecked" value="0" />
 <input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
 <input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['order_Dir']; ?>" />
-<input type="hidden" name="e_name" value="<?php echo $this->tmpl['ename']?>" />
+<input type="hidden" name="e_name" value="<?php echo $this->t['ename']?>" />
 </form>
 
 
 <?php 
 
-if ($this->tmpl['type'] == 0) {
+if ($this->t['type'] == 0) {
 ?>
 <form name="adminFormLink" id="adminFormLink">
 <table class="admintable" width="100%">
@@ -241,13 +241,13 @@ if ($this->tmpl['type'] == 0) {
 </form>
 
 	<?php
-} else if ($this->tmpl['type'] == 1 || $this->tmpl['type'] == 2){
+} else if ($this->t['type'] == 1 || $this->t['type'] == 2){
 	?>
 	
 <form name="adminFormLink" id="adminFormLink">
 <table class="admintable" width="100%">
 	
-	<?php if ($this->tmpl['type'] == 1) { ?>
+	<?php if ($this->t['type'] == 1) { ?>
 	<tr >
 		<td class="key" align="right">
 			<label for="title">
@@ -294,7 +294,7 @@ if ($this->tmpl['type'] == 0) {
 			<input type="text" id="playerheightmp3" name="playerheightmp3" value="30" />
 		</td>
 	</tr>
-	<?php if ($this->tmpl['type'] == 1) { ?>
+	<?php if ($this->t['type'] == 1) { ?>
 		<tr><td colspan="2"><?php echo JText::_('COM_PHOCADOWNLOAD_WARNING_PLAYER_SIZE')?></td></tr>
 	<?php } ?>
 	<tr>
@@ -305,13 +305,13 @@ if ($this->tmpl['type'] == 0) {
 </form>	
 	
 	<?php
-} else if ($this->tmpl['type'] == 3){
+} else if ($this->t['type'] == 3){
 	?>
 	
 <form name="adminFormLink" id="adminFormLink">
 <table class="admintable" width="100%">
 	
-	<?php if ($this->tmpl['type'] == 1) { ?>
+	<?php if ($this->t['type'] == 1) { ?>
 	<tr >
 		<td class="key" align="right">
 			<label for="title">
@@ -356,7 +356,7 @@ if ($this->tmpl['type'] == 0) {
 </form>	
 	
 	<?php
-} else if ($this->tmpl['type'] == 4){
+} else if ($this->t['type'] == 4){
 	?>
 	
 <form name="adminFormLink" id="adminFormLink">
@@ -394,5 +394,5 @@ if ($this->tmpl['type'] == 0) {
 }
 	?>
 </fieldset>
-<div style="text-align:left;"><span class="icon-16-edb-back"><a style="text-decoration:underline" href="<?php echo $this->tmpl['backlink'];?>"><?php echo JText::_('COM_PHOCADOWNLOAD_BACK')?></a></span></div>
+<div style="text-align:left;"><span class="icon-16-edb-back"><a style="text-decoration:underline" href="<?php echo $this->t['backlink'];?>"><?php echo JText::_('COM_PHOCADOWNLOAD_BACK')?></a></span></div>
 </div>

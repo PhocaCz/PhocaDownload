@@ -15,7 +15,8 @@ class PhocaDownloadAccess
 		$db 	= JFactory::getDBO();
 		$query 	= 'SELECT c.access, c.uploaduserid, c.deleteuserid' .
 				' FROM #__phocadownload_categories AS c' .
-				' WHERE c.id = '. (int) $id;
+				' WHERE c.id = '. (int) $id .
+				' ORDER BY c.id';
 		$db->setQuery($query, 0, 1);
 		$output = $db->loadObject();
 		return $output;
@@ -28,7 +29,8 @@ class PhocaDownloadAccess
 		$query 	= 'SELECT c.access, c.uploaduserid, c.deleteuserid' .
 				' FROM #__phocadownload_categories AS c' .
 				' LEFT JOIN #__phocadownload as a ON a.catid = c.id' .
-				' WHERE a.id = '. (int) $id;
+				' WHERE a.id = '. (int) $id .
+				' ORDER BY c.id';
 		$db->setQuery($query, 0, 1);
 		$output = $db->loadObject();
 		return $output;
@@ -51,9 +53,23 @@ class PhocaDownloadAccess
 	 * @param int $params userId - Specific id of user who display the category in front (1,2,3,...)
 	 * @param int $params Additional param - e.g. $display_access_category (Should be unaccessed category displayed)
 	 * @return boolean 1 or 0
+	 * $rightUsers -> $userId
+	 * $rightGroup -> $userAID
 	 */
 	 
+	
+	 
 	 public static function getUserRight($rightType = 'accessuserid', $rightUsers, $rightGroup = 0, $userAID = array(), $userId = 0 , $additionalParam = 0 ) {	
+	 
+		$user = JFactory::getUser();
+		// we can get the variables here, not before function call
+		$userAID = $user->getAuthorisedViewLevels();
+		$userId = $user->get('id', 0);
+		
+		$guest = 0;
+		if (isset($user->guest) && $user->guest == 1) {
+			$guest = 1;
+		}
 		
 		// User ACL
 		$rightGroupAccess = 0;
@@ -64,7 +80,7 @@ class PhocaDownloadAccess
 				break;
 			}
 		}
-		
+		;
 		
 		$rightUsersIdArray = array();
 		if (!empty($rightUsers)) {
@@ -90,7 +106,9 @@ class PhocaDownloadAccess
 							}
 							// for access (-1 not selected - all registered, 0 all users)
 							if ($value == -1) {
-								$userIsContained = 1;// in multiple select box is selected - All registered users
+								if ($guest == 0) {
+									$userIsContained = 1;// in multiple select box is selected - All registered users
+								}
 								break;// don't search again
 							}
 						}

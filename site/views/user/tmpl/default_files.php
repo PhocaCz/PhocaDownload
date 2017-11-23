@@ -65,7 +65,6 @@ $k 		= 0;
 $i 		= 0;
 $n 		= count( $this->t['filesitems'] );
 $rows 	= &$this->t['filesitems'];
-
 if (is_array($rows)) {
 	foreach ($rows as $row) {
 	
@@ -83,7 +82,7 @@ if (is_array($rows)) {
 
 	?><tr class="<?php echo "row$k"; ?>">
 
-	<td><?php echo $row->title; ?></td>
+	<td><?php echo $row->title;?> </td>
 	
 	<?php 
 
@@ -169,7 +168,11 @@ if (is_array($rows)) {
 	}
 	echo '</td>';
 	
-	echo '<td align="center">'. $row->date .'</td>';
+	$upload_date = JFactory::getDate($row->date);
+	$upload_date->setTimezone($tz);
+	echo '<td align="center">'. $upload_date .'</td>'; 
+	
+	//echo '<td align="center">'. $row->date .'</td>';
 	
 
 	echo '<td align="center">'. $row->categorytitle .'</td>'

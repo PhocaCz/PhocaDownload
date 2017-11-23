@@ -34,7 +34,8 @@ class PhocaDownloadRate
 			// Insert or update
 			$query = 'SELECT vs.id AS id'
 					.' FROM #__phocadownload_file_votes_statistics AS vs'
-				    .' WHERE vs.fileid = '.(int) $fileid;
+				    .' WHERE vs.fileid = '.(int) $fileid
+					.' ORDER BY vs.id';
 			$db->setQuery($query, 0, 1);
 			$votesStatisticsId = $db->loadObject();
 		
@@ -79,7 +80,8 @@ class PhocaDownloadRate
 		$db = JFactory::getDBO();
 		$query = 'SELECT vs.count AS count, vs.average AS average'
 				.' FROM #__phocadownload_file_votes_statistics AS vs'
-			    .' WHERE vs.fileid = '.(int) $id;
+			    .' WHERE vs.fileid = '.(int) $id
+				.' ORDER BY vs.fileid';
 		$db->setQuery($query, 0, 1);
 		$votesStatistics = $db->loadObject();
 			
@@ -92,7 +94,8 @@ class PhocaDownloadRate
 		$query = 'SELECT v.id AS id'
 			    .' FROM #__phocadownload_file_votes AS v'
 			    .' WHERE v.fileid = '. (int)$fileid 
-				.' AND v.userid = '. (int)$userid;
+				.' AND v.userid = '. (int)$userid
+				.' ORDER BY v.id';
 		$db->setQuery($query, 0, 1);
 		$checkUserVote = $db->loadObject();
 		if ($checkUserVote) {
@@ -226,84 +229,56 @@ class PhocaDownloadRate
 		$document	 = JFactory::getDocument();
 		$url		  = 'index.php?option=com_phocadownload&view=ratingfilea&task=rate&format=json&'.JSession::getFormToken().'=1';
 		$urlRefresh		= 'index.php?option=com_phocadownload&view=ratingfilea&task=refreshrate&small='.$small.'&format=json&'.JSession::getFormToken().'=1';
-		$imgLoadingUrl = JURI::base(). 'components/com_phocadownload/assets/images/icon-loading2.gif';
+		$imgLoadingUrl = JURI::base(). 'media/com_phocadownload/images/icon-loading2.gif';
 		$imgLoadingHTML = '<img src="'.$imgLoadingUrl.'" alt="" />';
 		$js  = '<script type="text/javascript">' . "\n" . '<!--' . "\n";
 		//$js .= 'window.addEvent("domready",function() { 
 		$js .= '
 		function pdRating(id, vote) {
 		
-			var result 			= "pdresult" + id;
-			var resultvoting 	= "pdvoting" + id;
-			var pdRequest = new Request.JSON({
-			url: "'.$url.'",
-			method: "post",
+			var result 			= "#pdresult" + id;
+			var resultvoting 	= "#pdvoting" + id;
 			
-			onRequest: function(){
-				$(result).set("html", "'.addslashes($imgLoadingHTML).'");
-			  },
+			jQuery(result).html("'.addslashes($imgLoadingHTML).'");
+			var dataPost = {"ratingId": id, "ratingVote": vote, "format":"json"};
+			var dataPost2= {"ratingId": id, "ratingVote": vote, "format":"json"};
 			
-			onComplete: function(jsonObj) {
-				try {
-					var r = jsonObj;
-				} catch(e) {
-					var r = false;
-				}
-			
-				if (r) {
-					if (r.error == false) {
-						$(result).set("text", jsonObj.message);
+			phRequestActive = jQuery.ajax({
+				url: "'.$url.'",
+				type:\'POST\',
+				data:dataPost,
+				dataType:\'JSON\',
+				success:function(data1){
+					if ( data1.status == 1 ){
+						jQuery(result).html(data1.message);
 						
-						// Refreshing Voting
-						var pdRequestRefresh = new Request.JSON({
+						phRequestActive2 = jQuery.ajax({
 							url: "'.$urlRefresh.'",
-							method: "post",
-							
-							onComplete: function(json2Obj) {
-								try {
-									var rr = json2Obj;
-								} catch(e) {
-									var rr = false;
-								}
-							
-								if (rr) {
-									$(resultvoting).set("html", json2Obj.message);
+							type:\'POST\',
+							data:dataPost2,
+							dataType:\'JSON\',
+							success:function(data2){
+								if ( data2.status == 1 ){
+									alert(data2.status);
+									jQuery(resultvoting).html(data2.message);
 								} else {
-									$(resultvoting).set("text", "'.JText::_('COM_PHOCADOWNLOAD_ERROR_REQUESTING_RATING').'");
+								   jQuery(resultvoting).html(data2.message);
 								}
 							},
-						
-							onFailure: function() {
-								$(resultvoting).set("text", "'.JText::_('COM_PHOCADOWNLOAD_ERROR_REQUESTING_RATING').'");
+							error:function(data2){
+								jQuery(resultvoting).html("'.JText::_('COM_PHOCADOWNLOAD_ERROR_REQUESTING_RATING').'");
 							}
-						})
-				  
-						pdRequestRefresh.send({
-							data: {"ratingId": id, "ratingVote": vote, "format":"json"}
-						});
-						//End refreshing voting
-						
+						});	
 					} else {
-						$(result).set("html", r.error);
+						 jQuery(result).html(data1.message);
 					}
-				} else {
-					$(result).set("text", "'.JText::_('COM_PHOCADOWNLOAD_ERROR_REQUESTING_RATING').'");
+				},
+				error:function(data1){
+					jQuery(result).html("'.JText::_('COM_PHOCADOWNLOAD_ERROR_REQUESTING_RATING').'");
 				}
-			},
-			
-			onFailure: function() {
-				$(result).set("text", "'.JText::_('COM_PHOCADOWNLOAD_ERROR_REQUESTING_RATING').'");
-			
-			}
 			})
-	  
-			pdRequest.send({
-				data: {"ratingId": id, "ratingVote": vote, "format":"json"},
-			});
-  
-		};';
-		
-		//$js .= '});';
+		}';
+			
 
 		$js .= "\n" . '//-->' . "\n" .'</script>';
 		$document->addCustomTag($js);

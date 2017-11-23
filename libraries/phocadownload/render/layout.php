@@ -149,7 +149,7 @@ class PhocaDownloadLayout
 		return '<img src="'.$this->cssImagePath . $img.'" alt="" />';
 	}
 	
-	public function displayTags($fileId) {
+	public function displayTags($fileId, $type = 0) {
 	
 		$o = '';
 		$db = JFactory::getDBO();
@@ -157,7 +157,8 @@ class PhocaDownloadLayout
 		$query = 'SELECT a.id, a.title, a.link_ext, a.link_cat'
 		.' FROM #__phocadownload_tags AS a'
 		.' LEFT JOIN #__phocadownload_tags_ref AS r ON r.tagid = a.id'
-		.' WHERE r.fileid = '.(int)$fileId;
+		.' WHERE r.fileid = '.(int)$fileId
+		.' ORDER BY a.id';
 
 		$db->setQuery($query);
 		$fileIdObject = $db->loadObjectList();
@@ -168,9 +169,14 @@ class PhocaDownloadLayout
 		}
 		
 		$tl	= $this->params->get( 'tags_links', 0 );
+		
+		$class = '';
+		if ($type == 1) {
+			$class = 'class="label label-default"';
+		}
 
 		foreach ($fileIdObject as $k => $v) {
-			$o .= '<span>';
+			$o .= '<span '.$class.'>';
 			if ($tl == 0) {
 				$o .= $v->title;
 			} else if ($tl == 1) {
@@ -184,7 +190,8 @@ class PhocaDownloadLayout
 				if ($v->link_cat != '') {
 					$query = 'SELECT a.id, a.alias'
 					.' FROM #__phocadownload_categories AS a'
-					.' WHERE a.id = '.(int)$v->link_cat;
+					.' WHERE a.id = '.(int)$v->link_cat
+					.' ORDER BY a.id';
 
 					$db->setQuery($query, 0, 1);
 					$category = $db->loadObject();
@@ -213,19 +220,57 @@ class PhocaDownloadLayout
 		return $o;
 	}
 	
+	public function displayTagsString($string = '') {
+		$o = array();
+		if ($string != '') {
+			$sA = explode(',', $string);
+			if (!empty($sA)) {
+				foreach ($sA as $k => $v) {
+					
+					// Specific cases for Joomla! CMS
+					switch($v) {
+						case '1.5': $c = 'pd-j-15'; break;
+						case '1.7': $c = 'pd-j-17'; break;
+						case '2.5': $c = 'pd-j-25'; break;
+						case '3.x': $c = 'pd-j-3x'; break;
+						case '3.5': $c = 'pd-j-35'; break;
+						default: $c = 'label-default';break;
+					}
+					
+					$o[] = '<span class="label '.$c.'">'.$v.'</span>';
+				}
+			}
+		}
+		return implode(" ", $o);
+		
+	}
+	
 	public function displayVideo($url, $view = 0, $ywidth = 0, $yheight = 0) {
 	
 		$o = '';
 		if ($url != '' && PhocaDownloadUtils::isURLAddress($url) ) {
 			
+			
+			$ssl 	= strpos($url, 'https');
+			$yLink	= 'http://www.youtube.com/v/';
+			if ($ssl != false) {
+				$yLink = 'https://www.youtube.com/v/';
+			}
+			
 			$shortUrl	= 'http://youtu.be/';
+			$shortUrl2	= 'https://youtu.be/';
 			$pos 		= strpos($url, $shortUrl);
+			$pos2 		= strpos($url, $shortUrl2);
 			if ($pos !== false) {
 				$code 		= str_replace($shortUrl, '', $url);
+			} else if ($pos2 !== false) {
+				$code 		= str_replace($shortUrl2, '', $url);
 			} else {
 				$codeArray 	= explode('=', $url);
 				$code 		= str_replace($codeArray[0].'=', '', $url);
 			}
+			
+			
 			
 			if ($view == 0) {
 				// Category View
@@ -244,11 +289,11 @@ class PhocaDownloadLayout
 				$youtubeheight	= (int)$yheight;
 			}
 
-			$o .= '<object height="'.(int)$youtubeheight.'" width="'.(int)$youtubewidth.'">'
-			.'<param name="movie" value="http://www.youtube.com/v/'.$code.'"></param>'
-			.'<param name="allowFullScreen" value="true"></param>'
-			.'<param name="allowscriptaccess" value="always"></param>'
-			.'<embed src="http://www.youtube.com/v/'.$code.'" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" height="'.(int)$youtubeheight.'" width="'.(int)$youtubewidth.'"></embed></object>';
+			$o .= '<object height="'.(int)$youtubeheight.'" width="'.(int)$youtubewidth.'" data="http://www.youtube.com/v/'.$code.'" type="application/x-shockwave-flash">'
+			.'<param name="movie" value="http://www.youtube.com/v/'.$code.'" />'
+			.'<param name="allowFullScreen" value="true" />'
+			.'<param name="allowscriptaccess" value="always" />'
+			.'<embed src="'.$yLink.$code.'" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" height="'.(int)$youtubeheight.'" width="'.(int)$youtubewidth.'" /></object>';
 		}
 		return $o;
 	}

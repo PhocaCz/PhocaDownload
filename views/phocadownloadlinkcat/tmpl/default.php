@@ -25,7 +25,7 @@ function insertLink() {
 
 	if (categoryIdOutput != '' &&  parseInt(categoryid) > 0) {
 		var tag = "{phocadownload view=category"+categoryIdOutput+title+target+"}";
-		window.parent.jInsertEditorText(tag, '<?php echo $this->tmpl['ename']; ?>');
+		window.parent.jInsertEditorText(tag, '<?php echo $this->t['ename']; ?>');
 		//window.parent.document.getElementById('sbox-window').close();
 		window.parent.SqueezeBox.close();
 		return false;
@@ -89,6 +89,5 @@ function insertLink() {
 </table>
 </form>
 </fieldset>
-<div style="text-align:left;"><span class="icon-16-edb-back"><a style="text-decoration:underline" href="<?php echo $this->tmpl['backlink'];?>"><?php echo JText::_('COM_PHOCADOWNLOAD_BACK')?></a></span></div>
-
+<div style="text-align:left;"><span class="icon-16-edb-back"><a style="text-decoration:underline" href="<?php echo $this->t['backlink'];?>"><?php echo JText::_('COM_PHOCADOWNLOAD_BACK')?></a></span></div>
 </div>

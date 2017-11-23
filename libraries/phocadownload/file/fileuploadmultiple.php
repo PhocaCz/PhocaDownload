@@ -29,7 +29,7 @@ class PhocaDownloadFileUploadMultiple
 		
 		$paramsC 		= JComponentHelper::getParams('com_phocadownload');
 		$chunkMethod 	= $paramsC->get( 'multiple_upload_chunk', 0 );
-		$uploadMethod 	= $paramsC->get( 'multiple_upload_method', 1 );
+		$uploadMethod 	= $paramsC->get( 'multiple_upload_method', 4 );
 	
 		JHtml::_('behavior.framework', true);// Load it here to be sure, it is loaded before jquery
 		JHtml::_('jquery.framework', false);// Load it here because of own nonConflict method (nonconflict is set below)
