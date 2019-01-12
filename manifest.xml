@@ -4,17 +4,10 @@
 		<description><![CDATA[ Phoca Download is download manager for Joomla! CMS. It includes component, modules and plugins and allows displaying files on website which can be downloaded (previewed, played) by website visitiors. ]]></description>
 		<element>com_phocadownload</element>
 		<type>component</type>
-<<<<<<< HEAD
 		<version>3.1.5</version>
 		<infourl title="Phoca Download 3.1.5">http://www.phoca.cz/version/index.php?phocadownload=3.1.5</infourl>
 		<downloads>
 			<downloadurl type="full" format="zip">https://github.com/PhocaCz/PhocaDownload/releases/download/3.1.5/com_phocadownload_v3.1.5.zip</downloadurl>
-=======
-		<version>3.1.4</version>
-		<infourl title="Phoca Download 3.1.4">http://www.phoca.cz/version/index.php?phocadownload=3.1.4</infourl>
-		<downloads>
-			<downloadurl type="full" format="zip">https://github.com/PhocaCz/PhocaDownload/releases/download/3.1.4/com_phocadownload_v3.1.4.zip</downloadurl>
->>>>>>> a7b0916ad7708e260716aa2ff015a355464fc93f
 		</downloads>
 		<tags>
 			<tag>stable</tag>
