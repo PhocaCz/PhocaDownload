@@ -7,15 +7,18 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die;
-if(!defined('DS')) define('DS', DIRECTORY_SEPARATOR);
+
+
 if (!JFactory::getUser()->authorise('core.manage', 'com_phocadownload')) {
-	return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
-}
-if (! class_exists('PhocaDownloadLoader')) {
-    require_once( JPATH_ADMINISTRATOR.DS.'components/com_phocadownload/libraries/loader.php');
+	throw new Exception(JText::_('COM_PHOCADOWNLOAD_ERROR_ALERTNOAUTHOR'), 404);
+	return false;
 }
 
-require_once( JPATH_COMPONENT.DS.'controller.php' );
+if (! class_exists('PhocaDownloadLoader')) {
+    require_once( JPATH_ADMINISTRATOR.'/components/com_phocadownload/libraries/loader.php');
+}
+
+require_once( JPATH_COMPONENT.'/controller.php' );
 jimport( 'joomla.filesystem.folder' ); 
 jimport( 'joomla.filesystem.file' );
 phocadownloadimport('phocadownload.path.path');

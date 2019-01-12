@@ -29,7 +29,7 @@ class PhocaDownloadCpViewPhocaDownloadLogs extends JViewLegacy
 		
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) {
-			JError::raiseError(500, implode("\n", $errors));
+			throw new Exception(implode("\n", $errors), 500);
 			return false;
 		}
 		
@@ -45,21 +45,21 @@ class PhocaDownloadCpViewPhocaDownloadLogs extends JViewLegacy
 		$class	= ucfirst($this->t['tasks']).'Helper';
 		$canDo	= $class::getActions($this->t);
 
-		JToolBarHelper::title( JText::_( $this->t['l'].'_LOGGING' ), 'file-2' );
+		JToolbarHelper::title( JText::_( $this->t['l'].'_LOGGING' ), 'file-2' );
 
 		if ($canDo->get('core.edit')){
 			
-			$bar = JToolBar::getInstance('toolbar');
+			$bar = JToolbar::getInstance('toolbar');
 
 			$dhtml = '<button class="btn btn-small" onclick="javascript:if(confirm(\''.addslashes(JText::_('COM_PHOCADOWNLOAD_WARNING_RESET_LOG')).'\')){submitbutton(\'phocadownloadlogs.reset\');}" ><i class="icon-approve" title="'.JText::_('COM_PHOCADOWNLOAD_RESET_LOG').'"></i> '.JText::_('COM_PHOCADOWNLOAD_RESET_LOG').'</button>';
 			$bar->appendButton('Custom', $dhtml);
-			JToolBarHelper::divider();
-			//JToolBarHelper::custom('phocadownloaduserstat.reset', 'reset.png', '', 'COM_PHOCADOWNLOAD_RESET' , false);
+			JToolbarHelper::divider();
+			//JToolbarHelper::custom('phocadownloaduserstat.reset', 'reset.png', '', 'COM_PHOCADOWNLOAD_RESET' , false);
 		}
 	
-		//JToolBarHelper::cancel($this->t['tasks'].'.cancel', 'JTOOLBAR_CLOSE');
+		//JToolbarHelper::cancel($this->t['tasks'].'.cancel', 'JTOOLBAR_CLOSE');
 		
-		JToolBarHelper::help( 'screen.'.$this->t['c'], true );
+		JToolbarHelper::help( 'screen.'.$this->t['c'], true );
 	}
 	
 	protected function getSortFields() {

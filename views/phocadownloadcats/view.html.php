@@ -19,24 +19,47 @@ class PhocaDownloadCpViewPhocaDownloadCats extends JViewLegacy
 	function display($tpl = null) {
 	
 		$this->t			= PhocaDownloadUtils::setVars('cat');
-		$this->items		= $this->get('Items');
+		
+		$model 				= $this->getModel();
+		$this->items		= $model->getItems();
+		$this->pagination	= $model->getPagination();
+		$this->state		= $model->getState();
+		/*$this->items		= $this->get('Items');
 		$this->pagination	= $this->get('Pagination');
-		$this->state		= $this->get('State');
+		$this->state		= $this->get('State');*/
 		
 		// Preprocess the list of items to find ordering divisions.
 		foreach ($this->items as &$item) {
 			$this->ordering[$item->parent_id][] = $item->id;
 		}
 		
+		// if search, don't do a tree, only display the searched items
+		$this->t['search'] = $this->state->get('filter.search');
 		// We need to load all items because of creating tree
 		// After creating tree we get info from pagination
 		// and will set displaying of categories for current pagination
 		//E.g. pagination is limitstart 5, limit 5 - so only categories from 5 to 10 will be displayed
 		
-		if (!empty($this->items)) {
+		// the same for max levels
+		$this->t['level'] = $this->state->get('filter.level');
+		
+		if (!empty($this->items) && !$this->t['search']) {
 			$text = ''; // text is tree name e.g. Category >> Subcategory
 			$tree = array();
-			$this->items = $this->processTree($this->items, $tree, 0, $text, -1, 0);
+			
+			// Filter max levels
+			if (isset($this->t['level']) && $this->t['level'] > 0) {
+				$maxLevel = (int)$this->t['level'] + 1;
+			} else {
+				$maxLevel = false;
+			}
+			
+			$this->items = $this->processTree($this->items, $tree, 0, $text, -1, 0, '', $maxLevel);
+			
+			// Re count the pagination
+			$countTotal 		= count($this->items);
+			$model->setTotal($countTotal);
+			$this->pagination	= $model->getPagination();
 		}
 		
 		//$this->tmpl['notapproved'] 	= $this->get( 'NotApprovedCategory' );
@@ -51,31 +74,31 @@ class PhocaDownloadCpViewPhocaDownloadCats extends JViewLegacy
 		$state	= $this->get('State');
 		$class	= ucfirst($this->t['tasks']).'Helper';
 		$canDo	= $class::getActions($this->t, $state->get('filter.category_id'));
-		JToolBarHelper::title( JText::_( $this->t['l'].'_CATEGORIES' ),'folder' );
+		JToolbarHelper::title( JText::_( $this->t['l'].'_CATEGORIES' ),'folder' );
 		$user  = JFactory::getUser();
-		$bar = JToolBar::getInstance('toolbar');
+		$bar = JToolbar::getInstance('toolbar');
 		
 		if ($canDo->get('core.create')) {
-			JToolBarHelper::addNew($this->t['task'].'.add','JTOOLBAR_NEW');
+			JToolbarHelper::addNew($this->t['task'].'.add','JTOOLBAR_NEW');
 		}
 		if ($canDo->get('core.edit')) {
-			JToolBarHelper::editList($this->t['task'].'.edit','JTOOLBAR_EDIT');
+			JToolbarHelper::editList($this->t['task'].'.edit','JTOOLBAR_EDIT');
 		}
 		if ($canDo->get('core.edit.state')) {
 
-			JToolBarHelper::divider();
-			JToolBarHelper::custom($this->t['tasks'].'.publish', 'publish.png', 'publish_f2.png','JTOOLBAR_PUBLISH', true);
-			JToolBarHelper::custom($this->t['tasks'].'.unpublish', 'unpublish.png', 'unpublish_f2.png', 'JTOOLBAR_UNPUBLISH', true);
+			JToolbarHelper::divider();
+			JToolbarHelper::custom($this->t['tasks'].'.publish', 'publish.png', 'publish_f2.png','JTOOLBAR_PUBLISH', true);
+			JToolbarHelper::custom($this->t['tasks'].'.unpublish', 'unpublish.png', 'unpublish_f2.png', 'JTOOLBAR_UNPUBLISH', true);
 		}
 
 		if ($canDo->get('core.delete')) {
-			JToolBarHelper::deleteList( JText::_( $this->t['l'].'_WARNING_DELETE_ITEMS' ), $this->t['tasks'].'.delete', $this->t['l'].'_DELETE');
+			JToolbarHelper::deleteList( JText::_( $this->t['l'].'_WARNING_DELETE_ITEMS' ), $this->t['tasks'].'.delete', $this->t['l'].'_DELETE');
 		}
 		
 		// Add a batch button
 		if ($user->authorise('core.edit'))
 		{
-			JHtml::_('bootstrap.modal', 'collapseModal');
+			JHtml::_('bootstrap.renderModal', 'collapseModal');
 			$title = JText::_('JTOOLBAR_BATCH');
 			$dhtml = "<button data-toggle=\"modal\" data-target=\"#collapseModal\" class=\"btn btn-small\">
 						<i class=\"icon-checkbox-partial\" title=\"$title\"></i>
@@ -83,89 +106,94 @@ class PhocaDownloadCpViewPhocaDownloadCats extends JViewLegacy
 			$bar->appendButton('Custom', $dhtml, 'batch');
 		}
 		
-		JToolBarHelper::divider();
-		JToolBarHelper::help( 'screen.'.$this->t['c'], true );
+		JToolbarHelper::divider();
+		JToolbarHelper::help( 'screen.'.$this->t['c'], true );
 		
 	}
 	
-	/*TODO - change it to php 5 rules */
-	protected function processTree( $data, $tree, $id = 0, $text='', $currentId, $level, $parentsTreeString = '') {
+
+	protected function processTree( $data, $tree, $id = 0, $text='', $currentId, $level, $parentsTreeString = '', $maxLevel = false) {
 	
 	
 		$countItemsInCat 	= 0;// Ordering
 		$level 				= $level + 1;
 		$parentsTreeString	= $id . ' '. $parentsTreeString;
-		foreach ($data as $key) {	
-			$show_text 	= $text . $key->title;
-			
-			static $iCT = 0;// All displayed items
-			
-			if ($key->parent_id == $id && $currentId != $id && $currentId != $key->id ) {	
-				$tree[$iCT] 					= new JObject();
-	
-				// Ordering MUST be solved here
-				if ($countItemsInCat > 0) {
-					$tree[$iCT]->orderup				= 1;
-				} else {
-					$tree[$iCT]->orderup 				= 0;
-				}
+		
+		// Limit the level of tree		
+		if (!$maxLevel || ($maxLevel && $level < $maxLevel)) {
+			foreach ($data as $key) {	
+				$show_text 	= $text . $key->title;
 				
-				if ($countItemsInCat < ($key->countid - 1)) {
-					$tree[$iCT]->orderdown 				= 1;
-				} else {
-					$tree[$iCT]->orderdown 				= 0;
-				}
+				static $iCT = 0;// All displayed items
+				
+				if ($key->parent_id == $id && $currentId != $id && $currentId != $key->id ) {	
+					$tree[$iCT] 					= new JObject();
+		
+					// Ordering MUST be solved here
+					if ($countItemsInCat > 0) {
+						$tree[$iCT]->orderup				= 1;
+					} else {
+						$tree[$iCT]->orderup 				= 0;
+					}
+					
+					if ($countItemsInCat < ($key->countid - 1)) {
+						$tree[$iCT]->orderdown 				= 1;
+					} else {
+						$tree[$iCT]->orderdown 				= 0;
+					}
 
-				$tree[$iCT] 					= new JObject();
-				
-				$tree[$iCT]->level				= $level;		
-				$tree[$iCT]->parentstree		= $parentsTreeString;
+					$tree[$iCT] 					= new JObject();
+					
+					$tree[$iCT]->level				= $level;		
+					$tree[$iCT]->parentstree		= $parentsTreeString;
 
-				$tree[$iCT]->id 				= $key->id;
-				$tree[$iCT]->title 				= $show_text;
-				$tree[$iCT]->title_self 		= $key->title;
-				$tree[$iCT]->parent_id			= $key->parent_id;
-			//	$tree[$iCT]->owner_id			= $key->owner_id;
-				$tree[$iCT]->name				= $key->name;
-				$tree[$iCT]->alias				= $key->alias;
-				$tree[$iCT]->image				= $key->image;
-				$tree[$iCT]->section			= $key->section;
-				$tree[$iCT]->image_position		= $key->image_position;
-				$tree[$iCT]->description		= $key->description;
-				$tree[$iCT]->published			= $key->published;
-				$tree[$iCT]->editor				= $key->editor;
-				$tree[$iCT]->ordering			= $key->ordering;
-				$tree[$iCT]->access				= $key->access;
-				$tree[$iCT]->access_level		= $key->access_level;
-				$tree[$iCT]->count				= $key->count;
-				$tree[$iCT]->params				= $key->params;
-				$tree[$iCT]->checked_out		= $key->checked_out;
-				$tree[$iCT]->checked_out_time	= $key->checked_out_time;
-				$tree[$iCT]->groupname			= 0;
-			//	$tree[$iCT]->username			= $key->username;
-			//	$tree[$iCT]->usernameno			= $key->usernameno;
-				$tree[$iCT]->parentcat_title	= $key->parentcat_title;
-				$tree[$iCT]->parentcat_id		= $key->parentcat_id;
-				$tree[$iCT]->hits				= $key->hits;
-			//	$tree[$iCT]->ratingavg			= $key->ratingavg;
-				$tree[$iCT]->accessuserid		= $key->accessuserid;
-				$tree[$iCT]->uploaduserid		= $key->uploaduserid;
-				$tree[$iCT]->language			= $key->language;
-				$tree[$iCT]->language_title		= $key->language_title;
-			//	$tree[$iCT]->deleteuserid		= $key->deleteuserid;
-			//	$tree[$iCT]->userfolder			= $key->userfolder;
-			//	$tree[$iCT]->approved			= $key->approved;
-			//	$tree[$iCT]->link				= '';
-			//	$tree[$iCT]->filename			= '';// Will be added in View (after items will be reduced)
-			//	$tree[$iCT]->linkthumbnailpath	= '';
+					$tree[$iCT]->id 				= $key->id;
+					$tree[$iCT]->title 				= $show_text;
+					$tree[$iCT]->title_self 		= $key->title;
+					$tree[$iCT]->parent_id			= $key->parent_id;
+				//	$tree[$iCT]->owner_id			= $key->owner_id;
+					$tree[$iCT]->name				= $key->name;
+					$tree[$iCT]->alias				= $key->alias;
+					$tree[$iCT]->image				= $key->image;
+					$tree[$iCT]->section			= $key->section;
+					$tree[$iCT]->image_position		= $key->image_position;
+					$tree[$iCT]->description		= $key->description;
+					$tree[$iCT]->published			= $key->published;
+					$tree[$iCT]->editor				= $key->editor;
+					$tree[$iCT]->ordering			= $key->ordering;
+					$tree[$iCT]->access				= $key->access;
+					$tree[$iCT]->access_level		= $key->access_level;
+					$tree[$iCT]->count				= $key->count;
+					$tree[$iCT]->params				= $key->params;
+					$tree[$iCT]->checked_out		= $key->checked_out;
+					$tree[$iCT]->checked_out_time	= $key->checked_out_time;
+					$tree[$iCT]->groupname			= 0;
+				//	$tree[$iCT]->username			= $key->username;
+				//	$tree[$iCT]->usernameno			= $key->usernameno;
+					$tree[$iCT]->parentcat_title	= $key->parentcat_title;
+					$tree[$iCT]->parentcat_id		= $key->parentcat_id;
+					$tree[$iCT]->hits				= $key->hits;
+				//	$tree[$iCT]->ratingavg			= $key->ratingavg;
+					$tree[$iCT]->accessuserid		= $key->accessuserid;
+					$tree[$iCT]->uploaduserid		= $key->uploaduserid;
+					$tree[$iCT]->language			= $key->language;
+					$tree[$iCT]->language_title		= $key->language_title;
+				//	$tree[$iCT]->deleteuserid		= $key->deleteuserid;
+				//	$tree[$iCT]->userfolder			= $key->userfolder;
+				//	$tree[$iCT]->approved			= $key->approved;
+				//	$tree[$iCT]->link				= '';
+				//	$tree[$iCT]->filename			= '';// Will be added in View (after items will be reduced)
+				//	$tree[$iCT]->linkthumbnailpath	= '';
 
-				$iCT++;
-				
-				$tree = $this->processTree($data, $tree, $key->id, $show_text . " - ", $currentId, $level, $parentsTreeString);
-				
-				$countItemsInCat++;
-			}	
-		}	
+					$iCT++;
+					
+					$tree = $this->processTree($data, $tree, $key->id, $show_text . " - ", $currentId, $level, $parentsTreeString, $maxLevel);
+					
+					$countItemsInCat++;
+				}	
+			}
+		}
+		
 		return($tree);
 	}
 	

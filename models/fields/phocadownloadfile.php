@@ -34,8 +34,13 @@ class JFormFieldPhocaDownloadFile extends JFormField
             $options[] = JHtml::_('select.option', $message->id, $message->title);
          }
       }
+	  
+	  $attr = '';
+		$attr .= $this->required ? ' required aria-required="true"' : '';
+		$attr .= ' class="inputbox"';
+		
       array_unshift($options, JHTML::_('select.option', '', '- '.JText::_('COM_PHOCADOWNLOAD_SELECT_FILE').' -', 'value', 'text'));
-      return JHTML::_('select.genericlist',  $options,  $this->name, 'class="inputbox"', 'value', 'text', $this->value, $this->id );
+      return JHTML::_('select.genericlist',  $options,  $this->name, trim($attr), 'value', 'text', $this->value, $this->id );
 
    }
 }

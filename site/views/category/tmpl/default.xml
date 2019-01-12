@@ -26,6 +26,11 @@
 				<option value="0">COM_PHOCADOWNLOAD_HIDE</option>
 				<option value="1">COM_PHOCADOWNLOAD_DISPLAY</option>
 			</field>
+			
+			<field name="show_ordering_files" type="list" default="1" label="COM_PHOCADOWNLOAD_FIELD_DISPLAY_ORDERING_CATEGORY_VIEW_LABEL" description="COM_PHOCADOWNLOAD_FIELD_DISPLAY_ORDERING_CATEGORY_VIEW_DESC">
+         <option value="0">COM_PHOCADOWNLOAD_HIDE</option>
+         <option value="1">COM_PHOCADOWNLOAD_DISPLAY</option>
+      </field>
 
 		</fieldset>
 </fields>

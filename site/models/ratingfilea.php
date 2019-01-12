@@ -19,7 +19,7 @@ class PhocaDownloadModelRatingFileA extends JModelLegacy
 		$row = $this->getTable('phocadownloadfilevotes');
 		
 		if (!$row->bind($data)) {
-			$this->setError($this->_db->getErrorMsg());
+			throw new Exception($this->_db->getErrorMsg(), 500);
 			return false;
 		}
 
@@ -33,12 +33,12 @@ class PhocaDownloadModelRatingFileA extends JModelLegacy
 		}
 
 		if (!$row->check()) {
-			$this->setError($this->_db->getErrorMsg());
+			throw new Exception($this->_db->getErrorMsg(), 500);
 			return false;
 		}
 
 		if (!$row->store()) {
-			$this->setError($this->_db->getErrorMsg());
+			throw new Exception($this->_db->getErrorMsg(), 500);
 			return false;
 		}
 		

@@ -13,17 +13,20 @@ jimport( 'joomla.application.component.view' );
  
 class phocaDownloadViewphocaDownloadLinkYtb extends JViewLegacy
 {
+	
+	protected $t;
+	
 	function display($tpl = null) {
 		$app	= JFactory::getApplication();
 		$document	= JFactory::getDocument();
-		$uri		= JFactory::getURI();
+		$uri		= \Joomla\CMS\Uri\Uri::getInstance();
 		JHtml::_('behavior.tooltip');
 		JHtml::_('behavior.formvalidation');
 		JHtml::_('behavior.keepalive');
 		JHtml::_('formbehavior.chosen', 'select');
 		//Frontend Changes
 		$tUri = '';
-		if (!$app->isAdmin()) {
+		if (!$app->isClient('administrator')) {
 			$tUri = JURI::base();
 			
 		}
@@ -33,7 +36,7 @@ class phocaDownloadViewphocaDownloadLinkYtb extends JViewLegacy
 		$this->t['ename']		= preg_replace( '#[^A-Z0-9\-\_\[\]]#i', '', $eName );
 		$this->t['backlink']	= $tUri.'index.php?option=com_phocadownload&amp;view=phocadownloadlinks&amp;tmpl=component&amp;e_name='.$this->t['ename'];
 		
-		$this->assignRef('tmpl',	$this->t);
+	
 		parent::display($tpl);
 	}
 }

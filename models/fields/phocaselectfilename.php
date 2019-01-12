@@ -17,37 +17,36 @@ class JFormFieldPhocaSelectFilename extends JFormField
 
 	protected function getInput()
 	{
+
 		// Initialize variables.
-		$html = array();
+		$html 		= array();
+		
+		$idA		= 'phFileNameModal';
+		$onchange 	= (string) $this->element['onchange'];
+		$size     = ($v = $this->element['size']) ? ' size="' . $v . '"' : '';
+		$class    = ($v = $this->element['class']) ? ' class="' . $v . '"' : 'class="text_area"';
+		$required = ($v = $this->element['required']) ? ' required="required"' : '';
 		
 		
 		// Manager
+		$manager		=	$this->element['manager'] ? $this->element['manager'] : '';
 		$managerOutput	 =	$this->element['manager'] ? '&amp;manager='.(string) $this->element['manager'] : '';
 		
+		$idA .= 'mo' . $manager;
 		$group = PhocaDownloadSettings::getManagerGroup((string) $this->element['manager']);
 		$textButton	= 'COM_PHOCADOWNLOAD_FORM_SELECT_'.strtoupper($group['t']);
 		
 		$link = 'index.php?option=com_phocadownload&amp;view=phocadownloadmanager'.$group['c'].$managerOutput.'&amp;field='.$this->id;
 
-		// Initialize some field attributes.
-		$attr = $this->element['class'] ? ' class="'.(string) $this->element['class'].'"' : '';
-		$attr .= $this->element['size'] ? ' size="'.(int) $this->element['size'].'"' : '';
-
-		// Initialize JavaScript field attributes.
-		$onchange = (string) $this->element['onchange'];
+	
 
 		// Load the modal behavior script.
-		JHtml::_('behavior.modal', 'a.modal_'.$this->id);
+		//JHtml::_('behavior.modal', 'a.modal_'.$this->id);
 		
-		// If external image, we don't need the filename will be required
-		$extId		= (int) $this->form->getValue('extid');
-		if ($extId > 0) {
-			$readonly	= ' readonly="readonly"';
-			return '<input type="text" name="'.$this->name.'" id="'.$this->id.'" value="-" '.$attr.$readonly.' />';
-		}
+	
 		
 		// Build the script.
-		$script = array();
+	/*	$script = array();
 		$script[] = '	function phocaSelectFileName_'.$this->id.'(title) {';
 		$script[] = '		document.getElementById("'.$this->id.'_id").value = title;';
 		$script[] = '		'.$onchange;
@@ -57,7 +56,7 @@ class JFormFieldPhocaSelectFilename extends JFormField
 		// Add the script to the document head.
 		JFactory::getDocument()->addScriptDeclaration(implode("\n", $script));
 
-
+*/
 		/*$html[] = '<div class="fltlft">';
 		$html[] = '	<input type="text" id="'.$this->id.'_id" name="'.$this->name.'" value="'. $this->value.'"' .
 					' '.$attr.' />';
@@ -73,14 +72,35 @@ class JFormFieldPhocaSelectFilename extends JFormField
 		$html[] = '  </div>';
 		$html[] = '</div>';*/
 		
-		$html[] = '<div class="input-append">';
-		$html[] = '<input type="text" id="'.$this->id.'_id" name="'.$this->name.'" value="'. $this->value.'"' .' '.$attr.' />';
-		$html[] = '<a class="modal_'.$this->id.' btn" title="'.JText::_($textButton).'"'
-				.' href="'.($this->element['readonly'] ? '' : $link).'"'
-				.' rel="{handler: \'iframe\', size: {x: 780, y: 560}}">'
-				. JText::_($textButton).'</a>';
-		$html[] = '</div>'. "\n";
-
+		
+		JHtml::_('jquery.framework');
+		
+		JFactory::getDocument()->addScriptDeclaration('
+			function phocaSelectFileName_' . $this->id . '(name) {
+				document.getElementById("' . $this->id . '").value = name;
+				jQuery(\'#'.$idA.'\').modal(\'toggle\');
+			}
+		');
+		
+		$html[] = '<span class="input-append"><input type="text" ' . $required . ' id="' . $this->id . '" name="' . $this->name . '"'
+			. ' value="' . $this->value . '"' . $size . $class . ' />';
+		$html[] = '<a href="#'.$idA.'" role="button" class="btn btn-primary" data-toggle="modal" title="' . JText::_($textButton) . '">'
+			. '<span class="icon-list icon-white"></span> '
+			. JText::_($textButton) . '</a></span>';
+		$html[] = JHtml::_(
+			'bootstrap.renderModal',
+			$idA,
+			array(
+				'url'    => $link,
+				'title'  => JText::_($textButton),
+				'width'  => '700px',
+				'height' => '400px',
+				'modalWidth' => '80',
+				'bodyHeight' => '70',
+				'footer' => '<button type="button" class="btn" data-dismiss="modal" aria-hidden="true">'
+					. JText::_('COM_PHOCADOWNLOAD_CLOSE') . '</button>'
+			)
+		);
 
 		return implode("\n", $html);
 	}

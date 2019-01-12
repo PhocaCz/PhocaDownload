@@ -29,18 +29,18 @@ class PhocaDownloadCpViewPhocaDownloadInfo extends JViewLegacy
 		$class	= $this->t['n'] . 'CpHelper';
 		$canDo	= $class::getActions($this->t['c']);
 
-		JToolBarHelper::title( JText::_($this->t['l'].'_PD_INFO' ), 'info.png' );
+		JToolbarHelper::title( JText::_($this->t['l'].'_PD_INFO' ), 'info.png' );
 		
 		// This button is unnecessary but it is displayed because Joomla! design bug
-		$bar = JToolBar::getInstance( 'toolbar' );
+		$bar = JToolbar::getInstance( 'toolbar' );
 		$dhtml = '<a href="index.php?option=com_phocadownload" class="btn btn-small"><i class="icon-home-2" title="'.JText::_($this->t['l'].'_CONTROL_PANEL').'"></i> '.JText::_($this->t['l'].'_CONTROL_PANEL').'</a>';
 		$bar->appendButton('Custom', $dhtml);
 		
 		if ($canDo->get('core.admin')) {
 			JToolbarHelper::preferences('com_'.$this->t['c']);
 		}
-		JToolBarHelper::divider();
-		JToolBarHelper::help( 'screen.'.$this->t['c'], true );
+		JToolbarHelper::divider();
+		JToolbarHelper::help( 'screen.'.$this->t['c'], true );
 	}
 }
 ?>

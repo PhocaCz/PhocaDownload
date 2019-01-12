@@ -32,24 +32,24 @@ class PhocaDownloadCpViewPhocaDownloadLayout extends JViewLegacy
 	protected function addToolbar() {
 	
 		require_once JPATH_COMPONENT.'/helpers/'.$this->t['tasks'].'.php';
-		JRequest::setVar('hidemainmenu', true);
-		$bar 		= JToolBar::getInstance('toolbar');
+		JFactory::getApplication()->input->set('hidemainmenu', true);
+		$bar 		= JToolbar::getInstance('toolbar');
 		$user		= JFactory::getUser();
 		//$isNew		= ($this->item->id == 0);
 		//$checkedOut	= !($this->item->checked_out == 0 || $this->item->checked_out == $user->get('id'));
 		$class		= ucfirst($this->t['tasks']).'Helper';
 		$canDo		= $class::getActions($this->t);
 		
-		JToolBarHelper::title(   JText::_( $this->t['l'].'_LAYOUT' ), 'file-2' );
-		JToolBarHelper::custom($this->t['task'].'.back', 'home-2', '', $this->t['l'].'_CONTROL_PANEL', false);
-		//JToolBarHelper::cancel('phocadownloadlayout.cancel', 'JTOOLBAR_CANCEL');
+		JToolbarHelper::title(   JText::_( $this->t['l'].'_LAYOUT' ), 'file-2' );
+		JToolbarHelper::custom($this->t['task'].'.back', 'home-2', '', $this->t['l'].'_CONTROL_PANEL', false);
+		//JToolbarHelper::cancel('phocadownloadlayout.cancel', 'JTOOLBAR_CANCEL');
 		
 		if ($canDo->get('core.edit')) {
-			JToolBarHelper::apply($this->t['task'].'.apply', 'JTOOLBAR_APPLY');
-			//JToolBarHelper::save('phocapdfplugin.save', 'JTOOLBAR_SAVE');
+			JToolbarHelper::apply($this->t['task'].'.apply', 'JTOOLBAR_APPLY');
+			//JToolbarHelper::save('phocapdfplugin.save', 'JTOOLBAR_SAVE');
 		}
-		JToolBarHelper::divider();
-		JToolBarHelper::help( 'screen.'.$this->t['c'], true );
+		JToolbarHelper::divider();
+		JToolbarHelper::help( 'screen.'.$this->t['c'], true );
 	}
 }
 ?>

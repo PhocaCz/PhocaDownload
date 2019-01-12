@@ -29,6 +29,7 @@ class PhocaDownloadCpModelPhocaDownloadFiles extends JModelList
 				'access', 'a.access', 'access_level',
 				'ordering', 'a.ordering',
 				'language', 'a.language',
+				'date', 'a.date',
 				'hits', 'a.hits',
 				'average', 'v.average',
 				'published','a.published',
@@ -174,17 +175,19 @@ class PhocaDownloadCpModelPhocaDownloadFiles extends JModelList
 			}
 		}
 		
-		$query->group('a.id');
+		//$query->group('a.id, a.catid, a.sectionid, a.sid, a.owner_id, a.title, a.alias, a.filename, a.filename_play, a.filename_preview, a.filesize, a.author, a.author_email');
 
 		// Add the list ordering clause.
-		$orderCol	= $this->state->get('list.ordering');
-		$orderDirn	= $this->state->get('list.direction');
+		//$orderCol	= $this->state->get('list.ordering');
+		//$orderDirn	= $this->state->get('list.direction');
+		$orderCol	= $this->state->get('list.ordering', 'title');
+		$orderDirn	= $this->state->get('list.direction', 'asc');
 		if ($orderCol == 'a.ordering' || $orderCol == 'category_title') {
 			$orderCol = 'category_title '.$orderDirn.', a.ordering';
 		}
 		$query->order($db->escape($orderCol.' '.$orderDirn));
 
-		
+		//echo nl2br(str_replace('#__', 'jos_', $query->__toString()));
 		return $query;
 	}
 	

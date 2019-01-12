@@ -1,11 +1,18 @@
 <?php
+/* @package Joomla
+ * @copyright Copyright (C) Open Source Matters. All rights reserved.
+ * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+ * @extension Phoca Extension
+ * @copyright Copyright (C) Jan Pavelka www.phoca.cz
+ * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ */
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 // USER RIGHT - Access of categories (if file is included in some not accessed category) - - - - -
 // ACCESS is handled in SQL query, ACCESS USER ID is handled here (specific users)
 $rightDisplay	= 0;
-if (!empty($this->file[0])) {
-	$rightDisplay = PhocaDownloadAccess::getUserRight('accessuserid', $this->file[0]->cataccessuserid, $this->file[0]->cataccess, $this->t['user']->getAuthorisedViewLevels(), $this->t['user']->get('id', 0), 0);
+if (!empty($this->t['file'][0])) {
+	$rightDisplay = PhocaDownloadAccess::getUserRight('accessuserid', $this->t['file'][0]->cataccessuserid, $this->t['file'][0]->cataccess, $this->t['user']->getAuthorisedViewLevels(), $this->t['user']->get('id', 0), 0);
 }
 // - - - - - - - - - - - - - - - - - - - - - -
 
@@ -33,7 +40,7 @@ if ($rightDisplay == 1) {
 			echo JText::_('COM_PHOCADOWNLOAD_BROWSER_DOES_NOT_SUPPORT_AUDIO_VIDEO_TAG');
 			echo '</video>'. "\n";
 		}
-	
+
 	} else {
 
 	//Flow Player
@@ -48,20 +55,20 @@ if ($rightDisplay == 1) {
 
 	if ($this->t['filetype'] == 'mp3') {
 		?><script>
-		
+
 		flowplayer("player", "<?php echo $this->t['playerpath']; ?>flowplayer-<?php echo $versionFLP ?>.swf",
-		{ 
-			plugins: { 
-				controls: { 
-					fullscreen: false, 
-					height: <?php echo $this->t['playerheight']; ?> 
-				} 
+		{
+			plugins: {
+				controls: {
+					fullscreen: false,
+					height: <?php echo $this->t['playerheight']; ?>
+				}
 			}
 		}
 		);</script><?php
 	} else {
 		?><script>
-		
+
 		flowplayer("player", "<?php echo $this->t['playerpath']; ?>flowplayer-<?php echo $versionFLP ?>.swf");</script><?php
 	}
 	?></div></div><?php

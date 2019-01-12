@@ -1,4 +1,11 @@
 <?php
+/* @package Joomla
+ * @copyright Copyright (C) Open Source Matters. All rights reserved.
+ * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+ * @extension Phoca Extension
+ * @copyright Copyright (C) Jan Pavelka www.phoca.cz
+ * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ */
 defined('_JEXEC') or die('Restricted access');
 JHTML::_('behavior.tooltip');
 ?>
@@ -43,7 +50,7 @@ function insertLink() {
 <form name="adminForm" id="adminForm">
 <table class="admintable" width="100%">
 
-	
+
 	<tr >
 		<td class="key" align="right" >
 			<label for="title">
@@ -51,7 +58,7 @@ function insertLink() {
 			</label>
 		</td>
 		<td>
-			<?php echo $this->lists['catid'];?>
+			<?php echo $this->t['lists']['catid'];?>
 		</td>
 	</tr>
 
@@ -81,7 +88,7 @@ function insertLink() {
 			</select>
 		</td>
 	</tr>
-	
+
 	<tr>
 		<td>&nbsp;</td>
 		<td align="right"><button class="btn btn-primary plg-button-insert " onclick="insertLink();return false;"><span class="icon-ok"></span> <?php echo JText::_( 'COM_PHOCADOWNLOAD_INSERT_CODE' ); ?></button></td>
@@ -89,7 +96,5 @@ function insertLink() {
 </table>
 </form>
 </fieldset>
-<div style="text-align:left;"><span class="icon-16-edb-back"><a style="text-decoration:underline" href="<?php echo $this->tmpl['backlink'];?>"><?php echo JText::_('COM_PHOCADOWNLOAD_BACK')?></a></span></div>
-
-
+<div style="text-align:left;"><span class="icon-16-edb-back"><a style="text-decoration:underline" href="<?php echo $this->t['backlink'];?>"><?php echo JText::_('COM_PHOCADOWNLOAD_BACK')?></a></span></div>
 </div>

@@ -69,7 +69,7 @@ class PhocaDownloadCpControllerPhocaDownloadLayout extends JControllerForm
 			$key = $table->getKeyName();
 		}
 
-		$recordId = JRequest::getInt($key);
+		$recordId = JFactory::getApplication()->input->getInt($key);
 
 
 		// Attempt to check-in the current record.
@@ -79,8 +79,9 @@ class PhocaDownloadCpControllerPhocaDownloadLayout extends JControllerForm
 			if (!$this->checkEditId($context, $recordId))
 			{
 				// Somehow the person just went to the form - we don't allow that.
-				$this->setError(JText::sprintf('JLIB_APPLICATION_ERROR_UNHELD_ID', $recordId));
+				
 				$this->setMessage($this->getError(), 'error');
+				$app->enqueueMessage(JText::sprintf('JLIB_APPLICATION_ERROR_UNHELD_ID', $recordId), 'error');
 				$this->setRedirect(JRoute::_('index.php?option=' . $this->option, false));
 
 				return false;
@@ -91,8 +92,9 @@ class PhocaDownloadCpControllerPhocaDownloadLayout extends JControllerForm
 				if ($model->checkin($recordId) === false)
 				{
 					// Check-in failed, go back to the record and display a notice.
-					$this->setError(JText::sprintf('JLIB_APPLICATION_ERROR_CHECKIN_FAILED', $model->getError()));
+					
 					$this->setMessage($this->getError(), 'error');
+					$app->enqueueMessage(JText::sprintf('JLIB_APPLICATION_ERROR_CHECKIN_FAILED', $model->getError()), 'error');
 					$this->setRedirect(JRoute::_('index.php?option=' . $this->option, false));
 
 					return false;

@@ -8,7 +8,7 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
-if(!defined('DS')) define('DS', DIRECTORY_SEPARATOR);
+
 jimport( 'joomla.filesystem.folder' );
 
 class com_phocadownloadInstallerScript
@@ -18,19 +18,19 @@ class com_phocadownloadInstallerScript
 		
 		
 		$folder[0][0]	=	'phocadownload'  ;
-		$folder[0][1]	= 	JPATH_ROOT . DS .  $folder[0][0];
+		$folder[0][1]	= 	JPATH_ROOT . '/' .  $folder[0][0];
 		
-		$folder[1][0]	=	'images' . DS . 'phocadownload'  ;
-		$folder[1][1]	= 	JPATH_ROOT . DS .  $folder[1][0];
+		$folder[1][0]	=	'images/phocadownload'  ;
+		$folder[1][1]	= 	JPATH_ROOT . '/' .  $folder[1][0];
 		
-		$folder[2][0]	=	'phocadownload' . DS .'userupload';
-		$folder[2][1]	= 	JPATH_ROOT . DS .  $folder[2][0];
+		$folder[2][0]	=	'phocadownload/userupload';
+		$folder[2][1]	= 	JPATH_ROOT . '/' .  $folder[2][0];
 		
 		$folder[3][0]	=	'phocadownloadpap';
-		$folder[3][1]	= 	JPATH_ROOT . DS .  $folder[3][0];
+		$folder[3][1]	= 	JPATH_ROOT . '/' .  $folder[3][0];
 		
-		$folder[4][0]	=	'phocadownloadpap' . DS .'userupload';
-		$folder[4][1]	= 	JPATH_ROOT . DS .  $folder[4][0];
+		$folder[4][0]	=	'phocadownloadpap/userupload';
+		$folder[4][1]	= 	JPATH_ROOT . '/' .  $folder[4][0];
 		
 		$message = '';
 		$error	 = array();
@@ -42,7 +42,7 @@ class com_phocadownloadInstallerScript
 				{
 					
 					$data = "<html>\n<body bgcolor=\"#FFFFFF\">\n</body>\n</html>";
-					JFile::write($value[1].DS."index.html", $data);
+					JFile::write($value[1].'/'."index.html", $data);
 					$message .= '<div><b><span style="color:#009933">Folder</span> ' . $value[0] 
 							   .' <span style="color:#009933">created!</span></b></div>';
 					$error[] = 0;
@@ -76,19 +76,19 @@ class com_phocadownloadInstallerScript
 		//echo '<p>' . JText::sprintf('COM_PHOCADOWNLOAD_UPDATE_TEXT', $parent->get('manifest')->version) . '</p>';
 		
 		$folder[0][0]	=	'phocadownload'  ;
-		$folder[0][1]	= 	JPATH_ROOT . DS .  $folder[0][0];
+		$folder[0][1]	= 	JPATH_ROOT . '/' .  $folder[0][0];
 		
-		$folder[1][0]	=	'images' . DS . 'phocadownload'  ;
-		$folder[1][1]	= 	JPATH_ROOT . DS .  $folder[1][0];
+		$folder[1][0]	=	'images/phocadownload'  ;
+		$folder[1][1]	= 	JPATH_ROOT . '/' .  $folder[1][0];
 		
-		$folder[2][0]	=	'phocadownload' . DS .'userupload';
-		$folder[2][1]	= 	JPATH_ROOT . DS .  $folder[2][0];
+		$folder[2][0]	=	'phocadownload/userupload';
+		$folder[2][1]	= 	JPATH_ROOT . '/' .  $folder[2][0];
 		
 		$folder[3][0]	=	'phocadownloadpap';
-		$folder[3][1]	= 	JPATH_ROOT . DS .  $folder[3][0];
+		$folder[3][1]	= 	JPATH_ROOT . '/' .  $folder[3][0];
 		
-		$folder[4][0]	=	'phocadownloadpap' . DS .'userupload';
-		$folder[4][1]	= 	JPATH_ROOT . DS .  $folder[4][0];
+		$folder[4][0]	=	'phocadownloadpap/userupload';
+		$folder[4][1]	= 	JPATH_ROOT . '/' .  $folder[4][0];
 		
 		$message = '';
 		$error	 = array();
@@ -100,7 +100,7 @@ class com_phocadownloadInstallerScript
 				{
 					
 					$data = "<html>\n<body bgcolor=\"#FFFFFF\">\n</body>\n</html>";
-					JFile::write($value[1].DS."index.html", $data);
+					JFile::write($value[1].'/'."index.html", $data);
 					$message .= '<div><b><span style="color:#009933">Folder</span> ' . $value[0] 
 							   .' <span style="color:#009933">created!</span></b></div>';
 					$error[] = 0;
@@ -121,7 +121,7 @@ class com_phocadownloadInstallerScript
 		}
 		
 		$msg =  JText::_('COM_PHOCADOWNLOAD_UPDATE_TEXT');
-		$msg .= ' (' . JText::_('COM_PHOCADOWNLOAD_VERSION'). ': ' . $parent->get('manifest')->version . ')';
+		$msg .= ' (' . JText::_('COM_PHOCADOWNLOAD_VERSION'). ': ' . $parent->getManifest()->version . ')';
 		
 		$msg .= '<br />'. $message;
 		//$parent->getParent()->setRedirectURL('index.php?option=com_phocadownload');

@@ -6,6 +6,7 @@
  * @copyright Copyright (C) Jan Pavelka www.phoca.cz
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
+ defined('_JEXEC') or die();
 jimport('joomla.application.component.controller');
 $app		= JFactory::getApplication();
 $option 	= $app->input->get('option');
@@ -25,8 +26,8 @@ $l['log']		= array('COM_PHOCADOWNLOAD_LOGGING', 'phocadownloadlogs');
 $l['in']		= array('COM_PHOCADOWNLOAD_INFO', 'phocadownloadinfo');
 
 // Submenu view
-//$view	= JRequest::getVar( 'view', '', '', 'string', JREQUEST_ALLOWRAW );
-//$layout	= JRequest::getVar( 'layout', '', '', 'string', JREQUEST_ALLOWRAW );
+//$view	= JFactory::getApplication()->input->get( 'view', '', '', 'string', J R EQUEST_ALLOWRAW );
+//$layout	= JFactory::getApplication()->input->get( 'layout', '', '', 'string', J R EQUEST_ALLOWRAW );
 $view	= JFactory::getApplication()->input->get('view');
 $layout	= JFactory::getApplication()->input->get('layout');
 

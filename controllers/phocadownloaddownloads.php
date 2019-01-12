@@ -27,9 +27,9 @@ class PhocaDownloadCpControllerPhocaDownloadDownloads extends JControllerForm
 
 	function reset() {
 		
-		$post					= JRequest::get('post');
-		$cid					= JRequest::getVar( 'cid', array(0), 'post', 'array' );
-		$idFile					= JRequest::getVar( 'idfile', 0, 'post', 'int' );
+		$post					= JFactory::getApplication()->input->get('post');
+		$cid					= JFactory::getApplication()->input->get( 'cid', array(0), 'post', 'array' );
+		$idFile					= JFactory::getApplication()->input->get( 'idfile', 0, 'post', 'int' );
 
 		$model = $this->getModel( 'phocadownloaddownloads' );
 

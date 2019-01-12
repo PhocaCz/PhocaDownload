@@ -39,10 +39,12 @@ class PhocaDownloadCpModelPhocaDownloadM extends JModelAdmin
 	
 	function save($data) {	
 	
-		$app	= JFactory::getApplication();
+		$app		= JFactory::getApplication();
 	
-		$post	= JRequest::get('post');
-		$data	= JRequest::getVar('jform', array(0), 'post', 'array');
+		$foldercid	= $app->input->get('foldercid', array(), 'raw');
+		$cid		= $app->input->get('cid', 0, 'raw');
+		$data		= $app->input->get('jform', array(0), 'post', 'array');
+		
 		
 		// =================================================
 		// Make a copy for play and preview
@@ -55,11 +57,11 @@ class PhocaDownloadCpModelPhocaDownloadM extends JModelAdmin
 		// =================================================
 		
 		
-		if(isset($post['foldercid'])) {
-			$data['foldercid']	= $post['foldercid'];
+		if(isset($foldercid)) {
+			$data['foldercid']	= $foldercid;
 		}
-		if(isset($post['cid'])) {
-			$data['cid']		= $post['cid'];
+		if(isset($cid)) {
+			$data['cid']		= $cid;
 		}
 		
 		if (isset($data['catid']) && (int)$data['catid'] > 0) {
@@ -71,7 +73,7 @@ class PhocaDownloadCpModelPhocaDownloadM extends JModelAdmin
 		//Get folder variables from Helper
 		$path 			= PhocaDownloadPath::getPathSet();
 		$origPath 		= $path['orig_abs_ds'];
-		$origPathServer = str_replace(DS, '/', JPath::clean($path['orig_abs_ds']));
+		$origPathServer = str_replace('\\', '/', JPath::clean($path['orig_abs_ds']));
 		
 		
 		
@@ -105,8 +107,8 @@ class PhocaDownloadCpModelPhocaDownloadM extends JModelAdmin
 		}
 		
 		// Only Files will be saved
-		
-		if (isset($data['cid'])) {
+	
+		if (!empty($data['cid'])) {
 		
 			// Make a copy for play and preview (1) --------
 			if (isset($data['pap_copy_m']) && $data['pap_copy_m'] == 1) {
@@ -153,7 +155,7 @@ class PhocaDownloadCpModelPhocaDownloadM extends JModelAdmin
 					// Save
 					// Bind the form fields to the Phoca download table
 					if (!$row->bind($datam)) {
-						$this->setError($this->_db->getErrorMsg());
+						throw new Exception($this->_db->getErrorMsg(), 500);
 						return false;
 					}
 
@@ -170,13 +172,13 @@ class PhocaDownloadCpModelPhocaDownloadM extends JModelAdmin
 
 					// Make sure the Phoca download table is valid
 					if (!$row->check()) {
-						$this->setError($this->_db->getErrorMsg());
+						throw new Exception($this->_db->getErrorMsg(), 500);
 						return false;
 					}
 
 					// Store the Phoca download table to the database
 					if (!$row->store()) {
-						$this->setError($this->_db->getErrorMsg());
+						throw new Exception($this->_db->getErrorMsg(), 500);
 						return false;
 					}
 					$result->image_count++;
@@ -200,19 +202,20 @@ class PhocaDownloadCpModelPhocaDownloadM extends JModelAdmin
 		$totalresult					= new StdClass();
 		$totalresult->files_count 		= 0 ;
 		$totalresult->category_count	= 0 ;
+		$totalresult->image_count		= 0 ;
 				
 		$categoryName 	= basename($path);
 		$id 			= $this->_getCategoryId( $existingCategories, $categoryName, $parentId ) ;
 		$category 		= null;
 
 		// Full path: eg. "/home/www/joomla/files/categ/subcat/"
-		$fullPath	   	= str_replace(DS, '/', JPath::clean(DS . $path));
+		$fullPath	   	= str_replace('\\', '/', JPath::clean('/' . $path));
 		// Relative path eg "categ/subcat"
 		$relativePath 	= str_replace($origPathServer, '', $fullPath);	
 		
 		// Category doesn't exist
 		if ( $id == -1 ) {
-		  $row =& $this->getTable('phocadownloadcat');
+		  $row = $this->getTable('phocadownloadcat');
 		  
 		  $row->published 	= $data['published'];
 		 // $row->approved	= $data['approved'];
@@ -223,15 +226,17 @@ class PhocaDownloadCpModelPhocaDownloadM extends JModelAdmin
 		  // Create the timestamp for the date
 		  $row->date 		= gmdate('Y-m-d H:i:s');
 		 // $row->alias 		= $row->title; //PhocaDownloadFile::getAliasName($categoryName);
-		  //$row->userfolder	= ltrim(str_replace(DS, '/', JPath::clean($relativePath )), '/');
+		  //$row->userfolder	= ltrim(str_replace('\\', '/', JPath::clean($relativePath )), '/');
 		  $row->ordering 	= $row->getNextOrder( "parent_id = " . $this->_db->Quote($row->parent_id) );				
 		
 		  if (!$row->check()) {
-			JError::raiseError(500, $row->getError('Check Problem') );
+			throw new Exception($row->getError('Check Problem'), 500);
+			return false;
 		  }
 
 		  if (!$row->store()) {
-			JError::raiseError(500, $row->getError('Store Problem') );
+			throw new Exception($row->getError('Check Problem'), 500);
+			return false;
 		  }
 		  
 		  $category 			= new JObject();
@@ -306,7 +311,7 @@ class PhocaDownloadCpModelPhocaDownloadM extends JModelAdmin
 		// Make a copy for play and preview (1) --------
 		if (isset($data['pap_copy_m']) && $data['pap_copy_m'] == 1) {
 			$path					= PhocaDownloadPath::getPathSet();
-			$storedfoldername		= ltrim(str_replace(DS, '/', JPath::clean($rel_path  )), '/');
+			$storedfoldername		= ltrim(str_replace('\\', '/', JPath::clean($rel_path  )), '/');
 			$paramsC 				= JComponentHelper::getParams('com_phocadownload') ;
 			$overwriteExistingFiles = $paramsC->get( 'overwrite_existing_files', 0 );
 		}
@@ -314,16 +319,16 @@ class PhocaDownloadCpModelPhocaDownloadM extends JModelAdmin
 
 		if ($fileList !== false) {
 			foreach ($fileList as $filename) {
-			    $storedfilename	= ltrim(str_replace(DS, '/', JPath::clean($rel_path . DS . $filename )), '/');
+			    $storedfilename	= ltrim(str_replace('\\', '/', JPath::clean($rel_path . '/' . $filename )), '/');
 				
 				//$ext = strtolower(JFile::getExt($filename));
 								
-				if (JFile::exists($fullPath.DS.$filename) && 
+				if (JFile::exists($fullPath.'/'.$filename) && 
 					substr($filename, 0, 1) != '.' && 
 					strtolower($filename) !== 'index.html' &&
 					!$this->_FileExist($existingImages, $storedfilename, $category_id) ) {
 					
-					$row =& $this->getTable('phocadownload');
+					$row = $this->getTable('phocadownload');
 					
 					$datam = array();
 					$datam['published']		= $data['published'];
@@ -358,7 +363,7 @@ class PhocaDownloadCpModelPhocaDownloadM extends JModelAdmin
 					// Save
 					// Bind the form fields to the Phoca download table
 					if (!$row->bind($datam)) {
-						$this->setError($this->_db->getErrorMsg());
+						throw new Exception($this->_db->getErrorMsg(), 500);
 						return false;
 					}
 
@@ -373,13 +378,13 @@ class PhocaDownloadCpModelPhocaDownloadM extends JModelAdmin
 
 					// Make sure the Phoca download table is valid
 					if (!$row->check()) {
-						$this->setError($this->_db->getErrorMsg());
+						throw new Exception($this->_db->getErrorMsg(), 500);
 						return false;
 					}
 
 					// Store the Phoca download table to the database
 					if (!$row->store()) {
-						$this->setError($this->_db->getErrorMsg());
+						throw new Exception($this->_db->getErrorMsg(), 500);
 						return false;
 					}
 					// --------------------------------------------
@@ -412,7 +417,7 @@ class PhocaDownloadCpModelPhocaDownloadM extends JModelAdmin
 		$filepathPAP 		= JPath::clean($path['orig_abs_pap_ds']. $storedfilename);
 		//$filepathUserFolderPAP 		= JPath::clean($path['orig_abs_pap_ds']. $storedfoldername);
 		$filepath 			= JPath::clean($path['orig_abs_ds']. $storedfilename);
-		$filepathPAPFolder	= JPath::clean($path['orig_abs_pap_ds'] . DS. PhocaDownloadFile::getFolderFromTheFile($storedfilename));
+		$filepathPAPFolder	= JPath::clean($path['orig_abs_pap_ds'] . '/'. PhocaDownloadFile::getFolderFromTheFile($storedfilename));
 
 		if ($canPlay || $canPreview) {
 			
@@ -448,7 +453,7 @@ class PhocaDownloadCpModelPhocaDownloadM extends JModelAdmin
 				if (!JFolder::exists($filepathPAPFolder)) {
 					if (JFolder::create($filepathPAPFolder)) {
 						$data = "<html>\n<body bgcolor=\"#FFFFFF\">\n</body>\n</html>";
-						JFile::write($filepathPAPFolder . DS ."index.html", $data);
+						JFile::write($filepathPAPFolder . '/' ."index.html", $data);
 					}
 					// else {
 						//$errUploadMsg = JText::_("COM_PHOCADOWNLOAD_UNABLE_TO_CREATE_FOLDER");
@@ -462,9 +467,9 @@ class PhocaDownloadCpModelPhocaDownloadM extends JModelAdmin
 					//return false;
 				} else {
 					// Saving file name into database with relative path
-					/*if (!JFile::exists($filepathUserFolderPAP . DS ."index.html")) {
+					/*if (!JFile::exists($filepathUserFolderPAP . '/' ."index.html")) {
 						$data = "<html>\n<body bgcolor=\"#FFFFFF\">\n</body>\n</html>";
-						JFile::write($filepathUserFolderPAP . DS ."index.html", $data);
+						JFile::write($filepathUserFolderPAP . '/' ."index.html", $data);
 					}*/
 					
 					if ($canPlay == 1) {

@@ -31,7 +31,7 @@ class PhocaDownloadCpViewPhocaDownloadLic extends JViewLegacy
 	protected function addToolbar() {
 		
 		require_once JPATH_COMPONENT.'/helpers/'.$this->t['tasks'].'.php';
-		JRequest::setVar('hidemainmenu', true);
+		JFactory::getApplication()->input->set('hidemainmenu', true);
 		$user		= JFactory::getUser();
 		$isNew		= ($this->item->id == 0);
 		$checkedOut	= !($this->item->checked_out == 0 || $this->item->checked_out == $user->get('id'));
@@ -39,24 +39,24 @@ class PhocaDownloadCpViewPhocaDownloadLic extends JViewLegacy
 		$canDo		= $class::getActions($this->t, $this->state->get('filter.lic_id'));
 		
 		$text = $isNew ? JText::_( $this->t['l'] . '_NEW' ) : JText::_($this->t['l'] . '_EDIT');
-		JToolBarHelper::title(   JText::_( $this->t['l'] . '_LICENSE' ).': <small><small>[ ' . $text.' ]</small></small>' , 'bookmark');
+		JToolbarHelper::title(   JText::_( $this->t['l'] . '_LICENSE' ).': <small><small>[ ' . $text.' ]</small></small>' , 'bookmark');
 		
 		// If not checked out, can save the item.
 		if (!$checkedOut && $canDo->get('core.edit')){
-			JToolBarHelper::apply($this->t['task'] . '.apply', 'JTOOLBAR_APPLY');
-			JToolBarHelper::save($this->t['task'] . '.save', 'JTOOLBAR_SAVE');
-			JToolBarHelper::addNew($this->t['task'] . '.save2new', 'JTOOLBAR_SAVE_AND_NEW');
+			JToolbarHelper::apply($this->t['task'] . '.apply', 'JTOOLBAR_APPLY');
+			JToolbarHelper::save($this->t['task'] . '.save', 'JTOOLBAR_SAVE');
+			JToolbarHelper::addNew($this->t['task'] . '.save2new', 'JTOOLBAR_SAVE_AND_NEW');
 		}
 	
 		if (empty($this->item->id))  {
-			JToolBarHelper::cancel($this->t['task'] . '.cancel', 'JTOOLBAR_CANCEL');
+			JToolbarHelper::cancel($this->t['task'] . '.cancel', 'JTOOLBAR_CANCEL');
 		}
 		else {
-			JToolBarHelper::cancel($this->t['task'] . '.cancel', 'JTOOLBAR_CLOSE');
+			JToolbarHelper::cancel($this->t['task'] . '.cancel', 'JTOOLBAR_CLOSE');
 		}
 
-		JToolBarHelper::divider();
-		JToolBarHelper::help( 'screen.'.$this->t['c'], true );
+		JToolbarHelper::divider();
+		JToolbarHelper::help( 'screen.'.$this->t['c'], true );
 	}
 }
 ?>

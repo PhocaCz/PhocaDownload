@@ -232,7 +232,8 @@ class PhocaDownloadDownload
 					header("Content-Transfer-Encoding: binary\n");
 					
 					// TEST TEMP SOLUTION - makes problems on somve server, @ added to prevent from warning
-					@ob_end_clean();
+					// Do problems on some servers
+					//@ob_end_clean();
 					
 					//@readfile($absOrRelFile);
 					
@@ -251,7 +252,7 @@ class PhocaDownloadDownload
 					exit;
 					
 					/*
-					http://www.phoca.cz/forum/viewtopic.php?f=31&t=11811
+					https://www.phoca.cz/forum/viewtopic.php?f=31&t=11811
 					
 					$fp = @fopen($absOrRelFile, 'rb');
 					// HTTP Range - see RFC2616 for more informations (http://www.ietf.org/rfc/rfc2616.txt)
@@ -390,9 +391,9 @@ class PhocaDownloadDownload
 		if ($pQ == 1) {
 			// GWE MOD - to allow for access restrictions
 			JPluginHelper::importPlugin("phoca");
-			$dispatcher	   =& JDispatcher::getInstance();
+			//$dispatcher = JEventDispatcher::getInstance();
 			$joins = array();
-			$results = $dispatcher->trigger('onGetDownload', array (&$wheres, &$joins,$id,  $paramsC));	
+			$results = \JFactory::getApplication()->triggerEvent('onGetDownload', array (&$wheres, &$joins,$id,  $paramsC));	
 			// END GWE MOD
 		}
 		
@@ -403,7 +404,7 @@ class PhocaDownloadDownload
 				. " ORDER BY c.ordering";*/
 		
 		
-		$query = ' SELECT c.catid, c.filename, c.directlink, c.link_external, c.access, c.confirm_license, c.metakey, c.metadesc, cc.access as cataccess, cc.accessuserid as cataccessuserid, c.tokenhits '
+		$query = ' SELECT c.id, c.catid, c.filename, c.directlink, c.link_external, c.access, c.confirm_license, c.metakey, c.metadesc, cc.access as cataccess, cc.accessuserid as cataccessuserid, c.tokenhits '
 				.' FROM #__phocadownload AS c, #__phocadownload_categories AS cc '
 				. ($pQ == 1 ? ((count($joins)>0?( ' LEFT JOIN ' .implode( ' LEFT JOIN ', $joins )):'')):'') // GWE MOD
 				. ' WHERE ' . implode( ' AND ', $wheres )
@@ -517,7 +518,7 @@ class PhocaDownloadDownload
 				$outcome['externallink']= $linkExternalT;
 				return $outcome;
 			} else {
-				$absFile = str_replace('/', DS, JPath::clean($filePath['orig_abs_ds'] . $filenameT));
+				$absFile = str_replace('\\', '/', JPath::clean($filePath['orig_abs_ds'] . $filenameT));
 			}
 	
 			if (JFile::exists($absFile)) {

@@ -1,13 +1,14 @@
 /* 
 Phoca Download
-http://www.phoca.cz/ 
-http://www.phoca.cz/phocadownload
+https://www.phoca.cz/ 
+https://www.phoca.cz/phocadownload
 */
 
 #phoca-dl-category-box .pd-button-mirror1 a,
 #phoca-dl-category-box .pd-button-mirror2 a,
 #phoca-dl-file-box .pd-button-mirror1 a,
 #phoca-dl-file-box .pd-button-mirror2 a,
+#phoca-dl-file-box .pd-button-download,
 #phoca-dl-category-box .pd-button-play a,
 #phoca-dl-category-box .pd-button-preview a,
 #phoca-dl-category-box .pd-button-download a,
@@ -33,11 +34,17 @@ http://www.phoca.cz/phocadownload
 
 #phoca-dl-category-box .pd-button-play a {
 	background: url(../../images/btn.png) repeat-x, url(../../images/icon-play.png) 6px center no-repeat; 
-	background-color: #294580;
+	background-color: #b8301e;
 }
 #phoca-dl-category-box .pd-button-preview a {
+	
 	background: url(../../images/btn.png) repeat-x, url(../../images/icon-preview.png) 6px center no-repeat; 
-	background-color: #b8301e;
+	background-color: #bf8e2f;
+}
+
+#phoca-dl-file-box .pd-button-download {
+	background: url(../../images/btn.png) repeat-x, url(../../images/icon-download.png) 6px center no-repeat; 
+	background-color: #269926;
 }
 #phoca-dl-download-box .pd-button-download a, 
 #phoca-dl-category-box .pd-button-download a {
@@ -46,7 +53,7 @@ http://www.phoca.cz/phocadownload
 }
 #phoca-dl-category-box .pd-button-details a {
 	background: url(../../images/btn.png) repeat-x, url(../../images/icon-details.png) 6px center no-repeat; 
-	background-color: #bf8e2f;
+	background-color: #294580;
 }
 
 #phoca-dl-file-box .pd-button-mirror1 a,
@@ -62,11 +69,11 @@ http://www.phoca.cz/phocadownload
 
 #phoca-dl-category-box .pd-button-play a:hover {
 	background: url(../../images/btn.png) repeat-x, url(../../images/icon-play.png) 6px center no-repeat; 
-	background-color: #0d2453;
+	background-color: #78160a;
 }
 #phoca-dl-category-box .pd-button-preview a:hover {
 	background: url(../../images/btn.png) repeat-x, url(../../images/icon-preview.png) 6px center no-repeat; 
-	background-color: #78160a;
+	background-color: #7c570f;
 }
 #phoca-dl-download-box .pd-button-download a:hover,
 #phoca-dl-category-box .pd-button-download a:hover {
@@ -74,8 +81,9 @@ http://www.phoca.cz/phocadownload
 	background-color: #0c630c;
 }
 #phoca-dl-category-box .pd-button-details a:hover {
+	
 	background: url(../../images/btn.png) repeat-x, url(../../images/icon-details.png) 6px center no-repeat; 
-	background-color: #7c570f;
+	background-color: #0d2453;
 }
 #phoca-dl-category-box .pd-button-mirror1 a:hover {
 	background: url(../../images/btn.png) repeat-x, url(../../images/icon-extlink1.png) 6px center no-repeat; 

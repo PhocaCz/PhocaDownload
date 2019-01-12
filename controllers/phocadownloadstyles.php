@@ -17,7 +17,7 @@ class PhocaDownloadCpControllerPhocaDownloadStyles extends JControllerAdmin
 		$this->registerTask('apply', 'save');
 	}
 
-	public function &getModel($name = 'PhocaDownloadStyle', $prefix = 'PhocaDownloadCpModel') {
+	public function &getModel($name = 'PhocaDownloadStyle', $prefix = 'PhocaDownloadCpModel', $config = array()) {
 		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
 		return $model;
 	}
@@ -26,12 +26,14 @@ class PhocaDownloadCpControllerPhocaDownloadStyles extends JControllerAdmin
 		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 		$pks = $this->input->post->get('cid', array(), 'array');
 		$order = $this->input->post->get('order', array(), 'array');
-		JArrayHelper::toInteger($pks);
-		JArrayHelper::toInteger($order);
+		\Joomla\Utilities\ArrayHelper::toInteger($pks);
+		\Joomla\Utilities\ArrayHelper::toInteger($order);
 		$model = $this->getModel();
 		$return = $model->saveorder($pks, $order);
 		if ($return) { echo "1";}
 		JFactory::getApplication()->close();
 	}
+	
+
 }
 ?>

@@ -34,7 +34,7 @@ class PhocaDownloadCpViewPhocaDownloadStat extends JViewLegacy
 		JHTML::stylesheet( $this->t['s'] );
 
 		if (count($errors = $this->get('Errors'))) {
-			JError::raiseError(500, implode("\n", $errors));
+			throw new Exception(implode("\n", $errors), 500);
 			return false;
 		}
 		
@@ -46,11 +46,11 @@ class PhocaDownloadCpViewPhocaDownloadStat extends JViewLegacy
 		require_once JPATH_COMPONENT.'/helpers/'.$this->t['task'].'.php';
 		$class	= ucfirst($this->t['task']).'Helper';
 		$canDo	= $class::getActions($this->t);
-		JToolBarHelper::title( JText::_( $this->t['l'].'_STATISTICS' ), 'chart' );
-		JToolBarHelper::custom($this->t['task'].'.back', 'home-2', '', $this->t['l'].'_CONTROL_PANEL', false);
-	//	JToolBarHelper::cancel($this->t['task'].'.cancel', 'JTOOLBAR_CLOSE');
-		JToolBarHelper::divider();
-		JToolBarHelper::help( 'screen.'.$this->t['c'], true );
+		JToolbarHelper::title( JText::_( $this->t['l'].'_STATISTICS' ), 'chart' );
+		JToolbarHelper::custom($this->t['task'].'.back', 'home-2', '', $this->t['l'].'_CONTROL_PANEL', false);
+	//	JToolbarHelper::cancel($this->t['task'].'.cancel', 'JTOOLBAR_CLOSE');
+		JToolbarHelper::divider();
+		JToolbarHelper::help( 'screen.'.$this->t['c'], true );
 	}
 	
 	protected function getSortFields() {

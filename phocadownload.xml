@@ -2,12 +2,12 @@
 <extension method="upgrade" type="component" version="3">
 	<name>com_phocadownload</name>
 	<author>Jan Pavelka (www.phoca.cz)</author>
-	<creationDate>07/11/2014</creationDate>
+	<creationDate>11/01/2019</creationDate>
 	<authorEmail></authorEmail>
 	<authorUrl>www.phoca.cz</authorUrl>
 	<copyright>Jan Pavelka</copyright>
 	<license>GNU/GPL</license>
-	<version>3.0.6</version>
+	<version>3.1.5</version>
 	<description>Phoca Download</description>
 	<scriptfile>install/script.php</scriptfile>
 
@@ -43,6 +43,7 @@
 
 	<media destination="com_phocadownload" folder="media">
 		<filename>index.html</filename>
+		<folder>bootstrap</folder>
 		<folder>css</folder>
 		<folder>images</folder>
 		<folder>js</folder>
@@ -95,4 +96,8 @@
 		</languages>
 
 	</administration>
+	<updateservers>
+		<server type="extension" name="com_phocadownload">https://raw.githubusercontent.com/PhocaCz/PhocaDownload/master/manifest.xml</server>
+	</updateservers>
+
 </extension>

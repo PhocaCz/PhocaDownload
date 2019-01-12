@@ -10,12 +10,12 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 class PhocaDownloadExternal
 {
 	public static function checkOSE($fileName) {
-		if (file_exists(JPATH_SITE.DS.'components'.DS.'com_osemsc'.DS.'init.php') 
-		&& file_exists(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_ose_cpu'.DS.'define.php')) {
-            require_once(JPATH_SITE.DS.'components'.DS.'com_osemsc'.DS.'init.php');
+		if (file_exists(JPATH_SITE.'/components/com_osemsc/init.php') 
+		&& file_exists(JPATH_ADMINISTRATOR.'/components/com_ose_cpu/define.php')) {
+            require_once(JPATH_SITE.'components/com_osemsc/init.php');
             oseRegistry :: call('content')->checkAccess('phoca', 'category', $fileName->catid);
-        } else if (file_exists(JPATH_ADMINISTRATOR . DS . "components" . DS . "com_osemsc" . DS . "warehouse" . DS . "api.php")) {
-            require_once (JPATH_ADMINISTRATOR . DS . "components" . DS . "com_osemsc" . DS . "warehouse" . DS . "api.php");
+        } else if (file_exists(JPATH_ADMINISTRATOR . "/components/com_osemsc/warehouse/api.php")) {
+            require_once (JPATH_ADMINISTRATOR . "/components/com_osemsc/warehouse/api.php");
             $checkmsc = new OSEMSCAPI();
             $checkmsc->ACLCheck("phoca", "cat", $fileName->catid, true);
         }

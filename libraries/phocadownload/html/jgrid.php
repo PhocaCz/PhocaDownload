@@ -11,9 +11,9 @@ jimport('joomla.html.grid');
 jimport('joomla.html.html.grid');
 jimport('joomla.html.html.jgrid');
 */
-
+defined('_JEXEC') or die();
 if (! class_exists('JHtmlJGrid')) {
-	require_once( JPATH_SITE.DS.'libraries'.DS.'joomla'.DS.'html'.DS.'html'.DS.'jgrid.php' );
+	require_once( JPATH_SITE.'/libraries/joomla/html/html/jgrid.php' );
 }
 
 class PhocaDownloadJGrid extends JHtmlJGrid

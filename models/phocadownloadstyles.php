@@ -14,7 +14,7 @@ jimport( 'joomla.filesystem.file' );
 class PhocaDownloadCpModelPhocaDownloadStyles extends JModelList
 {
 	protected	$option 		= 'com_phocadownload';
-	
+
 	public function __construct($config = array())
 	{
 		if (empty($config['filter_fields'])) {
@@ -32,8 +32,8 @@ class PhocaDownloadCpModelPhocaDownloadStyles extends JModelList
 		}
 		parent::__construct($config);
 	}
-	
-	
+
+
 	protected function populateState($ordering = NULL, $direction = NULL)
 	{
 		// Initialise variables.
@@ -62,7 +62,7 @@ class PhocaDownloadCpModelPhocaDownloadStyles extends JModelList
 		// List state information.
 		parent::populateState('a.ordering', 'asc');
 	}
-	
+
 	protected function getStoreId($id = '')
 	{
 		// Compile the store id.
@@ -72,8 +72,8 @@ class PhocaDownloadCpModelPhocaDownloadStyles extends JModelList
 
 		return parent::getStoreId($id);
 	}
-	
-	
+
+
 	protected function getListQuery()
 	{
 		// Create a new query object.
@@ -125,21 +125,30 @@ class PhocaDownloadCpModelPhocaDownloadStyles extends JModelList
 				$query->where('( a.title LIKE '.$search.' OR a.filename LIKE '.$search.')');
 			}
 		}
-		
+
 		$query->group('a.id');
 
 		// Add the list ordering clause.
-		$orderCol	= $this->state->get('list.ordering');
-		$orderDirn	= $this->state->get('list.direction');
+		//$orderCol	= $this->state->get('list.ordering');
+		//$orderDirn	= $this->state->get('list.direction');
 		/*if ($orderCol == 'a.ordering' || $orderCol == 'category_title') {
 			$orderCol = 'category_title '.$orderDirn.', a.ordering';
 		}*/
+
+		// Add the list ordering clause.
+		//$orderCol	= $this->state->get('list.ordering');
+		//$orderDirn	= $this->state->get('list.direction');
+		$orderCol	= $this->state->get('list.ordering', 'ordering');
+		$orderDirn	= $this->state->get('list.direction', 'asc');
+		if ($orderCol == 'a.ordering' || $orderCol == 'category_title') {
+			$orderCol = 'a.type '.$orderDirn.', a.ordering';
+		}
 		$query->order($db->escape($orderCol.' '.$orderDirn));
 
-		
+
 		return $query;
 	}
-	
+
 	protected function getItemsCheck() {
 		$db = JFactory::getDBO();
 		$query = 'SELECT a.id, a.filename, a.type'
@@ -148,9 +157,9 @@ class PhocaDownloadCpModelPhocaDownloadStyles extends JModelList
 		$items = $db->loadObjectList();
 		return $items;
 	}
-	
+
 	public function checkItems() {
-	
+
 		$db = JFactory::getDBO();
 		$files = $this->getFiles();
 		$items = $this->getItemsCheck();
@@ -165,7 +174,7 @@ class PhocaDownloadCpModelPhocaDownloadStyles extends JModelList
 						}
 					}
 					if ($exists == 0) {
-						
+
 						$query = 'SELECT a.ordering'
 								.' FROM #__phocadownload_styles AS a'
 								.' WHERE a.type = '.(int) $fv->type;
@@ -176,7 +185,7 @@ class PhocaDownloadCpModelPhocaDownloadStyles extends JModelList
 						} else {
 							$ordering = (int)$ordO->ordering + 1;
 						}
-						
+
 						$title 		= ucfirst(str_replace('.css', '', htmlspecialchars($fv->filename)));
 						$published	= 1;
 						$query = 'INSERT into #__phocadownload_styles'
@@ -189,22 +198,23 @@ class PhocaDownloadCpModelPhocaDownloadStyles extends JModelList
 							.' , '.$db->quote('*')
 							.')';
 						$db->setQuery($query);
-						
-						if (!$db->query()) {
-							$this->setError('Database Error - Inserting CSS Style');
+
+						if (!$db->execute()) {
+
+							throw new Exception('Database Error - Inserting CSS Style', 500);
 							return false;
 						}
 					}
-				
+
 				}
-			
+
 			}
-		
+
 		}
 		return true;
-	
+
 	}
-	
+
 	public function getFiles()
 	{
 		$result	= array();
@@ -212,10 +222,10 @@ class PhocaDownloadCpModelPhocaDownloadStyles extends JModelList
 
 		$paths		= PhocaDownloadPath::getPathMedia();
 		$path		= JPath::clean($paths->media_css_abs . '/main/');
-		
+
 		if (is_dir($path)) {
 			$files = JFolder::files($path, '\.css$', false, false);
-		
+
 			foreach ($files as $file) {
 				$fileO 	= new stdClass;
 				$fileO->filename 	= $file;
@@ -224,14 +234,15 @@ class PhocaDownloadCpModelPhocaDownloadStyles extends JModelList
 				$result[] 			= $fileO;
 			}
 		} else {
-			$this->setError(JText::_('COM_PHOCADOWNLOAD_ERROR_CSS_FOLDER_NOT_FOUND') . ' (1)');
+
+			throw new Exception(JText::_('COM_PHOCADOWNLOAD_ERROR_CSS_FOLDER_NOT_FOUND') . ' (1)', 500);
 			return false;
 		}
-		
+
 		$path	= JPath::clean($paths->media_css_abs . '/custom/');
 		if (is_dir($path)) {
 			$files = JFolder::files($path, '\.css$', false, false);
-		
+
 			foreach ($files as $file) {
 				$fileO 	= new stdClass;
 				$fileO->filename 	= $file;
@@ -240,7 +251,8 @@ class PhocaDownloadCpModelPhocaDownloadStyles extends JModelList
 				$result[] 			= $fileO;
 			}
 		} else {
-			$this->setError(JText::_('COM_PHOCADOWNLOAD_ERROR_CSS_FOLDER_NOT_FOUND') . ' (2)');
+
+			throw new Exception(JText::_('COM_PHOCADOWNLOAD_ERROR_CSS_FOLDER_NOT_FOUND') . ' (2)', 500);
 			return false;
 		}
 		return $result;

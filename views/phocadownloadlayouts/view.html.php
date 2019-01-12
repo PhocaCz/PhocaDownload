@@ -16,7 +16,7 @@ class PhocaDownloadCpViewPhocaDownloadLayouts extends JViewLegacy
 	
 	function display($tpl = null) {
 		
-		require_once JPATH_COMPONENT.DS.'helpers'.DS.'phocadownloadlayouts.php';
+		require_once JPATH_COMPONENT.'/helpers/phocadownloadlayouts.php';
 		$idString 	= PhocaDownloadLayoutsHelper::getTableId();
 		$app		= JFactory::getApplication();
 		$app->redirect(JRoute::_('index.php?option=com_phocadownload&view=phocadownloadlayout&task=phocadownloadlayout.edit'.$idString, false));

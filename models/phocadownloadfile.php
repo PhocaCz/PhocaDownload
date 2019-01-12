@@ -16,7 +16,7 @@ class PhocaDownloadCpModelPhocaDownloadFile extends JModelAdmin
 	protected	$option 		= 'com_phocadownload';
 	protected 	$text_prefix	= 'com_phocadownload';
 	public 		$typeAlias 		= 'com_phocadownload.phocadownloadfile';
-	
+
 	protected function canDelete($record)
 	{
 		$user = JFactory::getUser();
@@ -27,7 +27,7 @@ class PhocaDownloadCpModelPhocaDownloadFile extends JModelAdmin
 			return parent::canDelete($record);
 		}
 	}
-	
+
 	protected function canEditState($record)
 	{
 		$user = JFactory::getUser();
@@ -38,23 +38,23 @@ class PhocaDownloadCpModelPhocaDownloadFile extends JModelAdmin
 			return parent::canEditState($record);
 		}
 	}
-	
+
 	public function getTable($type = 'PhocaDownload', $prefix = 'Table', $config = array())
 	{
 		return JTable::getInstance($type, $prefix, $config);
 	}
-	
+
 	public function getForm($data = array(), $loadData = true) {
-		
+
 		$app	= JFactory::getApplication();
 		$form 	= $this->loadForm('com_phocadownload.phocadownloadfile', 'phocadownloadfile', array('control' => 'jform', 'load_data' => $loadData));
-		
+
 		if (empty($form)) {
 			return false;
 		}
 		return $form;
 	}
-	
+
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
@@ -66,19 +66,22 @@ class PhocaDownloadCpModelPhocaDownloadFile extends JModelAdmin
 
 		return $data;
 	}
-	
+
 		public function getItem($pk = null)
 	{
 		if ($item = parent::getItem($pk)) {
 			// Convert the params field to an array.
-			$registry = new JRegistry;
-			$registry->loadString($item->metadata);
-			$item->metadata = $registry->toArray();
+			if (isset($item->metadata)) {
+				$registry = new JRegistry;
+				$registry->loadString($item->metadata);
+				$item->metadata = $registry->toArray();
+			}
+
 		}
 
 		return $item;
 	}
-	
+
 	protected function prepareTable($table)
 	{
 		jimport('joomla.filter.output');
@@ -86,10 +89,15 @@ class PhocaDownloadCpModelPhocaDownloadFile extends JModelAdmin
 		$user = JFactory::getUser();
 
 		$table->title		= htmlspecialchars_decode($table->title, ENT_QUOTES);
-		$table->alias		= JApplication::stringURLSafe($table->alias);
+		$table->alias		= JApplicationHelper::stringURLSafe($table->alias);
+
+
+		$table->confirm_license	= PhocaDownloadUtils::getIntFromString($table->confirm_license);
+		$table->hits			= PhocaDownloadUtils::getIntFromString($table->hits);
+		$table->tokenhits		= PhocaDownloadUtils::getIntFromString($table->tokenhits);
 
 		if (empty($table->alias)) {
-			$table->alias = JApplication::stringURLSafe($table->title);
+			$table->alias = JApplicationHelper::stringURLSafe($table->title);
 		}
 
 		if (empty($table->id)) {
@@ -112,9 +120,9 @@ class PhocaDownloadCpModelPhocaDownloadFile extends JModelAdmin
 			//$table->modified_by	= $user->get('id');
 		}
 	}
-	
 
-	
+
+
 	protected function getReorderConditions($table = null)
 	{
 		$condition = array();
@@ -124,9 +132,9 @@ class PhocaDownloadCpModelPhocaDownloadFile extends JModelAdmin
 	}
 
 	function approve(&$pks, $value = 1)
-	{ 
+	{
 		// Initialise variables.
-		$dispatcher	= JDispatcher::getInstance();
+		//$dispatcher	= JEventDispatcher::getInstance();
 		$user		= JFactory::getUser();
 		$table		= $this->getTable('phocadownload');
 		$pks		= (array) $pks;
@@ -140,14 +148,16 @@ class PhocaDownloadCpModelPhocaDownloadFile extends JModelAdmin
 				if (!$this->canEditState($table)) {
 					// Prune items that you can't change.
 					unset($pks[$i]);
-					JError::raiseWarning(403, JText::_('JLIB_APPLICATION_ERROR_EDIT_STATE_NOT_PERMITTED'));
+
+					throw new Exception(JText::_('JLIB_APPLICATION_ERROR_EDIT_STATE_NOT_PERMITTED'), 403);
+					return false;
 				}
 			}
 		}
 
 		// Attempt to change the state of the records.
 		if (!$table->approve($pks, $value, $user->get('id'))) {
-			$this->setError($table->getError());
+			throw new Exception($table->getError(), 500);
 			return false;
 		}
 
@@ -156,26 +166,26 @@ class PhocaDownloadCpModelPhocaDownloadFile extends JModelAdmin
 		// Trigger the onContentChangeState event.
 		/* $result = $dispatcher->trigger($this->event_change_state, array($context, $pks, $value));
 		if (in_array(false, $result, true)) {
-			$this->setError($table->getError());
+			throw new Exception($table->getError(), 500);
 			return false;
 		} */
 
 		return true;
 	}
-	
+
 	function save($data) {
-			
+
 		//$data['filesize'] 	= PhocaDownloadUtils::getFileSize($data['filename'], 0);
-		
+
 		if ($data['alias'] == '') {
 			$data['alias'] = $data['title'];
 		}
 
 		//$data['alias'] = PhocaDownloadText::get AliasName($data['alias']);
 
-		
+
 		// Initialise variables;
-		$dispatcher = JDispatcher::getInstance();
+		//$dispatcher = JEventDispatcher::getInstance();
 		$table		= $this->getTable();
 		$pk			= (!empty($data['id'])) ? $data['id'] : (int)$this->getState($this->getName().'.id');
 		$isNew		= true;
@@ -188,68 +198,90 @@ class PhocaDownloadCpModelPhocaDownloadFile extends JModelAdmin
 			$table->load($pk);
 			$isNew = false;
 		}
-		
+
 		// =================================================
 		// Make a copy for play and preview
 		$paramsC 	= JComponentHelper::getParams('com_phocadownload') ;
 		$papCopy 	= $paramsC->get( 'pap_copy', 0 );
 		$overwriteExistingFiles = $paramsC->get( 'overwrite_existing_files', 0 );
 		$path		= PhocaDownloadPath::getPathSet();
-		
+
+
 		if ($papCopy == 2 || $papCopy == 3) {
 			$canPlay			= PhocaDownloadFile::canPlay($data['filename']);
 			$canPreview 		= PhocaDownloadFile::canPreview($data['filename']);
-			$filepath			= JPath::clean($path['orig_abs_ds'] . DS.$data['filename']);
-			$filepathPAP 		= JPath::clean($path['orig_abs_pap_ds'] . DS.$data['filename']);
-			$filepathPAPFolder	= JPath::clean($path['orig_abs_pap_ds'] . DS. PhocaDownloadFile::getFolderFromTheFile($data['filename']));
-			
+			$filepath			= JPath::clean($path['orig_abs_ds'] . '/'.$data['filename']);
+			$filepathPAP 		= JPath::clean($path['orig_abs_pap_ds'] . '/'.$data['filename']);
+			$filepathPAPFolder	= JPath::clean($path['orig_abs_pap_ds'] . '/'. PhocaDownloadFile::getFolderFromTheFile($data['filename']));
+
 			if ($canPlay || $canPreview) {
-				
+
 				$uploadPAP = 1;// upload file for preview and play
 				if (JFile::exists($filepathPAP) && $overwriteExistingFiles == 0) {
 					//$errUploadMsg = JText::_("COM_PHOCADOWNLOAD_FILE_ALREADY_EXISTS");
 					//return false;
 					$uploadPAP = 0; // don't upload if it exists, it is not main file, don't do false and exit
-					
+
 					if ($canPlay == 1) {
-						$data['filename_play']		=  $data['filename'];
+						// set new file only no other is set
+						if ($data['filename_play'] != '') {
+							$uploadPAP = 0;
+						} else {
+							$data['filename_play']		=  $data['filename'];
+						}
 					} else if ($canPreview == 1) {
-						$data['filename_preview']	=  $data['filename'];
+						// set new file only no other is set
+						if ($data['filename_preview'] != '') {
+							$uploadPAP = 0;
+						} else {
+							$data['filename_preview']	=  $data['filename'];
+						}
 					}
 				}
-				
+
+
 				// Overwrite file and add no new item to database
 				$fileExistsPAP = 0;
 				if (JFile::exists($filepathPAP) && $overwriteExistingFiles == 1) {
 					$fileExistsPAP = 1;
-					
+
 					if ($canPlay == 1) {
-						$data['filename_play']		=  $data['filename'];
+						// set new file only no other is set or it is the same like currect - to overwrite updated version of the same file
+						if ($data['filename_play'] == '' || $data['filename_play'] == $data['filename']) {
+							$data['filename_play']		=  $data['filename'];
+						} else {
+							$uploadPAP = 0;
+						}
 					} else if ($canPreview == 1) {
-						$data['filename_preview']	=  $data['filename'];
+						// set new file only no other is set or it is the same like currect - to overwrite updated version of the same file
+						if ($data['filename_preview'] == '' || $data['filename_preview'] == $data['filename']) {
+							$data['filename_preview']	=  $data['filename'];
+						} else {
+							$uploadPAP = 0;
+						}
 					}
 				}
-				
+
 				if ($uploadPAP == 0) {
-				
+
 				} else {
 					if (!JFolder::exists($filepathPAPFolder)) {
 						if (JFolder::create($filepathPAPFolder)) {
 							$dataFile = "<html>\n<body bgcolor=\"#FFFFFF\">\n</body>\n</html>";
-							JFile::write($filepathPAPFolder . DS ."index.html", $dataFile);
+							JFile::write($filepathPAPFolder . '/' ."index.html", $dataFile);
 						}
 						// else {
 							//$errUploadMsg = JText::_("COM_PHOCADOWNLOAD_UNABLE_TO_CREATE_FOLDER");
 							//return false;
 						//}
 					}
-				
+
 					if (!JFile::copy($filepath, $filepathPAP)) {
 						//$errUploadMsg = JText::_("COM_PHOCADOWNLOAD_UNABLE_TO_UPLOAD_FILE");
 						//return false;
 					} else {
 
-						
+
 						if ($canPlay == 1) {
 							$data['filename_play']		=  $data['filename'];
 						} else if ($canPreview == 1) {
@@ -261,28 +293,34 @@ class PhocaDownloadCpModelPhocaDownloadFile extends JModelAdmin
 		}
 		// ==============================================
 
-		
+
 		// Bind the data.
 		if (!$table->bind($data)) {
-			$this->setError($table->getError());
+			throw new Exception($table->getError(), 500);
 			return false;
 		}
-		
-		// Date - - - - - 
+
+		// Date - - - - -
 		$nullDate	= $this->_db->getNullDate();
 		$config 	= JFactory::getConfig();
 		$tzoffset 	= $config->get('offset');
 		//$date 		= JFactory::getDate($table->date, $tzoffset);
 		//$table->date 	= $date->toSql();
-		
+
 		// Append time if not added to publish date
 		//if (strlen(trim($table->publish_up)) <= 10) {
 		//	$table->publish_up .= ' 00:00:00';
 		//}
 		//$date = JFactory::getDate($table->publish_up, $tzoffset);
 		//$table->publish_up = $date->toSql();
-		
+
 		if ($table->id) {
+
+			// Test Solution add date when it is removed
+			if (!intval($table->date)) {
+				$date	= JFactory::getDate();
+				$table->date = $date->toSql();
+			}
 
 		} else {
 			if (!intval($table->date)) {
@@ -290,11 +328,11 @@ class PhocaDownloadCpModelPhocaDownloadFile extends JModelAdmin
 				$table->date = $date->toSql();
 			}
 		}
-		
+
 		if(intval($table->publish_up) == 0) {
 			$table->publish_up = JFactory::getDate()->toSql();
 		}
-		
+
 		// Handle never unpublish date
 		if (trim($table->publish_down) == JText::_('Never') || trim( $table->publish_down ) == '') {
 			$table->publish_down = $nullDate;
@@ -307,42 +345,42 @@ class PhocaDownloadCpModelPhocaDownloadFile extends JModelAdmin
 			$table->publish_down = $date->toSql();
 		}
 		// - - - - - -
-		
+
 
 		// if new item, order last in appropriate group
 		if (!$table->id) {
 			$where = 'catid = ' . (int) $table->catid ;
 			$table->ordering = $table->getNextOrder( $where );
 		}
-		
-		
-		
-		
-		
-		
+
+
+
+
+
+
 
 		// Prepare the row for saving
 		$this->prepareTable($table);
 
 		// Check the data.
 		if (!$table->check()) {
-			$this->setError($table->getError());
+			throw new Exception($table->getError(), 500);
 			return false;
 		}
 
 		// Trigger the onContentBeforeSave event.
 		/* $result = $dispatcher->trigger($this->event_before_save, array($this->option.'.'.$this->name, $table, $isNew));
 		if (in_array(false, $result, true)) {
-			$this->setError($table->getError());
+			throw new Exception($table->getError(), 500);
 			return false;
 		} */
 
 		// Store the data.
 		if (!$table->store()) {
-			$this->setError($table->getError());
+			throw new Exception($table->getError(), 500);
 			return false;
 		}
-		
+
 		// Store to ref table
 		if (!isset($data['tags'])) {
 			$data['tags'] = array();
@@ -363,54 +401,54 @@ class PhocaDownloadCpModelPhocaDownloadFile extends JModelAdmin
 			$this->setState($this->getName().'.id', $table->$pkName);
 		}
 		$this->setState($this->getName().'.new', $isNew);
-		
-		
-		
 
-		
+
+
+
+
 		return true;
 	}
-	
-		
+
+
 
 	function delete(&$cid = array()) {
-		
+
 		$result 			= false;
 
 		$paramsC 		= JComponentHelper::getParams('com_phocadownload');
 		$deleteExistingFiles 	= $paramsC->get( 'delete_existing_files', 0 );
-		
+
 		if (count( $cid )) {
-			JArrayHelper::toInteger($cid);
+			\Joomla\Utilities\ArrayHelper::toInteger($cid);
 			$cids = implode( ',', $cid );
-			
-			// - - - - - - - - - - - - - 
+
+			// - - - - - - - - - - - - -
 			// Get all filenames we want to delete from database, we delete all thumbnails from server of this file
 			$queryd = 'SELECT filename as filename FROM #__phocadownload WHERE id IN ( '.$cids.' )';
 			$this->_db->setQuery($queryd);
 			$fileObject = $this->_db->loadObjectList();
-			// - - - - - - - - - - - - - 
+			// - - - - - - - - - - - - -
 
-		
+
 			//Delete it from DB
 			$query = 'DELETE FROM #__phocadownload'
 				. ' WHERE id IN ( '.$cids.' )';
 			$this->_db->setQuery( $query );
-			if(!$this->_db->query()) {
-				$this->setError($this->_db->getErrorMsg);
+			if(!$this->_db->execute()) {
+				throw new Exception($this->_db->getErrorMsg(), 500);
 				return false;
 			}
-			
+
 			//Delete tags from DB
 			$query = 'DELETE FROM #__phocadownload_tags_ref'
 				. ' WHERE fileid IN ( '.$cids.' )';
 			$this->_db->setQuery( $query );
-			if(!$this->_db->query()) {
-				$this->setError($this->_db->getErrorMsg());
+			if(!$this->_db->execute()) {
+				throw new Exception($this->_db->getErrorMsg(), 500);
 				return false;
 			}
 
-			// - - - - - - - - - - - - - - 
+			// - - - - - - - - - - - - - -
 			// DELETE FILES ON SERVER
 			if ($deleteExistingFiles == 1) {
 				$path	= PhocaDownloadPath::getPathSet();
@@ -425,15 +463,15 @@ class PhocaDownloadCpModelPhocaDownloadFile extends JModelAdmin
 					}
 				}
 			}
-			
+
 		}
 		return true;
 	}
-	
+
 	protected function batchCopy($value, $pks, $contexts)
 	{
 		$categoryId	= (int) $value;
-
+		$app	= JFactory::getApplication();
 		$table	= $this->getTable();
 		$db		= $this->getDbo();
 
@@ -443,30 +481,32 @@ class PhocaDownloadCpModelPhocaDownloadFile extends JModelAdmin
 			if (!$categoryTable->load($categoryId)) {
 				if ($error = $categoryTable->getError()) {
 					// Fatal error
-					$this->setError($error);
+					throw new Exception($error, 500);
 					return false;
 				}
 				else {
-					$this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_MOVE_CATEGORY_NOT_FOUND'));
+
+					throw new Exception(JText::_('JLIB_APPLICATION_ERROR_BATCH_MOVE_CATEGORY_NOT_FOUND'), 500);
 					return false;
 				}
 			}
 		}
 
 		if (empty($categoryId)) {
-			$this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_MOVE_CATEGORY_NOT_FOUND'));
+			throw new Exception(JText::_('JLIB_APPLICATION_ERROR_BATCH_MOVE_CATEGORY_NOT_FOUND'), 500);
 			return false;
 		}
 
 		// Check that the user has create permission for the component
-		$extension	= JRequest::getCmd('option');
+		$extension	= JFactory::getApplication()->input->getCmd('option');
 		$user		= JFactory::getUser();
 		if (!$user->authorise('core.create', $extension)) {
-			$this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_CREATE'));
+
+			throw new Exception(JText::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_CREATE'), 500);
 			return false;
 		}
-		
-		$i		= 0;
+
+	//	$i		= 0;
 
 		// Parent exists so we let's proceed
 		while (!empty($pks))
@@ -480,12 +520,12 @@ class PhocaDownloadCpModelPhocaDownloadFile extends JModelAdmin
 			if (!$table->load($pk)) {
 				if ($error = $table->getError()) {
 					// Fatal error
-					$this->setError($error);
+					throw new Exception($error, 500);
 					return false;
 				}
 				else {
 					// Not fatal error
-					$this->setError(JText::sprintf('JLIB_APPLICATION_ERROR_BATCH_MOVE_ROW_NOT_FOUND', $pk));
+					$app->enqueueMessage(JText::sprintf('JLIB_APPLICATION_ERROR_BATCH_MOVE_ROW_NOT_FOUND', $pk), 'error');
 					continue;
 				}
 			}
@@ -500,7 +540,7 @@ class PhocaDownloadCpModelPhocaDownloadFile extends JModelAdmin
 
 			// New category ID
 			$table->catid	= $categoryId;
-			
+
 			// Ordering
 			$table->ordering = $this->increaseOrdering($categoryId);
 
@@ -508,21 +548,21 @@ class PhocaDownloadCpModelPhocaDownloadFile extends JModelAdmin
 
 			// Check the row.
 			if (!$table->check()) {
-				$this->setError($table->getError());
+				throw new Exception($table->getError(), 500);
 				return false;
 			}
 
 			// Store the row.
 			if (!$table->store()) {
-				$this->setError($table->getError());
+				throw new Exception($table->getError(), 500);
 				return false;
 			}
-			
+
 			$newId = $table->get('id');
 
 			// Add the new ID to the array
-			$newIds[$i]	= $newId;
-			$i++;
+			$newIds[$pk]	= $newId;
+			//$i++;
 		}
 
 		// Clean the cache
@@ -544,7 +584,7 @@ class PhocaDownloadCpModelPhocaDownloadFile extends JModelAdmin
 	protected function batchMove($value, $pks, $contexts)
 	{
 		$categoryId	= (int) $value;
-
+		$app = JFactory::getApplication();
 		$table	= $this->getTable();
 		//$db		= $this->getDbo();
 
@@ -554,31 +594,33 @@ class PhocaDownloadCpModelPhocaDownloadFile extends JModelAdmin
 			if (!$categoryTable->load($categoryId)) {
 				if ($error = $categoryTable->getError()) {
 					// Fatal error
-					$this->setError($error);
+					throw new Exception($error, 500);
 					return false;
 				}
 				else {
-					$this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_MOVE_CATEGORY_NOT_FOUND'));
+
+					throw new Exception(JText::_('JLIB_APPLICATION_ERROR_BATCH_MOVE_CATEGORY_NOT_FOUND'), 500);
 					return false;
 				}
 			}
 		}
 
 		if (empty($categoryId)) {
-			$this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_MOVE_CATEGORY_NOT_FOUND'));
+
+			throw new Exception(JText::_('JLIB_APPLICATION_ERROR_BATCH_MOVE_CATEGORY_NOT_FOUND'), 500);
 			return false;
 		}
 
 		// Check that user has create and edit permission for the component
-		$extension	= JRequest::getCmd('option');
+		$extension	= JFactory::getApplication()->input->getCmd('option');
 		$user		= JFactory::getUser();
 		if (!$user->authorise('core.create', $extension)) {
-			$this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_CREATE'));
+			throw new Exception(JText::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_CREATE'), 500);
 			return false;
 		}
 
 		if (!$user->authorise('core.edit', $extension)) {
-			$this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_EDIT'));
+			throw new Exception(JText::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_EDIT'), 500);
 			return false;
 		}
 
@@ -589,12 +631,12 @@ class PhocaDownloadCpModelPhocaDownloadFile extends JModelAdmin
 			if (!$table->load($pk)) {
 				if ($error = $table->getError()) {
 					// Fatal error
-					$this->setError($error);
+					throw new Exception($error, 500);
 					return false;
 				}
 				else {
 					// Not fatal error
-					$this->setError(JText::sprintf('JLIB_APPLICATION_ERROR_BATCH_MOVE_ROW_NOT_FOUND', $pk));
+					$app->enqueueMessage(JText::sprintf('JLIB_APPLICATION_ERROR_BATCH_MOVE_ROW_NOT_FOUND', $pk), 'error');
 					continue;
 				}
 			}
@@ -604,13 +646,13 @@ class PhocaDownloadCpModelPhocaDownloadFile extends JModelAdmin
 
 			// Check the row.
 			if (!$table->check()) {
-				$this->setError($table->getError());
+				throw new Exception($table->getError(), 500);
 				return false;
 			}
 
 			// Store the row.
 			if (!$table->store()) {
-				$this->setError($table->getError());
+				throw new Exception($table->getError(), 500);
 				return false;
 			}
 		}
@@ -620,10 +662,10 @@ class PhocaDownloadCpModelPhocaDownloadFile extends JModelAdmin
 
 		return true;
 	}
-	
-	
+
+
 	public function increaseOrdering($categoryId) {
-		
+
 		$ordering = 1;
 		$this->_db->setQuery('SELECT MAX(ordering) FROM #__phocadownload WHERE catid='.(int)$categoryId);
 		$max = $this->_db->loadResult();
@@ -633,11 +675,11 @@ class PhocaDownloadCpModelPhocaDownloadFile extends JModelAdmin
 	/*
 	function copyQuick($cid) {
 		$table = $this->getTable();
-		
-		
+
+
 		foreach ($cid as $id) {
 			$table->load($id);
-			
+
 			// Find last ordering
 			$this->_db->setQuery('SELECT MAX(ordering) FROM #__phocadownload WHERE catid='.(int)$table->catid);
 			$max = $this->_db->loadResult();
@@ -647,16 +689,16 @@ class PhocaDownloadCpModelPhocaDownloadFile extends JModelAdmin
 			$table->hits	= 0;
 
 			if ( !$table->check() ) {
-				$this->setError($this->_db->getErrorMsg());
+				throw new Exception($this->_db->getErrorMsg(), 500);
 				return false;
 			}
 			if ( !$table->store() ) {
-				$this->setError($this->_db->getErrorMsg());
+				throw new Exception($this->_db->getErrorMsg(), 500);
 				return false;
 			}
 		}
 		return true;
 	}*/
-	
+
 }
 ?>

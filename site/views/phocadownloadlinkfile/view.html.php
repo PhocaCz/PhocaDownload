@@ -10,44 +10,46 @@
  */
 defined('_JEXEC') or die();
 jimport( 'joomla.application.component.view' );
- 
+use Joomla\String\StringHelper;
+
 class PhocaDownloadViewPhocaDownloadLinkFile extends JViewLegacy
 {
-	var $_context 	= 'com_phocadownload.phocadownloadlinkfile';
+	public $_context 	= 'com_phocadownload.phocadownloadlinkfile';
+	protected $t;
 
 	function display($tpl = null) {
 		$app = JFactory::getApplication();
-		$uri		= JFactory::getURI();
+		$uri		= \Joomla\CMS\Uri\Uri::getInstance();
 		$document	= JFactory::getDocument();
 		$db		    = JFactory::getDBO();
 		JHtml::_('behavior.tooltip');
 		JHtml::_('behavior.formvalidation');
 		JHtml::_('behavior.keepalive');
 		JHtml::_('formbehavior.chosen', 'select');
-		
+
 		//Frontend Changes
 		$tUri = '';
-		if (!$app->isAdmin()) {
+		if (!$app->isClient('administrator')) {
 			$tUri = JURI::base();
-			
+
 		}
-		
+
 		JHTML::stylesheet( 'media/com_phocadownload/css/administrator/phocadownload.css' );
-		
+
 		$eName				= $app->input->get('e_name');
 		$this->t['ename']		= preg_replace( '#[^A-Z0-9\-\_\[\]]#i', '', $eName );
 		$this->t['type']		= $app->input->get( 'type', 1, '', 'int' );
 		$this->t['backlink']	= $tUri.'index.php?option=com_phocadownload&amp;view=phocadownloadlinks&amp;tmpl=component&amp;e_name='.$this->t['ename'];
-		
-		
+
+
 		$params = JComponentHelper::getParams('com_phocadownload') ;
 
 		//Filter
 		$context			= 'com_phocadownload.phocadownload.list.';
 		//$sectionid			= $app->input->get( 'sectionid', -1, '', 'int' );
 		//$redirect			= $sectionid;
-		$option				= JRequest::getCmd( 'option' );
-		
+		$option				= JFactory::getApplication()->input->getCmd( 'option' );
+
 		$filter_state		= $app->getUserStateFromRequest( $this->_context.'.filter_state',	'filter_state', '',	'word' );
 		$filter_catid		= $app->getUserStateFromRequest( $this->_context.'.filter_catid',	'filter_catid', 0,	'int' );
 		$catid				= $app->getUserStateFromRequest( $this->_context.'.catid',	'catid', 0,	'int');
@@ -55,23 +57,23 @@ class PhocaDownloadViewPhocaDownloadLinkFile extends JViewLegacy
 		$filter_order		= $app->getUserStateFromRequest( $this->_context.'.filter_order',	'filter_order',		'a.ordering', 'cmd' );
 		$filter_order_Dir	= $app->getUserStateFromRequest( $this->_context.'.filter_order_Dir',	'filter_order_Dir',	'', 'word' );
 		$search				= $app->getUserStateFromRequest( $this->_context.'.search','search', '', 'string' );
-		$search				= JString::strtolower( $search );
+		$search				= StringHelper::strtolower( $search );
 
 		// Get data from the model
 		$items		=  $this->get( 'Data');
 		$total		=  $this->get( 'Total');
 		$pagination =  $this->get( 'Pagination' );
-		
+
 		// build list of categories
-	
+
 		if ($this->t['type'] != 4) {
 			$javascript = 'class="inputbox" size="1" onchange="submitform( );"';
 		} else {
 			$javascript	= '';
 		}
-		// get list of categories for dropdown filter	
+		// get list of categories for dropdown filter
 		$filter = '';
-		
+
 		//if ($filter_sectionid > 0) {
 		//	$filter = ' WHERE cc.section = '.$db->Quote($filter_sectionid);
 		//}
@@ -81,7 +83,7 @@ class PhocaDownloadViewPhocaDownloadLinkFile extends JViewLegacy
 				' FROM #__phocadownload_categories AS cc' .
 				$filter .
 				' ORDER BY cc.ordering';
-				
+
 		if ($this->t['type'] != 4) {
              $lists['catid'] = PhocaDownloadCategory::filterCategory($query, $catid, null, true, true);
         } else {
@@ -93,15 +95,15 @@ class PhocaDownloadViewPhocaDownloadLinkFile extends JViewLegacy
 		} else {
 			$lists['catid'] = PhocaDownloadCategory::filterCategory($query, $catid, null, false);
 		}*/
-		
+
 		// sectionid
 		/*$query = 'SELECT s.title AS text, s.id AS value'
 		. ' FROM #__phocadownload_sections AS s'
 		. ' WHERE s.published = 1'
 		. ' ORDER BY s.ordering';
-		
+
 		$lists['sectionid'] = PhocaDownloadCategory::filterSection($query, $filter_sectionid);*/
-		
+
 		// state filter
 		$lists['state']	= JHTML::_('grid.state',  $filter_state );
 
@@ -111,17 +113,21 @@ class PhocaDownloadViewPhocaDownloadLinkFile extends JViewLegacy
 
 		// search filter
 		$lists['search']= $search;
-		
+
 
 		$user = JFactory::getUser();
 		$uriS = $uri->toString();
-		$this->assignRef('user',		$user);
-		$this->assignRef('lists',		$lists);
-		$this->assignRef('tmpl',		$this->t);
-		$this->assignRef('items',		$items);
-		$this->assignRef('pagination',	$pagination);
-		$this->assignRef('request_url',	$uriS);
-		
+		//$this->assignRef('user',		$user);
+		//$this->assignRef('lists',		$lists);
+        $this->t['lists'] = $lists;
+
+		//$this->assignRef('items',		$items);
+        $this->t['items'] = $items;
+		//$this->assignRef('pagination',	$pagination);
+        $this->t['pagination'] = $pagination;
+		//$this->assignRef('request_url',	$uriS);
+        $this->t['request_url'] = $uriS;
+
 		parent::display($tpl);
 	}
 }

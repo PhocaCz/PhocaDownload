@@ -21,10 +21,10 @@ class PhocaDownloadCpControllerPhocaDownloadFile extends JControllerForm
 		
 		parent::__construct($config);
 		
-		$task = JRequest::getVar('task');
+		$task = JFactory::getApplication()->input->get('task');
 		if ((string)$task == 'addtext') {
-			JRequest::setVar('task','add');
-			JRequest::setVar('layout','edit_text');
+			JFactory::getApplication()->input->set('task','add');
+			JFactory::getApplication()->input->set('layout','edit_text');
 		}
 	}
 	
@@ -51,7 +51,7 @@ class PhocaDownloadCpControllerPhocaDownloadFile extends JControllerForm
 	}
 	
 	public function batch($model =  null) {
-		JRequest::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 
 		// Set the model
 		$model	= $this->getModel('phocadownloadfile', '', array());
@@ -64,7 +64,7 @@ class PhocaDownloadCpControllerPhocaDownloadFile extends JControllerForm
 	
 	/*
 	function copyquick() {
-		$cid	= JRequest::getVar( 'cid', array(0), 'post', 'array' );
+		$cid	= JFactory::getApplication()->input->get( 'cid', array(0), 'post', 'array' );
 		$model	= $this->getModel( 'phocadownloadfile' );
 		if ($model->copyQuick($cid)) {
 			$msg = JText::_( 'COM_PHOCADOWNLOAD_SUCCESS_COPY_FILE' );

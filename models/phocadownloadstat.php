@@ -225,7 +225,7 @@ class PhocaDownloadCpModelPhocaDownloadstat extends JModelList
 			}
 		}
 		
-		//$query->group('a.id');
+		$query->group('a.id, uc.name');
 
 		// Add the list ordering clause.
 		$orderCol	= $this->state->get('list.ordering');

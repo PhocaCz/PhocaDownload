@@ -81,10 +81,10 @@
 
 
 			
-<field name="description" type="editor" buttons="true" hide="pagebreak,readmore" class="inputbox" label="COM_PHOCADOWNLOAD_FIELD_DESCRIPTION_LABEL" filter="safehtml" description="COM_PHOCADOWNLOAD_FIELD_DESCRIPTION_DESC" />
-<field name="features" type="editor" buttons="true" hide="pagebreak,readmore" class="inputbox" label="COM_PHOCADOWNLOAD_FIELD_FEATURES_LABEL" filter="safehtml" description="COM_PHOCADOWNLOAD_FIELD_FEATURES_DESC" />
-<field name="changelog" type="editor" buttons="true" hide="pagebreak,readmore" class="inputbox" label="COM_PHOCADOWNLOAD_FIELD_CHANGELOG_LABEL" filter="safehtml" description="COM_PHOCADOWNLOAD_FIELD_CHANGELOG_DESC" />
-<field name="notes" type="editor" buttons="true" hide="pagebreak,readmore" class="inputbox" label="COM_PHOCADOWNLOAD_FIELD_NOTES_LABEL" filter="safehtml" description="COM_PHOCADOWNLOAD_FIELD_NOTES_DESC" />
+<field name="description" type="editor" buttons="true" hide="pagebreak,readmore" class="inputbox" label="COM_PHOCADOWNLOAD_FIELD_DESCRIPTION_LABEL" filter="JComponentHelper::filterText" description="COM_PHOCADOWNLOAD_FIELD_DESCRIPTION_DESC" />
+<field name="features" type="editor" buttons="true" hide="pagebreak,readmore" class="inputbox" label="COM_PHOCADOWNLOAD_FIELD_FEATURES_LABEL" filter="JComponentHelper::filterText" description="COM_PHOCADOWNLOAD_FIELD_FEATURES_DESC" />
+<field name="changelog" type="editor" buttons="true" hide="pagebreak,readmore" class="inputbox" label="COM_PHOCADOWNLOAD_FIELD_CHANGELOG_LABEL" filter="JComponentHelper::filterText" description="COM_PHOCADOWNLOAD_FIELD_CHANGELOG_DESC" />
+<field name="notes" type="editor" buttons="true" hide="pagebreak,readmore" class="inputbox" label="COM_PHOCADOWNLOAD_FIELD_NOTES_LABEL" filter="JComponentHelper::filterText" description="COM_PHOCADOWNLOAD_FIELD_NOTES_DESC" />
 
 <field name="metakey" type="textarea"
 			label="JField_Meta_Keywords_Label" description="JField_Meta_Keywords_Desc"
@@ -123,6 +123,8 @@
 <field name="hits" type="Text" class="inputbox" size="6" label="COM_PHOCADOWNLOAD_FIELD_DOWNLOADS_LABEL" description="COM_PHOCADOWNLOAD_FIELD_DOWNLOADS_DESC" />
 
 <field name="tags" type="phocatags" multiple="1" label="COM_PHOCADOWNLOAD_FIELD_TAGS_LABEL" description="COM_PHOCADOWNLOAD_FIELD_TAGS_DESC" class="inputbox" size="1" />
+
+<field name="tags_string" type="text" label="COM_PHOCADOWNLOAD_FIELD_TAGS_STRING_LABEL" description="COM_PHOCADOWNLOAD_FIELD_TAGS_STRING_DESC" class="inputbox" size="1" />
 
 <field name="token" type="phocadownloadtoken" label="COM_PHOCADOWNLOAD_FIELD_TOKEN_LABEL"  description="COM_PHOCADOWNLOAD_FIELD_TOKEN_DESC" class="inputbox" size="40" />
 <field name="tokenhits" type="text" label="COM_PHOCADOWNLOAD_FIELD_TOKENHITS_LABEL"  description="COM_PHOCADOWNLOAD_FIELD_TOKENHITS_DESC" class="inputbox" size="40" />

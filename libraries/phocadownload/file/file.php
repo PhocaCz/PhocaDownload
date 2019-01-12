@@ -192,7 +192,8 @@ class PhocaDownloadFile
 			$db = JFactory::getDBO();
 			$query = 'SELECT a.filename as filename, a.type as type'
 				.' FROM #__phocadownload_styles AS a'
-			    .' WHERE a.id = '.(int) $id;
+			    .' WHERE a.id = '.(int) $id
+				.' ORDER BY a.id';
 			$db->setQuery($query, 0, 1);
 			$filename = $db->loadObject();
 			
@@ -211,7 +212,7 @@ class PhocaDownloadFile
 	public static function getFileSize($filename, $readable = 1) {
 		
 		$path			= PhocaDownloadPath::getPathSet();
-		$fileNameAbs	= JPath::clean($path['orig_abs'] . DS . $filename);
+		$fileNameAbs	= JPath::clean($path['orig_abs'] . '/' . $filename);
 		
 		if ($readable == 1) {
 			return self::getFileSizeReadable(filesize($fileNameAbs));
@@ -225,7 +226,7 @@ class PhocaDownloadFile
 	public static function getFileTime($filename, $function, $format = "d. M Y") {
 		
 		$path			= PhocaDownloadPath::getPathSet();
-		$fileNameAbs	= JPath::clean($path['orig_abs'] . DS . $filename);
+		$fileNameAbs	= JPath::clean($path['orig_abs'] . '/' . $filename);
 		if (JFile::exists($fileNameAbs)) {
 			switch($function) {
 				case 2:
@@ -365,7 +366,7 @@ class PhocaDownloadFile
 		$fileExt 	= PhocaDownloadFile::getExtension($fileName);
 		
 		$paramsC	= JComponentHelper::getParams('com_phocadownload');
-		$html5		= $paramsC->get( 'html5_play', 0 );
+		$html5		= $paramsC->get( 'html5_play', 1 );
 		
 		if ($html5 == 1) {
 			switch($fileExt) {

@@ -16,7 +16,7 @@ class PhocaDownloadViewRatingFileA extends JViewLegacy
 
 	function display($tpl = null){
 		
-		if (!JRequest::checkToken('request')) {
+		if (!JSession::checkToken('request')) {
 			$response = array(
 				'status' => '0',
 				'error' => JText::_('JINVALID_TOKEN')
@@ -55,7 +55,7 @@ class PhocaDownloadViewRatingFileA extends JViewLegacy
 		} else if ($task == 'rate') {
 		
 			$user 		= JFactory::getUser();
-			//$view 		= $app->input->get( 'view', '', 'get', '', JREQUEST_NOTRIM  );
+			//$view 		= $app->input->get( 'view', '', 'get', '', J R EQUEST_NOTRIM  );
 			//$Itemid		= $app->input->get( 'Itemid', 0, 'int');
 		
 			$neededAccessLevels	= PhocaDownloadAccess::getNeededAccessLevels();

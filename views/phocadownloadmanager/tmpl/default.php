@@ -1,4 +1,12 @@
-<?php defined('_JEXEC') or die('Restricted access');
+<?php
+/* @package Joomla
+ * @copyright Copyright (C) Open Source Matters. All rights reserved.
+ * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+ * @extension Phoca Extension
+ * @copyright Copyright (C) Jan Pavelka www.phoca.cz
+ * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ */
+ defined('_JEXEC') or die('Restricted access');
 JHtml::_('bootstrap.tooltip');
 JHtml::_('behavior.multiselect');
 JHtml::_('dropdown.init');
@@ -56,7 +64,7 @@ echo '<div id="phocadownloadmanager">';
 
 if ($this->manager == 'filemultiple') {
 	echo $r->startForm($this->t['o'], $this->t['task'], 'adminForm', 'adminForm');
-	echo '<div class="span4 form-horizontal" style="border-right: 1px solid #d3d3d3;padding-right: 5px; margin-right: 5px;">';
+	echo '<div class="span4 form-horizontal" style="border-right: 1px solid #d3d3d3;padding-right: 5px;">';
 	echo '<h4>'. JText::_('COM_PHOCADOWNLOAD_MULTIPLE_ADD').'</h4>';
 	
 	echo '<div>'."\n"; 

@@ -66,7 +66,7 @@ class PhocaDownloadCpModelPhocaDownloadUploads extends JModelList
 		$this->setState('params', $params);
 
 		// List state information.
-		parent::populateState('uc.username', 'asc');
+		parent::populateState('username', 'asc');
 	}
 	
 	protected function getStoreId($id = '')
@@ -115,7 +115,7 @@ class PhocaDownloadCpModelPhocaDownloadUploads extends JModelList
 		$query->select(
 			$this->getState(
 				'list.select',
-				'a.*'
+				'a.id'
 			)
 		);
 		$query->from('#__users AS a');
@@ -125,7 +125,7 @@ class PhocaDownloadCpModelPhocaDownloadUploads extends JModelList
 		//$query->join('LEFT', '#__languages AS l ON l.lang_code = a.language');
 		
 		
-		$query->select('f.id as file_id');
+		$query->select('GROUP_CONCAT(DISTINCT f.id) AS file_id');
 		$query->join('LEFT', '#__phocadownload AS f ON f.owner_id = a.id');
 		
 		$query->select('cc.id as category_id');
@@ -142,7 +142,7 @@ class PhocaDownloadCpModelPhocaDownloadUploads extends JModelList
 		$query->join('LEFT', '#__users AS uc ON uc.id=f.checked_out');
 		
 		$query->select('fa.countfaid');
-		$query->join('LEFT', '(SELECT  fa.owner_id, fa.id, count(*) AS countfaid'
+		$query->join('LEFT', '(SELECT  fa.owner_id, count(*) AS countfaid'
 			. ' FROM #__phocadownload AS fa'
 			. ' WHERE fa.approved = 1'
 			. ' GROUP BY fa.owner_id) AS fa '
@@ -150,7 +150,7 @@ class PhocaDownloadCpModelPhocaDownloadUploads extends JModelList
 			
 			
 		$query->select('fn.countfnid');	
-		$query->join('LEFT', '(SELECT fn.owner_id, fn.id, count(*) AS countfnid'
+		$query->join('LEFT', '(SELECT fn.owner_id, count(*) AS countfnid'
 			. ' FROM #__phocadownload AS fn'
 			. ' WHERE fn.approved = 0'
 			. ' GROUP BY fn.owner_id) AS fn '
@@ -200,17 +200,21 @@ class PhocaDownloadCpModelPhocaDownloadUploads extends JModelList
 			}
 		}
 		
-		$query->group('a.id');
+		$query->group('a.username, ua.id, a.id, a.name, cc.id, ua.username, ua.name, uc.name, fa.countfaid, fn.countfnid');
 
 		// Add the list ordering clause.
-		$orderCol	= $this->state->get('list.ordering');
-		$orderDirn	= $this->state->get('list.direction');
+		//$orderCol	= $this->state->get('list.ordering');
+		//$orderDirn	= $this->state->get('list.direction');
+		$orderCol	= $this->state->get('list.ordering', 'username');
+		$orderDirn	= $this->state->get('list.direction', 'asc');
+		
+	
 		if ($orderCol == 'a.id' || $orderCol == 'username') {
-			$orderCol = 'username '.$orderDirn.', a.id';
+			$orderCol = 'a.username '.$orderDirn.', a.id';
 		}
 		$query->order($db->escape($orderCol.' '.$orderDirn));
 
-		//echo nl2br(str_replace('#__', 'jos_', $query->__toString()));
+	//	echo nl2br(str_replace('#__', 'jos_', $query->__toString()));
 		return $query;
 	}
 }

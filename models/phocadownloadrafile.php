@@ -39,7 +39,7 @@ class PhocaDownloadCpModelPhocaDownloadRaFile extends JModelList
 
 		parent::__construct($config);
 	}
-	
+
 	protected function populateState($ordering = NULL, $direction = NULL)
 	{
 		// Initialise variables.
@@ -68,7 +68,7 @@ class PhocaDownloadCpModelPhocaDownloadRaFile extends JModelList
 		// List state information.
 		parent::populateState('uc.username', 'asc');
 	}
-	
+
 	protected function getStoreId($id = '')
 	{
 		// Compile the store id.
@@ -79,7 +79,7 @@ class PhocaDownloadCpModelPhocaDownloadRaFile extends JModelList
 
 		return parent::getStoreId($id);
 	}
-	
+
 	protected function getListQuery()
 	{
 		/*
@@ -93,7 +93,7 @@ class PhocaDownloadCpModelPhocaDownloadRaFile extends JModelList
 			. ' GROUP by a.id'
 			. $orderby;
 		*/
-		
+
 		// Create a new query object.
 		$db		= $this->getDbo();
 		$query	= $db->getQuery(true);
@@ -114,10 +114,10 @@ class PhocaDownloadCpModelPhocaDownloadRaFile extends JModelList
 		// Join over the users for the checked out user.
 		$query->select('ua.id AS ratinguserid, ua.username AS ratingusername, ua.name AS ratingname');
 		$query->join('LEFT', '#__users AS ua ON ua.id=a.userid');
-		
+
 		$query->select('uc.name AS editor');
 		$query->join('LEFT', '#__users AS uc ON uc.id=a.checked_out');
-		
+
 		$query->select('i.title AS file_title, i.id AS file_id');
 		$query->join('LEFT', '#__phocadownload AS i ON i.id = a.fileid');
 
@@ -162,12 +162,14 @@ class PhocaDownloadCpModelPhocaDownloadRaFile extends JModelList
 				$query->where('( ua.name LIKE '.$search.' OR ua.username LIKE '.$search.')');
 			}
 		}
-		
-		$query->group('a.id');
+
+	//	$query->group('a.id');
 
 		// Add the list ordering clause.
-		$orderCol	= $this->state->get('list.ordering');
-		$orderDirn	= $this->state->get('list.direction');
+		//$orderCol	= $this->state->get('list.ordering');
+		//$orderDirn	= $this->state->get('list.direction');
+		$orderCol	= $this->state->get('list.ordering', 'file_title');
+		$orderDirn	= $this->state->get('list.direction', 'asc');
 		if ($orderCol == 'a.ordering' || $orderCol == 'category_title') {
 			$orderCol = 'category_title '.$orderDirn.', a.ordering';
 		}
@@ -176,39 +178,39 @@ class PhocaDownloadCpModelPhocaDownloadRaFile extends JModelList
 		//echo nl2br(str_replace('#__','jos_',$query));
 		return $query;
 	}
-	
-	
+
+
 	function delete($cid = array()) {
-		
+
 		if (count( $cid )) {
-			JArrayHelper::toInteger($cid);
+			\Joomla\Utilities\ArrayHelper::toInteger($cid);
 			$cids = implode( ',', $cid );
-			
+
 			//Select affected catids
 			$query = 'SELECT v.fileid AS imgid'
 				. ' FROM #__phocadownload_file_votes AS v'
 				. ' WHERE v.id IN ( '.$cids.' )';
 			$images = $this->_getList($query);
-			
+
 			//Delete it from DB
 			$query = 'DELETE FROM #__phocadownload_file_votes'
 				. ' WHERE id IN ( '.$cids.' )';
 			$this->_db->setQuery( $query );
-			if(!$this->_db->query()) {
-				$this->setError($this->_db->getErrorMsg());
+			if(!$this->_db->execute()) {
+				throw new Exception($this->_db->getErrorMsg(), 500);
 				return false;
 			}
-			
+
 			foreach ($images as $valueImgId) {
 				$updated = PhocaDownloadRateHelper::updateVoteStatisticsFile( $valueImgId->imgid );
 				if(!$updated) {
 					return false;
-				}				
+				}
 			}
 		}
 		return true;
 	}
-	
+
 	protected function prepareTable(&$table)
 	{
 		jimport('joomla.filter.output');
@@ -216,10 +218,10 @@ class PhocaDownloadCpModelPhocaDownloadRaFile extends JModelList
 		$user = JFactory::getUser();
 
 		$table->title		= htmlspecialchars_decode($table->title, ENT_QUOTES);
-		$table->alias		= JApplication::stringURLSafe($table->alias);
+		$table->alias		= JApplicationHelper::stringURLSafe($table->alias);
 
 		if (empty($table->alias)) {
-			$table->alias = JApplication::stringURLSafe($table->title);
+			$table->alias = JApplicationHelper::stringURLSafe($table->title);
 		}
 
 		if (empty($table->id)) {
@@ -241,10 +243,10 @@ class PhocaDownloadCpModelPhocaDownloadRaFile extends JModelList
 			//$table->modified_by	= $user->get('id');
 		}
 	}
-	
+
 	public function saveorder($pks, $order) {
 		return true;
 	}
-	
+
 }
 ?>

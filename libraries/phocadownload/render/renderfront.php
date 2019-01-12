@@ -10,7 +10,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class PhocaDownloadRenderFront
 {
-	public static function renderAllCSS() {
+	public static function renderAllCSS($noBootStrap = 0) {
 		$app	= JFactory::getApplication();
 		$itemid	= $app->input->get('Itemid', 0, 'int');
 		$db 	= JFactory::getDBO();
@@ -25,7 +25,8 @@ class PhocaDownloadRenderFront
 				
 				$path = PhocaDownloadFile::getCSSPath($fv->type, 1);
 			
-				if ($fv->menulink != '') {
+				if ($fv->menulink != '' && (int)$fv->menulink > 1) {
+	
 					$menuLinks 	= explode(',', $fv->menulink);
 					$isIncluded	= in_array((int)$itemid, $menuLinks);
 					if ($isIncluded) {
@@ -68,8 +69,10 @@ class PhocaDownloadRenderFront
 			}
 		}
 		
-		if ($displayM == 1 && $link != '' && PhocaDownloadUtils::isURLAddress($link) && $title != '') {
 		
+		
+		if ($displayM == 1 && $link != '' && PhocaDownloadUtils::isURLAddress($link) && $title != '') {
+	
 			$targetO = '';
 			if ($target != '') {
 				$targetO = 'target="'.$target.'"';
@@ -105,12 +108,13 @@ class PhocaDownloadRenderFront
 		if ($displayL == 1 && (int)$param['report_link_guestbook_id'] > 0) {
 		
 			$onclick = "window.open(this.href,'win2','width=600,height=500,scrollbars=yes,menubar=no,resizable=yes'); return false;";
-			//$href	= JRoute::_('index.php?option=com_phocaguestbook&view=guestbook&id='.(int)$param['report_link_guestbook_id'].'&reporttitle='.strip_tags($title).'&tmpl=component&Itemid='. JRequest::getVar('Itemid', 0, '', 'int') );
+			//$href	= JRoute::_('index.php?option=com_phocaguestbook&view=guestbook&id='.(int)$param['report_link_guestbook_id'].'&reporttitle='.strip_tags($title).'&tmpl=component&Itemid='. JFactory::getApplication()->input->get('Itemid', 0, '', 'int') );
+	
+			$href	= PhocaDownloadRoute::getGuestbookRoute((int)$param['report_link_guestbook_id'],urlencode(strip_tags($title) ));	
+			//$href	= JRoute::_('index.php?option=com_phocaguestbook&view=guestbook&id='.(int)$param['report_link_guestbook_id'].'&reporttitle='.strip_tags($title).'&tmpl=component');
 			
-			$href	= JRoute::_('index.php?option=com_phocaguestbook&view=guestbook&id='.(int)$param['report_link_guestbook_id'].'&reporttitle='.strip_tags($title).'&tmpl=component');
 			
-			
-			$o .= '<a href="'.$href.'" onclick="'.$onclick.'">'.JText::_('COM_PHOCADOWNLOAD_REPORT').'</a>';
+			$o .= '<a href="'.$href.'#pgbTabForm" onclick="'.$onclick.'">'.JText::_('COM_PHOCADOWNLOAD_REPORT').'</a>';
 		
 		}
 		
@@ -127,6 +131,7 @@ class PhocaDownloadRenderFront
 		$dateToday 	= time();
 		$dateExists = $dateToday - $dateAdded;
 		$dateNew	= $time * 24 * 60 * 60;
+
 		
 		if ($dateExists < $dateNew) {
 			//return '&nbsp;'. JHTML::_('image', 'media/com_phocadownload/images/icon-new.png', JText::_('COM_PHOCADOWNLOAD_NEW'));
@@ -236,6 +241,77 @@ class PhocaDownloadRenderFront
 		." </style>\n";
 		
 		return $css;
+	}
+	
+	public static function renderBootstrapModalJs($item = '.btn') {
+		$document	= JFactory::getDocument();
+		JHtml::_('jquery.framework', false);
+		$s = '
+		jQuery(document).ready(function(){
+			
+			jQuery("#phModalPlay").on("hidden.bs.modal", function (e) {
+				jQuery("#phModalPlay iframe").attr("src", jQuery("#phModalPlay iframe").attr("src"));
+				jQuery("audio").each(function(){this.pause();this.currentTime = 0;});
+				jQuery("video").each(function(){this.pause();this.currentTime = 0;});
+			});
+			
+			
+			jQuery("'.$item.'").on("click", function () {
+				var $target	= jQuery(this).data("target");
+				var $href 	= jQuery(this).data("href");
+				var $body	= $target + "Body";
+				var $dialog	= $target + "Dialog";
+				var $height	= jQuery(this).data("height");
+				var $width	= jQuery(this).data("width");
+				var $heightD= jQuery(this).data("height-dialog");
+				var $widthD	= jQuery(this).data("width-dialog");
+				var $type	= jQuery(this).data("type");
+				jQuery($body).css("height", $height);
+				jQuery($target).css("width", $width);
+				jQuery($body).css("overflow-y", "auto");
+				jQuery($dialog).css("height", $heightD);
+				jQuery($dialog).css("width", $widthD);
+				
+
+				if ($type == "image") {
+					jQuery($body).html(\'<img class="img-responsive" src="\' + $href + \'" />\');
+				} else if ($type == "document") {
+					$widthD = $widthD -50;
+					$heightD = $heightD -40;
+					jQuery($body).html(\'<object type="application/pdf" data="\' + $href + \'" width="\' + $widthD + \'" height="\' + $heightD + \'" ></object>\');
+				} else {
+					jQuery($body).load($href, function (response, status, xhr) {
+						if (status == "success") {
+							/*jQuery($target).modal({ show: true });*/
+						}
+					});
+				}
+			});
+		});';
+		$document->addScriptDeclaration($s);
+	}
+	
+	/* Launch
+	<a type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#phModalDetail" data-href="..." data-height="500px">..</a>
+	*/
+	
+	public static function bootstrapModalHtml($item = 'phModal', $title) {
+		
+		$close = JText::_('COM_PHOCADOWNLAD_CLOSE');
+		$o = '<div id="'.$item.'" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="'.$item.'Label">
+		  <div class="modal-dialog" role="document" id="'.$item.'Dialog">
+			<div class="modal-content">
+			  <div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="'.$close.'"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="'.$item.'Label">'.$title.'</h4>
+			  </div>
+			  <div class="modal-body" id="'.$item.'Body" ></div>
+			  <div class="modal-footer"></div>
+			</div>
+		  </div>
+		</div>';
+		
+		return $o;
 	}
 }
 ?>

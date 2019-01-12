@@ -69,18 +69,25 @@ class JFormFieldPhocaAccessLevel extends JFormFieldList
 		//PHOCAEDIT
 		$query->where('a.id <> 1');
 		//ENDPHOCAEDIT
-		$query->group('a.id');
+		$query->group('a.id, a.title');
 		$query->order('a.ordering ASC');
 		$query->order('`title` ASC');
 
-		// Get the options.
-		$db->setQuery($query);
-		$options = $db->loadObjectList();
+		
 
 		// Check for a database error.
-		if ($db->getErrorNum()) {
-			JError::raiseWarning(500, $db->getErrorMsg());
-			return null;
+	/*	if ($db->getErrorNum()) {
+			throw new Exception($db->getErrorMsg(), 500);
+			return false;
+		}*/
+		try {
+			// Get the options.
+			$db->setQuery($query);
+			$options = $db->loadObjectList();
+		} catch (RuntimeException $e) {
+			
+			throw new Exception($e->getMessage(), 500);
+			return false;
 		}
 
 		// If params is an array, push these options to the array

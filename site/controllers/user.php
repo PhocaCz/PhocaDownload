@@ -28,7 +28,7 @@ class PhocaDownloadControllerUser extends PhocaDownloadController
 	}
 	/*
 	function display() {
-		if ( ! JRequest::getCmd( 'view' ) ) {
+		if ( ! JFactory::getApplication()->input->getCmd( 'view' ) ) {
 			$this->input->set('view', 'user' );
 		}
 		parent::display();

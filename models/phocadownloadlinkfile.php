@@ -10,6 +10,7 @@
  */
 defined('_JEXEC') or die();
 jimport('joomla.application.component.model');
+use Joomla\String\StringHelper;
 
 class PhocaDownloadCpModelPhocaDownloadLinkFile extends JModelLegacy
 {
@@ -22,7 +23,7 @@ class PhocaDownloadCpModelPhocaDownloadLinkFile extends JModelLegacy
 		parent::__construct();		
 		$app = JFactory::getApplication();
 		// Get the pagination request variables
-		$limit	= $app->getUserStateFromRequest( $this->_context.'.list.limit', 'limit', $app->getCfg('list_limit'), 'int' );
+		$limit	= $app->getUserStateFromRequest( $this->_context.'.list.limit', 'limit', $app->get('list_limit'), 'int' );
 		$limitstart	= $app->getUserStateFromRequest( $this->_context.'.limitstart', 'limitstart',	0, 'int' );
 		// In case limit has been changed, adjust limitstart accordingly
 		$limitstart = ($limit != 0 ? (floor($limitstart / $limit) * $limit) : 0);
@@ -93,7 +94,8 @@ class PhocaDownloadCpModelPhocaDownloadLinkFile extends JModelLegacy
 		$filter_order		= $app->getUserStateFromRequest( $this->_context.'.filter_order',	'filter_order',	'a.ordering',	'cmd' );
 		$filter_order_Dir	= $app->getUserStateFromRequest( $this->_context.'.filter_order_Dir',	'filter_order_Dir',	'',	'word' );
 		$search				= $app->getUserStateFromRequest( $this->_context.'.search','search','','string' );
-		$search				= JString::strtolower( $search );
+		//$search				= J String::strtolower( $search );
+		$search				= StringHelper::strtolower( $search );
 
 		$where = array();
 

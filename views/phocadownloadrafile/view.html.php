@@ -27,7 +27,7 @@ class PhocaDownloadCpViewPhocaDownloadRaFile extends JViewLegacy
 		JHTML::stylesheet( 'media/com_phocadownload/css/administrator/rating.css' );
 		
 		if (count($errors = $this->get('Errors'))) {
-			JError::raiseError(500, implode("\n", $errors));
+			throw new Exception(implode("\n", $errors), 500);
 			return false;
 		}
 		
@@ -39,7 +39,7 @@ class PhocaDownloadCpViewPhocaDownloadRaFile extends JViewLegacy
 	
 		require_once JPATH_COMPONENT.'/helpers/'.$this->t['task'].'.php';
 
-		$bar 		= JToolBar::getInstance('toolbar');
+		$bar 		= JToolbar::getInstance('toolbar');
 		$user		= JFactory::getUser();
 		//$isNew		= ($this->item->id == 0);
 		//$checkedOut	= !($this->item->checked_out == 0 || $this->item->checked_out == $user->get('id'));
@@ -47,13 +47,13 @@ class PhocaDownloadCpViewPhocaDownloadRaFile extends JViewLegacy
 		$canDo		= $class::getActions($this->t, $this->state->get('filter.category_id'));
 	
 	
-		JToolBarHelper::title( JText::_( $this->t['l'].'_FILE_RATING' ), 'star' );
+		JToolbarHelper::title( JText::_( $this->t['l'].'_FILE_RATING' ), 'star' );
 		
 		if ($canDo->get('core.delete')) {
-			JToolBarHelper::deleteList(  JText::_( $this->t['l'].'_WARNING_DELETE_ITEMS' ), $this->t['task'].'.delete', $this->t['l'].'_DELETE');
+			JToolbarHelper::deleteList(  JText::_( $this->t['l'].'_WARNING_DELETE_ITEMS' ), $this->t['task'].'.delete', $this->t['l'].'_DELETE');
 		}
-		JToolBarHelper::divider();
-		JToolBarHelper::help( 'screen.'.$this->t['c'], true );
+		JToolbarHelper::divider();
+		JToolbarHelper::help( 'screen.'.$this->t['c'], true );
 	}
 	
 	protected function getSortFields() {

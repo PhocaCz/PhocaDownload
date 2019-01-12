@@ -16,13 +16,14 @@ class PhocaDownloadFileUpload
 {
 	public static function realMultipleUpload( $frontEnd = 0) {
 		
+		$app 	= JFactory::getApplication();
 		$paramsC 		= JComponentHelper::getParams('com_phocadownload');
 		$chunkMethod 	= $paramsC->get( 'multiple_upload_chunk', 0 );
-		$uploadMethod 	= $paramsC->get( 'multiple_upload_method', 1 );
+		$uploadMethod 	= $paramsC->get( 'multiple_upload_method', 4 );
 		
 		$overwriteExistingFiles 	= $paramsC->get( 'overwrite_existing_files', 0 );
 		
-		JResponse::allowCache(false);
+		$app->allowCache(false);
 		
 		// Chunk Files
 		header('Content-type: text/plain; charset=UTF-8');
@@ -33,7 +34,7 @@ class PhocaDownloadFileUpload
 		header("Pragma: no-cache");
 		
 		// Invalid Token
-		JRequest::checkToken( 'request' ) or jexit(json_encode(array( 'jsonrpc' => '2.0', 'result' => 'error', 'code' => 100,
+		JSession::checkToken( 'request' ) or jexit(json_encode(array( 'jsonrpc' => '2.0', 'result' => 'error', 'code' => 100,
 				'message' => JText::_('COM_PHOCADOWNLOAD_ERROR').': ',
 				'details' => JTEXT::_('COM_PHOCADOWNLOAD_INVALID_TOKEN'))));
 
@@ -41,11 +42,13 @@ class PhocaDownloadFileUpload
 		$ftp = JClientHelper::setCredentialsFromRequest('ftp');
 		
 		
-		$file 			= JRequest::getVar( 'file', '', 'files', 'array' );
-		$chunk 			= JRequest::getVar( 'chunk', 0, '', 'int' );
-		$chunks 		= JRequest::getVar( 'chunks', 0, '', 'int' );
-		$folder			= JRequest::getVar( 'folder', '', '', 'path' );
-		$manager		= JRequest::getVar( 'manager', 'file', '', 'string' );
+		
+		$file			= JFactory::getApplication()->input->files->get( 'file', null, 'raw');
+		//$file 			= JFactory::getApplication()->input->files->get( 'file', null );
+		$chunk 			= JFactory::getApplication()->input->get( 'chunk', 0, '', 'int' );
+		$chunks 		= JFactory::getApplication()->input->get( 'chunks', 0, '', 'int' );
+		$folder			= JFactory::getApplication()->input->get( 'folder', '', '', 'path' );
+		$manager		= JFactory::getApplication()->input->get( 'manager', 'file', '', 'string' );
 		
 		
 		$path	= PhocaDownloadPath::getPathSet($manager);// we use viewback to get right path
@@ -55,7 +58,7 @@ class PhocaDownloadFileUpload
 			$file['name']	= JFile::makeSafe($file['name']);
 		}
 		if (isset($folder) && $folder != '') {
-			$folder	= $folder . DS;
+			$folder	= $folder . '/';
 		}
 		
 		$chunkEnabled = 0;
@@ -64,8 +67,6 @@ class PhocaDownloadFileUpload
 			$chunkEnabled = 1;
 		}
 		
-		
-				
 		
 		if (isset($file['name'])) {
 			
@@ -92,7 +93,7 @@ class PhocaDownloadFileUpload
 				// and we recognize there is one - ok don't upload it BUT the file will be damaged by
 				// parts uploaded by the new file - so this is why we are using temp file in Chunk method
 				$stream 				= JFactory::getStream();// Chunk Files
-				$tempFolder				= 'pdpluploadtmpfolder'.DS;
+				$tempFolder				= 'pdpluploadtmpfolder'.'/';
 				//$filepathImgFinal 		= JPath::clean($path['orig_abs_ds'].$folder.strtolower($file['name']));
 				//$filepathImgTemp 		= JPath::clean($path['orig_abs_ds'].$folder.$tempFolder.strtolower($file['name']));
 				$filepathImgFinal 		= JPath::clean($path['orig_abs_ds'].$folder.$file['name']);
@@ -299,7 +300,8 @@ class PhocaDownloadFileUpload
 				}
 				
 				
-				if(!JFile::upload($file['tmp_name'], $filepathImgFinal)) {
+				if(!JFile::upload($file['tmp_name'], $filepathImgFinal, false, true)) {
+					
 					jexit(json_encode(array( 'jsonrpc' => '2.0', 'result' => 'error', 'code' => 109,
 					'message' => JText::_('COM_PHOCADOWNLOAD_ERROR').': ',
 					'details' => JTEXT::_('COM_PHOCADOWNLOAD_ERROR_UNABLE_TO_UPLOAD_FILE') .'<br />'
@@ -331,27 +333,27 @@ class PhocaDownloadFileUpload
 		
 		$paramsC 		= JComponentHelper::getParams('com_phocadownload');
 	//	$chunkMethod 	= $paramsC->get( 'multiple_upload_chunk', 0 );
-	//	$uploadMethod 	= $paramsC->get( 'multiple_upload_method', 1 );
+	//	$uploadMethod 	= $paramsC->get( 'multiple_upload_method', 4 );
 	
 		$overwriteExistingFiles 	= $paramsC->get( 'overwrite_existing_files', 0 );
 		
 		$app			= JFactory::getApplication();
-		JRequest::checkToken( 'request' ) or jexit( 'ERROR: '. JTEXT::_('COM_PHOCADOWNLOAD_INVALID_TOKEN'));
-		JResponse::allowCache(false);
+		JSession::checkToken( 'request' ) or jexit( 'ERROR: '. JTEXT::_('COM_PHOCADOWNLOAD_INVALID_TOKEN'));
+		$app->allowCache(false);
 		
 		
-		$file 			= JRequest::getVar( 'Filedata', '', 'files', 'array' );
-		$folder			= JRequest::getVar( 'folder', '', '', 'path' );
-		$format			= JRequest::getVar( 'format', 'html', '', 'cmd');
-		$return			= JRequest::getVar( 'return-url', null, 'post', 'base64' );//includes field
-		$viewBack		= JRequest::getVar( 'viewback', '', '', '' );
-		$manager		= JRequest::getVar( 'manager', 'file', '', 'string' );
-		$tab			= JRequest::getVar( 'tab', '', '', 'string' );
-		$field			= JRequest::getVar( 'field' );
+		$file 			= JFactory::getApplication()->input->files->get( 'Filedata', null, 'raw');
+		$folder			= JFactory::getApplication()->input->get( 'folder', '', '', 'path' );
+		$format			= JFactory::getApplication()->input->get( 'format', 'html', '', 'cmd');
+		$return			= JFactory::getApplication()->input->get( 'return-url', null, 'post', 'base64' );//includes field
+		$viewBack		= JFactory::getApplication()->input->get( 'viewback', '', '', '' );
+		$manager		= JFactory::getApplication()->input->get( 'manager', 'file', '', 'string' );
+		$tab			= JFactory::getApplication()->input->get( 'tab', '', '', 'string' );
+		$field			= JFactory::getApplication()->input->get( 'field' );
 		$errUploadMsg	= '';
 		$folderUrl 		= $folder;
 		$tabUrl			= '';
-		$component		= JRequest::getVar( 'option', '', '', 'string' );
+		$component		= JFactory::getApplication()->input->get( 'option', '', '', 'string' );
 		
 		$path	= PhocaDownloadPath::getPathSet($manager);// we use viewback to get right path
 	
@@ -375,7 +377,7 @@ class PhocaDownloadFileUpload
 		
 		
 		if (isset($folder) && $folder != '') {
-			$folder	= $folder . DS;
+			$folder	= $folder . '/';
 		}
 		
 		
@@ -418,12 +420,14 @@ class PhocaDownloadFileUpload
 				}
 			}
 
-			if (!JFile::upload($file['tmp_name'], $filepath)) {
+			if (!JFile::upload($file['tmp_name'], $filepath, false, true)) {
 				if ($return) {
+					
 					$app->enqueueMessage( JText::_('COM_PHOCADOWNLOAD_ERROR_UNABLE_TO_UPLOAD_FILE'), 'error');
 					$app->redirect(base64_decode($return).'&manager='.(string)$manager.'&folder='.$folderUrl);
 					exit;
 				} else {
+					
 					$app->enqueueMessage( JText::_('COM_PHOCADOWNLOAD_ERROR_UNABLE_TO_UPLOAD_FILE'), 'error');
 					$app->redirect($componentUrl);
 					exit;
@@ -446,6 +450,7 @@ class PhocaDownloadFileUpload
 			}
 		} else {
 			$msg = JText::_('COM_PHOCADOWNLOAD_ERROR_UNABLE_TO_UPLOAD_FILE');
+			
 			if ($return) {
 				$app->enqueueMessage( $msg, 'error');
 				$app->redirect(base64_decode($return).'&manager='.(string)$manager.'&folder='.$folderUrl);
@@ -472,6 +477,8 @@ class PhocaDownloadFileUpload
 	public static function canUpload( $file, &$err, $manager = '', $frontEnd = 0, $chunkEnabled = 0, $realSize = 0) {
 		
 		$paramsC 	= JComponentHelper::getParams( 'com_phocadownload' );
+		
+		$enable_xss_check = $paramsC->get( 'enable_xss_check', 1);
 		
 		if ($frontEnd == 1) {
 			$aft = $paramsC->get( 'allowed_file_types_upload', PhocaDownloadSettings::getDefaultAllowedMimeTypesUpload() );
@@ -639,12 +646,14 @@ class PhocaDownloadFileUpload
 		}
 			
 		// XSS Check
-		$xss_check =  JFile::read($file['tmp_name'],false,256);
-		$html_tags = PhocaDownloadSettings::getHTMLTagsUpload();
-		foreach($html_tags as $tag) { // A tag is '<tagname ', so we need to add < and a space or '<tagname>'
-			if(stristr($xss_check, '<'.$tag.' ') || stristr($xss_check, '<'.$tag.'>')) {
-				$err = 'COM_PHOCADOWNLOAD_WARNIEXSS';
-				return false;
+		if ((int)$enable_xss_check == 3 || ((int)$enable_xss_check == 1 && $frontEnd > 0) || ((int)$enable_xss_check == 2 && $frontEnd == 0)) {
+			$xss_check =  JFile::read($file['tmp_name'],false,256);
+			$html_tags = PhocaDownloadSettings::getHTMLTagsUpload();
+			foreach($html_tags as $tag) { // A tag is '<tagname ', so we need to add < and a space or '<tagname>'
+				if(stristr($xss_check, '<'.$tag.' ') || stristr($xss_check, '<'.$tag.'>')) {
+					$err = 'COM_PHOCADOWNLOAD_WARNIEXSS';
+					return false;
+				}
 			}
 		}
 		

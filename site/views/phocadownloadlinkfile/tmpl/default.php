@@ -1,9 +1,16 @@
 <?php
+/* @package Joomla
+ * @copyright Copyright (C) Open Source Matters. All rights reserved.
+ * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+ * @extension Phoca Extension
+ * @copyright Copyright (C) Jan Pavelka www.phoca.cz
+ * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ */
 defined('_JEXEC') or die('Restricted access');
 $user 	= JFactory::getUser();
 
 //Ordering allowed ?
-$ordering = ($this->lists['order'] == 'a.ordering');
+$ordering = ($this->t['lists']['order'] == 'a.ordering');
 
 JHTML::_('behavior.tooltip');
 
@@ -55,7 +62,7 @@ function insertLink() {
 	if (previewheight != '') {
 		previewheight = "|previewheight="+previewheight;
 	}
-	
+
 	<?php } else if ($this->t['type'] == 4) { ?>
 	var limit = document.getElementById("limit").value;
 	if (limit != '') {
@@ -67,9 +74,9 @@ function insertLink() {
 	} else {
 		categoryIdOutput = '';
 	}
-	
+
 	<?php } ?>
-	
+
 	var fileIdOutput;
 	fileIdOutput = '';
 	len = document.getElementsByName("fileid").length;
@@ -83,7 +90,7 @@ function insertLink() {
 			}
 		}
 	}
-	
+
 	if (fileIdOutput != '' &&  parseInt(fileid) > 0) {
 		<?php if ($this->t['type'] == 0) { ?>
 			var tag = "{phocadownload view=<?php echo $view ?>"+fileIdOutput+title+target+"}";
@@ -123,7 +130,7 @@ function insertLink() {
 <fieldset class="adminform">
 
 <legend><?php echo JText::_( 'COM_PHOCADOWNLOAD_FILE' ); ?></legend>
-<form action="<?php echo htmlspecialchars($this->request_url); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo htmlspecialchars($this->t['request_url']); ?>" method="post" name="adminForm" id="adminForm">
 		<?php if ($this->t['type'] != 4) { ?>
 		<table class="admintable" width="100%">
 		<tr>
@@ -133,14 +140,14 @@ function insertLink() {
 				</label>
 			</td>
 			<td width="80%">
-				<div class="input-append"><input type="text" name="search" id="search" value="<?php echo $this->lists['search'];?>" class="text_area" onchange="document.adminForm.submit();" /> <button class="btn" onclick="this.form.submit();"><?php echo JText::_('COM_PHOCADOWNLOAD_FILTER'); ?></button> <button class="btn" onclick="document.getElementById('search').value='';this.form.submit();"><?php echo JText::_('COM_PHOCADOWNLOAD_RESET'); ?></button></div>
+				<div class="input-append"><input type="text" name="search" id="search" value="<?php echo $this->t['lists']['search'];?>" class="text_area" onchange="document.adminForm.submit();" /> <button class="btn" onclick="this.form.submit();"><?php echo JText::_('COM_PHOCADOWNLOAD_FILTER'); ?></button> <button class="btn" onclick="document.getElementById('search').value='';this.form.submit();"><?php echo JText::_('COM_PHOCADOWNLOAD_RESET'); ?></button></div>
 			</td>
 		</tr>
 		<tr>
 			<td class="key" align="right" nowrap="nowrap">
 			<label for="title" nowrap="nowrap"><?php echo JText::_( 'COM_PHOCADOWNLOAD_CATEGORY' ); ?></label>
 			</td>
-			<td><?php echo $this->lists['catid']; ?></td>
+			<td><?php echo $this->t['lists']['catid']; ?></td>
 		</tr>
 		</table>
 		<?php } ?>
@@ -152,32 +159,32 @@ function insertLink() {
 				<tr>
 					<th width="5%"><?php echo JText::_( 'COM_PHOCADOWNLOAD_NUM' ); ?></th>
 					<th width="5%"></th>
-					<th class="title" width="60%"><?php echo JHTML::_('grid.sort',  'COM_PHOCADOWNLOAD_TITLE', 'a.title', $this->lists['order_Dir'], $this->lists['order'] ); ?>
+					<th class="title" width="60%"><?php echo JHTML::_('grid.sort',  'COM_PHOCADOWNLOAD_TITLE', 'a.title', $this->t['lists']['order_Dir'], $this->t['lists']['order'] ); ?>
 					</th>
-					<th width="20%" nowrap="nowrap"><?php echo JHTML::_('grid.sort',  'COM_PHOCADOWNLOAD_FILENAME', 'a.filename', $this->lists['order_Dir'], $this->lists['order'] ); ?>
+					<th width="20%" nowrap="nowrap"><?php echo JHTML::_('grid.sort',  'COM_PHOCADOWNLOAD_FILENAME', 'a.filename', $this->t['lists']['order_Dir'], $this->t['lists']['order'] ); ?>
 					</th>
-					<th width="10%" nowrap="nowrap"><?php echo JHTML::_('grid.sort',  'COM_PHOCADOWNLOAD_ID', 'a.id', $this->lists['order_Dir'], $this->lists['order'] ); ?>
+					<th width="10%" nowrap="nowrap"><?php echo JHTML::_('grid.sort',  'COM_PHOCADOWNLOAD_ID', 'a.id', $this->t['lists']['order_Dir'], $this->t['lists']['order'] ); ?>
 					</th>
 				</tr>
 			</thead>
 			<tfoot>
 				<tr>
-					<td colspan="12"><?php echo $this->pagination->getListFooter(); ?></td>
+					<td colspan="12"><?php echo $this->t['pagination']->getListFooter(); ?></td>
 				</tr>
 			</tfoot>
 			<tbody>
 				<?php
 				$k = 0;
-				for ($i=0, $n=count( $this->items ); $i < $n; $i++) {
-					$row = &$this->items[$i];
-					
-					
-					
+				for ($i=0, $n=count( $this->t['items'] ); $i < $n; $i++) {
+					$row = &$this->t['items'][$i];
+
+
+
 				?>
 				<tr class="<?php echo "row$k"; ?>">
-					<td><?php echo $this->pagination->getRowOffset( $i ); ?></td>
+					<td><?php echo $this->t['pagination']->getRowOffset( $i ); ?></td>
 					<td><input type="radio" name="fileid" value="<?php echo $row->id ?>" /></td>
-					
+
 					<td><?php echo $row->title; ?></td>
 					<td><?php echo $row->filename;?></td>
 					<td align="center"><?php echo $row->id; ?></td>
@@ -190,18 +197,18 @@ function insertLink() {
 		</table>
 	</div>
 	<?php } ?>
-	
+
 <input type="hidden" name="controller" value="phocadownloadlinkfile" />
 <input type="hidden" name="type" value="<?php echo $this->t['type']; ?>" />
 <input type="hidden" name="task" value="" />
 <input type="hidden" name="boxchecked" value="0" />
-<input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
-<input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['order_Dir']; ?>" />
+<input type="hidden" name="filter_order" value="<?php echo $this->t['lists']['order']; ?>" />
+<input type="hidden" name="filter_order_Dir" value="<?php echo $this->t['lists']['order_Dir']; ?>" />
 <input type="hidden" name="e_name" value="<?php echo $this->t['ename']?>" />
 </form>
 
 
-<?php 
+<?php
 
 if ($this->t['type'] == 0) {
 ?>
@@ -232,7 +239,7 @@ if ($this->t['type'] == 0) {
 			</select>
 		</td>
 	</tr>
-	
+
 	<tr>
 		<td>&nbsp;</td>
 		<td align="right"><button  class="btn btn-primary plg-button-insert " onclick="insertLink();return false;"><span class="icon-ok"></span> <?php echo JText::_( 'COM_PHOCADOWNLOAD_INSERT_CODE' ); ?></button></td>
@@ -243,10 +250,10 @@ if ($this->t['type'] == 0) {
 	<?php
 } else if ($this->t['type'] == 1 || $this->t['type'] == 2){
 	?>
-	
+
 <form name="adminFormLink" id="adminFormLink">
 <table class="admintable" width="100%">
-	
+
 	<?php if ($this->t['type'] == 1) { ?>
 	<tr >
 		<td class="key" align="right">
@@ -261,7 +268,7 @@ if ($this->t['type'] == 0) {
 	<?php } else { ?>
 		<input type="hidden" id="title" name="title" />
 	<?php }	?>
-	
+
 	<tr >
 		<td class="key" align="right">
 			<label for="playerwidth">
@@ -272,7 +279,7 @@ if ($this->t['type'] == 0) {
 			<input type="text" id="playerwidth" name="playerwidth" value="328" />
 		</td>
 	</tr>
-	
+
 	<tr >
 		<td class="key" align="right">
 			<label for="playerheight">
@@ -283,7 +290,7 @@ if ($this->t['type'] == 0) {
 			<input type="text" id="playerheight" name="playerheight" value="200" />
 		</td>
 	</tr>
-	
+
 	<tr >
 		<td class="key" align="right">
 			<label for="playerheightmp3">
@@ -302,15 +309,15 @@ if ($this->t['type'] == 0) {
 		<td align="right"><button class="btn btn-primary plg-button-insert " onclick="insertLink();return false;"><span class="icon-ok"></span> <?php echo JText::_( 'COM_PHOCADOWNLOAD_INSERT_CODE' ); ?></button></td>
 	</tr>
 </table>
-</form>	
-	
+</form>
+
 	<?php
 } else if ($this->t['type'] == 3){
 	?>
-	
+
 <form name="adminFormLink" id="adminFormLink">
 <table class="admintable" width="100%">
-	
+
 	<?php if ($this->t['type'] == 1) { ?>
 	<tr >
 		<td class="key" align="right">
@@ -325,7 +332,7 @@ if ($this->t['type'] == 0) {
 	<?php } else { ?>
 		<input type="hidden" id="title" name="title" />
 	<?php }	?>
-	
+
 	<tr >
 		<td class="key" align="right">
 			<label for="previewwidth">
@@ -336,7 +343,7 @@ if ($this->t['type'] == 0) {
 			<input type="text" id="previewwidth" name="previewwidth" value="640" />
 		</td>
 	</tr>
-	
+
 	<tr >
 		<td class="key" align="right">
 			<label for="previewheight">
@@ -347,26 +354,26 @@ if ($this->t['type'] == 0) {
 			<input type="text" id="previewheight" name="previewheight" value="480" />
 		</td>
 	</tr>
-	
+
 	<tr>
 		<td>&nbsp;</td>
 		<td align="right"><button class="btn btn-primary plg-button-insert " onclick="insertLink();return false;"><span class="icon-ok"></span> <?php echo JText::_( 'COM_PHOCADOWNLOAD_INSERT_CODE' ); ?></button></td>
 	</tr>
 </table>
-</form>	
-	
+</form>
+
 	<?php
 } else if ($this->t['type'] == 4){
 	?>
-	
+
 <form name="adminFormLink" id="adminFormLink">
 <table class="admintable" width="100%">
-	
+
 	<tr>
 		<td class="key" align="right" nowrap="nowrap">
 		<label for="title" nowrap="nowrap"><?php echo JText::_( 'COM_PHOCADOWNLOAD_CATEGORY' ); ?></label>
 		</td>
-		<td><?php echo $this->lists['catid']; ?></td>
+		<td><?php echo $this->t['lists']['catid']; ?></td>
 	</tr>
 	<tr >
 		<td class="key" align="right">
@@ -380,19 +387,19 @@ if ($this->t['type'] == 0) {
 		</td>
 	</tr>
 
-	
-	
-	
+
+
+
 	<tr>
 		<td>&nbsp;</td>
 		<td align="right"><button class="btn btn-primary plg-button-insert " onclick="insertLink();return false;"><span class="icon-ok"></span> <?php echo JText::_( 'COM_PHOCADOWNLOAD_INSERT_CODE' ); ?></button></td>
 	</tr>
 </table>
-</form>	
-	
+</form>
+
 	<?php
 }
 	?>
 </fieldset>
-<div style="text-align:left;"><span class="icon-16-edb-back"><a style="text-decoration:underline" href="<?php echo $this->tmpl['backlink'];?>"><?php echo JText::_('COM_PHOCADOWNLOAD_BACK')?></a></span></div>
+<div style="text-align:left;"><span class="icon-16-edb-back"><a style="text-decoration:underline" href="<?php echo $this->t['backlink'];?>"><?php echo JText::_('COM_PHOCADOWNLOAD_BACK')?></a></span></div>
 </div>

@@ -26,7 +26,7 @@ class PhocaDownloadCpViewPhocaDownloadManager extends JViewLegacy
 	public function display($tpl = null) {
 		
 		$this->t		= PhocaDownloadUtils::setVars('manager');
-		$this->field	= JRequest::getVar('field');
+		$this->field	= JFactory::getApplication()->input->get('field');
 		$this->fce 		= 'phocaSelectFileName_'.$this->field;
 		
 		JHTML::stylesheet( $this->t['s'] );
@@ -36,7 +36,7 @@ class PhocaDownloadCpViewPhocaDownloadManager extends JViewLegacy
 		$this->files		= $this->get('Files');
 		$this->folders		= $this->get('Folders');
 		$this->session		= JFactory::getSession();
-		$this->manager 		= JRequest::getVar( 'manager', '', '', 'file' );
+		$this->manager 		= JFactory::getApplication()->input->get( 'manager', '', '', 'file' );
 		
 		if ($this->manager == 'filemultiple') {
 			$this->form			= $this->get('Form');
@@ -47,8 +47,8 @@ class PhocaDownloadCpViewPhocaDownloadManager extends JViewLegacy
 		$this->t['multipleuploadchunk']	= $params->get( 'multiple_upload_chunk', 0 );
 		$this->t['uploadmaxsize'] 		= $params->get( 'upload_maxsize', 3145728 );
 		$this->t['uploadmaxsizeread'] 	= PhocaDownloadFile::getFileSizeReadable($this->t['uploadmaxsize']);
-		$this->t['enablemultiple'] 		= $params->get( 'enable_multiple_upload_admin', 0 );
-		$this->t['multipleuploadmethod'] = $params->get( 'multiple_upload_method', 1 );
+		$this->t['enablemultiple'] 		= $params->get( 'enable_multiple_upload_admin', 1 );
+		$this->t['multipleuploadmethod'] = $params->get( 'multiple_upload_method', 4 );
 
 		$this->currentFolder = '';
 		if (isset($this->folderstate->folder) && $this->folderstate->folder != '') {
@@ -58,7 +58,7 @@ class PhocaDownloadCpViewPhocaDownloadManager extends JViewLegacy
 		// - - - - - - - - - -
 		//TABS
 		// - - - - - - - - - - 
-		$this->t['tab'] 			= JRequest::getVar('tab', '', '', 'string');
+		$this->t['tab'] 			= JFactory::getApplication()->input->get('tab', '', '', 'string');
 		$this->t['displaytabs']	= 0;
 		
 		// UPLOAD
@@ -90,8 +90,8 @@ class PhocaDownloadCpViewPhocaDownloadManager extends JViewLegacy
 		// Multiple Upload
 		// - - - - - - - - - - -
 		// Get infos from multiple upload
-		$muFailed						= JRequest::getVar( 'mufailed', '0', '', 'int' );
-		$muUploaded						= JRequest::getVar( 'muuploaded', '0', '', 'int' );
+		$muFailed						= JFactory::getApplication()->input->get( 'mufailed', '0', '', 'int' );
+		$muUploaded						= JFactory::getApplication()->input->get( 'muuploaded', '0', '', 'int' );
 		$this->t['mu_response_msg']	= $muUploadedMsg 	= '';
 		
 		if ($muUploaded > 0) {
@@ -165,21 +165,21 @@ class PhocaDownloadCpViewPhocaDownloadManager extends JViewLegacy
 	
 	protected function addToolbar() {
 	
-		JRequest::setVar('hidemainmenu', true);
+		JFactory::getApplication()->input->set('hidemainmenu', true);
 		require_once JPATH_COMPONENT.'/helpers/'.$this->t['task'].'.php';
 		$state	= $this->get('State');
 		$class	= ucfirst($this->t['task']).'Helper';
 		$canDo	= $class::getActions($this->t, $state->get('filter.multiple'));
 		
-		JToolBarHelper::title( JText::_( $this->t['l'].'_MULTIPLE_ADD' ), 'plus' );
+		JToolbarHelper::title( JText::_( $this->t['l'].'_MULTIPLE_ADD' ), 'plus' );
 
 		if ($canDo->get('core.create')){
-			JToolBarHelper::save($this->t['c'].'m.save', 'JTOOLBAR_SAVE');
+			JToolbarHelper::save($this->t['c'].'m.save', 'JTOOLBAR_SAVE');
 		}
 		
-		JToolBarHelper::cancel($this->t['c'].'m.cancel', 'JTOOLBAR_CLOSE');
-		JToolBarHelper::divider();
-		JToolBarHelper::help( 'screen.'.$this->t['c'], true );
+		JToolbarHelper::cancel($this->t['c'].'m.cancel', 'JTOOLBAR_CLOSE');
+		JToolbarHelper::divider();
+		JToolbarHelper::help( 'screen.'.$this->t['c'], true );
 	}
 }
 ?>

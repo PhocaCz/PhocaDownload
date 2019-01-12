@@ -30,7 +30,7 @@ class PhocaDownloadCpViewPhocaDownloadUploads extends JViewLegacy
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) {
-			JError::raiseError(500, implode("\n", $errors));
+			throw new Exception(implode("\n", $errors), 500);
 			return false;
 		}
 		
@@ -46,21 +46,21 @@ class PhocaDownloadCpViewPhocaDownloadUploads extends JViewLegacy
 		$class	= ucfirst($this->t['tasks']).'Helper';
 		$canDo	= $class::getActions($this->t);
 
-		JToolBarHelper::title( JText::_( $this->t['l'].'_UPLOADS' ), 'upload' );
+		JToolbarHelper::title( JText::_( $this->t['l'].'_UPLOADS' ), 'upload' );
 
 		if ($canDo->get('core.admin')) {
 			
-			$bar = JToolBar::getInstance('toolbar');
+			$bar = JToolbar::getInstance('toolbar');
 
 			$dhtml = '<button class="btn btn-small" onclick="javascript:if(confirm(\''.addslashes(JText::_('COM_PHOCADOWNLOAD_WARNING_AUTHORIZE_ALL')).'\')){submitbutton(\'phocadownloaduploads.approveall\');}" ><i class="icon-approve" title="'.JText::_('COM_PHOCADOWNLOAD_APPROVE_ALL').'"></i> '.JText::_('COM_PHOCADOWNLOAD_APPROVE_ALL').'</button>';
 			$bar->appendButton('Custom', $dhtml);
 		
 
-			JToolBarHelper::divider();
+			JToolbarHelper::divider();
 		}
 	
 		
-		JToolBarHelper::help( 'screen.'.$this->t['c'], true );
+		JToolbarHelper::help( 'screen.'.$this->t['c'], true );
 	}
 	
 	protected function getSortFields() {

@@ -11,6 +11,9 @@ jimport( 'joomla.application.component.view' );
  
 class phocaDownloadCpViewphocaDownloadLinks extends JViewLegacy
 {
+	
+	protected $t;
+	
 	function display($tpl = null) {
 		$app	= JFactory::getApplication();
 		JHtml::_('behavior.tooltip');
@@ -20,25 +23,25 @@ class phocaDownloadCpViewphocaDownloadLinks extends JViewLegacy
 		
 		//Frontend Changes
 		$tUri = '';
-		if (!$app->isAdmin()) {
+		if (!$app->isClient('administrator')) {
 			$tUri = JURI::base();
 			
 		}
 		
 		$document	= JFactory::getDocument();
-		$uri		= JFactory::getURI();
+		$uri		= \Joomla\CMS\Uri\Uri::getInstance();
 		JHTML::stylesheet( 'media/com_phocadownload/css/administrator/phocadownload.css' );
 		
-		$eName	= JRequest::getVar('e_name');
+		$eName	= JFactory::getApplication()->input->get('e_name');
 		$eName	= preg_replace( '#[^A-Z0-9\-\_\[\]]#i', '', $eName );
 		
 		
-		$tmpl['linkcategories']	= $tUri.'index.php?option=com_phocadownload&amp;view=phocadownloadlinkcats&amp;tmpl=component&amp;e_name='.$eName;
-		$tmpl['linkcategory']	= $tUri.'index.php?option=com_phocadownload&amp;view=phocadownloadlinkcat&amp;tmpl=component&amp;e_name='.$eName;
-		$tmpl['linkfile']		= $tUri.'index.php?option=com_phocadownload&amp;view=phocadownloadlinkfile&amp;tmpl=component&amp;e_name='.$eName;
-		$tmpl['linkytb']		= $tUri.'index.php?option=com_phocadownload&amp;view=phocadownloadlinkytb&amp;tmpl=component&amp;e_name='.$eName;
+		$this->t['linkcategories']	= $tUri.'index.php?option=com_phocadownload&amp;view=phocadownloadlinkcats&amp;tmpl=component&amp;e_name='.$eName;
+		$this->t['linkcategory']	= $tUri.'index.php?option=com_phocadownload&amp;view=phocadownloadlinkcat&amp;tmpl=component&amp;e_name='.$eName;
+		$this->t['linkfile']		= $tUri.'index.php?option=com_phocadownload&amp;view=phocadownloadlinkfile&amp;tmpl=component&amp;e_name='.$eName;
+		$this->t['linkytb']		= $tUri.'index.php?option=com_phocadownload&amp;view=phocadownloadlinkytb&amp;tmpl=component&amp;e_name='.$eName;
 		
-		$this->assignRef('tmpl',	$tmpl);
+		
 		parent::display($tpl);
 	}
 }

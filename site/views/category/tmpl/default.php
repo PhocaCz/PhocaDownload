@@ -1,4 +1,11 @@
 <?php
+/* @package Joomla
+ * @copyright Copyright (C) Open Source Matters. All rights reserved.
+ * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+ * @extension Phoca Extension
+ * @copyright Copyright (C) Jan Pavelka www.phoca.cz
+ * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ */
 defined('_JEXEC') or die('Restricted access'); 
 
 echo '<div id="phoca-dl-category-box" class="pd-category-view'.$this->t['p']->get( 'pageclass_sfx' ).'">';
@@ -95,13 +102,13 @@ if ((int)$this->t['tagid'] > 0) {
 			// END LAYOUT AREA
 			// =====================================================================================
 			
-			if (count($this->category[0])) {
+			if (count($this->category)) {
 				echo $this->loadTemplate('pagination');
 			}
 			
 			if ($this->t['display_category_comments'] == 1) {
 				if (JComponentHelper::isEnabled('com_jcomments', true)) {
-					include_once(JPATH_BASE.DS.'components'.DS.'com_jcomments'.DS.'jcomments.php');
+					include_once(JPATH_BASE.'/components/com_jcomments/jcomments.php');
 					echo JComments::showComments($this->category[0]->id, 'com_phocadownload', JText::_('COM_PHOCADOWNLOAD_CATEGORY') .' '. $this->category[0]->title);
 				}
 			}
@@ -122,5 +129,5 @@ if ((int)$this->t['tagid'] > 0) {
 	}
 }
 echo '</div><div class="pd-cb">&nbsp;</div>';
-echo $this->t['dg'];
+echo $this->t['afd'];
 ?>

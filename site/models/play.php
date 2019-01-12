@@ -102,9 +102,9 @@ class PhocaDownloadModelPlay extends JModelLegacy
 		if ($pQ == 1) {
 			// GWE MOD - to allow for access restrictions
 			JPluginHelper::importPlugin("phoca");
-			$dispatcher	   =& JDispatcher::getInstance();
+			//$dispatcher = JEventDispatcher::getInstance();
 			$joins = array();
-			$results = $dispatcher->trigger('onGetFile', array (&$wheres, &$joins, $fileId,  $params));	
+			$results = \JFactory::getApplication()->triggerEvent('onGetFile', array (&$wheres, &$joins, $fileId,  $params));	
 			// END GWE MOD
 		}
 		
@@ -150,9 +150,9 @@ class PhocaDownloadModelPlay extends JModelLegacy
 		if ($pQ == 1) {
 			// GWE MOD - to allow for access restrictions
 			JPluginHelper::importPlugin("phoca");
-			$dispatcher	   =& JDispatcher::getInstance();
+			//$dispatcher = JEventDispatcher::getInstance();
 			$joins = array();
-			$results = $dispatcher->trigger('onGetCategory',  array (&$wheres, &$joins,$categoryId,  $params));		
+			$results = \JFactory::getApplication()->triggerEvent('onGetCategory',  array (&$wheres, &$joins,$categoryId,  $params));		
 			// END GWE MOD
 		}
 		

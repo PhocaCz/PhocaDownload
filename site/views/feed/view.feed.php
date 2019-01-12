@@ -16,7 +16,7 @@ class PhocaDownloadViewFeed extends JViewLegacy
 {
 
 	function display($tpl = null)
-	{	
+	{
 		$app		= JFactory::getApplication();
 		$user 		= JFactory::getUser();
 		$userLevels	= implode (',', $user->getAuthorisedViewLevels());
@@ -26,8 +26,8 @@ class PhocaDownloadViewFeed extends JViewLegacy
 		$params 	= $app->getParams();
 		$moduleId	= $app->input->get('id', 0, 'int');
 		$table 		= &JTable::getInstance('module');
-		
-		
+
+
 		if ((int)$moduleId > 0) {
 			$db = JFactory::getDBO();
 			$query = 'SELECT a.params'
@@ -35,19 +35,19 @@ class PhocaDownloadViewFeed extends JViewLegacy
 					. ' WHERE a.published = 1'
 					. ' AND a.id ='.(int)$moduleId
 					. ' ORDER BY a.ordering';
-						
+
 			$db->setQuery( $query );
-			if (!$db->query()) {
-				$this->setError($db->getErrorMsg());
+			/*if (!$db->query()) {
+				throw new Exception($db->getErrorMsg(), 500);
 				return false;
-			}
+			}*/
 			$module = $db->loadObject();
 			if (isset($module->params) && $module->params != '') {
 				jimport( 'joomla.html.parameter' );
 				$paramsM = new JRegistry;
 				$paramsM->loadString($module->params);
 				//$paramsM->loadJSON($module->params);
-				
+
 				// Params
 				$categories 		= $paramsM->get( 'category_ids', '' );
 				$ordering			= $paramsM->get( 'file_ordering', 6 );
@@ -56,10 +56,10 @@ class PhocaDownloadViewFeed extends JViewLegacy
 				$displayDateType	= $paramsM->get( 'display_date_type', 1 );
 
 				$document->setTitle($this->escape( html_entity_decode($feedTitle)));
-				
+
 				$wheres = array();
 				if (is_array($categories) && count($categories) > 0) {
-					JArrayHelper::toInteger($categories);
+					\Joomla\Utilities\ArrayHelper::toInteger($categories);
 					$categoriesString	= implode(',', $categories);
 					$wheres[]	= ' c.catid IN ( '.$categoriesString.' ) ';
 				} else if ((int)$categories > 0) {
@@ -85,15 +85,15 @@ class PhocaDownloadViewFeed extends JViewLegacy
 						. ' FROM #__phocadownload AS c'
 						. ' LEFT JOIN #__phocadownload_categories AS cc ON cc.id = c.catid'
 						. ' WHERE ' . implode( ' AND ', $wheres )
-						. ' ORDER BY c.'.$fileOrdering;
-						
+						. ' ORDER BY '.$fileOrdering;
 
 
-				$db->setQuery( $query , 0, $fileCount );	
+
+				$db->setQuery( $query , 0, $fileCount );
 				$files = $db->loadObjectList( );
 
 				foreach ($files as $keyDoc => $valueDoc) {
-					
+
 					// USER RIGHT - Access of categories (if file is included in some not accessed category) - - - - -
 					// ACCESS is handled in SQL query, ACCESS USER ID is handled here (specific users)
 					$rightDisplay	= 0;
@@ -103,17 +103,17 @@ class PhocaDownloadViewFeed extends JViewLegacy
 					// - - - - - - - - - - - - - - - - - - - - - -
 					if ($rightDisplay == 1) {
 
-					
+
 						$item = new JFeedItem();
-						
+
 						$title 				= $this->escape( $valueDoc->title . ' ('.PhocaDownloadFile::getTitleFromFilenameWithExt( $valueDoc->filename ).')' );
 						$title 				= html_entity_decode( $title );
 						$item->title 		= $title;
 
 						$link 				= PhocaDownloadRoute::getCategoryRoute($valueDoc->categoryid, $valueDoc->categoryalias);
 						$item->link 		= JRoute::_($link);
-						
-						
+
+
 						// FILEDATE
 						$fileDate = '';
 						if ((int)$displayDateType > 0) {
@@ -123,20 +123,20 @@ class PhocaDownloadViewFeed extends JViewLegacy
 						} else {
 							$fileDate = JHTML::Date($valueDoc->date, "Y-m-d H:i:s");
 						}
-						
+
 						if ($fileDate != '') {
 							$item->date			= $fileDate;
 						}
 						//$item->description 	= $valueDoc->description;
-					//	$item->description 	= '<div><img src="media/com_phocadownload/images/phoca-download.png" alt="" /></div><div>New file "' .$valueDoc->title . '" ('. $valueDoc->filename.') released on '. $dateDesc.' is available on <a href="http://www.phoca.cz/download">Phoca download site</a></div>'.$valueDoc->description;
-						
+					//	$item->description 	= '<div><img src="media/com_phocadownload/images/phoca-download.png" alt="" /></div><div>New file "' .$valueDoc->title . '" ('. $valueDoc->filename.') released on '. $dateDesc.' is available on <a href="https://www.phoca.cz/download">Phoca download site</a></div>'.$valueDoc->description;
+
 						$item->description 	= '<div><img src="media/com_phocadownload/images/phoca-download.png" alt="" /></div>'.$valueDoc->description;
 						$item->category   	= $valueDoc->categorytitle;
 					//	$item->section   	= $valueDoc->sectiontitle;
 						if ($valueDoc->author != '') {
 							$item->author		= $valueDoc->author;
 						}
-					
+
 						$document->addItem( $item );
 					}
 				}

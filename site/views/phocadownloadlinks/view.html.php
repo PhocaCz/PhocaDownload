@@ -11,6 +11,8 @@ jimport( 'joomla.application.component.view' );
  
 class phocaDownloadViewphocaDownloadLinks extends JViewLegacy
 {
+	protected $t;
+	
 	function display($tpl = null) {
 		$app	= JFactory::getApplication();
 		JHtml::_('behavior.tooltip');
@@ -24,13 +26,13 @@ class phocaDownloadViewphocaDownloadLinks extends JViewLegacy
 		
 		//Frontend Changes
 		$tUri = '';
-		if (!$app->isAdmin()) {
+		if (!$app->isClient('administrator')) {
 			$tUri = JURI::base();
 			
 		}
 		
 		$document	= JFactory::getDocument();
-		$uri		= JFactory::getURI();
+		$uri		= \Joomla\CMS\Uri\Uri::getInstance();
 		JHTML::stylesheet( 'media/com_phocadownload/css/administrator/phocadownload.css' );
 		
 		$eName	= $app->input->get('e_name');
@@ -42,7 +44,7 @@ class phocaDownloadViewphocaDownloadLinks extends JViewLegacy
 		$this->t['linkfile']		= $tUri.'index.php?option=com_phocadownload&amp;view=phocadownloadlinkfile&amp;tmpl=component&amp;e_name='.$eName;
 		$this->t['linkytb']		= $tUri.'index.php?option=com_phocadownload&amp;view=phocadownloadlinkytb&amp;tmpl=component&amp;e_name='.$eName;
 		
-		$this->assignRef('tmpl',	$this->t);
+		
 		parent::display($tpl);
 	}
 }

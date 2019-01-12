@@ -24,42 +24,42 @@ class PhocaDownloadPath
 		
 		// Path of preview and play
 		$downloadFolderPap 			= JPath::clean($downloadFolderPap);
-		$path['orig_abs_pap'] 		= JPATH_ROOT .  DS . $downloadFolderPap;
-		$path['orig_abs_pap_ds'] 	= $path['orig_abs_pap'] . DS ;
+		$path['orig_abs_pap'] 		= JPATH_ROOT .  '/' . $downloadFolderPap;
+		$path['orig_abs_pap_ds'] 	= $path['orig_abs_pap'] . '/' ;
 	
 		if ($group['f'] == 2) {
 			// Images
-			$path['orig_abs'] 				= JPATH_ROOT . DS . 'images' . DS . 'phocadownload' ;
-			$path['orig_abs_ds'] 			= $path['orig_abs'] . DS ;
-			$path['orig_abs_user_upload'] 	= $path['orig_abs'] . DS . 'userupload' ;
-			$path['orig_abs_user_upload_pap']= $path['orig_abs_pap'] . DS . 'userupload' ;
+			$path['orig_abs'] 				= JPATH_ROOT . '/' . 'images/phocadownload' ;
+			$path['orig_abs_ds'] 			= $path['orig_abs'] . '/' ;
+			$path['orig_abs_user_upload'] 	= $path['orig_abs'] . '/' . 'userupload' ;
+			$path['orig_abs_user_upload_pap']= $path['orig_abs_pap'] . '/' . 'userupload' ;
 			$path['orig_rel_ds'] 			= '../images/phocadownload/';
 		} else if ($group['f'] == 3) {
 			// Play and Preview
 			$path['orig_abs'] 				= $path['orig_abs_pap'];
 			$path['orig_abs_ds'] 			= $path['orig_abs_pap_ds'];
-			$path['orig_abs_user_upload'] 	= $path['orig_abs'] . DS . 'userupload' ;
-			$path['orig_abs_user_upload_pap']= $path['orig_abs_pap'] . DS . 'userupload' ;
-			$path['orig_rel_ds'] 			= '../'.str_replace('/', DS, JPath::clean($downloadFolderPap)).'/';
+			$path['orig_abs_user_upload'] 	= $path['orig_abs'] . '/' . 'userupload' ;
+			$path['orig_abs_user_upload_pap']= $path['orig_abs_pap'] . '/' . 'userupload' ;
+			$path['orig_rel_ds'] 			= '../'.str_replace('\\', '/', JPath::clean($downloadFolderPap)).'/';
 		} else {
 			// Standard Path	
 			if ($absolutePath != '') {
-				$downloadFolder 				= str_replace('/', DS, JPath::clean($absolutePath));
-				$path['orig_abs'] 				= str_replace('/', DS, JPath::clean($absolutePath));
-				$path['orig_abs_ds'] 			= JPath::clean($path['orig_abs'] . DS) ;
-				$path['orig_abs_user_upload'] 	= JPath::clean($path['orig_abs'] . DS . 'userupload') ;
-				$path['orig_abs_user_upload_pap']= JPath::clean($path['orig_abs_pap'] . DS . 'userupload') ;
-				//$downloadFolderRel 	= str_replace(DS, '/', JPath::clean($downloadFolder));
+				$downloadFolder 				= str_replace('\\', '/', JPath::clean($absolutePath));
+				$path['orig_abs'] 				= str_replace('\\', '/', JPath::clean($absolutePath));
+				$path['orig_abs_ds'] 			= JPath::clean($path['orig_abs'] . '/') ;
+				$path['orig_abs_user_upload'] 	= JPath::clean($path['orig_abs'] . '/' . 'userupload') ;
+				$path['orig_abs_user_upload_pap']= JPath::clean($path['orig_abs_pap'] . '/' . 'userupload') ;
+				//$downloadFolderRel 	= str_replace('\\', '/', JPath::clean($downloadFolder));
 				$path['orig_rel_ds'] 			= '';
 				
 			} else {
-				$downloadFolder 				= str_replace('/', DS, JPath::clean($downloadFolder));
-				$path['orig_abs'] 				= JPATH_ROOT . DS . $downloadFolder ;
-				$path['orig_abs_ds'] 			= JPATH_ROOT . DS . $downloadFolder . DS ;
-				$path['orig_abs_user_upload'] 	= $path['orig_abs'] . DS . 'userupload' ;
-				$path['orig_abs_user_upload_pap']= $path['orig_abs_pap'] . DS . 'userupload' ;
+				$downloadFolder 				= str_replace('\\', '/', JPath::clean($downloadFolder));
+				$path['orig_abs'] 				= JPATH_ROOT . '/' . $downloadFolder ;
+				$path['orig_abs_ds'] 			= JPATH_ROOT . '/' . $downloadFolder . '/' ;
+				$path['orig_abs_user_upload'] 	= $path['orig_abs'] . '/' . 'userupload' ;
+				$path['orig_abs_user_upload_pap']= $path['orig_abs_pap'] . '/' . 'userupload' ;
 				
-				$downloadFolderRel 				= str_replace(DS, '/', JPath::clean($downloadFolder));
+				$downloadFolderRel 				= str_replace('\\', '/', JPath::clean($downloadFolder));
 				$path['orig_rel_ds'] 			= '../' . $downloadFolderRel .'/';
 			}
 		}
@@ -67,14 +67,13 @@ class PhocaDownloadPath
 	}
 	
 	public static function getPathMedia() {
-		
-		//TODO create a singleton
+
 		$option 						= 'com_phocadownload';
 		$instance 						= new StdClass();
 		$baseFront						= JURI::root(true);
-		$instance->media_css_abs		= JPATH_ROOT . DS . 'media'. DS . $option . DS . 'css' . DS;
-		$instance->media_img_abs		= JPATH_ROOT . DS . 'media'. DS . $option . DS . 'images' . DS;
-		$instance->media_js_abs			= JPATH_ROOT . DS . 'media'. DS . $option . DS . 'js' . DS;
+		$instance->media_css_abs		= JPATH_ROOT . '/' . 'media'. '/' . $option . '/' . 'css' . '/';
+		$instance->media_img_abs		= JPATH_ROOT . '/' . 'media'. '/' . $option . '/' . 'images' . '/';
+		$instance->media_js_abs			= JPATH_ROOT . '/' . 'media'. '/' . $option . '/' . 'js' . '/';
 		$instance->media_css_rel		= 'media/'. $option .'/css/';
 		$instance->media_img_rel		= 'media/'. $option .'/images/';
 		$instance->media_js_rel			= 'components/'. $option .'/assets/';

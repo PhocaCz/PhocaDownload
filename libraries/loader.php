@@ -6,6 +6,8 @@
  * @copyright Copyright (C) Jan Pavelka www.phoca.cz
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
+ 
+defined('_JEXEC') or die();
 spl_autoload_register(array('JLoader','load'));
 
 class PhocaDownloadLoader extends JLoader
@@ -40,18 +42,18 @@ class PhocaDownloadLoader extends JLoader
 					break;
 			}
 
-			$path  = str_replace( '.', DS, $filePath );
+			$path  = str_replace( '.', '/', $filePath );
 			
 			if (strpos($filePath, $cU) === 0) {
 				$className	= $cN.$className;
-				$classes	= JLoader::register($className, $base.DS.$path.'.php');
+				$classes	= JLoader::register($className, $base.'/'.$path.'.php');
 				$rs			= isset($classes[strtolower($className)]);
 			} else {
 				// If it is not in the joomla namespace then we have no idea if
 				// it uses our pattern for class names/files so just include
 				// if the file exists or set it to false if not
 
-				$filename = $base.DS.$path.'.php';
+				$filename = $base.'/'.$path.'.php';
 				if (is_file($filename)) {
 					$rs   = (bool) include $filename;
 				} else {

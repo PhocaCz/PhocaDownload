@@ -10,29 +10,29 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class PhocaDownloadLog
 {
-	
+
 	public static function log($fileid, $type = 1) {
-	
+
 		$paramsC 	= JComponentHelper::getParams('com_phocadownload');
 		$logging	= $paramsC->get('enable_logging', 0);
 		// No Logging
 		if ($logging == 0) {
 			return false;
 		}
-		
+
 		// Only Downloads
 		if ($logging == 1 && $type == 2) {
 			return false;
 		}
-		
+
 		// Only Uploads
 		if ($logging == 2 && $type == 1) {
 			return false;
 		}
-		
-		
+
+
 		$user 	= JFactory::getUser();
-		$uri 	= JFactory::getURI();
+		$uri 	= \Joomla\CMS\Uri\Uri::getInstance();
 		$db 	= JFactory::getDBO();
 
 		$row 	= JTable::getInstance('PhocaDownloadLogging', 'Table');
@@ -43,23 +43,23 @@ class PhocaDownloadLog
 		$data['userid']			= (int)$user->id;
 		$data['ip']	=			$_SERVER["REMOTE_ADDR"];
 		$data['page']			= $uri->toString();
-		
-		
+
+
 		if (!$row->bind($data)) {
-			$this->setError($db->getErrorMsg());
+			throw new Exception($db->getErrorMsg(), 500);
 			return false;
 		}
-		
+
 		$jnow		= JFactory::getDate();
 		$row->date	= $jnow->toSql();
 
 		if (!$row->check()) {
-			$this->setError($db->getErrorMsg());
+			throw new Exception($db->getErrorMsg(), 500);
 			return false;
 		}
 
 		if (!$row->store()) {
-			$this->setError($db->getErrorMsg());
+			throw new Exception($db->getErrorMsg(), 500);
 			return false;
 		}
 		return true;

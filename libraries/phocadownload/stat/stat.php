@@ -18,7 +18,7 @@ class PhocaDownloadStat
 	public static function createUserStatEntry($downloadId) {
 		$db 		= JFactory::getDBO();
 		$user		= JFactory::getUser();
-		
+
 
 		$query =  ' SELECT * FROM '.$db->quoteName('#__phocadownload_user_stat')
 				 .' WHERE '. $db->quoteName('userid')
@@ -27,10 +27,10 @@ class PhocaDownloadStat
 				 .' AND '. $db->quoteName('fileid')
 				 .' = '
 				 .$db->Quote((int)$downloadId);
-				 
+
 		$db->setQuery($query);
 		$results = $db->loadObjectList();
-		
+
 		$date = gmdate('Y-m-d H:i:s');
 		if ($results) {
 			// Update count
@@ -39,11 +39,11 @@ class PhocaDownloadStat
 					.' date = '.$db->Quote($date)
 					.' WHERE userid = '.$db->Quote((int)$user->id)
 					.' AND fileid = '.$db->Quote((int)$downloadId);
-					
+
 			$db->setQuery($query);
-			$db->query();
+			$db->execute();
 		} else {
-			
+
 			$query = 'INSERT INTO '.$db->quoteName('#__phocadownload_user_stat')
 					.' ('.$db->quoteName('count').','
 					.' '.$db->quoteName('userid').','
@@ -54,15 +54,15 @@ class PhocaDownloadStat
 					.' '.$db->Quote((int)$downloadId).','
 					.' '.$db->Quote($date).')';
 			$db->setQuery($query);
-			$db->query();
+			$db->execute();
 		}
 		return true;
 	}
-	
+
 	public static function getCountFilePerUser($downloadId) {
 		$db 		= JFactory::getDBO();
 		$user		= JFactory::getUser();
-		
+
 		$query =  ' SELECT count FROM '.$db->quoteName('#__phocadownload_user_stat')
 				 .' WHERE '. $db->quoteName('userid')
 				 .' = '
@@ -71,7 +71,7 @@ class PhocaDownloadStat
 				 .' = '
 				 .$db->Quote((int)$downloadId)
 				 .' LIMIT 0, 1';
-		
+
 		$db->setQuery($query);
 		$count = $db->loadObject();
 		if (isset($count->count)) {

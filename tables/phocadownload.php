@@ -17,19 +17,20 @@ class TablePhocaDownload extends JTable
 	function __construct(& $db) {
 		parent::__construct('#__phocadownload', 'id', $db);
 	}
-	
+
 	function check()
 	{
-		
+
 		// check for valid name but not by text
 		if ((int)$this->textonly == 1) {
 		} else {
 			if (trim( $this->filename ) == '') {
-				$this->setError( JText::_( 'FILE MUST HAVE A FILENAME') );
+
+				throw new Exception(JText::_( 'FILE MUST HAVE A FILENAME'), 500);
 				return false;
 			}
 		}
-		
+
 		if(empty($this->title)) {
 			$this->title = PhocaDownloadFile::getTitleFromFilenameWithoutExt($this->filename);
 		}
@@ -41,14 +42,14 @@ class TablePhocaDownload extends JTable
 
 		return true;
 	}
-	
+
 	public function approve($pks = null, $state = 1, $userId = 0)
 	{
 		// Initialise variables.
 		$k = $this->_tbl_key;
 
 		// Sanitize input.
-		JArrayHelper::toInteger($pks);
+		\Joomla\Utilities\ArrayHelper::toInteger($pks);
 		$userId = (int) $userId;
 		$state  = (int) $state;
 
@@ -60,7 +61,8 @@ class TablePhocaDownload extends JTable
 			}
 			// Nothing to set publishing state on, return false.
 			else {
-				$this->setError(JText::_('JLIB_DATABASE_ERROR_NO_ROWS_SELECTED'));
+
+				throw new Exception(JText::_('JLIB_DATABASE_ERROR_NO_ROWS_SELECTED'), 500);
 				return false;
 			}
 		}
@@ -83,11 +85,18 @@ class TablePhocaDownload extends JTable
 			' WHERE ('.$where.')' .
 			$checkin
 		);
-		$this->_db->query();
+	/*	$this->_db->query();
 
 		// Check for a database error.
 		if ($this->_db->getErrorNum()) {
-			$this->setError($this->_db->getErrorMsg());
+			throw new Exception($this->_db->getErrorMsg(), 500);
+			return false;
+		}*/
+
+		try {
+			$this->_db->execute();
+		} catch (RuntimeException $e) {
+		    throw new Exception($e->getMessage(), 500);
 			return false;
 		}
 
@@ -106,7 +115,7 @@ class TablePhocaDownload extends JTable
 			$this->state = $state;
 		}
 
-		$this->setError('');
+
 		return true;
 	}
 }

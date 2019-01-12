@@ -49,9 +49,9 @@ class PhocaDownloadCpModelPhocaDownloadManager extends JModelAdmin
 		static $set;
 
 		if (!$set) {
-			$folder		= JRequest::getVar( 'folder', '', '', 'path' );
-			$upload		= JRequest::getVar( 'upload', '', '', 'int' );
-			$manager	= JRequest::getVar( 'manager', '', '', 'path' );
+			$folder		= JFactory::getApplication()->input->get( 'folder', '', '', 'path' );
+			$upload		= JFactory::getApplication()->input->get( 'upload', '', '', 'int' );
+			$manager	= JFactory::getApplication()->input->get( 'manager', '', '', 'path' );
 			
 			$this->setState('folder', $folder);
 			$this->setState('manager', $manager);
@@ -110,19 +110,21 @@ class PhocaDownloadCpModelPhocaDownloadManager extends JModelAdmin
 		} else {
 			$orig_path = $path['orig_abs_ds'];
 		}
-		$orig_path_server 	= str_replace(DS, '/', $path['orig_abs'] .'/');
+		$orig_path_server 	= str_replace('\\', '/', $path['orig_abs'] .'/');
 		
 		
 		// Absolute Path defined by user
 		$absolutePath	= $params->get('absolute_path', '');
-		$absolutePath	= str_replace(DS, '/', $absolutePath);
+		$absolutePath	= str_replace('\\', '/', $absolutePath);
 		// Be aware - absolute path is not set for images folder and for preview and play folder - see documentation
 		if ($absolutePath != '' && $group['f'] == 1) {
-			$orig_path_server 		= str_replace(DS, '/', JPath::clean($absolutePath .'/') );//$absolutePath ;
+			$orig_path_server 		= str_replace('\\', '/', JPath::clean($absolutePath .'/') );//$absolutePath ;
 		}
 
 		$files 		= array ();
 		$folders 	= array ();
+		
+		
 
 		// Get the list of files and folders from the given folder
 		$file_list 		= JFolder::files($orig_path);
@@ -132,15 +134,13 @@ class PhocaDownloadCpModelPhocaDownloadManager extends JModelAdmin
 		//file - abc.img, file_no - folder/abc.img
 		if ($file_list !== false) {
 			foreach ($file_list as $file) {
-				if (is_file($orig_path.DS.$file) && substr($file, 0, 1) != '.' && strtolower($file) !== 'index.html') {			
+				if (is_file($orig_path.'/'.$file) && substr($file, 0, 1) != '.' && strtolower($file) !== 'index.html') {			
 						$tmp 							= new JObject();
 						$tmp->name 						= basename($file);
-						$tmp->path_with_name 			= str_replace(DS, '/', JPath::clean($orig_path . DS . $file));
-						$tmp->path_without_name_relative= $path['orig_rel_ds'] . str_replace($orig_path_server, '', $tmp->path_with_name);
-						
-						$tmp->path_with_name 			= str_replace(DS, '/', JPath::clean($orig_path . DS . $file));
+						$tmp->path_with_name 			= str_replace('\\', '/', JPath::clean($orig_path . '/' . $file));
+						$tmp->path_without_name_relative= $path['orig_rel_ds'] . str_replace($orig_path_server, '', $tmp->path_with_name);	
+						$tmp->path_with_name 			= str_replace('\\', '/', JPath::clean($orig_path . '/' . $file));
 						$tmp->path_with_name_relative_no= str_replace($orig_path_server, '', $tmp->path_with_name);
-						
 						$files[] = $tmp;
 						
 				}	
@@ -153,7 +153,7 @@ class PhocaDownloadCpModelPhocaDownloadManager extends JModelAdmin
 			{
 				$tmp 							= new JObject();
 				$tmp->name 						= basename($folder);
-				$tmp->path_with_name 			= str_replace(DS, '/', JPath::clean($orig_path . DS . $folder));
+				$tmp->path_with_name 			= str_replace('\\', '/', JPath::clean($orig_path . '/' . $folder));
 				$tmp->path_without_name_relative= $path['orig_rel_ds'] . str_replace($orig_path_server, '', $tmp->path_with_name);
 				$tmp->path_with_name_relative_no= str_replace($orig_path_server, '', $tmp->path_with_name);	
 

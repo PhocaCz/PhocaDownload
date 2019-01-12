@@ -19,11 +19,12 @@ $r 			=  new $class();
 <script type="text/javascript">
 	Joomla.submitbutton = function(task)
 	{
-		if (task == '<?php echo $this->t['task'] ?>.cancel' || document.formvalidator.isValid(document.id('adminForm'))) {
+		if (task == '<?php echo $this->t['task'] ?>.cancel' || document.formvalidator.isValid(document.getElementById('adminForm'))) {
 			Joomla.submitform(task, document.getElementById('adminForm'));
 		}
 		else {
-			alert('<?php echo JText::_('JGLOBAL_VALIDATION_FORM_FAILED', true);?>');
+			Joomla.renderMessages({"error": ["<?php echo JText::_('JGLOBAL_VALIDATION_FORM_FAILED', true);?>"]});
+		<?php /* alert('<?php echo JText::_('JGLOBAL_VALIDATION_FORM_FAILED', true);?>'); */ ?>
 		}
 	}
 </script><?php

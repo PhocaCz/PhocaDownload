@@ -20,12 +20,12 @@ class PhocaDownloadCpControllerPhocaDownloadset extends PhocaDownloadCpControlle
 	}
 
 	function save() {
-		$post					= JRequest::get('post');
-		$phocaSet				= JRequest::getVar( 'phocaset', array(0), 'post', 'array' );
+		$post					= JFactory::getApplication()->input->get('post');
+		$phocaSet				= JFactory::getApplication()->input->get( 'phocaset', array(0), 'post', 'array' );
 
 		$model = $this->getModel( 'phocadownloadset' );
 		$errorMsg = '';
-		switch ( JRequest::getCmd('task') ) {
+		switch ( JFactory::getApplication()->input->getCmd('task') ) {
 			case 'apply':
 				
 				if ($model->store($phocaSet, $errorMsg)) {

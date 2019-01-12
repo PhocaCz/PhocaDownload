@@ -23,10 +23,10 @@
 <field name="deleteuserid" type="phocausers" multiple="1" label="COM_PHOCADOWNLOAD_FIELD_DELETE_RIGHTS_LABEL" description="COM_PHOCADOWNLOAD_FIELD_UPLOAD_RIGHTS_DESC" class="inputbox" size="1" />
 
 
-
+<field name="image" type="phocaselectfilename" manager="image" label="COM_PHOCADOWNLOAD_FIELD_CATEGORY_IMAGE_LABEL"  description="COM_PHOCADOWNLOAD_FIELD_CATEGORY_IMAGE_DESC" class="inputbox" size="40" />
 
 			
-<field name="description" type="editor" buttons="true" hide="pagebreak,readmore" class="inputbox" label="COM_PHOCADOWNLOAD_FIELD_DESCRIPTION_LABEL" filter="safehtml" description="COM_PHOCADOWNLOAD_FIELD_DESCRIPTION_DESC" />
+<field name="description" type="editor" buttons="true" hide="pagebreak,readmore" class="inputbox" label="COM_PHOCADOWNLOAD_FIELD_DESCRIPTION_LABEL" filter="JComponentHelper::filterText" description="COM_PHOCADOWNLOAD_FIELD_DESCRIPTION_DESC" />
 
 
 
@@ -55,7 +55,7 @@
 
 
 
-<field name="date" type="Calendar" class="inputbox" label="COM_PHOCADOWNLOAD_FIELD_DATE_LABEL" description="COM_PHOCADOWNLOAD_FIELD_DATE_DESC" filter="safehtml" />
+<field name="date" type="Calendar" class="inputbox" label="COM_PHOCADOWNLOAD_FIELD_DATE_LABEL" description="COM_PHOCADOWNLOAD_FIELD_DATE_DESC" filter="JComponentHelper::filterText" />
 <!--
 <field name="hits" type="Text" class="inputbox" size="6" label="COM_PHOCADOWNLOAD_FIELD_HITS" description="COM_PHOCADOWNLOAD_FIELD_HITS_DESC" />
 -->

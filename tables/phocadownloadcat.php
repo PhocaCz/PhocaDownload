@@ -20,9 +20,13 @@ class TablePhocaDownloadCat extends JTable
 	
 	function check()
 	{
+		
+		$app = JFactory::getApplication();
 		// check for valid name
 		if (trim( $this->title ) == '') {
-			$this->setError( JText::_( 'CATEGORY MUST HAVE A TITLE') );
+			
+			
+			$app->enqueueMessage(JText::_( 'CATEGORY MUST HAVE A TITLE') , 'error');
 			return false;
 		}
 

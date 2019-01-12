@@ -20,8 +20,11 @@ class PhocaDownloadModelCategory extends JModelLegacy
 	var $_directlink		= 0;
 	var $_file_ordering		= null;
 	var $_category_ordering	= null;
+	var $file_ordering_select		= null;
+	var $category_ordering_select	= null;
 	var $_pagination		= null;
 	var $_total				= null;
+	var $_context 			= 'com_phocadownload.category';
 
 	function __construct() {
 		
@@ -33,19 +36,23 @@ class PhocaDownloadModelCategory extends JModelLegacy
 		
 		$paramsC 			= JComponentHelper::getParams('com_phocadownload') ;
 		$defaultPagination	= $paramsC->get( 'default_pagination', '20' );
+		$file_ordering		= $paramsC->get( 'file_ordering', 1 );
+		$context			= $this->_context.'.';
 		
 		// Get the pagination request variables
-		$this->setState('limit', $app->getUserStateFromRequest('com_phocadownload.limit', 'limit', $defaultPagination, 'int'));
+		$this->setState('limit', $app->getUserStateFromRequest($context.'limit', 'limit', $defaultPagination, 'int'));
 		$this->setState('limitstart', $app->input->get('limitstart', 0, 'int'));
 
 		// In case limit has been changed, adjust limitstart accordingly
 		$this->setState('limitstart', ($this->getState('limit') != 0 ? (floor($this->getState('limitstart') / $this->getState('limit')) * $this->getState('limit')) : 0));
 		
 		$this->setState('filter.language',$app->getLanguageFilter());
+		
+		$this->setState('fileordering', $app->getUserStateFromRequest($context .'fileordering', 'fileordering', $file_ordering, 'int'));
 
 		// Get the filter request variables
-		$this->setState('filter_order', JRequest::getCmd('filter_order', 'ordering'));
-		$this->setState('filter_order_dir', JRequest::getCmd('filter_order_Dir', 'ASC'));
+		$this->setState('filter_order', JFactory::getApplication()->input->getCmd('filter_order', 'ordering'));
+		$this->setState('filter_order_dir', JFactory::getApplication()->input->getCmd('filter_order_Dir', 'ASC'));
 		
 	}
 	
@@ -59,7 +66,7 @@ class PhocaDownloadModelCategory extends JModelLegacy
 	
 	function getTotal($categoryId, $tagId) {
 		if (empty($this->_total)) {
-			$query = $this->_getFileListQuery($categoryId, $tagId);
+			$query = $this->_getFileListQuery($categoryId, $tagId, 1);
 			$this->_total = $this->_getListCount($query);
 		}
 		return $this->_total;
@@ -89,7 +96,7 @@ class PhocaDownloadModelCategory extends JModelLegacy
 		return $this->_subcategories;
 	}
 	
-	function _getFileListQuery( $categoryId, $tagId = 0 ) {
+	function _getFileListQuery( $categoryId, $tagId = 0, $count = 0 ) {
 	
 		$wheres		= array();
 		$app		= JFactory::getApplication();
@@ -128,24 +135,46 @@ class PhocaDownloadModelCategory extends JModelLegacy
 		if ($pQ == 1) {
 			// GWE MOD - to allow for access restrictions
 			JPluginHelper::importPlugin("phoca");
-			$dispatcher	   =& JDispatcher::getInstance();
+			//$dispatcher = JEventDispatcher::getInstance();
 			$joins = array();
-			$results = $dispatcher->trigger('onGetFileList', array (&$wheres, &$joins,$categoryId , $params));	
+			$results = \JFactory::getApplication()->triggerEvent('onGetFileList', array (&$wheres, &$joins,$categoryId , $params));	
 			// END GWE MOD
 		}
 		
+		
 		$fileOrdering = $this->_getFileOrdering();
 		
-		$query = ' SELECT c.*, cc.id AS categoryid, cc.title AS categorytitle, cc.alias AS categoryalias, cc.access as cataccess, cc.accessuserid as cataccessuserid '
-				.' FROM #__phocadownload AS c'
-				.' LEFT JOIN #__phocadownload_categories AS cc ON cc.id = c.catid';
-		if ((int)$tagId > 0) {
-			$query .= ' LEFT JOIN #__phocadownload_tags_ref AS t ON t.fileid = c.id';
-		}
-		$query .= ($pQ == 1 ? ((count($joins)>0?( " LEFT JOIN " .implode( " LEFT JOIN ", $joins )):"")):"") // GWE MOD
-				. ' WHERE ' . implode( ' AND ', $wheres )
-				. ' ORDER BY c.'.$fileOrdering;
+		
+		if ($count == 1) {
+			$query = ' SELECT c.id'
+					.' FROM #__phocadownload AS c'
+					.' LEFT JOIN #__phocadownload_categories AS cc ON cc.id = c.catid';
+			if ((int)$tagId > 0) {
+				$query .= ' LEFT JOIN #__phocadownload_tags_ref AS t ON t.fileid = c.id';
+			}
+			$query .= ($pQ == 1 ? ((count($joins)>0?( " LEFT JOIN " .implode( " LEFT JOIN ", $joins )):"")):"") // GWE MOD
+					. ' WHERE ' . implode( ' AND ', $wheres )
+					//. ' ORDER BY '.$fileOrdering;
+					. ' ORDER BY c.id';
+
+		} else {
+		
+			$query = ' SELECT c.*, cc.id AS categoryid, cc.title AS categorytitle, cc.alias AS categoryalias, cc.access as cataccess, cc.accessuserid as cataccessuserid '
+					.' FROM #__phocadownload AS c'
+					.' LEFT JOIN #__phocadownload_categories AS cc ON cc.id = c.catid';
+			if ((int)$tagId > 0) {
+				$query .= ' LEFT JOIN #__phocadownload_tags_ref AS t ON t.fileid = c.id';
+			}
+			
+			$query .= ' LEFT JOIN #__phocadownload_file_votes_statistics AS r ON r.fileid = c.id';
+			
+			$query .= ($pQ == 1 ? ((count($joins)>0?( " LEFT JOIN " .implode( " LEFT JOIN ", $joins )):"")):"") // GWE MOD
+					. ' WHERE ' . implode( ' AND ', $wheres )
+					. ' ORDER BY '.$fileOrdering;
 				
+		
+		}
+		
 		return $query;
 	}
 	
@@ -181,9 +210,9 @@ class PhocaDownloadModelCategory extends JModelLegacy
 		if ($pQ == 1) {
 			// GWE MOD - to allow for access restrictions
 			JPluginHelper::importPlugin("phoca");
-			$dispatcher	   =& JDispatcher::getInstance();
+			//$dispatcher = JEventDispatcher::getInstance();
 			$joins = array();
-			$results = $dispatcher->trigger('onGetCategory', array (&$wheres, &$joins,$categoryId , $params));	
+			$results = \JFactory::getApplication()->triggerEvent('onGetCategory', array (&$wheres, &$joins,$categoryId , $params));	
 			// END GWE MOD
 		}
 		
@@ -193,8 +222,8 @@ class PhocaDownloadModelCategory extends JModelLegacy
 				. " LEFT JOIN #__phocadownload AS c ON c.catid = cc.id AND c.published = 1 AND c.textonly = 0"
 				. ($pQ == 1 ? ((count($joins)>0?( " LEFT JOIN " .implode( " LEFT JOIN ", $joins )):"")):"") // GWE MOD
 				. " WHERE " . implode( " AND ", $wheres )
-				. " GROUP BY cc.id"
-				. " ORDER BY cc.".$categoryOrdering;
+				. " GROUP BY cc.id, cc.title, cc.alias, cc.access, cc.accessuserid"
+				. " ORDER BY ".$categoryOrdering;
 		} else {
 			$query = " SELECT cc.id, cc.title, cc.alias, cc.access as cataccess, cc.accessuserid as cataccessuserid, cc.description, cc.metakey, cc.metadesc, pc.title as parenttitle, cc.parent_id as parentid, pc.alias as parentalias"
 				. " FROM #__phocadownload_categories AS cc"
@@ -210,13 +239,21 @@ class PhocaDownloadModelCategory extends JModelLegacy
 	
 	function _getFileOrdering() {
 		if (empty($this->_file_ordering)) {
-			$app						= JFactory::getApplication();
-			$params						= $app->getParams();
-			$ordering					= $params->get( 'file_ordering', 1 );
+			$ordering 					= $this->getState('fileordering');
 			$this->_file_ordering 		= PhocaDownloadOrdering::getOrderingText($ordering);
 
 		}
+		
 		return $this->_file_ordering;
+	}
+	
+	public function getFileOrderingSelect() {
+		if(empty($this->file_ordering_select)) {
+			
+			$this->file_ordering_select = PhocaDownloadOrdering::renderOrderingFront($this->getState('fileordering'), 1);
+		}
+		
+		return $this->file_ordering_select;
 	}
 	
 	function _getCategoryOrdering() {
@@ -226,10 +263,12 @@ class PhocaDownloadModelCategory extends JModelLegacy
 			$app						= JFactory::getApplication();
 			$params						= $app->getParams();
 			$ordering					= $params->get( 'category_ordering', 1 );
-			$this->_category_ordering 	= PhocaDownloadOrdering::getOrderingText($ordering);
+			$this->_category_ordering 	= PhocaDownloadOrdering::getOrderingText($ordering, 2);
 
 		}
 		return $this->_category_ordering;
 	}
+	
+	
 }
 ?>

@@ -1,13 +1,13 @@
 -- -------------------------------------------------------------------- --
 -- Phoca Download manual installation                                   --
 -- -------------------------------------------------------------------- --
--- See documentation on http://www.phoca.cz/                            --
+-- See documentation on https://www.phoca.cz/                            --
 --                                                                      --
 -- Change all prefixes #__ to prefix which is set in your Joomla! site  --
 -- (e.g. from #__phocadownload to jos_phocadownload)                    --
 -- Run this SQL queries in your database tool, e.g. in phpMyAdmin       --
 -- If you have questions, just ask in Phoca Forum                       --
--- http://www.phoca.cz/forum/                                           --
+-- https://www.phoca.cz/forum/                                           --
 -- -------------------------------------------------------------------- --
 
 CREATE TABLE IF NOT EXISTS `#__phocadownload_categories` (
@@ -94,6 +94,7 @@ CREATE TABLE IF NOT EXISTS `#__phocadownload` (
   `unaccessible_file` int(11) NOT NULL default '0',
   `token` char(64) default NULL,
   `tokenhits` int(11) NOT NULL default 0,
+  `tags_string` varchar(255) NOT NULL default '',
   `params` text,
   `metakey` text,
   `metadesc` text,
@@ -188,7 +189,7 @@ CREATE TABLE IF NOT EXISTS `#__phocadownload_layout` (
 ) default CHARSET=utf8;
 
 INSERT INTO `#__phocadownload_layout` (
-`id` ,
+
 `categories` ,
 `category` ,
 `file` ,
@@ -197,7 +198,7 @@ INSERT INTO `#__phocadownload_layout` (
 `params`
 )
 VALUES (
-NULL , '<div class="pd-categoriesbox">
+ '<div class="pd-categoriesbox">
 <div class="pd-title">{pdtitle}</div>
 {pdsubcategories}
 {pdclear}

@@ -28,10 +28,10 @@ class PhocaDownloadPagination extends JPagination
 		$selected = $this->viewall ? 0 : $this->limit;
 
 		// Build the select list
-		if ($app->isAdmin()) {
+		if ($app->isClient('administrator')) {
 			$html = JHTML::_('select.genericlist',  $limits, 'limit', 'class="inputbox" size="1" onchange="submitform();"', 'value', 'text', $selected);
 		} else {
-			$html = JHTML::_('select.genericlist',  $limits, 'limit', 'class="inputbox" size="1" onchange="this.form.submit()"', 'value', 'text', $selected);
+			$html = JHTML::_('select.genericlist',  $limits, 'limit', 'class="inputbox input-mini" size="1" onchange="this.form.submit()"', 'value', 'text', $selected);
 		}
 		return $html;
 	}

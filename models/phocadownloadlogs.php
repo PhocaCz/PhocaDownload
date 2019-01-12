@@ -22,7 +22,7 @@ class PhocaDownloadCpModelPhocaDownloadLogs extends JModelList
 		if (empty($config['filter_fields'])) {
 			$config['filter_fields'] = array(
 				'id', 'a.id',
-				'a.date', 'a.date',
+				'date', 'a.date',
 				'username', 'ua.username',
 				'category_id', 'category_id',
 				'file_id', 'f.id',
@@ -67,7 +67,7 @@ class PhocaDownloadCpModelPhocaDownloadLogs extends JModelList
 		$this->setState('params', $params);
 
 		// List state information.
-		parent::populateState('f.title', 'asc');
+		parent::populateState('a.date', 'asc');
 	}
 	
 	protected function getStoreId($id = '')
@@ -178,8 +178,10 @@ class PhocaDownloadCpModelPhocaDownloadLogs extends JModelList
 		//$query->group('a.id');
 
 		// Add the list ordering clause.
-		$orderCol	= $this->state->get('list.ordering');
-		$orderDirn	= $this->state->get('list.direction');
+		$orderCol	= $this->state->get('list.ordering', 'date');
+		$orderDirn	= $this->state->get('list.direction', 'asc');
+		
+	
 		if ($orderCol == 'a.id' || $orderCol == 'username') {
 			$orderCol = 'username '.$orderDirn.', a.id';
 		}

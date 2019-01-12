@@ -55,17 +55,17 @@ class PhocaDownloadCpModelPhocaDownloadStyle extends JModelAdmin
 		return $data;
 	}
 	
-	protected function prepareTable(&$table)
+	protected function prepareTable($table)
 	{
 		jimport('joomla.filter.output');
 		$date = JFactory::getDate();
 		$user = JFactory::getUser();
 
 		$table->title		= htmlspecialchars_decode($table->title, ENT_QUOTES);
-		$table->alias		= JApplication::stringURLSafe($table->alias);
+		$table->alias		= JApplicationHelper::stringURLSafe($table->alias);
 
 		if (empty($table->alias)) {
-			$table->alias = JApplication::stringURLSafe($table->title);
+			$table->alias = JApplicationHelper::stringURLSafe($table->title);
 		}
 
 		if (empty($table->id)) {
@@ -115,7 +115,8 @@ class PhocaDownloadCpModelPhocaDownloadStyle extends JModelAdmin
 			//$item->filname      = $filename;
 			$item->source       = file_get_contents($filePath);
 		} else {
-			$this->setError(JText::_('COM_PHOCADOWNLOAD_FILE_DOES_NOT_EXIST'));
+		
+			throw new Exception(JText::_('COM_PHOCADOWNLOAD_FILE_DOES_NOT_EXIST'), 500);
 		}
 		return $item;
 	}
@@ -127,7 +128,7 @@ class PhocaDownloadCpModelPhocaDownloadStyle extends JModelAdmin
 		if ($data['id'] < 1) {
 			$data['type'] = 2;// Custom in every case
 			if ($data['title'] != '') {
-				$filename = JApplication::stringURLSafe($data['title']);
+				$filename = JApplicationHelper::stringURLSafe($data['title']);
 				
 				if (trim(str_replace('-','',$filename)) == '') {
 					$filename = JFactory::getDate()->toFormat("%Y-%m-%d-%H-%M-%S");
@@ -140,7 +141,8 @@ class PhocaDownloadCpModelPhocaDownloadStyle extends JModelAdmin
 			
 			$filePath = PhocaDownloadFile::existsCSS($filename, $data['type']);
 			if ($filePath) {
-				$this->setError(JText::sprintf('COM_PHOCADOWNLOAD_FILE_ALREADY_EXISTS', $fileName));
+				
+				throw new Exception(JText::sprintf('COM_PHOCADOWNLOAD_FILE_ALREADY_EXISTS', $fileName), 500);
 				return false;
 			} else {
 				$filePath = PhocaDownloadFile::getCSSPath($data['type']) . $filename;
@@ -165,25 +167,26 @@ class PhocaDownloadCpModelPhocaDownloadStyle extends JModelAdmin
 
 		// Try to make the template file writeable.
 		if (!$ftp['enabled'] && JPath::isOwner($filePath) && !JPath::setPermissions($filePath, '0644')) {
-			$this->setError(JText::_('COM_PHOCADOWNLOAD_ERROR_SOURCE_FILE_NOT_WRITABLE'));
+			
+			throw new Exception(JText::_('COM_PHOCADOWNLOAD_ERROR_SOURCE_FILE_NOT_WRITABLE'), 500);
 			return false;
 		}
 
 		// Trigger the onExtensionBeforeSave event.
 		/*$result = $dispatcher->trigger('onExtensionBeforeSave', array('com_phocadownload.source', &$data, false));
 		if (in_array(false, $result, true)) {
-			$this->setError($table->getError());
+			throw new Exception($table->getError(), 500);
 			return false;
 		}*/
 
 		$return = JFile::write($filePath, $data['source']);
 
 		// Try to make the template file unwriteable.
-		if (!$ftp['enabled'] && JPath::isOwner($filePath) && !JPath::setPermissions($filePath, '0444')) {
-			$this->setError(JText::_('COM_PHOCADOWNLOAD_ERROR_SOURCE_FILE_NOT_UNWRITABLE'));
-			return false;
-		} elseif (!$return) {
-			$this->setError(JText::sprintf('COM_PHOCADOWNLOAD_ERROR_FAILED_TO_SAVE_FILENAME', $fileName));
+		
+			
+		if (!$return) {
+			
+			throw new Exception(JText::sprintf('COM_PHOCADOWNLOAD_ERROR_FAILED_TO_SAVE_FILENAME', $fileName), 500);
 			return false;
 		}
 
@@ -196,7 +199,7 @@ class PhocaDownloadCpModelPhocaDownloadStyle extends JModelAdmin
 	
 	public function delete(&$pks)
 	{
-		$dispatcher = JEventDispatcher::getInstance();
+		//$dispatcher = JEventDispatcher::getInstance();
 		$pks = (array) $pks;
 		$table = $this->getTable();
 
@@ -216,10 +219,10 @@ class PhocaDownloadCpModelPhocaDownloadStyle extends JModelAdmin
 					$context = $this->option . '.' . $this->name;
 
 					// Trigger the onContentBeforeDelete event.
-					$result = $dispatcher->trigger($this->event_before_delete, array($context, $table));
+					$result = \JFactory::getApplication()->triggerEvent($this->event_before_delete, array($context, $table));
 					if (in_array(false, $result, true))
 					{
-						$this->setError($table->getError());
+						throw new Exception($table->getError(), 500);
 						return false;
 					}
 					
@@ -229,7 +232,7 @@ class PhocaDownloadCpModelPhocaDownloadStyle extends JModelAdmin
 					
 					if (!$table->delete($pk))
 					{
-						$this->setError($table->getError());
+						throw new Exception($table->getError(), 500);
 						return false;
 					}
 
@@ -240,7 +243,7 @@ class PhocaDownloadCpModelPhocaDownloadStyle extends JModelAdmin
 					//END PHOCAEDIT
 					
 					// Trigger the onContentAfterDelete event.
-					$dispatcher->trigger($this->event_after_delete, array($context, $table));
+					\JFactory::getApplication()->triggerEvent($this->event_after_delete, array($context, $table));
 
 				}
 				else
@@ -251,12 +254,12 @@ class PhocaDownloadCpModelPhocaDownloadStyle extends JModelAdmin
 					$error = $this->getError();
 					if ($error)
 					{
-						JLog::add($error, JLog::WARNING, 'jerror');
+						JLog::add($error, JLog::WARNING, '');
 						return false;
 					}
 					else
 					{
-						JLog::add(JText::_('JLIB_APPLICATION_ERROR_DELETE_NOT_PERMITTED'), JLog::WARNING, 'jerror');
+						JLog::add(JText::_('JLIB_APPLICATION_ERROR_DELETE_NOT_PERMITTED'), JLog::WARNING, '');
 						return false;
 					}
 				}
@@ -264,7 +267,7 @@ class PhocaDownloadCpModelPhocaDownloadStyle extends JModelAdmin
 			}
 			else
 			{
-				$this->setError($table->getError());
+				throw new Exception($table->getError(), 500);
 				return false;
 			}
 		}

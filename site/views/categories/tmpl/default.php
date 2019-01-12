@@ -1,4 +1,11 @@
 <?php
+/* @package Joomla
+ * @copyright Copyright (C) Open Source Matters. All rights reserved.
+ * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+ * @extension Phoca Extension
+ * @copyright Copyright (C) Jan Pavelka www.phoca.cz
+ * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ */
 defined('_JEXEC') or die('Restricted access'); 
 
 echo '<div id="phoca-dl-categories-box" class="pd-categories-view'.$this->t['p']->get( 'pageclass_sfx' ).'">';
@@ -8,7 +15,7 @@ if ( $this->t['p']->get( 'show_page_heading' ) ) {
 }
 
 if ( $this->t['description'] != '') {
-	echo '<div class="pd-desc">'. $this->t['description']. '</div>';
+	echo '<div class="pd-desc">'. JHTML::_('content.prepare', $this->t['description']) . '</div>';
 }
 
 
@@ -80,8 +87,13 @@ if (!empty($this->t['categories'])) {
 			
 			$pdDesc = '';
 			$pdSubcategories = '';
+			$pdImg = '';
+			if (isset($value->image) && $value->image != '') {
+				$pdImg = '<img src="'.$this->t['cssimgpath'].$value->image.'" alt="'.htmlspecialchars(strip_tags($value->title)).'" />';
+			}
+			
 			if ($this->t['displaymaincatdesc']	 == 1) {
-				$pdDesc .= $value->description;
+				$pdDesc .= JHTML::_('content.prepare', $value->description);
 			} else {
 				if ($catOutput != '') {
 					$pdSubcategories .= $catOutput;
@@ -105,6 +117,7 @@ if (!empty($this->t['categories'])) {
 			if ($this->t['display_specific_layout'] == 0) {
 				echo '<div class="pd-categoriesbox">';
 				echo '<div class="pd-title">'.$pdTitle.'</div>';
+				if ($pdImg != '') { echo '<div class="ph-img">'.$pdImg.'</div>';}
 				if ($pdDesc != '') { echo '<div class="pd-desc">'.$pdDesc.'</div>';}
 				echo $pdSubcategories;
 				echo '</div>';
@@ -152,7 +165,7 @@ if (!empty($this->t['mostvieweddocs']) && $this->t['displaymostdownload'] == 1) 
 		if ($rightDisplay == 1) {
 			// FILESIZE
 			if ($value->filename !='') {
-				$absFile = str_replace('/', DS, JPath::clean($this->t['absfilepath'] . $value->filename));
+				$absFile = str_replace('/', '/', JPath::clean($this->t['absfilepath'] . $value->filename));
 				if (JFile::exists($absFile)) {
 					$fileSize = PhocaDownloadFile::getFileSizeReadable(filesize($absFile));
 				} else {
@@ -200,5 +213,5 @@ if (!empty($this->t['mostvieweddocs']) && $this->t['displaymostdownload'] == 1) 
 	}
 }
 echo '<div class="pd-cb">&nbsp;</div>';
-echo $this->t['dw'];
+echo $this->t['dev'];
 ?>

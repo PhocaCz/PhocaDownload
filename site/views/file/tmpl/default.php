@@ -1,4 +1,11 @@
 <?php
+/* @package Joomla
+ * @copyright Copyright (C) Open Source Matters. All rights reserved.
+ * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+ * @extension Phoca Extension
+ * @copyright Copyright (C) Jan Pavelka www.phoca.cz
+ * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ */
 defined('_JEXEC') or die('Restricted access'); 
 
 echo '<div id="phoca-dl-file-box" class="pd-file-view'.$this->t['p']->get( 'pageclass_sfx' ).'" >';
@@ -45,7 +52,7 @@ if (!empty($this->file[0])) {
 	
 		$l = new PhocaDownloadLayout();
 	
-		echo '<h3 class="pdfv-name">'.$l->getName($v->title, $v->filename, 1). '</h3>';
+		echo '<h3 class="pd-ctitle">'.$l->getName($v->title, $v->filename, 1). '</h3>';
 		
 		
 // =====================================================================================		
@@ -67,6 +74,7 @@ if (!empty($this->file[0])) {
 		|| (int)$this->t['display_file_view'] == 2
 		|| (int)$v->confirm_license > 0
 		|| (int)$this->t['display_detail'] == 2
+		|| (int)$this->t['display_detail'] == 3
 		|| (int)$directFv == 1) {
 					
 			$pdTitle = '';
@@ -100,6 +108,20 @@ if (!empty($this->file[0])) {
 				
 				$pdFile .= PhocaDownloadRenderFront::displayNewIcon($v->date, $this->t['displaynew']);
 				$pdFile .= PhocaDownloadRenderFront::displayHotIcon($v->hits, $this->t['displayhot']);
+
+				// String Tags - title suffix
+				$tagsS = $l->displayTagsString($v->tags_string);
+				if ($tagsS != '') {
+					$pdFile .= '<div class="pd-float">'.$tagsS.'</div>';
+				}
+				
+				// Tags - title suffix
+				if ($this->t['display_tags_links'] == 5 || $this->t['display_tags_links'] == 6) {
+					$tags = $l->displayTags($v->id, 1);
+					if ($tags != '') {
+						$pdFile .= '<div class="pd-float">'.$tags.'</div>';
+					}
+				}
 				
 				//Specific icons
 				if (isset($v->image_filename_spec1) && $v->image_filename_spec1 != '') {
@@ -227,10 +249,10 @@ if (!empty($this->file[0])) {
 			// pdtags
 			$pdTags = '';
 			if ($this->t['display_tags_links'] == 2 || $this->t['display_tags_links'] == 3) {
-				if ($l->displayTags($v->id) != '') {
-					$pdTags .= $l->displayTags($v->id);
+				$tags2 = $l->displayTags($v->id);
+				if ($tags2 != '') {
+					$pdTags .= '<div class="pd-float">'.$tags2.'</div>';
 				}
-			
 			}
 
 			
@@ -312,11 +334,11 @@ if (!empty($this->file[0])) {
 				if ($v->link_external != '' && $v->directlink == 1) {	
 					$o .= '<form action="" name="phocaDownloadForm" id="phocadownloadform" target="'.$this->t['download_external_link'].'">';	
 					$o .= '<input type="checkbox" name="license_agree" onclick="enableDownloadPD()" /> <span>'.JText::_('COM_PHOCADOWNLOAD_I_AGREE_TO_TERMS_LISTED_ABOVE').'</span> ';
-					$o .= '<input class="btn" type="button" name="submit" onClick="location.href=\''.$v->link_external.'\';" id="pdlicensesubmit" value="'.JText::_('COM_PHOCADOWNLOAD_DOWNLOAD').'" />';
+					$o .= '<input class="btn pd-button-download" type="button" name="submit" onClick="location.href=\''.$v->link_external.'\';" id="pdlicensesubmit" value="'.JText::_('COM_PHOCADOWNLOAD_DOWNLOAD').'" />';
 				} else {
 					$o .= '<form action="'.htmlspecialchars($this->t['action']).'" method="post" name="phocaDownloadForm" id="phocadownloadform">';
 					$o .= '<input type="checkbox" name="license_agree" onclick="enableDownloadPD()" /> <span>'.JText::_('COM_PHOCADOWNLOAD_I_AGREE_TO_TERMS_LISTED_ABOVE').'</span> ';
-					$o .= '<input class="btn" type="submit" name="submit" id="pdlicensesubmit" value="'.JText::_('COM_PHOCADOWNLOAD_DOWNLOAD').'" />';
+					$o .= '<input class="btn pd-button-download" type="submit" name="submit" id="pdlicensesubmit" value="'.JText::_('COM_PHOCADOWNLOAD_DOWNLOAD').'" />';
 					$o .= '<input type="hidden" name="download" value="'.$v->id.'" />';
 					$o .= '<input type="hidden" name="'. JSession::getFormToken().'" value="1" />';
 				}
@@ -328,10 +350,10 @@ if (!empty($this->file[0])) {
 				// External link
 				if ($v->link_external != '') {	
 					$o .= '<form action="" name="phocaDownloadForm" id="phocadownloadform" target="'.$this->t['download_external_link'].'">';
-					$o .= '<input class="btn" type="button" name="submit" onClick="location.href=\''.$v->link_external.'\';" id="pdlicensesubmit" value="'.JText::_('COM_PHOCADOWNLOAD_DOWNLOAD').'" />';
+					$o .= '<input class="btn pd-button-download" type="button" name="submit" onClick="location.href=\''.$v->link_external.'\';" id="pdlicensesubmit" value="'.JText::_('COM_PHOCADOWNLOAD_DOWNLOAD').'" />';
 				} else {
 					$o .= '<form action="'.htmlspecialchars($this->t['action']).'" method="post" name="phocaDownloadForm" id="phocadownloadform">';
-					$o .= '<input class="btn" type="submit" name="submit" id="pdlicensesubmit" value="'.JText::_('COM_PHOCADOWNLOAD_DOWNLOAD').'" />';
+					$o .= '<input class="btn pd-button-download" type="submit" name="submit" id="pdlicensesubmit" value="'.JText::_('COM_PHOCADOWNLOAD_DOWNLOAD').'" />';
 					$o .= '<input type="hidden" name="license_agree" value="1" />';
 					$o .= '<input type="hidden" name="download" value="'.$v->id.'" />';
 					$o .= '<input type="hidden" name="'. JSession::getFormToken().'" value="1" />';
@@ -342,7 +364,7 @@ if (!empty($this->file[0])) {
 			
 			if ($this->t['display_file_comments'] == 1) {
 				if (JComponentHelper::isEnabled('com_jcomments', true)) {
-					include_once(JPATH_BASE.DS.'components'.DS.'com_jcomments'.DS.'jcomments.php');
+					include_once(JPATH_BASE.'/components/com_jcomments/jcomments.php');
 					$o .= JComments::showComments($v->id, 'com_phocadownload_files', JText::_('COM_PHOCADOWNLOAD_FILE') .' '. $v->title);
 				}
 			}

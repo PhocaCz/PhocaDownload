@@ -26,7 +26,7 @@ class JFormFieldPhocaTags extends JFormField
 		}
 		
 		
-		return PhocaDownloadTag::getAllTagsSelectBox($this->name, $this->id, $activeTags, NULL,'id' );
+		return PhocaDownloadTag::getAllTagsSelectBox($this->name, $this->id, $activeTags, NULL, 'a.id' );
 		
 		
 	}

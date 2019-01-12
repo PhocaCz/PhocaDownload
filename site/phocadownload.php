@@ -7,13 +7,13 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
-if(!defined('DS')) define('DS', DIRECTORY_SEPARATOR);
+
 
 if (! class_exists('PhocaDownloadLoader')) {
-    require_once( JPATH_ADMINISTRATOR.DS.'components/com_phocadownload/libraries/loader.php');
+    require_once( JPATH_ADMINISTRATOR.'/components/com_phocadownload/libraries/loader.php');
 }
 // Require the base controller
-require_once( JPATH_COMPONENT.DS.'controller.php' );
+require_once( JPATH_COMPONENT.'/controller.php' );
 
 phocadownloadimport('phocadownload.utils.settings');
 phocadownloadimport('phocadownload.utils.utils');
@@ -35,11 +35,15 @@ phocadownloadimport('phocadownload.access.access');
 phocadownloadimport('phocadownload.category.category');
 phocadownloadimport('phocadownload.user.user');
 phocadownloadimport('phocadownload.log.log');
+phocadownloadimport('phocadownload.utils.utils');
+
+jimport( 'joomla.filesystem.folder' ); 
+jimport( 'joomla.filesystem.file' );
 
 
 // Require specific controller if requested
-if($controller = JRequest::getWord('controller')) {
-    $path = JPATH_COMPONENT.DS.'controllers'.DS.$controller.'.php';
+if($controller = JFactory::getApplication()->input->get('controller')) {
+    $path = JPATH_COMPONENT.'/controllers/'.$controller.'.php';
     if (file_exists($path)) {
         require_once $path;
     } else {

@@ -52,7 +52,7 @@ class PhocaDownloadCpViewPhocaDownloadStyle extends JViewLegacy
 		}
 
 		if (count($errors = $this->get('Errors'))) {
-			JError::raiseError(500, implode("\n", $errors));
+			throw new Exception(implode("\n", $errors), 500);
 			return false;
 		}
 
@@ -63,8 +63,8 @@ class PhocaDownloadCpViewPhocaDownloadStyle extends JViewLegacy
 	protected function addToolbar() {
 		
 		require_once JPATH_COMPONENT.'/helpers/'.$this->t['tasks'].'.php';
-		JRequest::setVar('hidemainmenu', true);
-		$bar 		= JToolBar::getInstance('toolbar');
+		JFactory::getApplication()->input->set('hidemainmenu', true);
+		$bar 		= JToolbar::getInstance('toolbar');
 		$user		= JFactory::getUser();
 		$isNew		= ($this->item->id == 0);
 		$checkedOut	= !($this->item->checked_out == 0 || $this->item->checked_out == $user->get('id'));
@@ -72,17 +72,17 @@ class PhocaDownloadCpViewPhocaDownloadStyle extends JViewLegacy
 		$canDo		= $class::getActions($this->t, $this->state->get('filter.category_id'));
 
 		$text = $isNew ? JText::_( $this->t['l'] . '_NEW' ) : JText::_($this->t['l'] . '_EDIT');
-		JToolBarHelper::title(   JText::_( $this->t['l'] . '_STYLE' ).': <small><small>[ ' . $text.' ]</small></small>' , 'eye');
+		JToolbarHelper::title(   JText::_( $this->t['l'] . '_STYLE' ).': <small><small>[ ' . $text.' ]</small></small>' , 'eye');
 
 		// If not checked out, can save the item.
 		if (!$checkedOut && $canDo->get('core.edit')){
-			JToolBarHelper::apply($this->t['task'].'.apply', 'JTOOLBAR_APPLY');
-			JToolBarHelper::save($this->t['task'].'.save', 'JTOOLBAR_SAVE');
+			JToolbarHelper::apply($this->t['task'].'.apply', 'JTOOLBAR_APPLY');
+			JToolbarHelper::save($this->t['task'].'.save', 'JTOOLBAR_SAVE');
 		}
 
-		JToolBarHelper::cancel($this->t['task'].'.cancel', 'JTOOLBAR_CLOSE');
-		JToolBarHelper::divider();
-		JToolBarHelper::help( 'screen.'.$this->t['c'], true );
+		JToolbarHelper::cancel($this->t['task'].'.cancel', 'JTOOLBAR_CLOSE');
+		JToolbarHelper::divider();
+		JToolbarHelper::help( 'screen.'.$this->t['c'], true );
 	}
 
 }

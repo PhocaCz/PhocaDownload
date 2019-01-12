@@ -102,19 +102,19 @@ class PhocaDownloadModelCategories extends JModelLegacy
 		if ($pQ == 1) {
 			// GWE MOD - to allow for access restrictions
 			JPluginHelper::importPlugin("phoca");
-			$dispatcher	   =& JDispatcher::getInstance();
+			//$dispatcher = JEventDispatcher::getInstance();
 			$joins = array();
-			$results = $dispatcher->trigger('onGetCategoriesList', array (&$wheres, &$joins,  $params));
+			$results = \JFactory::getApplication()->triggerEvent('onGetCategoriesList', array (&$wheres, &$joins,  $params));
 			// END GWE MOD
 		}
 		
-		$query =  " SELECT cc.id, cc.parent_id, cc.title, cc.alias, cc.access, cc.description, cc.accessuserid, COUNT(c.id) AS numdoc, 0 AS numsubcat"
+		$query =  " SELECT cc.id, cc.parent_id, cc.title, cc.alias, cc.image, cc.access, cc.description, cc.accessuserid, COUNT(c.id) AS numdoc, 0 AS numsubcat"
 				. " FROM #__phocadownload_categories AS cc"
 				. " LEFT JOIN #__phocadownload AS c ON c.catid = cc.id AND c.published = 1  AND c.textonly = 0"
 				. ($pQ == 1 ? ((count($joins)>0?( " LEFT JOIN " .implode( " LEFT JOIN ", $joins )):"")):"") // GWE MOD
 				. " WHERE " . implode( " AND ", $wheres )
-				. " GROUP BY cc.id"
-				. " ORDER BY cc.".$categoriesOrdering;
+				. " GROUP BY cc.id, cc.parent_id, cc.title, cc.image, cc.alias, cc.access, cc.description, cc.accessuserid"
+				. " ORDER BY ".$categoriesOrdering;
 		
 		return $query;
 	}
@@ -155,19 +155,19 @@ class PhocaDownloadModelCategories extends JModelLegacy
 		if ($pQ == 1) {
 			// GWE MOD - to allow for access restrictions
 			JPluginHelper::importPlugin("phoca");
-			$dispatcher	   =& JDispatcher::getInstance();
+			//$dispatcher = JEventDispatcher::getInstance();
 			$joins = array();
-			$results = $dispatcher->trigger('onGetCategoryList', array (&$wheres, &$joins,  $params));
+			$results = \JFactory::getApplication()->triggerEvent('onGetCategoryList', array (&$wheres, &$joins,  $params));
 			// END GWE MOD
 		}
 		
-		$query = " SELECT  cc.id, cc.title, cc.alias, cc.access, cc.accessuserid, COUNT(c.id) AS numdoc"
+		$query = " SELECT  cc.id, cc.title, cc.alias, cc.image, cc.access, cc.accessuserid, COUNT(c.id) AS numdoc"
 				. " FROM #__phocadownload_categories AS cc"
 				. " LEFT JOIN #__phocadownload AS c ON c.catid = cc.id AND c.published = 1  AND c.textonly = 0"
 				. ($pQ == 1 ? ((count($joins)>0?( " LEFT JOIN " .implode( " LEFT JOIN ", $joins )):"")):"") // GWE MOD
 				. " WHERE " . implode( " AND ", $wheres )
-				. " GROUP BY cc.id"
-				. " ORDER BY cc.".$categoryOrdering;
+				. " GROUP BY cc.id, cc.title, cc.alias, cc.image, cc.access, cc.accessuserid"
+				. " ORDER BY ".$categoryOrdering;
 				
 		return $query;
 		
@@ -230,9 +230,9 @@ class PhocaDownloadModelCategories extends JModelLegacy
 		if ($pQ == 1) {
 			// GWE MOD - to allow for access restrictions
 			JPluginHelper::importPlugin("phoca");
-			$dispatcher	   =& JDispatcher::getInstance();
+			//$dispatcher = JEventDispatcher::getInstance();
 			$joins = array();
-			$results = $dispatcher->trigger('onGetMostViewedDocs', array (&$wheres, &$joins, 0, $params));	
+			$results = \JFactory::getApplication()->triggerEvent('onGetMostViewedDocs', array (&$wheres, &$joins, 0, $params));	
 			// END GWE MOD
 		}
 		
@@ -251,7 +251,7 @@ class PhocaDownloadModelCategories extends JModelLegacy
 			$app						= JFactory::getApplication();
 			$params 					= $app->getParams();
 			$ordering					= $params->get( 'category_ordering', 1 );
-			$this->_category_ordering 	= PhocaDownloadOrdering::getOrderingText($ordering);
+			$this->_category_ordering 	= PhocaDownloadOrdering::getOrderingText($ordering, 2);
 
 		}
 		return $this->_category_ordering;

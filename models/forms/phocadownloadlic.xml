@@ -14,7 +14,7 @@
 <field name="ordering" type="PhocaDownloadOrdering" table="file" class="inputbox" label="COM_PHOCADOWNLOAD_FIELD_ORDERING_LABEL" description="COM_PHOCADOWNLOAD_FIELD_ORDERING_DESC" />
 
 			
-<field name="description" type="editor" buttons="true" hide="pagebreak,readmore" class="inputbox" label="COM_PHOCADOWNLOAD_FIELD_LICENSE_TEXT_LABEL" filter="safehtml" description="COM_PHOCADOWNLOAD_FIELD_LICENSE_TEXT_DESC" />
+<field name="description" type="editor" buttons="true" hide="pagebreak,readmore" class="inputbox" label="COM_PHOCADOWNLOAD_FIELD_LICENSE_TEXT_LABEL" filter="JComponentHelper::filterText" description="COM_PHOCADOWNLOAD_FIELD_LICENSE_TEXT_DESC" />
 
 
 	</fieldset>

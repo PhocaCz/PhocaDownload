@@ -8,7 +8,7 @@
  * @copyright Copyright (C) Jan Pavelka www.phoca.cz
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
-
+defined('_JEXEC') or die();
 /**
  * Method to build Route
  * @param array $query

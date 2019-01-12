@@ -18,7 +18,7 @@ class PhocaUserStatHelper
 	function createUserStatEntry($downloadId) {
 		$db 		= JFactory::getDBO();
 		$user		= JFactory::getUser();
-		
+
 
 		$query =  ' SELECT * FROM '.$db->quoteName('#__phocadownload_user_stat')
 				 .' WHERE '. $db->quoteName('userid')
@@ -27,10 +27,10 @@ class PhocaUserStatHelper
 				 .' AND '. $db->quoteName('fileid')
 				 .' = '
 				 .$db->Quote((int)$downloadId);
-				 
+
 		$db->setQuery($query);
 		$results = $db->loadObjectList();
-		
+
 		$date = gmdate('Y-m-d H:i:s');
 		if ($results) {
 			// Update count
@@ -39,11 +39,11 @@ class PhocaUserStatHelper
 					.' date = '.$db->Quote($date)
 					.' WHERE userid = '.$db->Quote((int)$user->id)
 					.' AND fileid = '.$db->Quote((int)$downloadId);
-					
+
 			$db->setQuery($query);
-			$db->query();
+			$db->execute();
 		} else {
-			
+
 			$query = 'INSERT INTO '.$db->quoteName('#__phocadownload_user_stat')
 					.' ('.$db->quoteName('count').','
 					.' '.$db->quoteName('userid').','
@@ -54,7 +54,7 @@ class PhocaUserStatHelper
 					.' '.$db->Quote((int)$downloadId).','
 					.' '.$db->Quote($date).')';
 			$db->setQuery($query);
-			$db->query();
+			$db->execute();
 		}
 		return true;
 	}

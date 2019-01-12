@@ -10,33 +10,34 @@
  */
 defined('_JEXEC') or die();
 jimport( 'joomla.application.component.view' );
- 
+
 class PhocaDownloadCpViewPhocaDownloadset extends JViewLegacy
 {
 	function display($tpl = null) {
-		
-		
-		$uri		= JFactory::getURI();
+
+
+		$uri		= \Joomla\CMS\Uri\Uri::getInstance();
 		$document	= JFactory::getDocument();
 		$db		    = JFactory::getDBO();
-		JHTML::stylesheet( 'phocadownload.css', 'administrator/components/com_phocadownload/assets/' );	
+		JHTML::stylesheet( 'phocadownload.css', 'administrator/components/com_phocadownload/assets/' );
 
 		// Get data from the model
 		$items		= & $this->get( 'Data');
 
-		$this->assignRef('items',		$items);
-		$this->assignRef('request_url',	$uri->toString());
-		
+		//$this->assignRef('items',		$items);
+		$this->t['items'] = $items;
+		//$this->assignRef('request_url',	$uri->toString());
+
 		parent::display($tpl);
 		$this->_setToolbar();
 	}
-	
+
 	function _setToolbar() {
-		JToolBarHelper::title(   JText::_( 'Phoca Download Settings' ), 'settings.png' );
-		JToolBarHelper::save();
-		JToolBarHelper::apply();
-		JToolBarHelper::cancel( 'cancel', 'Close' );		
-		JToolBarHelper::help( 'screen.phocadownload', true );
+		JToolbarHelper::title(   JText::_( 'Phoca Download Settings' ), 'settings.png' );
+		JToolbarHelper::save();
+		JToolbarHelper::apply();
+		JToolbarHelper::cancel( 'cancel', 'Close' );
+		JToolbarHelper::help( 'screen.phocadownload', true );
 	}
 }
 ?>

@@ -34,10 +34,10 @@ if (isset($this->tmpl['notapproved']->count) && (int)$this->tmpl['notapproved']-
 }
 
 echo $r->startForm($this->t['o'], $this->t['task'], 'adminForm');
-echo $r->startFilter($this->t['l'].'_FILTER');
-echo $r->selectFilterPublished('JOPTION_SELECT_PUBLISHED', $this->state->get('filter.state'));
-echo $r->selectFilterLanguage('JOPTION_SELECT_LANGUAGE', $this->state->get('filter.language'));
-echo $r->selectFilterCategory(PhocaDownloadCategory::options($this->t['o']), 'JOPTION_SELECT_CATEGORY', $this->state->get('filter.category_id'));
+echo $r->startFilter();
+//echo $r->selectFilterPublished('JOPTION_SELECT_PUBLISHED', $this->state->get('filter.state'));
+//echo $r->selectFilterLanguage('JOPTION_SELECT_LANGUAGE', $this->state->get('filter.language'));
+//echo $r->selectFilterCategory(PhocaDownloadCategory::options($this->t['o']), 'JOPTION_SELECT_CATEGORY', $this->state->get('filter.category_id'));
 echo $r->endFilter();
 
 echo $r->startMainContainer();
@@ -54,8 +54,10 @@ echo $r->startTable('categoryList');
 
 echo $r->startTblHeader();
 
-echo $r->thOrdering('JGRID_HEADING_ORDERING', $listDirn, $listOrder);
-echo $r->thCheck('JGLOBAL_CHECK_ALL');
+//echo $r->thOrdering('JGRID_HEADING_ORDERING', $listDirn, $listOrder);
+echo '<th class="nowrap center hidden-phone ph-ordering"></th>';
+//echo $r->thCheck('JGLOBAL_CHECK_ALL');
+echo '<th class="ph-id"></th>'."\n";
 echo '<th class="ph-user">'.JHTML::_('grid.sort',  	$this->t['l'].'_USER', 'ua.username', $listDirn, $listOrder ).'</th>'."\n";
 echo '<th class="ph-filename">'.JHTML::_('grid.sort',  	$this->t['l'].'_FILENAME', 'file_title', $listDirn, $listOrder ).'</th>'."\n";
 echo '<th class="ph-parentcattitle">'.JHTML::_('grid.sort', $this->t['l'].'_CATEGORY', 'category_title', $listDirn, $listOrder ).'</th>'."\n";
@@ -97,8 +99,8 @@ $iD = $i % 2;
 echo "\n\n";
 echo '<tr class="row'.$iD.'" sortable-group-id="'.$item->category_id.'" item-id="'.$item->id.'" parents="'.$item->category_id.'" level="0">'. "\n";
 
-echo $r->tdOrder($canChange, $saveOrder, $orderkey);
-echo $r->td(JHtml::_('grid.id', $i, $item->id), "small hidden-phone");
+echo $r->tdOrder($canChange, $saveOrder, $orderkey, $item->ordering);
+echo $r->td('');
 					
 $usrU = $item->ratingname;
 if ($item->ratingusername) {$usrU = $usrU . ' ('.$item->ratingusername.')';}
@@ -135,7 +137,8 @@ echo '</tbody>'. "\n";
 echo $r->tblFoot($this->pagination->getListFooter(), 15);
 echo $r->endTable();
 
-echo $r->formInputs($listOrder, $originalOrders);
+//echo $r->formInputs($listOrder, $originalOrders);
+echo $r->formInputs($listOrder, $listDirn, $originalOrders);
 echo $r->endMainContainer();
 echo $r->endForm();
 ?>

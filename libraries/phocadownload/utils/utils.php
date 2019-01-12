@@ -16,11 +16,11 @@ class PhocaDownloadUtils
 	}
 	
 	public static function getExtensionVersion($c = 'phocadownload') {
-		$folder = JPATH_ADMINISTRATOR .DS. 'components'.DS.'com_'.$c;
+		$folder = JPATH_ADMINISTRATOR .'/components/com_'.$c;
 		if (JFolder::exists($folder)) {
 			$xmlFilesInDir = JFolder::files($folder, '.xml$');
 		} else {
-			$folder = JPATH_SITE .DS. 'components'.DS.'com_'.$c;
+			$folder = JPATH_SITE . '/components/com_'.$c;
 			if (JFolder::exists($folder)) {
 				$xmlFilesInDir = JFolder::files($folder, '.xml$');
 			} else {
@@ -28,12 +28,12 @@ class PhocaDownloadUtils
 			}
 		}
 
-		$xml_items = '';
+		$xml_items = array();
 		if (count($xmlFilesInDir))
 		{
 			foreach ($xmlFilesInDir as $xmlfile)
 			{
-				if ($data = JApplicationHelper::parseXMLInstallFile($folder.DS.$xmlfile)) {
+				if ($data = \JInstaller::parseXMLInstallFile($folder.'/'.$xmlfile)) {
 					foreach($data as $key => $value) {
 						$xml_items[$key] = $value;
 					}
@@ -64,11 +64,12 @@ class PhocaDownloadUtils
 	}
 	
 	public static function getAliasName($alias) {	
-		$alias = JApplication::stringURLSafe($alias);
+		$alias = JApplicationHelper::stringURLSafe($alias);
 		if (trim(str_replace('-', '', $alias)) == '') {
 			$alias = JFactory::getDate()->format("Y-m-d-H-i-s");
 		}
 		return $alias;
+
 	}
 	
 	public static function strTrimAll($input) {
@@ -114,6 +115,28 @@ class PhocaDownloadUtils
 		$salt = md5($title . 'string '. date('s'). mt_rand(0,9999) . str_replace(mt_rand(0,9), mt_rand(0,9999), date('r')). 'end string');
 		$token = hash('sha256', $salt . time());
 		return $token;
+	}
+	
+	public static function cleanFolderUrlName($string) {
+		$string = str_replace('@', '-', $string);
+		$string = str_replace('?', '-', $string);
+		$string = str_replace('&', '-', $string);
+		$string = str_replace('%', '-', $string);
+		return $string;
+
+	}
+	
+	public static function getIntFromString($string) {
+		
+		if (empty($string)) {
+			return 0;
+		}
+		$int	= '';//$int = 0
+		$parts 	= explode(':', $string);
+		if (isset($parts[0])) {
+			$int = (int)$parts[0];
+		}
+		return $int;
 	}
 }
 ?>

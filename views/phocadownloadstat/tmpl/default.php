@@ -11,8 +11,8 @@ JHtml::_('bootstrap.tooltip');
 JHtml::_('behavior.multiselect');
 JHtml::_('dropdown.init');
 JHtml::_('formbehavior.chosen', 'select');
-$class		= $this->t['n'] . 'RenderAdminViews';
-$r 			=  new $class();
+//$class		= $this->t['n'] . 'RenderAdminViews';
+$r 			=  new PhocaDownloadRenderAdminViews();
 $user		= JFactory::getUser();
 $userId		= $user->get('id');
 $listOrder	= $this->escape($this->state->get('list.ordering'));
@@ -30,8 +30,9 @@ echo $r->jsJorderTable($listOrder);
 echo '<div class="clearfix"></div>';
 
 echo $r->startForm($this->t['o'], $this->t['task'], 'adminForm');
-echo $r->startFilter($this->t['l'].'_FILTER');
-echo $r->selectFilterPublished('JOPTION_SELECT_PUBLISHED', $this->state->get('filter.state'));
+echo $r->startFilter();
+//echo $r->startFilter($this->t['l'].'_FILTER');
+//echo $r->selectFilterPublished('JOPTION_SELECT_PUBLISHED', $this->state->get('filter.state'));
 //echo $r->selectFilterLanguage('JOPTION_SELECT_LANGUAGE', $this->state->get('filter.language'));
 echo $r->endFilter();
 
@@ -49,8 +50,10 @@ echo $r->startTable('categoryList');
 
 echo $r->startTblHeader();
 
-echo $r->thOrdering('JGRID_HEADING_ORDERING', $listDirn, $listOrder);
-echo $r->thCheck('JGLOBAL_CHECK_ALL');
+//echo $r->thOrdering('JGRID_HEADING_ORDERING', $listDirn, $listOrder);
+echo '<th class="nowrap center hidden-phone ph-ordering"></th>';
+//echo $r->thCheck('JGLOBAL_CHECK_ALL');
+echo '<th class=""></th>'."\n";
 echo '<th class="ph-title">'.JHTML::_('grid.sort',  	$this->t['l'].'_TITLE', 'a.title', $listDirn, $listOrder ).'</th>'."\n";
 echo '<th class="ph-filename-long">'.JHTML::_('grid.sort',  	$this->t['l'].'_FILENAME', 'a.filename', $listDirn, $listOrder ).'</th>'."\n";
 echo '<th class="ph-hits">'.JHTML::_('grid.sort',  		$this->t['l'].'_DOWNLOADS', 'a.hits', $listDirn, $listOrder ).'</th>'."\n";
@@ -92,18 +95,18 @@ $iD = $i % 2;
 echo "\n\n";
 echo '<tr class="row'.$iD.'" sortable-group-id="'.$item->category_id.'" item-id="'.$item->id.'" parents="'.$item->category_id.'" level="0">'. "\n";
 
-echo $r->tdOrder($canChange, $saveOrder, $orderkey);
-echo $r->td(JHtml::_('grid.id', $i, $item->id), "small hidden-phone");
-					
+echo $r->tdOrder($canChange, $saveOrder, $orderkey, $item->ordering);
+//echo $r->td(JHtml::_('grid.id', $i, $item->id), "small hidden-phone");
+echo $r->td('');					
 $checkO = '';
-if ($item->checked_out) {
+/*if ($item->checked_out) {
 	$checkO .= JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, $this->t['tasks'].'.', $canCheckin);
 }
 if ($canCreate || $canEdit) {
 	$checkO .= '<a href="'. JRoute::_($linkEdit).'">'. $this->escape($item->title).'</a>';
-} else {
+} else {*/
 	$checkO .= $this->escape($item->title);
-}
+//}
 $checkO .= '<br /><span class="smallsub">(<span>'.JText::_($this->t['l'].'_FIELD_ALIAS_LABEL').':</span>'. $this->escape($item->alias).')</span>';
 echo $r->td($checkO, "small hidden-phone");
 
@@ -142,7 +145,8 @@ echo '</tbody>'. "\n";
 echo $r->tblFoot($this->pagination->getListFooter(), 5);
 echo $r->endTable();
 
-echo $r->formInputs($listOrder, $originalOrders);
+//echo $r->formInputs($listOrder, $originalOrders);
+echo $r->formInputs($listOrder, $listDirn, $originalOrders);
 echo $r->endMainContainer();
 echo $r->endForm();
 ?>

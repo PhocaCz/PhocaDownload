@@ -21,7 +21,7 @@ class PhocaDownloadCpModelPhocaDownloadUpload extends JModelLegacy
 			//. ' AND ( checked_out = 0 OR ( checked_out = '.(int) $user->get('id').' ) )';
 		$this->_db->setQuery( $query );
 		if (!$this->_db->query()) {
-			$this->setError($this->_db->getErrorMsg());
+			throw new Exception($this->_db->getErrorMsg(), 500);
 			return false;
 		}
 		return true;

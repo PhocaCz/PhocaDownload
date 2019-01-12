@@ -13,7 +13,7 @@ class PhocaDownloadLayoutsHelper
 	public static function getActions($t, $id = 0) {
 		$user		= JFactory::getUser();
 		$result		= new JObject;
-		
+
 		if (empty($id)) {
 			$assetName = $t['o'];
 		} else {
@@ -26,21 +26,22 @@ class PhocaDownloadLayoutsHelper
 		}
 		return $result;
 	}
-	
+
 	public static function getTableId() {
-		
+
 		$idString 	= '';
 		$db 		= JFactory::getDBO();
 		$query 		= ' SELECT a.id'
 					.' FROM #__phocadownload_layout AS a';
 		$db->setQuery($query, 0,1);
-		
-		if (!$db->query()) {
-			$this->setError('Database Error - Getting Layout ID');
+
+		/*if (!$db->query()) {
+
+			throw new Exception('Database Error - Getting Layout ID', 500);
 			return false;
-		}
+		}*/
 		$idO 		= $db->loadObject();
-		
+
 		//First autoincrement line can be different
 		if (isset($idO->id) && $idO->id > 0) {
 			$idString 	= '&id='.(int)$idO->id;

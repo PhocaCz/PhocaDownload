@@ -11,7 +11,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 class PhocaDownloadRenderAdminViews
 {
 	public function __construct(){}
-	
+
 	public function jsJorderTable($listOrder) {
 		return '<script type="text/javascript">' . "\n"
 		.'Joomla.orderTable = function() {' . "\n"
@@ -27,68 +27,93 @@ class PhocaDownloadRenderAdminViews
 		.'}' . "\n"
 		.'</script>' . "\n";
 	}
-	
+
 	public function startForm($option, $view, $id = 'adminForm', $name = 'adminForm') {
 		return '<div id="'.$view.'"><form action="'.JRoute::_('index.php?option='.$option.'&view='.$view).'" method="post" name="'.$name.'" id="'.$id.'">'."\n";
 	}
-	
+
 	public function endForm() {
 		return '</form>'."\n".'</div>'."\n";
 	}
-	
-	public function startFilter($txtFilter){
-		$o = '<div id="j-sidebar-container" class="span2">'."\n"
-		. JHtmlSidebar::render()."\n"
-		. '<hr />'."\n";
-		$o .= '<div class="filter-select hidden-phone">'."\n"
-		. '<h4 class="page-header">'. JText::_($txtFilter).'</h4>'."\n";
+
+	public function startFilter($txtFilter = ''){
+		$o = '<div id="j-sidebar-container" class="span2">'."\n". JHtmlSidebar::render()."\n";
+
+
+		if ($txtFilter != '') {
+			$o .= '<hr />'."\n" . '<div class="filter-select ">'."\n"
+
+			. '<h4 class="page-header">'. JText::_($txtFilter).'</h4>'."\n";
+		} else {
+			$o .= '<div>';
+		}
+
 		return $o;
 	}
 
 	public function endFilter() {
 		return '</div>' . "\n" . '</div>' . "\n";
 	}
-	
+
 	public function selectFilterPublished($txtSp, $state) {
-		return'<select name="filter_published" class="inputbox" onchange="this.form.submit()">'."\n"
+		return '<div class="btn-group pull-right ph-select-status">'. "\n"
+		.'<select name="filter_published" class="inputbox" onchange="this.form.submit()">'."\n"
 		. '<option value="">'.JText::_($txtSp).'</option>'
 		. JHtml::_('select.options', JHtml::_('jgrid.publishedOptions', array('archived' => 0, 'trash' => 0)), 'value', 'text', $state, true)
-		.'</select>'. "\n";
+		.'</select></div>'. "\n";
 	}
-	
+
 	public function selectFilterType($txtSp, $type, $typeList) {
-		return'<select name="filter_type" class="inputbox" onchange="this.form.submit()">'."\n"
+		return '<div class="btn-group pull-right">'. "\n"
+		.'<select name="filter_type" class="inputbox" onchange="this.form.submit()">'."\n"
 		. '<option value="">'.JText::_($txtSp).'</option>'
 		. JHtml::_('select.options', $typeList, 'value', 'text', $type, true)
-		.'</select>'. "\n";
+		.'</select></div>'. "\n";
 	}
-	
+
 	public function selectFilterLanguage($txtLng, $state) {
-		return'<select name="filter_language" class="inputbox" onchange="this.form.submit()">'."\n"
+		return '<div class="btn-group pull-right">'. "\n"
+		.'<select name="filter_language" class="inputbox" onchange="this.form.submit()">'."\n"
 		. '<option value="">'.JText::_($txtLng).'</option>'
 		. JHtml::_('select.options', JHtml::_('contentlanguage.existing', true, true), 'value', 'text', $state)
-		.'</select>'. "\n";
+		.'</select></div>'. "\n";
 	}
-	
+
 	public function selectFilterCategory($categoryList, $txtLng, $state) {
-		return '<select name="filter_category_id" class="inputbox" onchange="this.form.submit()">'."\n"
+		return '<div class="btn-group pull-right ">'. "\n"
+		.'<select name="filter_category_id" class="inputbox" onchange="this.form.submit()">'."\n"
 		. '<option value="">'.JText::_($txtLng).'</option>'
 		. JHtml::_('select.options', $categoryList, 'value', 'text', $state)
-		. '</select>'. "\n";
+		. '</select></div>'. "\n";
 	}
-	
+
+	public function selectFilterLevels($txtLng, $state) {
+		$levelList = array(1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5);
+		return
+		'<div class="btn-group pull-right">'. "\n"
+		.'<select name="filter_level" class="inputbox" onchange="this.form.submit()">'."\n"
+		. '<option value="">'.JText::_($txtLng).'</option>'
+		. JHtml::_('select.options', $levelList, 'value', 'text', $state)
+		. '</select></div>'. "\n";
+	}
+
 	public function startMainContainer() {
 		return '<div id="j-main-container" class="span10">'. "\n";
 	}
-	
+
 	public function endMainContainer() {
 		return '</div>'. "\n";
 	}
-	
-	public function startFilterBar() {
-		return '<div id="filter-bar" class="btn-toolbar">'. "\n";
+
+	public function startFilterBar($id = 0) {
+		if ((int)$id > 0) {
+			return '<div id="filter-bar'.$id.'" class="btn-toolbar ph-btn-toolbar-'.$id.'">'. "\n";
+		} else {
+			return '<div id="filter-bar'.$id.'" class="btn-toolbar">'. "\n";
+		}
+
 	}
-	
+
 	public function endFilterBar() {
 		return '</div>' . "\n" . '<div class="clearfix"> </div>'. "\n";
 	}
@@ -100,21 +125,30 @@ class PhocaDownloadRenderAdminViews
 		.' value="'.$state.'" title="'.JText::_($txtSd).'" />'. "\n"
 		.'</div>'. "\n";
 	}
-	
+
+	/*public function inputFilterSearchClear($txtFs, $txtFc) {
+		return '<div class="btn-group pull-left hidden-phone">'. "\n"
+		.'<button class="btn tip hasTooltip" type="submit" title="'.JText::_($txtFs).'"><i class="icon-search"></i></button>'. "\n"
+		.'<button class="btn tip hasTooltip" type="button" onclick="document.getElementById(\'filter_search\').value=\'\';this.form.submit();"'
+		.' title="'.JText::_($txtFc).'"><i class="icon-remove"></i></button>'. "\n"
+		.'</div>'. "\n";
+	}*/
+
 	public function inputFilterSearchClear($txtFs, $txtFc) {
 		return '<div class="btn-group pull-left hidden-phone">'. "\n"
 		.'<button class="btn tip hasTooltip" type="submit" title="'.JText::_($txtFs).'"><i class="icon-search"></i></button>'. "\n"
-		.'<button class="btn tip hasTooltip" type="button" onclick="document.id(\'filter_search\').value=\'\';this.form.submit();"'
+		.'<button class="btn tip hasTooltip" type="button" onclick="document.getElementById(\'filter_search\').value=\'\';this.form.submit();"'
 		.' title="'.JText::_($txtFc).'"><i class="icon-remove"></i></button>'. "\n"
 		.'</div>'. "\n";
 	}
-	
-	public function inputFilterSearchLimit($txtSl, $paginationLimitBox) {			
+
+
+	public function inputFilterSearchLimit($txtSl, $paginationLimitBox) {
 		return '<div class="btn-group pull-right hidden-phone">'. "\n"
 		.'<label for="limit" class="element-invisible">'.JText::_($txtSl).'</label>'. "\n"
 		.$paginationLimitBox ."\n" . '</div>'. "\n";
 	}
-	
+
 	public function selectFilterDirection($txtOd, $txtOasc, $txtOdesc, $listDirn) {
 		$ascDir = $descDir = '';
 		if ($listDirn == 'asc') {$ascDir = 'selected="selected"';}
@@ -128,7 +162,7 @@ class PhocaDownloadRenderAdminViews
 		.'</select>'. "\n"
 		.'</div>'. "\n";
 	}
-	
+
 	public function selectFilterSortBy($txtSb, $sortFields, $listOrder) {
 		return '<div class="btn-group pull-right">'. "\n"
 		.'<label for="sortTable" class="element-invisible">'.JText::_($txtSb).'</label>'. "\n"
@@ -138,40 +172,40 @@ class PhocaDownloadRenderAdminViews
 		.'</select>'. "\n"
 		.'</div>'. "\n";
 	}
-	
+
 	public function startTable($id) {
 		return '<table class="table table-striped" id="'.$id.'">'. "\n";
 	}
-	
+
 	public function endTable() {
 		return '</table>'. "\n";
 	}
 	public function tblFoot($listFooter, $columns) {
 		return '<tfoot>' . "\n" . '<tr><td colspan="'.(int)$columns.'">'.$listFooter.'</td></tr>'. "\n".'</tfoot>'. "\n";
 	}
-	
+
 	public function startTblHeader() {
 		return 	'<thead>'."\n".'<tr>'."\n";
 	}
-	
+
 	public function endTblHeader() {
 		return 	'</tr>'."\n".'</thead>'."\n";
 	}
-	
+
 	public function thOrdering($txtHo, $listDirn, $listOrder ) {
 		return '<th class="nowrap center hidden-phone ph-ordering">'. "\n"
 		. JHtml::_('grid.sort', '<i class="icon-menu-2"></i>', 'a.ordering', $listDirn, $listOrder, null, 'asc', $txtHo). "\n"
 		. '</th>';
 	}
-	
+
 	public function thCheck($txtCh) {
 		return '<th class="hidden-phone ph-check">'. "\n"
 		.'<input type="checkbox" name="checkall-toggle" value="" title="'.JText::_($txtCh).'" onclick="Joomla.checkAll(this)" />'. "\n"
 		.'</th>'. "\n";
 	}
-	
-	public function tdOrder($canChange, $saveOrder, $orderkey){
-	
+
+	public function tdOrder($canChange, $saveOrder, $orderkey, $ordering = 0){
+
 		$o = '<td class="order nowrap center hidden-phone">'. "\n";
 		if ($canChange) {
 			$disableClassName = '';
@@ -184,12 +218,12 @@ class PhocaDownloadRenderAdminViews
 		} else {
 			$o .= '<span class="sortable-handler inactive"><i class="icon-menu"></i></span>'."\n";
 		}
-		$orderkeyPlus = $orderkey + 1;
+		$orderkeyPlus = $ordering;//$orderkey + 1;
 		$o .= '<input type="text" style="display:none" name="order[]" size="5" value="'.$orderkeyPlus.'" />'. "\n"
-		.'</td>'. "\n"; 
+		.'</td>'. "\n";
 		return $o;
 	}
-	
+
 	public function tdRating($ratingAvg) {
 		$o = '<td class="small hidden-phone">';
 		$voteAvg 		= round(((float)$ratingAvg / 0.5)) * 0.5;
@@ -201,13 +235,13 @@ class PhocaDownloadRenderAdminViews
 		for ($ir = 2;$ir < 6;$ir++) {
 			$o .= '<li><span class="stars'.$ir.'"></span></li>';
 		}
-		$o .= '</ul>';			
+		$o .= '</ul>';
 		$o .='</td>'. "\n";
 		return $o;
 	}
-	
+
 	public function tdLanguage($lang, $langTitle, $langTitleE ) {
-	
+
 		$o = '<td class="small nowrap hidden-phone">';
 		if ($lang == '*') {
 			$o .= JText::_('JALL');
@@ -221,17 +255,27 @@ class PhocaDownloadRenderAdminViews
 		$o .= '</td>'. "\n";
 		return $o;
 	}
-	
-	public function formInputs($listOrder, $originalOrders) {
-	
+
+	/*public function formInputs($listOrder, $originalOrders) {
+
 		return '<input type="hidden" name="task" value="" />'. "\n"
 		.'<input type="hidden" name="boxchecked" value="0" />'. "\n"
 		.'<input type="hidden" name="filter_order" value="'.$listOrder.'" />'. "\n"
 		.'<input type="hidden" name="filter_order_Dir" value="" />'. "\n"
 		. JHtml::_('form.token'). "\n"
 		.'<input type="hidden" name="original_order_values" value="'. implode($originalOrders, ',').'" />'. "\n";
+	}*/
+
+	public function formInputs($listOrder, $listDirn, $originalOrders) {
+
+		return '<input type="hidden" name="task" value="" />'. "\n"
+		.'<input type="hidden" name="boxchecked" value="0" />'. "\n"
+		.'<input type="hidden" name="filter_order" value="'.$listOrder.'" />'. "\n"
+		.'<input type="hidden" name="filter_order_Dir" value="'.$listDirn.'" />'. "\n"
+		. JHtml::_('form.token'). "\n"
+		.'<input type="hidden" name="original_order_values" value="'. implode($originalOrders, ',').'" />'. "\n";
 	}
-	
+
 	public function td($value, $class = '') {
 		if ($class != ''){
 			return '<td class="'.$class.'">'. $value.'</td>'. "\n";
@@ -239,8 +283,8 @@ class PhocaDownloadRenderAdminViews
 			return '<td>'. $value.'</td>'. "\n";
 		}
 	}
-	
-	/* TODO:
+
+	/*
 	* CHANGE PATHS
 	* SET NEW PARAM IN PG: '/media/com_phocagallery/images/administrator/'
 	*/
@@ -252,7 +296,7 @@ class PhocaDownloadRenderAdminViews
 			.'   <div class="phocagallery-box-file-second">'. "\n"
 			.'    <div class="phocagallery-box-file-third">'. "\n"
 			.'     <center>'. "\n";
-			
+
 		if ($avatarAbs != '' && $avatarRel != '') {
 			// AVATAR
 			if (JFile::exists($avatarAbs.$item->avatar)){
@@ -265,24 +309,24 @@ class PhocaDownloadRenderAdminViews
 			} else {
 				$o .= JHTML::_( 'image', '/media/com_phocagallery/images/administrator/phoca_thumb_s_no_image.gif', '');
 			}
-		} else {	
+		} else {
 			// PICASA
-			if (isset($item->extid) && $item->extid !='') {									
-				
+			if (isset($item->extid) && $item->extid !='') {
+
 				$resW				= explode(',', $item->extw);
 				$resH				= explode(',', $item->exth);
 				$correctImageRes 	= PhocaGalleryImage::correctSizeWithRate($resW[2], $resH[2], 50, 50);
 				$imgLink			= $item->extl;
-				
+
 				$o .= '<a class="'. $button->modalname.'" title="'.$button->text.'" href="'. $imgLink .'" rel="'. $button->options.'" >'
 				. '<img src="'.$item->exts.'?imagesid='.md5(uniqid(time())).'" width="'.$correctImageRes['width'].'" height="'.$correctImageRes['height'].'" alt="'.JText::_($txtE).'" />'
 				.'</a>'. "\n";
 			} else if (isset ($item->fileoriginalexist) && $item->fileoriginalexist == 1) {
-				
+
 				$imageRes			= PhocaGalleryImage::getRealImageSize($item->filename, 'small');
 				$correctImageRes 	= PhocaGalleryImage::correctSizeWithRate($imageRes['w'], $imageRes['h'], 50, 50);
 				$imgLink			= PhocaGalleryFileThumbnail::getThumbnailName($item->filename, 'large');
-				
+
 				$o .= '<a class="'. $button->modalname.'" title="'. $button->text.'" href="'. JURI::root(). $imgLink->rel.'" rel="'. $button->options.'" >'
 				. '<img src="'.JURI::root().$item->linkthumbnailpath.'?imagesid='.md5(uniqid(time())).'" width="'.$correctImageRes['width'].'" height="'.$correctImageRes['height'].'" alt="'.JText::_($txtE).'" />'
 				.'</a>'. "\n";
@@ -299,10 +343,10 @@ class PhocaDownloadRenderAdminViews
 		$o .=  '</td>'. "\n";
 		return $o;
 	}
-	
-	
+
+
 	public function tdPublishDownUp ($publishUp, $publishDown, $langPref) {
-		
+
 		$o				= '';
 		$db				= JFactory::getDBO();
 		//$app			= JFactory::getApplication();
@@ -314,8 +358,8 @@ class PhocaDownloadRenderAdminViews
 		//$tz 			= new DateTimeZone($config->get('offset'));
 		//$publish_up->setTimezone($tz);
 		//$publish_down->setTimezone($tz);
-		
-		
+
+
 		if ( $now->toUnix() <= $publish_up->toUnix() ) {
 			$text = JText::_( $langPref . '_PENDING' );
 		} else if ( ( $now->toUnix() <= $publish_down->toUnix() || $publishDown == $nullDate ) ) {

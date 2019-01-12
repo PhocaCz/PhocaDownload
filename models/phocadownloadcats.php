@@ -12,7 +12,9 @@ jimport('joomla.application.component.modellist');
 
 class PhocaDownloadCpModelPhocaDownloadCats extends JModelList
 {
-	protected	$option 		= 'com_phocadownload';	
+	protected $option 		= 'com_phocadownload';	
+	protected $total		= 0;
+	
 	public function __construct($config = array())
 	{
 		if (empty($config['filter_fields'])) {
@@ -52,6 +54,10 @@ class PhocaDownloadCpModelPhocaDownloadCats extends JModelList
 
 		$state = $app->getUserStateFromRequest($this->context.'.filter.state', 'filter_published', '', 'string');
 		$this->setState('filter.state', $state);
+		
+		// Not used in SQL - used in view in recursive category tree function
+		$levels = $app->getUserStateFromRequest($this->context.'.filter.level', 'filter_level', '', 'string');
+		$this->setState('filter.level', $levels);
 
 		$categoryId = $app->getUserStateFromRequest($this->context.'.filter.parent_id', 'filter_parent_id', null);
 		$this->setState('filter.parent_id', $categoryId);
@@ -99,14 +105,25 @@ class PhocaDownloadCpModelPhocaDownloadCats extends JModelList
 		}
 
 		// Load the list items.
-		$query	= $this->getListQuery();
+		//$query	= $this->getListQuery();
 		//$items	= $this->_getList($query, $this->getState('list.start'), $this->getState('list.limit'));
-
-		$items	= $this->_getList($query);
+		//$items	= $this->_getList($query);
 		
 		// Check for a database error.
-		if ($this->_db->getErrorNum()) {
-			$this->setError($this->_db->getErrorMsg());
+/*		if ($this->_db->getErrorNum()) {
+			throw new Exception($this->_db->getErrorMsg(), 500);
+			return false;
+		}*/
+		
+		try {
+			// Load the list items.
+			$query	= $this->getListQuery();
+			//$items	= $this->_getList($query, $this->getState('list.start'), $this->getState('list.limit'));
+
+			$items	= $this->_getList($query);
+		} catch (RuntimeException $e) {
+			
+			throw new Exception($e->getMessage(), 500);
 			return false;
 		}
 
@@ -217,7 +234,7 @@ class PhocaDownloadCpModelPhocaDownloadCats extends JModelList
 			}
 		}
 		
-		$query->group('a.id');
+		//$query->group('a.id');
 
 		// Add the list ordering clause.
 		$orderCol	= $this->state->get('list.ordering', 'title');
@@ -231,6 +248,45 @@ class PhocaDownloadCpModelPhocaDownloadCats extends JModelList
 		
 		
 		return $query;
+	}
+	
+	public function getTotal() {
+		$store = $this->getStoreId('getTotal');
+		if (isset($this->cache[$store])) {
+			return $this->cache[$store];
+		}
+
+		// PHOCAEDIT
+		if (isset($this->total) && (int)$this->total > 0) {
+			$total = (int)$this->total;
+		} else {
+			$query = $this->_getListQuery();
+
+			try {
+				$total = (int) $this->_getListCount($query);
+			}
+			catch (RuntimeException $e) {
+				
+				throw new Exception($e->getMessage(), 500);
+
+				return false;
+			}
+		}
+
+		$this->cache[$store] = $total;
+		return $this->cache[$store];
+	}
+	
+	public function setTotal($total) {
+		// When we use new total and new pagination, we need to clean their cache
+		$store1 = $this->getStoreId('getTotal');
+		$store2 = $this->getStoreId('getStart');
+		$store3 = $this->getStoreId('getPagination');
+		
+		unset($this->cache[$store1]);
+		unset($this->cache[$store2]);
+		unset($this->cache[$store3]);
+		$this->total = (int)$total;
 	}
 
 }

@@ -19,7 +19,7 @@ class PhocaDownloadCpModelPhocaDownloadLog extends JModelLegacy
 		$query = 'TRUNCATE #__phocadownload_logging';
 		$this->_db->setQuery( $query );
 		if (!$this->_db->query()) {
-			$this->setError($this->_db->getErrorMsg());
+			throw new Exception($this->_db->getErrorMsg(), 500);
 			return false;
 		}
 		return true;
