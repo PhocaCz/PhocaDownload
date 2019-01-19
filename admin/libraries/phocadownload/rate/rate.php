@@ -261,7 +261,7 @@ class PhocaDownloadRate
 							dataType:\'JSON\',
 							success:function(data2){
 								if ( data2.status == 1 ){
-									alert(data2.status);
+									
 									jQuery(resultvoting).html(data2.message);
 								} else {
 								   jQuery(resultvoting).html(data2.message);
