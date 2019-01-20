@@ -6,7 +6,6 @@
 	"projectName": "PhocaDownload",
 	"extensionName": "Phoca Download",
 	"description": "Phoca Download is download manager for Joomla! CMS. It includes component, modules and plugins and allows displaying files on website which can be downloaded (previewed, played) by website visitiors.",
-	"scriptFile": "script.php",
 	"menu": {
 		"main":{
 			"0" : {
