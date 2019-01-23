@@ -1,7 +1,7 @@
 <updates>
 	<update>
 		<name><![CDATA[ Phoca Download ]]></name>
-		<description><![CDATA[ Phoca Download is download manager for Joomla! CMS. It includes component, modules and plugins and allows displaying files on website which can be downloaded (previewed, played) by website visitiors. ]]></description>
+		<description><![CDATA[ Phoca Download is download manager for Joomla! CMS. It includes component, modules and plugins and allows displaying files on website which can be downloaded (previewed, played) by website visitors. ]]></description>
 		<element>com_phocadownload</element>
 		<type>component</type>
 		<version>3.1.6</version>

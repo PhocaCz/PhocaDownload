@@ -1,0 +1,109 @@
+{
+	"author": "Jan Pavelka (www.phoca.cz)",
+	"authorUrl": "https://www.phoca.cz",
+	"copyright": "Jan Pavelka",
+	"license": "GNU/GPL",
+	"projectName": "PhocaDownload",
+	"extensionName": "Phoca Download",
+	"projectInitials" : "PD",
+	"description": "Phoca Download is download manager for Joomla! CMS. It includes component, modules and plugins and allows displaying files on website which can be downloaded (previewed, played) by website visitors.",
+	"projectUrl": "https://www.phoca.cz/phocadownload",
+	"projectDocumentationUrl": "https://www.phoca.cz/documentation/category/17-phoca-download-component",
+	"projectDemo" : {
+		"Joomla! 3 Demo": "https://www.phoca.cz/joomla3demo/",
+		"Joomla! 2.5 Demo": "https://www.phoca.cz/joomlademo/",
+		"Joomla! 1.5 Demo": "https://www.phoca.cz/demo/"
+
+	},
+	"projectColor": "#339933",
+	"menu": {
+		"main":{
+			"0" : {
+				"image": "icon-16-pdl-menu.png",
+				"view": "",
+				"link": "option=com_phocadownload",
+				"title": "COM_PHOCADOWNLOAD"
+			}
+		},
+		"submenu": {
+			"0" : {
+				"image": "icon-16-pdl-control-panel.png",
+				"view": "phocadownloadcp",
+				"link": "option=com_phocadownload",
+				"title": "COM_PHOCADOWNLOAD_CONTROLPANEL"
+			},
+			"1" : {
+				"image": "icon-16-pdl-menu-files.png",
+				"view": "phocadownloadfiles",
+				"link": "option=com_phocadownload&amp;view=phocadownloadfiles",
+				"title": "COM_PHOCADOWNLOAD_FILES"
+			},
+			"2" : {
+				"image": "icon-16-pdl-menu-category.png",
+				"view": "phocadownloadcats",
+				"link": "option=com_phocadownload&amp;view=phocadownloadcats",
+				"title": "COM_PHOCADOWNLOAD_CATEGORIES"
+			},
+			"3" : {
+				"image": "icon-16-pdl-menu-lic.png",
+				"view": "phocadownloadlics",
+				"link": "option=com_phocadownload&amp;view=phocadownloadlics",
+				"title": "COM_PHOCADOWNLOAD_LICENSES"
+			},
+			"4" : {
+				"image": "icon-16-pdl-menu-stat.png",
+				"view": "phocadownloadstat",
+				"link": "option=com_phocadownload&amp;view=phocadownloadstat",
+				"title": "COM_PHOCADOWNLOAD_STATISTICS"
+			},
+			"5" : {
+				"image": "icon-16-pdl-menu-downloads.png",
+				"view": "phocadownloaddownloads",
+				"link": "option=com_phocadownload&amp;view=phocadownloaddownloads",
+				"title": "COM_PHOCADOWNLOAD_DOWNLOADS"
+			},
+			"6" : {
+				"image": "icon-16-pdl-menu-uploads.png",
+				"view": "phocadownloaduploads",
+				"link": "option=com_phocadownload&amp;view=phocadownloaduploads",
+				"title": "COM_PHOCADOWNLOAD_UPLOADS"
+			},
+			"7": {
+				"image": "icon-16-pdl-menu-vote-file.png",
+				"view": "phocadownloadrafile",
+				"link": "option=com_phocadownload&amp;view=phocadownloadrafile",
+				"title": "COM_PHOCADOWNLOAD_FILE_RATING"
+			},
+			"8": {
+				"image": "icon-16-pdl-menu-tags.png",
+				"view": "phocadownloadtags",
+				"link": "option=com_phocadownload&amp;view=phocadownloadtags",
+				"title": "COM_PHOCADOWNLOAD_TAGS"
+			},
+			"9": {
+				"image": "icon-16-pdl-menu-layout.png",
+				"view": "phocadownloadlayouts",
+				"link": "option=com_phocadownload&amp;view=phocadownloadlayouts",
+				"title": "COM_PHOCADOWNLOAD_LAYOUT"
+			},
+			"10": {
+				"image": "icon-16-pdl-menu-style.png",
+				"view": "phocadownloadstyles",
+				"link": "option=com_phocadownload&amp;view=phocadownloadstyles",
+				"title": "COM_PHOCADOWNLOAD_STYLES"
+			},
+			"11": {
+				"image": "icon-16-pdl-menu-logs.png",
+				"view": "phocadownloadlogs",
+				"link": "option=com_phocadownload&amp;view=phocadownloadlogs",
+				"title": "COM_PHOCADOWNLOAD_LOGGING"
+			},
+			"12": {
+				"image": "icon-16-pdl-menu-info.png",
+				"view": "phocadownloadinfo",
+				"link": "option=com_phocadownload&amp;view=phocadownloadinfo",
+				"title": "COM_PHOCADOWNLOAD_INFO"
+			}
+		}
+	}
+}

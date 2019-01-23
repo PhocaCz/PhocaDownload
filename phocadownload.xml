@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension method="upgrade" type="component" version="3">
+<extension type="component" method="upgrade" version="3">
 	<name>com_phocadownload</name>
 	<author>Jan Pavelka (www.phoca.cz)</author>
-	<creationDate>19/01/2019</creationDate>
+	<creationDate>23/01/2019</creationDate>
 	<authorEmail></authorEmail>
 	<authorUrl>https://www.phoca.cz</authorUrl>
 	<copyright>Jan Pavelka</copyright>
@@ -10,6 +10,7 @@
 	<version>3.1.6</version>
 	<description>COM_PHOCADOWNLOAD_XML_DESCRIPTION</description>
 	<scriptfile>script.php</scriptfile>
+	<projectName>PhocaDownload</projectName>
 
 	<install>
 		<sql>
@@ -88,7 +89,6 @@
 			<filename>config.xml</filename>
 			<filename>controller.php</filename>
 			<filename>index.html</filename>
-			<filename>info.json</filename>
 			<filename>phocadownload.php</filename>
 		</files>
 
@@ -97,8 +97,9 @@
 			<language tag="en-GB">en-GB/en-GB.com_phocadownload.sys.ini</language>
 		</languages>
 	</administration>
+	
 
 	<updateservers>
-		<server type="extension" name="com_phocadownload">https://raw.githubusercontent.com/PhocaCz/PhocaDownload/master/manifest.xml</server>
+		<server type="extension" name="COM_PHOCADOWNLOAD"><![CDATA[https://raw.githubusercontent.com/PhocaCz/PhocaDownload/master/manifest.xml]]></server>
 	</updateservers>
 </extension>
