@@ -9,6 +9,8 @@
 
 <field name="alias" type="text" class="inputbox" size="40" label="COM_PHOCADOWNLOAD_FIELD_ALIAS_LABEL" description="COM_PHOCADOWNLOAD_FIELD_ALIAS_DESC" />
 
+<field name="project_name" type="text" class="inputbox" size="128" label="COM_PHOCADOWNLOAD_FIELD_PROJECT_NAME_LABEL" description="COM_PHOCADOWNLOAD_FIELD_PROJECT_NAME_DESC" />
+
 <field name="parent_id" type="phocadownloadcategory" label="COM_PHOCADOWNLOAD_FIELD_PARENT_CATEGORY_LABEL" description="COM_PHOCADOWNLOAD_FIELD_PARENT_CATEGORY_DESC" class="inputbox" />
 
 
@@ -25,7 +27,7 @@
 
 <field name="image" type="phocaselectfilename" manager="image" label="COM_PHOCADOWNLOAD_FIELD_CATEGORY_IMAGE_LABEL"  description="COM_PHOCADOWNLOAD_FIELD_CATEGORY_IMAGE_DESC" class="inputbox" size="40" />
 
-			
+
 <field name="description" type="editor" buttons="true" hide="pagebreak,readmore" class="inputbox" label="COM_PHOCADOWNLOAD_FIELD_DESCRIPTION_LABEL" filter="JComponentHelper::filterText" description="COM_PHOCADOWNLOAD_FIELD_DESCRIPTION_DESC" />
 
 
@@ -38,10 +40,10 @@
 <field name="metadesc" type="textarea"
 	label="JField_Meta_Description_Label" description="JField_Meta_Description_Desc"
 	class="inputbox" rows="3" cols="30" />
-			
+
 
 	</fieldset>
-	
+
 	<fieldset name="publish" label="COM_PHOCADOWNLOAD_GROUP_LABEL_PUBLISHING_DETAILS" >
 
 <field name="published" type="list" label="COM_PHOCADOWNLOAD_FIELD_PUBLISHED_LABEL" description="COM_PHOCADOWNLOAD_FIELD_PUBLISHED_DESC" class="inputbox" size="1" default="1">
@@ -60,7 +62,7 @@
 <field name="hits" type="Text" class="inputbox" size="6" label="COM_PHOCADOWNLOAD_FIELD_HITS" description="COM_PHOCADOWNLOAD_FIELD_HITS_DESC" />
 -->
 	</fieldset>
-	
+
 <fields name="metadata">
 <fieldset name="metadata" label="JGLOBAL_FIELDSET_METADATA_OPTIONS">
 <!--
@@ -84,5 +86,5 @@
 </fieldset>
 </fields>
 
-	
+
 </form>

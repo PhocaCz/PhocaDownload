@@ -24,8 +24,8 @@ Joomla.submitbutton = function(task) {
 	else {
 		Joomla.renderMessages({"error": ["<?php echo JText::_('JGLOBAL_VALIDATION_FORM_FAILED', true);?>"]});
 		<?php /* alert('<?php echo JText::_('JGLOBAL_VALIDATION_FORM_FAILED', true);?>'); */ ?>
-		
-		
+
+
 	}
 }
 </script><?php
@@ -40,14 +40,14 @@ echo $r->navigation($tabs);
 
 echo '<div class="tab-content">'. "\n";
 
-echo '<div class="tab-pane active" id="general">'."\n"; 
-$formArray = array ('title', 'alias', 'parent_id', 'image', 'ordering', 'access', 'accessuserid', 'uploaduserid', 'deleteuserid');
+echo '<div class="tab-pane active" id="general">'."\n";
+$formArray = array ('title', 'alias', 'parent_id', 'image', 'project_name', 'ordering', 'access', 'accessuserid', 'uploaduserid', 'deleteuserid');
 echo $r->group($this->form, $formArray);
 $formArray = array('description');
 echo $r->group($this->form, $formArray, 1);
 echo '</div>'. "\n";
 
-echo '<div class="tab-pane" id="publishing">'."\n"; 
+echo '<div class="tab-pane" id="publishing">'."\n";
 foreach($this->form->getFieldset('publish') as $field) {
 	echo '<div class="control-group">';
 	if (!$field->hidden) {
@@ -58,12 +58,12 @@ foreach($this->form->getFieldset('publish') as $field) {
 	echo '</div></div>';
 }
 echo '</div>';
-				
+
 echo '<div class="tab-pane" id="metadata">'. "\n";
 echo $this->loadTemplate('metadata');
 echo '</div>'. "\n";
-	
-				
+
+
 echo '</div>';//end tab content
 echo '</div>';//end span10
 // Second Column

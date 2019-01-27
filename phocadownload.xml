@@ -2,12 +2,12 @@
 <extension type="component" method="upgrade" version="3">
 	<name>com_phocadownload</name>
 	<author>Jan Pavelka (www.phoca.cz)</author>
-	<creationDate>23/01/2019</creationDate>
+	<creationDate>27/01/2019</creationDate>
 	<authorEmail></authorEmail>
 	<authorUrl>https://www.phoca.cz</authorUrl>
 	<copyright>Jan Pavelka</copyright>
 	<license>GNU/GPL</license>
-	<version>3.1.6</version>
+	<version>3.1.7</version>
 	<description>COM_PHOCADOWNLOAD_XML_DESCRIPTION</description>
 	<scriptfile>script.php</scriptfile>
 	<projectName>PhocaDownload</projectName>
@@ -90,6 +90,7 @@
 			<filename>controller.php</filename>
 			<filename>index.html</filename>
 			<filename>phocadownload.php</filename>
+			<filename>script.php</filename>
 		</files>
 
 		<languages folder="admin/language">
@@ -97,6 +98,7 @@
 			<language tag="en-GB">en-GB/en-GB.com_phocadownload.sys.ini</language>
 		</languages>
 	</administration>
+	
 	
 
 	<updateservers>

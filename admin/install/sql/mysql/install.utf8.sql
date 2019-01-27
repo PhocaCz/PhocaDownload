@@ -17,6 +17,7 @@ CREATE TABLE IF NOT EXISTS `#__phocadownload_categories` (
   `title` varchar(255) NOT NULL default '',
   `name` varchar(255) NOT NULL default '',
   `alias` varchar(255) NOT NULL default '',
+  `project_name` varchar(255) NOT NULL default '',
   `image` varchar(255) NOT NULL default '',
   `image_position` varchar(30) NOT NULL default '',
   `description` text,
@@ -51,6 +52,7 @@ CREATE TABLE IF NOT EXISTS `#__phocadownload` (
   `owner_id` int(11) NOT NULL default 0,
   `title` varchar(250) NOT NULL default '',
   `alias` varchar(255) NOT NULL default '',
+  `project_name` varchar(255) NOT NULL default '',
   `filename` varchar(250) NOT NULL default '',
   `filename_play` varchar(250) NOT NULL default '',
   `filename_preview` varchar(250) NOT NULL default '',
@@ -273,6 +275,6 @@ CREATE TABLE IF NOT EXISTS `#__phocadownload_logging` (
   `page` varchar(255) NOT NULL,
   `date` datetime NOT NULL default '0000-00-00 00:00:00',
   `type` tinyint(1) NOT NULL DEFAULT '0',
-  `params` text NOT NULL,
+  `params` text,
   PRIMARY KEY  (`id`)
 ) DEFAULT CHARSET=utf8 ;

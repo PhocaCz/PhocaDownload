@@ -7,6 +7,7 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die;
+use Joomla\CMS\Layout\LayoutHelper;
 $published = $this->state->get('filter.state');
 ?>
 <div class="modal hide fade" id="collapseModal">
@@ -18,12 +19,12 @@ $published = $this->state->get('filter.state');
 		<p><?php /* echo JText::_('COM_CONTENT_BATCH_TIP');*/ ?></p>
 		<div class="control-group">
 			<div class="controls">
-				<?php echo JHtml::_('batch.access');?>
+				<?php echo LayoutHelper::render('joomla.html.batch.access', []);?>
 			</div>
 		</div>
 		<div class="control-group">
 			<div class="controls">
-				<?php echo JHtml::_('batch.language'); ?>
+				<?php echo LayoutHelper::render('joomla.html.batch.language', []); ?>
 			</div>
 		</div>
 		<?php if ($published >= 0) : ?>

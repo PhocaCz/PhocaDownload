@@ -12,6 +12,8 @@
 
 <field name="alias" type="text" class="inputbox" size="40" label="COM_PHOCADOWNLOAD_FIELD_ALIAS_LABEL" description="COM_PHOCADOWNLOAD_FIELD_ALIAS_DESC" />
 
+<field name="project_name" type="text" class="inputbox" size="128" label="COM_PHOCADOWNLOAD_FIELD_PROJECT_NAME_LABEL" description="COM_PHOCADOWNLOAD_FIELD_PROJECT_NAME_DESC" />
+
 <field name="catid" type="phocadownloadcategory" label="COM_PHOCADOWNLOAD_FIELD_CATEGORY_LABEL" description="COM_PHOCADOWNLOAD_FIELD_CATEGORY_DESC" class="inputbox" required="true" />
 
 <field name="ordering" type="PhocaDownloadOrdering" table="file" class="inputbox" label="COM_PHOCADOWNLOAD_FIELD_ORDERING_LABEL" description="COM_PHOCADOWNLOAD_FIELD_ORDERING_DESC" />
@@ -80,7 +82,7 @@
 <field name="video_filename" type="text" class="inputbox" size="40" label="COM_PHOCADOWNLOAD_VIDEO_LINK_LABEL" description="COM_PHOCADOWNLOAD_VIDEO_LINK_DESC"  />
 
 
-			
+
 <field name="description" type="editor" buttons="true" hide="pagebreak,readmore" class="inputbox" label="COM_PHOCADOWNLOAD_FIELD_DESCRIPTION_LABEL" filter="JComponentHelper::filterText" description="COM_PHOCADOWNLOAD_FIELD_DESCRIPTION_DESC" />
 <field name="features" type="editor" buttons="true" hide="pagebreak,readmore" class="inputbox" label="COM_PHOCADOWNLOAD_FIELD_FEATURES_LABEL" filter="JComponentHelper::filterText" description="COM_PHOCADOWNLOAD_FIELD_FEATURES_DESC" />
 <field name="changelog" type="editor" buttons="true" hide="pagebreak,readmore" class="inputbox" label="COM_PHOCADOWNLOAD_FIELD_CHANGELOG_LABEL" filter="JComponentHelper::filterText" description="COM_PHOCADOWNLOAD_FIELD_CHANGELOG_DESC" />
@@ -93,12 +95,12 @@
 <field name="metadesc" type="textarea"
 	label="JField_Meta_Description_Label" description="JField_Meta_Description_Desc"
 	class="inputbox" rows="3" cols="30" />
-	
-	
+
+
 
 	</fieldset>
-	
-	
+
+
 	<fieldset name="publish" label="COM_PHOCADOWNLOAD_GROUP_LABEL_PUBLISHING_DETAILS" >
 
 <field name="published" type="list" label="COM_PHOCADOWNLOAD_FIELD_PUBLISHED_LABEL" description="COM_PHOCADOWNLOAD_FIELD_PUBLISHED_DESC" class="inputbox" size="1" default="1">
@@ -129,13 +131,13 @@
 <field name="token" type="phocadownloadtoken" label="COM_PHOCADOWNLOAD_FIELD_TOKEN_LABEL"  description="COM_PHOCADOWNLOAD_FIELD_TOKEN_DESC" class="inputbox" size="40" />
 <field name="tokenhits" type="text" label="COM_PHOCADOWNLOAD_FIELD_TOKENHITS_LABEL"  description="COM_PHOCADOWNLOAD_FIELD_TOKENHITS_DESC" class="inputbox" size="40" />
 
-	
+
 	</fieldset>
-	
+
 <fields name="metadata">
 <fieldset name="metadata" label="JGLOBAL_FIELDSET_METADATA_OPTIONS">
 
-<!--	
+<!--
 	<field name="robots" type="list"
 		label="JField_Metadata_Robots_Label" description="JField_Metadata_Robots_Desc"
 	>
@@ -155,5 +157,5 @@
 		required="" filter="string" cols="30" rows="2" /> -->
 </fieldset>
 </fields>
-	
+
 </form>

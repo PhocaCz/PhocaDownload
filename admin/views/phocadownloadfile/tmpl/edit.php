@@ -57,7 +57,7 @@ echo '<div class="tab-content">'. "\n";
 
 echo '<div class="tab-pane active" id="general">'."\n";
 $formArray = array ('title', 'alias', 'catid', 'ordering',
-			'filename', 'filename_play', 'filename_preview', 'image_filename', 'image_filename_spec1', 'image_filename_spec2', 'image_download', 'version', 'author', 'author_url', 'author_email', 'license', 'license_url', 'confirm_license', 'directlink', 'link_external', 'access', 'unaccessible_file', 'userid', 'owner_id');
+			'filename', 'filename_play', 'filename_preview', 'image_filename', 'image_filename_spec1', 'image_filename_spec2', 'image_download', 'project_name', 'version', 'author', 'author_url', 'author_email', 'license', 'license_url', 'confirm_license', 'directlink', 'link_external', 'access', 'unaccessible_file', 'userid', 'owner_id');
 echo $r->group($this->form, $formArray);
 $formArray = array('description', 'features', 'changelog', 'notes' );
 echo $r->group($this->form, $formArray, 1);
