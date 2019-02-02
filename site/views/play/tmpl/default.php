@@ -39,7 +39,13 @@ if ($rightDisplay == 1) {
 			echo '<source src="'.$this->t['playfilewithpath'].'" type="video/ogg">';
 			echo JText::_('COM_PHOCADOWNLOAD_BROWSER_DOES_NOT_SUPPORT_AUDIO_VIDEO_TAG');
 			echo '</video>'. "\n";
-		}
+		} /* else if ($this->t['filetype'] == 'flv') {
+            echo '<video width="'.$this->t['playerwidth'].'" height="'.$this->t['playerheight'].'" style="margin-top: 10px;" controls>';
+            echo '<source src="'.$this->t['playfilewithpath'].'" type="video/x-flv">';
+            echo JText::_('COM_PHOCADOWNLOAD_BROWSER_DOES_NOT_SUPPORT_AUDIO_VIDEO_TAG');
+            echo '</video>'. "\n";
+        }*/
+
 
 	} else {
 

@@ -2,12 +2,12 @@
 <extension type="component" method="upgrade" version="3">
 	<name>com_phocadownload</name>
 	<author>Jan Pavelka (www.phoca.cz)</author>
-	<creationDate>27/01/2019</creationDate>
+	<creationDate>02/02/2019</creationDate>
 	<authorEmail></authorEmail>
 	<authorUrl>https://www.phoca.cz</authorUrl>
 	<copyright>Jan Pavelka</copyright>
 	<license>GNU/GPL</license>
-	<version>3.1.7</version>
+	<version>3.1.6</version>
 	<description>COM_PHOCADOWNLOAD_XML_DESCRIPTION</description>
 	<scriptfile>script.php</scriptfile>
 	<projectName>PhocaDownload</projectName>
@@ -102,6 +102,6 @@
 	
 
 	<updateservers>
-		<server type="extension" name="COM_PHOCADOWNLOAD"><![CDATA[https://raw.githubusercontent.com/PhocaCz/PhocaDownload/master/manifest.xml]]></server>
+		<server type="extension" name="COM_PHOCADOWNLOAD" priority="1"><![CDATA[https://raw.githubusercontent.com/PhocaCz/PhocaDownload/master/manifest.xml]]></server>
 	</updateservers>
 </extension>

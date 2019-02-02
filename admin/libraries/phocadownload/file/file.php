@@ -77,6 +77,7 @@ class PhocaDownloadFile
 			case 'odt':
 			case 'doc':
 			case 'docx':
+			case 'dotx':
 				$icon = 'document';
 			break;
 			

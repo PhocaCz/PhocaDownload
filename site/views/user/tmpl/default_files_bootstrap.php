@@ -53,7 +53,7 @@ if ($this->t['catidfiles'] == 0 || $this->t['catidfiles'] == '') {
 	<div class="col-sm-12 col-md-4">
 		<div class="input-group">
 			<?php /*<label for="filter_search" class="element-invisible"><?php echo JText::_( 'COM_PHOCADOWNLOAD_FILTER' ); ?></label> */ ?>
-			<input type="text" name="search" id="pdsearch" placeholder="<?php echo JText::_( 'COM_PHOCADOWNLOAD_SEARCH' ); ?>" value="<?php echo $this->listsfiles['search'];?>" title="<?php echo JText::_( 'COM_PHOCADOWNLOAD_SEARCH' ); ?>" class="form-control" />
+			<input type="text" name="search" id="pdsearch" placeholder="<?php echo JText::_( 'COM_PHOCADOWNLOAD_SEARCH' ); ?>" value="<?php echo $this->t['listsfiles']['search'];?>" title="<?php echo JText::_( 'COM_PHOCADOWNLOAD_SEARCH' ); ?>" class="form-control" />
 
 			<span class="input-group-btn">
 			<button class="btn btn-default tip hasTooltip" type="submit" onclick="this.form.submit();"  title="<?php echo JText::_( 'COM_PHOCADOWNLOAD_SEARCH' ); ?>"><span class="glyphicon glyphicon-search"></span></button>
@@ -63,7 +63,7 @@ if ($this->t['catidfiles'] == 0 || $this->t['catidfiles'] == '') {
 	</div>
 
 	<div class="col-sm-12 col-md-4"></div>
-	<div class="col-sm-12 col-md-4 ph-right"><?php echo $this->listsfiles['catid'] ?></div>
+	<div class="col-sm-12 col-md-4 ph-right"><?php echo $this->t['listsfiles']['catid'] ?></div>
 
 </div>
 
@@ -71,16 +71,16 @@ if ($this->t['catidfiles'] == 0 || $this->t['catidfiles'] == '') {
 <table class="table">
 <thead>
 	<tr>
-	<th class="title ph-th-50"><?php echo JHTML::_('grid.sort',  'COM_PHOCADOWNLOAD_TITLE', 'a.title', $this->listsfiles['order_Dir'], $this->listsfiles['order'], 'image'); ?></th>
-	<th class="ph-th-3"><?php echo JHTML::_('grid.sort',  'COM_PHOCADOWNLOAD_PUBLISHED', 'a.published', $this->listsfiles['order_Dir'], $this->listsfiles['order'], 'image' ); ?></th>
+	<th class="title ph-th-50"><?php echo JHTML::_('grid.sort',  'COM_PHOCADOWNLOAD_TITLE', 'a.title', $this->t['listsfiles']['order_Dir'], $this->t['listsfiles']['order'], 'image'); ?></th>
+	<th class="ph-th-3"><?php echo JHTML::_('grid.sort',  'COM_PHOCADOWNLOAD_PUBLISHED', 'a.published', $this->t['listsfiles']['order_Dir'], $this->t['listsfiles']['order'], 'image' ); ?></th>
 	<th class="ph-th-3"><?php echo JText::_('COM_PHOCADOWNLOAD_DELETE'); ?></th>
 	<th class="ph-th-3"><?php echo JText::_('COM_PHOCADOWNLOAD_ACTIVE'); ?></th>
-	<th class="ph-th-3"><?php echo JHTML::_('grid.sort', 'COM_PHOCADOWNLOAD_APPROVED', 'a.approved', $this->listsfiles['order_Dir'], $this->listsfiles['order'], 'image' ); ?></th>
+	<th class="ph-th-3"><?php echo JHTML::_('grid.sort', 'COM_PHOCADOWNLOAD_APPROVED', 'a.approved', $this->t['listsfiles']['order_Dir'], $this->t['listsfiles']['order'], 'image' ); ?></th>
 
-	<th class="ph-th-3"><?php echo JHTML::_('grid.sort', 'COM_PHOCADOWNLOAD_DATE_UPLOAD', 'a.date', $this->listsfiles['order_Dir'], $this->listsfiles['order'], 'image' ); ?></th>
+	<th class="ph-th-3"><?php echo JHTML::_('grid.sort', 'COM_PHOCADOWNLOAD_DATE_UPLOAD', 'a.date', $this->t['listsfiles']['order_Dir'], $this->t['listsfiles']['order'], 'image' ); ?></th>
 
 
-	<th class="ph-th-3"><?php echo JHTML::_('grid.sort', 'COM_PHOCADOWNLOAD_CATEGORY', 'a.catid', $this->listsfiles['order_Dir'], $this->listsfiles['order'], 'image' ); ?></th>
+	<th class="ph-th-3"><?php echo JHTML::_('grid.sort', 'COM_PHOCADOWNLOAD_CATEGORY', 'a.catid', $this->t['listsfiles']['order_Dir'], $this->t['listsfiles']['order'], 'image' ); ?></th>
 
 </thead>
 
@@ -248,7 +248,7 @@ if (count($this->t['filesitems'])) {
 <input type="hidden" name="tab" value="<?php echo $this->t['currenttab']['files'];?>" />
 <input type="hidden" name="limitstart" value="<?php echo $this->t['filespagination']->limitstart;?>" />
 <input type="hidden" name="Itemid" value="<?php echo $app->input->get('Itemid', 0, 'int') ?>"/>
-<input type="hidden" name="filter_order" value="<?php echo $this->listsfiles['order']; ?>" />
+<input type="hidden" name="filter_order" value="<?php echo $this->t['listsfiles']['order']; ?>" />
 <input type="hidden" name="filter_order_Dir" value="" />
 
 </form>
