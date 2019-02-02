@@ -8,7 +8,8 @@
 	"projectInitials" : "PD",
 	"description": "Phoca Download is download manager for Joomla! CMS. It includes component, modules and plugins and allows displaying files on website which can be downloaded (previewed, played) by website visitors.",
 	"projectUrl": "https://www.phoca.cz/phocadownload",
-	"projectInfoUrl": "https://www.phoca.cz/project/phocadownload-joomla-download",
+	"projectMainComponent": "Phoca Download",
+	"projectMainComponentInfoUrl": "https://www.phoca.cz/project/phocadownload-joomla-download",
 	"projectDocumentationUrl": "https://www.phoca.cz/documentation/category/17-phoca-download-component",
 	"projectDemo" : {
 		"Joomla! 3 Demo": "https://www.phoca.cz/joomla3demo/",
