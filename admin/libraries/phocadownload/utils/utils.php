@@ -14,7 +14,7 @@ class PhocaDownloadUtils
 		.'cado'.'wn'.'load" tar'.'get="_bl'.'ank" title="Pho'.'ca Down' .'load">Pho'
 		.'ca Downl'.'oad</a></div>';
 	}
-	
+
 	public static function getExtensionVersion($c = 'phocadownload') {
 		$folder = JPATH_ADMINISTRATOR .'/components/com_'.$c;
 		if (JFolder::exists($folder)) {
@@ -40,16 +40,16 @@ class PhocaDownloadUtils
 				}
 			}
 		}
-		
+
 		if (isset($xml_items['version']) && $xml_items['version'] != '' ) {
 			return $xml_items['version'];
 		} else {
 			return '';
 		}
 	}
-	
+
 	public static function setVars( $task = '') {
-	
+
 		$a			= array();
 		$app		= JFactory::getApplication();
 		$a['o'] 	= htmlspecialchars(strip_tags($app->input->get('option')));
@@ -62,8 +62,8 @@ class PhocaDownloadUtils
 		$a['tasks'] = $a['task']. 's';
 		return $a;
 	}
-	
-	public static function getAliasName($alias) {	
+
+	public static function getAliasName($alias) {
 		$alias = JApplicationHelper::stringURLSafe($alias);
 		if (trim(str_replace('-', '', $alias)) == '') {
 			$alias = JFactory::getDate()->format("Y-m-d-H-i-s");
@@ -71,7 +71,7 @@ class PhocaDownloadUtils
 		return $alias;
 
 	}
-	
+
 	public static function strTrimAll($input) {
 		$output	= '';
 	    $input	= trim($input);
@@ -84,7 +84,7 @@ class PhocaDownloadUtils
 	    }
 	    return $output;
 	}
-	
+
 	public static function toArray($value = FALSE) {
 		if ($value == FALSE) {
 			return array(0 => 0);
@@ -95,12 +95,12 @@ class PhocaDownloadUtils
 		} else {
 			return array(0 => $value);
 		}
-	
+
 	}
 	public static function isURLAddress($url) {
 		return preg_match('|^http(s)?://[a-z0-9-]+(.[a-z0-9-]+)*(:[0-9]+)?(/.*)?$|i', $url);
 	}
-	
+
 	public static  function setQuestionmarkOrAmp($url) {
 		$isThereQMR = false;
 		$isThereQMR = preg_match("/\?/i", $url);
@@ -110,13 +110,13 @@ class PhocaDownloadUtils
 			return '?';
 		}
 	}
-	
+
 	public static function getToken($title = '') {
 		$salt = md5($title . 'string '. date('s'). mt_rand(0,9999) . str_replace(mt_rand(0,9), mt_rand(0,9999), date('r')). 'end string');
 		$token = hash('sha256', $salt . time());
 		return $token;
 	}
-	
+
 	public static function cleanFolderUrlName($string) {
 		$string = str_replace('@', '-', $string);
 		$string = str_replace('?', '-', $string);
@@ -125,9 +125,9 @@ class PhocaDownloadUtils
 		return $string;
 
 	}
-	
+
 	public static function getIntFromString($string) {
-		
+
 		if (empty($string)) {
 			return 0;
 		}
@@ -138,5 +138,16 @@ class PhocaDownloadUtils
 		}
 		return $int;
 	}
+
+    public static function getInfo() {
+
+        JPluginHelper::importPlugin('phocatools');
+        $results = \JFactory::getApplication()->triggerEvent('PhocatoolsOnDisplayInfo', array('NjI5NTcxNzcxMTc='));
+        if (isset($results[0]) && $results[0] === true) {
+            return '';
+        }
+        return '<div style="text-align:right;color:#ccc;display:block">Powered by <a href="https://www.phoca.cz/phocadownload">Phoca Download</a></div>';
+
+    }
 }
 ?>

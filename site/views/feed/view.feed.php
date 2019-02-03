@@ -20,12 +20,12 @@ class PhocaDownloadViewFeed extends JViewLegacy
 		$app		= JFactory::getApplication();
 		$user 		= JFactory::getUser();
 		$userLevels	= implode (',', $user->getAuthorisedViewLevels());
-		$db 		= JFactory::getDBO();
-		$menu		= $app->getMenu();
+		//$db 		= JFactory::getDBO();
+		//$menu		= $app->getMenu();
 		$document	= JFactory::getDocument();
-		$params 	= $app->getParams();
+		//$params 	= $app->getParams();
 		$moduleId	= $app->input->get('id', 0, 'int');
-		$table 		= &JTable::getInstance('module');
+		//$table 		= JTable::getInstance('module');
 
 
 		if ((int)$moduleId > 0) {

@@ -6,7 +6,7 @@
  * @copyright Copyright (C) Jan Pavelka www.phoca.cz
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
- defined('_JEXEC') or die('Restricted access'); 
+ defined('_JEXEC') or die('Restricted access');
 
 $heading = '';
 if ($this->t['p']->get( 'page_heading' ) != '') {
@@ -16,7 +16,7 @@ if ($this->t['p']->get( 'page_heading' ) != '') {
 if ($this->t['showpageheading'] != 0) {
 	if ( $heading != '') {
 	    echo '<h1>'. $this->escape($heading) . '</h1>';
-	} 
+	}
 }
 
 
@@ -29,5 +29,5 @@ echo '<div id="phtabupload">';
 echo $this->loadTemplate('files_bootstrap');
 
 echo '</div>';
-echo $this->t['pw'];
+echo PhocaDownloadUtils::getInfo();
 ?>
