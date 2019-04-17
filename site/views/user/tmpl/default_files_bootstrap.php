@@ -213,7 +213,7 @@ if (is_array($rows)) {
 	<td colspan="7" class="footer"><?php
 
 //$this->t['filespagination']->setTab($this->t['currenttab']['files']);
-if (count($this->t['filesitems'])) {
+if (!empty($this->t['filesitems'])) {
 	echo '<div class="pd-center pagination">';
 	echo '<div class="pd-inline">';
 

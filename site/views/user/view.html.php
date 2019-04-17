@@ -337,11 +337,11 @@ class PhocaDownloadViewUser extends JViewLegacy
 		//$this->assignRef('session', $session);
 
 		// Bootstrap 3 Layout
-		$this->tmpl['display_bootstrap3_layout']	= $this->t['p']->get( 'display_bootstrap3_layout', 0 );
-		if ($this->tmpl['display_bootstrap3_layout'] > 0) {
+		$this->t['display_bootstrap3_layout']	= $this->t['p']->get( 'display_bootstrap3_layout', 0 );
+		if ($this->t['display_bootstrap3_layout'] > 0) {
 
 			JHtml::_('jquery.framework', false);
-			if ((int)$this->tmpl['display_bootstrap3_layout'] == 2) {
+			if ((int)$this->t['display_bootstrap3_layout'] == 2) {
 				JHTML::stylesheet('media/com_phocadownload/bootstrap/css/bootstrap.min.css' );
 				JHTML::stylesheet('media/com_phocadownload/bootstrap/css/bootstrap.extended.css' );
 			}
@@ -354,7 +354,7 @@ class PhocaDownloadViewUser extends JViewLegacy
 			});');
 		}
 
-		if ($this->tmpl['display_bootstrap3_layout'] > 0) {
+		if ($this->t['display_bootstrap3_layout'] > 0) {
 			parent::display('bootstrap');
 		} else {
 			parent::display($tpl);

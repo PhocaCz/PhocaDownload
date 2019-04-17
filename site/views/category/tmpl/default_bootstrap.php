@@ -20,7 +20,7 @@ if ((int)$this->t['tagid'] > 0) {
 
 	echo $this->loadTemplate('files');
 	$this->checkRights = 1;
-	if (count($this->files)) {
+	if (!empty($this->files)) {
 		echo $this->loadTemplate('pagination');
 	}
 } else {
@@ -107,7 +107,7 @@ if ((int)$this->t['tagid'] > 0) {
 			// =====================================================================================
 
 
-			if (count($this->category)) {
+			if (!empty($this->category)) {
 				echo $this->loadTemplate('pagination');
 			}
 

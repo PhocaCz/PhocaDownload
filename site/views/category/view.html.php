@@ -220,11 +220,11 @@ class PhocaDownloadViewCategory extends JViewLegacy
 
 
 		// Bootstrap 3 Layout
-		$this->tmpl['display_bootstrap3_layout']	= $this->t['p']->get( 'display_bootstrap3_layout', 0 );
-		if ((int)$this->tmpl['display_bootstrap3_layout'] > 0) {
+		$this->t['display_bootstrap3_layout']	= $this->t['p']->get( 'display_bootstrap3_layout', 0 );
+		if ((int)$this->t['display_bootstrap3_layout'] > 0) {
 
 			JHtml::_('jquery.framework', false);
-			if ((int)$this->tmpl['display_bootstrap3_layout'] == 2) {
+			if ((int)$this->t['display_bootstrap3_layout'] == 2) {
 				JHTML::stylesheet('media/com_phocadownload/bootstrap/css/bootstrap.min.css' );
 				JHTML::stylesheet('media/com_phocadownload/bootstrap/css/bootstrap.extended.css' );
 			}
@@ -245,7 +245,7 @@ class PhocaDownloadViewCategory extends JViewLegacy
 			$this->_prepareDocument($this->category[0]);
 		}
 
-		if ($this->tmpl['display_bootstrap3_layout'] > 0) {
+		if ($this->t['display_bootstrap3_layout'] > 0) {
 			parent::display('bootstrap');
 		} else {
 			parent::display($tpl);
@@ -291,19 +291,19 @@ class PhocaDownloadViewCategory extends JViewLegacy
 		$this->document->setTitle($title);*/
 
         $title = $this->t['p']->get('page_title', '');
-		$this->tmpl['display_cat_name_title'] = 1;
+		$this->t['display_cat_name_title'] = 1;
 		if (empty($title)) {
 			$title = htmlspecialchars_decode($app->get('sitename'));
 		} else if ($app->get('sitename_pagetitles', 0) == 1) {
 			$title = JText::sprintf('JPAGETITLE', htmlspecialchars_decode($app->get('sitename')), $title);
 
-			if ($this->tmpl['display_cat_name_title'] == 1 && isset($category->title) && $category->title != '') {
+			if ($this->t['display_cat_name_title'] == 1 && isset($category->title) && $category->title != '') {
 				$title = $title .' - ' .  $category->title;
 			}
 
 		} else if ($app->get('sitename_pagetitles', 0) == 2) {
 
-			if ($this->tmpl['display_cat_name_title'] == 1 && isset($category->title) && $category->title != '') {
+			if ($this->t['display_cat_name_title'] == 1 && isset($category->title) && $category->title != '') {
 				$title = $title .' - ' .  $category->title;
 			}
 

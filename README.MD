@@ -56,7 +56,7 @@ Phoca Download is download manager for Joomla! CMS. It includes component, modul
 
 ## Version
 
-3.1.7
+3.1.8
 
 
 
