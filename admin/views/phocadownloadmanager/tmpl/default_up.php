@@ -9,7 +9,7 @@
  defined('_JEXEC') or die('Restricted access');
 
 $group 	= PhocaDownloadSettings::getManagerGroup($this->manager);
-$link = 'index.php?option='.$this->t['o'].'&amp;view='.$this->t['task'].'&amp;manager='.$this->manager . $group['c'] .'&amp;folder='.$this->folderstate->parent .'&amp;field='. $this->field;
+$link = 'index.php?option='.$this->t['o'].'&amp;view='. htmlspecialchars($this->t['task']).'&amp;manager='.htmlspecialchars($this->manager . $group['c']) .'&amp;folder='.htmlspecialchars(PhocaDownloadUtils::removeSpecChars($this->folderstate->parent)) .'&amp;field='. htmlspecialchars($this->field);
 echo '<tr><td>&nbsp;</td>'
 .'<td class="ph-img-table">'
 .'<a href="'.$link.'" >'

@@ -149,5 +149,11 @@ class PhocaDownloadUtils
         return '<div style="text-align:right;color:#ccc;display:block">Powered by <a href="https://www.phoca.cz/phocadownload">Phoca Download</a></div>';
 
     }
+
+	public static function removeSpecChars($text) {
+
+		$charsA = array('(', '[', '{', '}', ']', ')', ';');
+		return str_replace($charsA, '', $text);
+	}
 }
 ?>

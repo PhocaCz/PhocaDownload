@@ -23,14 +23,14 @@ class PhocaDownloadFileUploadMultiple
 	public $frontEnd	= 0;
 
 	public function __construct() {}
-	
+
 	public static function renderMultipleUploadLibraries() {
-	
-		
+
+
 		$paramsC 		= JComponentHelper::getParams('com_phocadownload');
 		$chunkMethod 	= $paramsC->get( 'multiple_upload_chunk', 0 );
 		$uploadMethod 	= $paramsC->get( 'multiple_upload_method', 4 );
-	
+
 		JHtml::_('behavior.framework', true);// Load it here to be sure, it is loaded before jquery
 		JHtml::_('jquery.framework', false);// Load it here because of own nonConflict method (nonconflict is set below)
 		$document			= JFactory::getDocument();
@@ -39,9 +39,9 @@ class PhocaDownloadFileUploadMultiple
 		//$nC = 'var pgJQ =  jQuery.noConflict();';//SET BELOW
 		//$document->addScriptDeclaration($nC);//SET BELOW
 		// - - - - - - - - - - - -
-		
+
 		//$document->addScript(JURI::root(true).'/components/com_phocadownload/assets/plupload/jquery.ui.plupload/jquery.ui.plupload.js');
-		
+
 		if ($uploadMethod == 2) {
 			//$document->addScript(JURI::root(true).'/components/com_phocadownload/assets/plupload/plupload.gears.js');
 		}
@@ -70,20 +70,20 @@ class PhocaDownloadFileUploadMultiple
 		$document->addScript(JURI::root(true).'/components/com_phocadownload/assets/plupload/jquery.plupload.queue/jquery.plupload.queue.js');
 		JHTML::stylesheet( 'components/com_phocadownload/assets/plupload/jquery.plupload.queue/css/jquery.plupload.queue.css' );
 	}
-	
+
 	public static function getMultipleUploadSizeFormat($size) {
 		$readableSize = PhocaDownloadFile::getFileSizeReadable($size, '%01.0f %s', 1);
-		
+
 		$readableSize 	= str_replace(' ', '', $readableSize);
-		
+
 		$readableSize 	= strtolower($readableSize);
 		return $readableSize;
 	}
-	
+
 	public function renderMultipleUploadJS($frontEnd = 0, $chunkMethod = 0) {
-		
+
 		$document			= JFactory::getDocument();
-		
+
 		switch ($this->method) {
 			case 2:
 				$name		= 'gears_uploader';
@@ -97,38 +97,41 @@ class PhocaDownloadFileUploadMultiple
 				$name		= 'html5_uploader';
 				$runtime	= 'html5';
 			break;
-			
+
 			case 5:
 				$name		= 'browserplus_uploader';
 				$runtime	= 'browserplus';
 			break;
-			
+
 			case 6:
 				$name		= 'html4_uploader';
 				$runtime	= 'html4';
 			break;
-			
+
 			case 1:
 			default:
 				$name		= 'flash_uploader';
 				$runtime	= 'flash';
 			break;
 		}
-		
+
 		$chunkEnabled = 0;
 		// Chunk only if is enabled and only if flash is enabled
 		if (($chunkMethod == 1 && $this->method == 1) || ($this->frontEnd == 0 && $chunkMethod == 0 && $this->method == 1)) {
 			$chunkEnabled = 1;
 		}
 
-		$this->url 		= str_replace('&amp;', '&', $this->url);
-		$this->reload 	= str_replace('&amp;', '&', $this->reload);
-		
-		
+
+        $this->url      = htmlspecialchars($this->url);
+        $this->reload 	= htmlspecialchars($this->reload);
+        $this->url 		= str_replace('&amp;', '&', $this->url);
+        $this->reload 	= str_replace('&amp;', '&', $this->reload);
+
+
 		$js = 'var pgJQ = jQuery.noConflict();';
-		
+
 		$js .='pgJQ(function() {'."\n";
-		
+
 		$js.=''."\n";
 		$js.='   plupload.addI18n({'."\n";
 		$js.='	   \'Select files\' : \''.addslashes(JText::_('COM_PHOCADOWNLOAD_SELECT_FILES')).'\','."\n";
@@ -143,17 +146,17 @@ class PhocaDownloadFileUploadMultiple
 		$js.='	   \'Drag files here.\' : \''.addslashes(JText::_('COM_PHOCADOWNLOAD_DRAG_FILES_HERE')).'\''."\n";
 		$js.='   });';
 		$js.=''."\n";
-	
-		
+
+
 		$js.='	pgJQ("#'.$name.'").pluploadQueue({'."\n";
 		$js.='		runtimes : \''.$runtime.'\','."\n";
 		$js.='		url : \''.$this->url.'\','."\n";
 		//$js.='		max_file_size : \''.$this->maxFileSize.'\','."\n";
-		
+
 		if ($this->maxFileSize != '0b') {
 			$js.='		max_file_size : \''.$this->maxFileSize.'\','."\n";
 		}
-		
+
 		if ($chunkEnabled == 1) {
 			$js.='		chunk_size : \'1mb\','."\n";
 		}
@@ -177,9 +180,9 @@ class PhocaDownloadFileUploadMultiple
 			$js.='		silverlight_xap_url : \''.JURI::root(true).'/components/com_phocadownload/assets/plupload/plupload.silverlight.xap\''."\n";
 		}
 		$js.='	});'."\n";
-		
+
 		$js.=''."\n";
-		
+
 		$js.='function attachCallbacks(Uploader) {'."\n";
 		$js.='	Uploader.bind(\'FileUploaded\', function(Up, File, Response) {'."\n";
 		$js.='		var obj = eval(\'(\' + Response.response + \')\');'."\n";
@@ -233,15 +236,15 @@ class PhocaDownloadFileUploadMultiple
 	//	$js.='         }'."\n";
 		$js.='    });	'."\n";
 		$js.='}';
-		
+
 		$js.='});'."\n";// End $(function()
-		
+
 		$document->addScriptDeclaration($js);
 	}
-	
+
 	public function getMultipleUploadHTML($width = '', $height = '330', $mootools = 1) {
-		
-		
+
+
 		switch ($this->method) {
 			case 2:
 				$name		= 'gears_uploader';
@@ -255,24 +258,24 @@ class PhocaDownloadFileUploadMultiple
 				$name		= 'html5_uploader';
 				$msg		= JText::_('COM_PHOCADOWNLOAD_NOT_SUPPORTED_HTML5');
 			break;
-			
+
 			case 5:
 				$name		= 'browserplus_uploader';
 				$msg		= JText::_('COM_PHOCADOWNLOAD_NOT_INSTALLED_BROWSERPLUS');
 			break;
-			
+
 			case 6:
 				$name		= 'html4_uploader';
 				$msg		= JText::_('COM_PHOCADOWNLOAD_NOT_SUPPORTED_HTML4');
 			break;
-			
+
 			case 1:
 			default:
 				$name		= 'flash_uploader';
 				$msg		= JText::_('COM_PHOCADOWNLOAD_NOT_INSTALLED_FLASH');
 			break;
 		}
-		
+
 		$style				= '';
 		if ($width != '') {
 			$style	.= 'width: '.(int)$width.'px;';
@@ -280,9 +283,9 @@ class PhocaDownloadFileUploadMultiple
 		if ($height != '') {
 			$style	.= 'height: '.(int)$height.'px;';
 		}
-		
+
 		return '<div id="'.$name.'" style="'.$style.'">'.$msg.'</div>';
-		
+
 	}
 }
 ?>

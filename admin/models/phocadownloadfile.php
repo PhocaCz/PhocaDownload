@@ -448,6 +448,15 @@ class PhocaDownloadCpModelPhocaDownloadFile extends JModelAdmin
 				return false;
 			}
 
+			//Delete files from statistics table
+			$query = 'DELETE FROM #__phocadownload_user_stat'
+				. ' WHERE fileid IN ( '.$cids.' )';
+			$this->_db->setQuery( $query );
+			if(!$this->_db->execute()) {
+				throw new Exception($this->_db->getErrorMsg(), 500);
+				return false;
+			}
+
 			// - - - - - - - - - - - - - -
 			// DELETE FILES ON SERVER
 			if ($deleteExistingFiles == 1) {

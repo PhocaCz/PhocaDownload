@@ -140,7 +140,7 @@ function insertLink() {
 				</label>
 			</td>
 			<td width="80%">
-				<div class="input-append"><input type="text" name="search" id="search" value="<?php echo $this->t['lists']['search'];?>" class="text_area" onchange="document.adminForm.submit();" /> <button class="btn" onclick="this.form.submit();"><?php echo JText::_('COM_PHOCADOWNLOAD_FILTER'); ?></button> <button class="btn" onclick="document.getElementById('search').value='';this.form.submit();"><?php echo JText::_('COM_PHOCADOWNLOAD_RESET'); ?></button></div>
+				<div class="input-append"><input type="text" name="search" id="search" value="<?php echo htmlspecialchars($this->t['lists']['search']);?>" class="text_area" onchange="document.adminForm.submit();" /> <button class="btn" onclick="this.form.submit();"><?php echo JText::_('COM_PHOCADOWNLOAD_FILTER'); ?></button> <button class="btn" onclick="document.getElementById('search').value='';this.form.submit();"><?php echo JText::_('COM_PHOCADOWNLOAD_RESET'); ?></button></div>
 			</td>
 		</tr>
 		<tr>

@@ -22,28 +22,30 @@ class PhocaDownloadCpViewPhocaDownloadManager extends JViewLegacy
 	protected $session;
 	protected $currentFolder;
 	protected $t;
-	
+
 	public function display($tpl = null) {
-		
+
 		$this->t		= PhocaDownloadUtils::setVars('manager');
 		$this->field	= JFactory::getApplication()->input->get('field');
 		$this->fce 		= 'phocaSelectFileName_'.$this->field;
-		
+
 		JHTML::stylesheet( $this->t['s'] );
-		
-		
+
+
 		$this->folderstate	= $this->get('FolderState');
 		$this->files		= $this->get('Files');
 		$this->folders		= $this->get('Folders');
 		$this->session		= JFactory::getSession();
-		$this->manager 		= JFactory::getApplication()->input->get( 'manager', '', '', 'file' );
-		
+		$this->manager 		= JFactory::getApplication()->input->get( 'manager', '',  'file' );
+
+
+
 		if ($this->manager == 'filemultiple') {
 			$this->form			= $this->get('Form');
 		}
-		
+
 		$params = JComponentHelper::getParams($this->t['o']);
-			
+
 		$this->t['multipleuploadchunk']	= $params->get( 'multiple_upload_chunk', 0 );
 		$this->t['uploadmaxsize'] 		= $params->get( 'upload_maxsize', 3145728 );
 		$this->t['uploadmaxsizeread'] 	= PhocaDownloadFile::getFileSizeReadable($this->t['uploadmaxsize']);
@@ -54,38 +56,38 @@ class PhocaDownloadCpViewPhocaDownloadManager extends JViewLegacy
 		if (isset($this->folderstate->folder) && $this->folderstate->folder != '') {
 			$this->currentFolder = $this->folderstate->folder;
 		}
-		
+
 		// - - - - - - - - - -
 		//TABS
-		// - - - - - - - - - - 
+		// - - - - - - - - - -
 		$this->t['tab'] 			= JFactory::getApplication()->input->get('tab', '', '', 'string');
 		$this->t['displaytabs']	= 0;
-		
+
 		// UPLOAD
 		$this->t['currenttab']['upload'] = $this->t['displaytabs'];
 		$this->t['displaytabs']++;
-		
+
 		// MULTIPLE UPLOAD
 		if((int)$this->t['enablemultiple']  >= 0) {
 			$this->t['currenttab']['multipleupload'] = $this->t['displaytabs'];
-			$this->t['displaytabs']++;	
+			$this->t['displaytabs']++;
 		}
-		
+
 		$group 	= PhocaDownloadSettings::getManagerGroup($this->manager);
 
 		// - - - - - - - - - - -
 		// Upload
 		// - - - - - - - - - - -
 		$sU							= new PhocaDownloadFileUploadSingle();
-		$sU->returnUrl				= 'index.php?option=com_phocadownload&view=phocadownloadmanager&tab=upload'.str_replace('&amp;', '&', $group['c']).'&manager='.$this->manager.'&field='.$this->field.'&folder='. $this->currentFolder;
+		$sU->returnUrl				= 'index.php?option=com_phocadownload&view=phocadownloadmanager&tab=upload'.str_replace('&amp;', '&', $group['c']).'&manager='.htmlspecialchars($this->manager).'&field='.htmlspecialchars($this->field).'&folder='.htmlspecialchars(PhocaDownloadUtils::removeSpecChars($this->currentFolder));
 		$sU->tab					= 'upload';
 		$this->t['su_output']	= $sU->getSingleUploadHTML();
 		$this->t['su_url']		= JURI::base().'index.php?option=com_phocadownload&task=phocadownloadupload.upload&amp;'
 								  .$this->session->getName().'='.$this->session->getId().'&amp;'
-								  . JSession::getFormToken().'=1&amp;viewback=phocadownloadmanager&amp;manager='.$this->manager.'&amp;field='.$this->field.'&amp;'
-								  .'folder='. $this->currentFolder.'&amp;tab=upload';
-		
-		
+								  . JSession::getFormToken().'=1&amp;viewback=phocadownloadmanager&amp;manager='.htmlspecialchars($this->manager).'&amp;field='.htmlspecialchars($this->field).'&amp;'
+								  .'folder='. htmlspecialchars(PhocaDownloadUtils::removeSpecChars($this->currentFolder)).'&amp;tab=upload';
+
+
 		// - - - - - - - - - - -
 		// Multiple Upload
 		// - - - - - - - - - - -
@@ -93,7 +95,7 @@ class PhocaDownloadCpViewPhocaDownloadManager extends JViewLegacy
 		$muFailed						= JFactory::getApplication()->input->get( 'mufailed', '0', '', 'int' );
 		$muUploaded						= JFactory::getApplication()->input->get( 'muuploaded', '0', '', 'int' );
 		$this->t['mu_response_msg']	= $muUploadedMsg 	= '';
-		
+
 		if ($muUploaded > 0) {
 			$muUploadedMsg = JText::_('COM_PHOCADOWNLOAD_COUNT_UPLOADED_FILE'). ': ' . $muUploaded;
 		}
@@ -116,29 +118,29 @@ class PhocaDownloadCpViewPhocaDownloadManager extends JViewLegacy
 		} else {
 			$this->t['mu_response_msg'] = '';
 		}
-		
+
 		if((int)$this->t['enablemultiple']  >= 0) {
-		
+
 			PhocadownloadFileUploadMultiple::renderMultipleUploadLibraries();
 			$mU						= new PhocaDownloadFileUploadMultiple();
 			$mU->frontEnd			= 0;
 			$mU->method				= $this->t['multipleuploadmethod'];
 			$mU->url				= JURI::base().'index.php?option=com_phocadownload&task=phocadownloadupload.multipleupload&amp;'
 									 .$this->session->getName().'='.$this->session->getId().'&'
-									 . JSession::getFormToken().'=1&tab=multipleupload&manager='.$this->manager.'&field='.$this->field.'&folder='. $this->currentFolder;
+									 . JSession::getFormToken().'=1&tab=multipleupload&manager='.htmlspecialchars($this->manager).'&field='.htmlspecialchars($this->field).'&folder='. htmlspecialchars(PhocaDownloadUtils::removeSpecChars($this->currentFolder));
 			$mU->reload				= JURI::base().'index.php?option=com_phocadownload&view=phocadownloadmanager'
-									.str_replace('&amp;', '&', $group['c']).'&'
+									.str_replace('&amp;', '&', htmlspecialchars($group['c'])).'&'
 									.$this->session->getName().'='.$this->session->getId().'&'
 									. JSession::getFormToken().'=1&tab=multipleupload&'
-									.'manager='.$this->manager.'&field='.$this->field.'&folder='. $this->currentFolder;
+									.'manager='.htmlspecialchars($this->manager).'&field='.htmlspecialchars($this->field).'&folder='. htmlspecialchars(PhocaDownloadUtils::removeSpecChars($this->currentFolder));
 			$mU->maxFileSize		= PhocadownloadFileUploadMultiple::getMultipleUploadSizeFormat($this->t['uploadmaxsize']);
 			$mU->chunkSize			= '1mb';
-			
+
 			$mU->renderMultipleUploadJS(0, $this->t['multipleuploadchunk']);
 			$this->t['mu_output']= $mU->getMultipleUploadHTML();
 		}
-		
-					  
+
+
 		$this->t['ftp'] 			= !JClientHelper::hasCredentials('ftp');
 		$this->t['path']			= PhocaDownloadPath::getPathSet($this->manager);
 
@@ -162,21 +164,21 @@ class PhocaDownloadCpViewPhocaDownloadManager extends JViewLegacy
 			$this->_tmp_file = new JObject;
 		}
 	}
-	
+
 	protected function addToolbar() {
-	
+
 		JFactory::getApplication()->input->set('hidemainmenu', true);
 		require_once JPATH_COMPONENT.'/helpers/'.$this->t['task'].'.php';
 		$state	= $this->get('State');
 		$class	= ucfirst($this->t['task']).'Helper';
 		$canDo	= $class::getActions($this->t, $state->get('filter.multiple'));
-		
+
 		JToolbarHelper::title( JText::_( $this->t['l'].'_MULTIPLE_ADD' ), 'plus' );
 
 		if ($canDo->get('core.create')){
 			JToolbarHelper::save($this->t['c'].'m.save', 'JTOOLBAR_SAVE');
 		}
-		
+
 		JToolbarHelper::cancel($this->t['c'].'m.cancel', 'JTOOLBAR_CLOSE');
 		JToolbarHelper::divider();
 		JToolbarHelper::help( 'screen.'.$this->t['c'], true );

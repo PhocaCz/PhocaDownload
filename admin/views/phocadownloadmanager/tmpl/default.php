@@ -47,7 +47,7 @@ if ($this->manager == 'filemultiple') {
 					i++;
 					cb = eval( 'f.cb' + i );
 				}
-				
+
 				if (phocadownloadmform.jform_catid.value == "" && nSelectedImages > 0){
 					alert( "<?php echo JText::_( 'COM_PHOCADOWNLOAD_WARNING_FILE_SELECTED_SELECT_CATEGORY', true ); ?>" );
 				} else {
@@ -66,8 +66,8 @@ if ($this->manager == 'filemultiple') {
 	echo $r->startForm($this->t['o'], $this->t['task'], 'adminForm', 'adminForm');
 	echo '<div class="span4 form-horizontal" style="border-right: 1px solid #d3d3d3;padding-right: 5px;">';
 	echo '<h4>'. JText::_('COM_PHOCADOWNLOAD_MULTIPLE_ADD').'</h4>';
-	
-	echo '<div>'."\n"; 
+
+	echo '<div>'."\n";
 	$formArray = array ('title', 'alias','published', 'approved', 'ordering', 'catid', 'language', 'pap_copy_m');
 	echo $r->group($this->form, $formArray);
 	echo '</div>'. "\n";
@@ -131,18 +131,18 @@ if (count($this->files) > 0 || count($this->folders) > 0) { ?>
 	endfor; ?>
 
 </div>
-<?php } else { 
+<?php } else {
 	echo '<tr>'
 	.'<td>&nbsp;</td>'
 	.'<td>&nbsp;</td>'
 	.'<td>'.JText::_( $this->t['l'].'_THERE_IS_NO_FILE' ).'</td>'
-	.'</tr>';			
+	.'</tr>';
 }
 echo '</tbody>'
 .'</table>';
 
 if ($this->manager == 'filemultiple') {
-	
+
 	echo '<input type="hidden" name="task" value="" />'. "\n";
 	echo '<input type="hidden" name="boxchecked" value="0" />'. "\n";
 	echo '<input type="hidden" name="layout" value="edit" />'. "\n";
@@ -151,49 +151,49 @@ if ($this->manager == 'filemultiple') {
 
 	echo '</div>';
 	echo '<div class="clearfix"></div>';
-	
+
 } ?>
 
 <div style="border-bottom:1px solid #cccccc;margin-bottom: 10px">&nbsp;</div>
 
 <?php
 if ($this->t['displaytabs'] > 0) {
-	
+
 	echo '<ul class="nav nav-tabs" id="configTabs">';
-	
+
 	$label = JHTML::_( 'image', $this->t['i'].'icon-16-upload.png','') . '&nbsp;'.JText::_($this->t['l'].'_UPLOAD');
 	echo '<li><a href="#upload" data-toggle="tab">'.$label.'</a></li>';
-	
+
 	if((int)$this->t['enablemultiple']  > 0) {
 		$label = JHtml::_( 'image', $this->t['i'].'icon-16-upload-multiple.png','') . '&nbsp;'.JText::_($this->t['l'].'_MULTIPLE_UPLOAD');
 		echo '<li><a href="#multipleupload" data-toggle="tab">'.$label.'</a></li>';
 	}
-	
+
 	$label = JHtml::_( 'image', $this->t['i'].'icon-16-folder.png','') . '&nbsp;'.JText::_($this->t['l'].'_CREATE_FOLDER');
 	echo '<li><a href="#createfolder" data-toggle="tab">'.$label.'</a></li>';
-	
+
 	echo '</ul>';
-	
-	
+
+
 	echo '<div class="tab-content">'. "\n";
-	
+
 	echo '<div class="tab-pane" id="upload">'. "\n";
 	echo $this->loadTemplate('upload');
 	echo '</div>'. "\n";
 	echo '<div class="tab-pane" id="multipleupload">'. "\n";
 	echo $this->loadTemplate('multipleupload');
 	echo '</div>'. "\n";
-	
+
 	echo '<div class="tab-pane" id="createfolder">'. "\n";
 	//echo PhocaDownloadFileUpload::renderCreateFolder($this->session->getName(), $this->session->getId(), $this->currentFolder, 'phocadownloadmanager', 'manager='.$this->manager.'&amp;tab='.$this->t['currenttab']['upload'].'&amp;field='. $this->field );
-	echo PhocaDownloadFileUpload::renderCreateFolder($this->session->getName(), $this->session->getId(), $this->currentFolder, 'phocadownloadmanager', 'manager='.$this->manager.'&amp;tab=createfolder&amp;field='. $this->field );
+	echo PhocaDownloadFileUpload::renderCreateFolder($this->session->getName(), $this->session->getId(), $this->currentFolder, 'phocadownloadmanager', 'manager='.htmlspecialchars($this->manager).'&amp;tab=createfolder&amp;field='. htmlspecialchars($this->field) );
 	echo '</div>'. "\n";
-	
+
 	echo '</div>'. "\n";
 }
 echo '</div>';
 
-if ($this->t['tab'] != '') {$jsCt = 'a[href=#'.$this->t['tab'] .']';} else {$jsCt = 'a:first';}
+if ($this->t['tab'] != '') {$jsCt = 'a[href=#'.htmlspecialchars(PhocaDownloadUtils::removeSpecChars($this->t['tab'])) .']';} else {$jsCt = 'a:first';}
 echo '<script type="text/javascript">';
 echo '   jQuery(\'#configTabs '.$jsCt.'\').tab(\'show\');'; // Select first tab
 echo '</script>';

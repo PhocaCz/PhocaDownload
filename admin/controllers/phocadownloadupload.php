@@ -27,26 +27,27 @@ class PhocaDownloadCpControllerPhocaDownloadUpload extends PhocaDownloadCpContro
 		// Set FTP credentials, if given
 		jimport('joomla.client.helper');
 		JClientHelper::setCredentialsFromRequest('ftp');
-		
+
 		$paramsC = JComponentHelper::getParams('com_phocadownload');
 		$folder_permissions = $paramsC->get( 'folder_permissions', 0755 );
 		//$folder_permissions = octdec((int)$folder_permissions);
 
-		
+
 		$folderNew		= JFactory::getApplication()->input->getCmd( 'foldername', '');
-		$folderCheck	= JFactory::getApplication()->input->get( 'foldername', null, '', 'string');
-		$parent			= JFactory::getApplication()->input->get( 'folderbase', '', '', 'path' );
-		$tab			= JFactory::getApplication()->input->get( 'tab', 0, '', 'string' );
+		$folderCheck	= JFactory::getApplication()->input->get( 'foldername', null, 'string');
+		$parent			= JFactory::getApplication()->input->get( 'folderbase', '', 'path' );
+		$tab			= JFactory::getApplication()->input->get( 'tab', 0, 'string' );
 		$field			= JFactory::getApplication()->input->get( 'field');
-		$viewBack		= JFactory::getApplication()->input->get( 'viewback', '', '', 'phocadownloadmanager' );
-		$manager		= JFactory::getApplication()->input->get( 'manager', 'file', '', 'string' );
-		
-		
+		$viewBack		= JFactory::getApplication()->input->get( 'viewback', '', 'phocadownloadmanager' );
+		$manager		= JFactory::getApplication()->input->get( 'manager', 'file', 'string' );
+
+
 		$link = '';
 		if ($manager != '') {
 			$group 	= PhocaDownloadSettings::getManagerGroup($manager);
 			$link	= 'index.php?option=com_phocadownload&view='.(string)$viewBack.'&manager='.(string)$manager
 						 .str_replace('&amp;', '&', $group['c']).'&folder='.$parent.'&tab='.(string)$tab.'&field='.$field;
+
 			$path	= PhocaDownloadPath::getPathSet($manager);// we use viewback to get right path
 		} else {
 
@@ -62,12 +63,13 @@ class PhocaDownloadCpControllerPhocaDownloadUpload extends PhocaDownloadCpContro
 			$app->redirect($link);
 		}
 
+
 		if (strlen($folderNew) > 0) {
 			$folder = JPath::clean($path['orig_abs_ds'].$parent.'/'.$folderNew);
-		
+
 			if (!JFolder::exists($folder) && !JFile::exists($folder)) {
 				//JFolder::create($path, $folder_permissions );
-				
+
 				switch((int)$folder_permissions) {
 					case 777:
 						JFolder::create($folder, 0777 );
@@ -80,7 +82,7 @@ class PhocaDownloadCpControllerPhocaDownloadUpload extends PhocaDownloadCpContro
 					break;
 					case 644:
 						JFolder::create($folder, 0644 );
-					break;				
+					break;
 					case 755:
 					Default:
 						JFolder::create($folder, 0755 );
@@ -92,7 +94,7 @@ class PhocaDownloadCpControllerPhocaDownloadUpload extends PhocaDownloadCpContro
 				} else {
 					$app->redirect($link, JText::_('COM_PHOCADOWNLOAD_ERROR_FOLDER_CREATING'));
 				}
-				
+
 				$app->redirect($link, JText::_('COM_PHOCADOWNLOAD_SUCCESS_FOLDER_CREATING'));
 			} else {
 				$app->redirect($link, JText::_('COM_PHOCADOWNLOAD_ERROR_FOLDER_CREATING_EXISTS'));
@@ -101,16 +103,16 @@ class PhocaDownloadCpControllerPhocaDownloadUpload extends PhocaDownloadCpContro
 		}
 		$app->redirect($link);
 	}
-	
+
 	function multipleupload() {
 		$result = PhocaDownloadFileUpload::realMultipleUpload();
-		return true;	
+		return true;
 	}
-	
+
 	function upload() {
 		$result = PhocaDownloadFileUpload::realSingleUpload();
 		return true;
 	}
-	
-	
+
+
 }
