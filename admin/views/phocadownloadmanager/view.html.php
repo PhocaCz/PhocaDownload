@@ -79,13 +79,13 @@ class PhocaDownloadCpViewPhocaDownloadManager extends JViewLegacy
 		// Upload
 		// - - - - - - - - - - -
 		$sU							= new PhocaDownloadFileUploadSingle();
-		$sU->returnUrl				= 'index.php?option=com_phocadownload&view=phocadownloadmanager&tab=upload'.str_replace('&amp;', '&', $group['c']).'&manager='.htmlspecialchars($this->manager).'&field='.htmlspecialchars($this->field).'&folder='.htmlspecialchars(PhocaDownloadUtils::removeSpecChars($this->currentFolder));
+		$sU->returnUrl				= 'index.php?option=com_phocadownload&view=phocadownloadmanager&tab=upload'.str_replace('&amp;', '&', $group['c']).'&manager='.PhocaDownloadUtils::filterValue($this->manager, 'alphanumeric').'&field='.PhocaDownloadUtils::filterValue($this->field, 'alphanumeric2').'&folder='.PhocaDownloadUtils::filterValue($this->currentFolder, 'folderpath');
 		$sU->tab					= 'upload';
 		$this->t['su_output']	= $sU->getSingleUploadHTML();
 		$this->t['su_url']		= JURI::base().'index.php?option=com_phocadownload&task=phocadownloadupload.upload&amp;'
 								  .$this->session->getName().'='.$this->session->getId().'&amp;'
-								  . JSession::getFormToken().'=1&amp;viewback=phocadownloadmanager&amp;manager='.htmlspecialchars($this->manager).'&amp;field='.htmlspecialchars($this->field).'&amp;'
-								  .'folder='. htmlspecialchars(PhocaDownloadUtils::removeSpecChars($this->currentFolder)).'&amp;tab=upload';
+								  . JSession::getFormToken().'=1&amp;viewback=phocadownloadmanager&amp;manager='.PhocaDownloadUtils::filterValue($this->manager, 'alphanumeric').'&amp;field='.PhocaDownloadUtils::filterValue($this->field, 'alphanumeric2').'&amp;'
+								  .'folder='. PhocaDownloadUtils::filterValue($this->currentFolder, 'folderpath').'&amp;tab=upload';
 
 
 		// - - - - - - - - - - -
@@ -127,12 +127,12 @@ class PhocaDownloadCpViewPhocaDownloadManager extends JViewLegacy
 			$mU->method				= $this->t['multipleuploadmethod'];
 			$mU->url				= JURI::base().'index.php?option=com_phocadownload&task=phocadownloadupload.multipleupload&amp;'
 									 .$this->session->getName().'='.$this->session->getId().'&'
-									 . JSession::getFormToken().'=1&tab=multipleupload&manager='.htmlspecialchars($this->manager).'&field='.htmlspecialchars($this->field).'&folder='. htmlspecialchars(PhocaDownloadUtils::removeSpecChars($this->currentFolder));
+									 . JSession::getFormToken().'=1&tab=multipleupload&manager='.PhocaDownloadUtils::filterValue($this->manager, 'alphanumeric').'&field='.PhocaDownloadUtils::filterValue($this->field, 'alphanumeric2').'&folder='. PhocaDownloadUtils::filterValue($this->currentFolder, 'folderpath');
 			$mU->reload				= JURI::base().'index.php?option=com_phocadownload&view=phocadownloadmanager'
-									.str_replace('&amp;', '&', htmlspecialchars($group['c'])).'&'
+									.str_replace('&amp;', '&', PhocaDownloadUtils::filterValue($group['c'], 'text')).'&'
 									.$this->session->getName().'='.$this->session->getId().'&'
 									. JSession::getFormToken().'=1&tab=multipleupload&'
-									.'manager='.htmlspecialchars($this->manager).'&field='.htmlspecialchars($this->field).'&folder='. htmlspecialchars(PhocaDownloadUtils::removeSpecChars($this->currentFolder));
+									.'manager='.PhocaDownloadUtils::filterValue($this->manager, 'alphanumeric').'&field='.PhocaDownloadUtils::filterValue($this->field, 'alphanumeric2').'&folder='. PhocaDownloadUtils::filterValue($this->currentFolder, 'folderpath');
 			$mU->maxFileSize		= PhocadownloadFileUploadMultiple::getMultipleUploadSizeFormat($this->t['uploadmaxsize']);
 			$mU->chunkSize			= '1mb';
 

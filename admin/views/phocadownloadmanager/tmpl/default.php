@@ -186,14 +186,14 @@ if ($this->t['displaytabs'] > 0) {
 
 	echo '<div class="tab-pane" id="createfolder">'. "\n";
 	//echo PhocaDownloadFileUpload::renderCreateFolder($this->session->getName(), $this->session->getId(), $this->currentFolder, 'phocadownloadmanager', 'manager='.$this->manager.'&amp;tab='.$this->t['currenttab']['upload'].'&amp;field='. $this->field );
-	echo PhocaDownloadFileUpload::renderCreateFolder($this->session->getName(), $this->session->getId(), $this->currentFolder, 'phocadownloadmanager', 'manager='.htmlspecialchars($this->manager).'&amp;tab=createfolder&amp;field='. htmlspecialchars($this->field) );
+	echo PhocaDownloadFileUpload::renderCreateFolder($this->session->getName(), $this->session->getId(), $this->currentFolder, 'phocadownloadmanager', 'manager='.PhocaDownloadUtils::filterValue($this->manager, 'alphanumeric').'&amp;tab=createfolder&amp;field='. PhocaDownloadUtils::filterValue($this->field, 'alphanumeric2') );
 	echo '</div>'. "\n";
 
 	echo '</div>'. "\n";
 }
 echo '</div>';
 
-if ($this->t['tab'] != '') {$jsCt = 'a[href=#'.htmlspecialchars(PhocaDownloadUtils::removeSpecChars($this->t['tab'])) .']';} else {$jsCt = 'a:first';}
+if ($this->t['tab'] != '') {$jsCt = 'a[href=#'.PhocaDownloadUtils::filterValue($this->t['tab'], 'alphanumeric') .']';} else {$jsCt = 'a:first';}
 echo '<script type="text/javascript">';
 echo '   jQuery(\'#configTabs '.$jsCt.'\').tab(\'show\');'; // Select first tab
 echo '</script>';

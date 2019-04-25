@@ -122,8 +122,9 @@ class PhocaDownloadFileUploadMultiple
 		}
 
 
-        $this->url      = htmlspecialchars($this->url);
-        $this->reload 	= htmlspecialchars($this->reload);
+
+		$this->url      = PhocaDownloadUtils::filterValue($this->url, 'text');
+		$this->reload 	= PhocaDownloadUtils::filterValue($this->reload, 'text');
         $this->url 		= str_replace('&amp;', '&', $this->url);
         $this->reload 	= str_replace('&amp;', '&', $this->reload);
 

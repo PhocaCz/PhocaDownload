@@ -150,10 +150,55 @@ class PhocaDownloadUtils
 
     }
 
-	public static function removeSpecChars($text) {
 
-		$charsA = array('(', '[', '{', '}', ']', ')', ';');
-		return str_replace($charsA, '', $text);
+
+	public static function filterValue($string, $type = 'html') {
+
+		switch ($type) {
+
+			case 'url':
+				return rawurlencode($string);
+				break;
+
+			case 'number':
+				return preg_replace( '/[^.0-9]/', '', $string );
+				break;
+
+			case 'alphanumeric':
+				return preg_replace("/[^a-zA-Z0-9]+/", '', $string);
+				break;
+
+			case 'alphanumeric2':
+				return preg_replace("/[^\\w-]/", '', $string);// Alphanumeric plus _  -
+				break;
+
+			case 'alphanumeric3':
+				return preg_replace("/[^\\w.-]/", '', $string);// Alphanumeric plus _ . -
+				break;
+
+			case 'folder':
+			case 'file':
+				$string =  preg_replace('/[\"\*\/\\\:\<\>\?\'\|]+/', '', $string);
+				return htmlspecialchars($string, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+				break;
+
+			case 'folderpath':
+			case 'filepath':
+				$string = preg_replace('/[\"\*\:\<\>\?\'\|]+/', '', $string);
+				return htmlspecialchars($string, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+				break;
+
+			case 'text':
+				return htmlspecialchars(strip_tags($string), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+				break;
+
+			case 'html':
+			default:
+				return htmlspecialchars($string, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+				break;
+
+		}
+
 	}
 }
 ?>

@@ -687,7 +687,7 @@ class PhocaDownloadFileUpload
 		$link = JURI::base()
 			.'index.php?option=com_phocadownload&task=phocadownloadupload.createfolder&amp;'. $sessName.'='.$sessId.'&amp;'
 			.JSession::getFormToken().'=1&amp;viewback='.$viewBack.'&amp;'
-			.'folder='.htmlspecialchars(PhocaDownloadUtils::removeSpecChars($currentFolder)).$attribs;
+			.'folder='.PhocaDownloadUtils::filterValue($currentFolder, 'folderpath').$attribs;
 
 		$link = str_replace('&amp;', '&', $link);
 
@@ -696,7 +696,7 @@ class PhocaDownloadFileUpload
 		.'<h4>'.JText::_('COM_PHOCADOWNLOAD_FOLDER').'</h4>'."\n"
 		.'<div class="path">'
 		.'<input class="inputbox" type="text" id="foldername" name="foldername"  />'
-		.'<input class="update-folder" type="hidden" name="folderbase" id="folderbase" value="'.htmlspecialchars(PhocaDownloadUtils::removeSpecChars($currentFolder)).'" />'
+		.'<input class="update-folder" type="hidden" name="folderbase" id="folderbase" value="'.PhocaDownloadUtils::filterValue($currentFolder, 'folderpath').'" />'
 		.' <button type="submit" class="btn">'. JText::_( 'COM_PHOCADOWNLOAD_CREATE_FOLDER' ).'</button>'
 		.'</div>'."\n"
 		.JHTML::_( 'form.token' )

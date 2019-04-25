@@ -20,7 +20,7 @@
 	<option	value="0">COM_PHOCADOWNLOAD_NOT_APPROVED</option>
 </field>
 
-<field name="language" type="contentlanguage" label="JFIELD_LANGUAGE_LABEL" description="COM_PHOCAGALLERY_FIELD_LANGUAGE_FILE_DESC" class="inputbox">
+<field name="language" type="contentlanguage" label="JFIELD_LANGUAGE_LABEL" description="COM_PHOCADOWNLOAD_FIELD_LANGUAGE_FILE_DESC" class="inputbox">
 	<option value="*">JALL</option>
 </field>
 <!--
@@ -28,6 +28,6 @@
 	<option value="0">COM_PHOCADOWNLOAD_NO</option>
 	<option	value="1">COM_PHOCADOWNLOAD_YES</option>
 </field>-->
-	
-	</fieldset>	
+
+	</fieldset>
 </form>
