@@ -13,7 +13,7 @@ $published = $this->state->get('filter.state');
 <div class="modal hide fade" id="collapseModal">
 	<div class="modal-header">
 		<button type="button" role="presentation" class="close" data-dismiss="modal">x</button>
-		<h3><?php echo JText::_($this->t['l'] . '_BATCH_OPTIONS_CATEGORIES');?></h3>
+		<h3><?php echo JText::_($this->t['l'] . '_BATCH_OPTIONS_FILES');?></h3>
 	</div>
 	<div class="modal-body">
 		<p><?php /* echo JText::_('COM_CONTENT_BATCH_TIP');*/ ?></p>
