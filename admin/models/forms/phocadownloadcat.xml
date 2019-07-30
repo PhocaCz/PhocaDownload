@@ -22,7 +22,7 @@
 <field name="accessuserid" type="phocausers" multiple="1" label="COM_PHOCADOWNLOAD_FIELD_ACCESS_RIGHTS_LABEL" description="COM_PHOCADOWNLOAD_FIELD_ACCESS_RIGHTS_DESC" class="inputbox" size="1" />
 
 <field name="uploaduserid" type="phocausers" multiple="1" label="COM_PHOCADOWNLOAD_FIELD_UPLOAD_RIGHTS_LABEL" description="COM_PHOCADOWNLOAD_FIELD_UPLOAD_RIGHTS_DESC" class="inputbox" size="1" />
-<field name="deleteuserid" type="phocausers" multiple="1" label="COM_PHOCADOWNLOAD_FIELD_DELETE_RIGHTS_LABEL" description="COM_PHOCADOWNLOAD_FIELD_UPLOAD_RIGHTS_DESC" class="inputbox" size="1" />
+<field name="deleteuserid" type="phocausers" multiple="1" label="COM_PHOCADOWNLOAD_FIELD_DELETE_RIGHTS_LABEL" description="COM_PHOCADOWNLOAD_FIELD_DELETE_RIGHTS_DESC" class="inputbox" size="1" />
 
 
 <field name="image" type="phocaselectfilename" manager="image" label="COM_PHOCADOWNLOAD_FIELD_CATEGORY_IMAGE_LABEL"  description="COM_PHOCADOWNLOAD_FIELD_CATEGORY_IMAGE_DESC" class="inputbox" size="40" />
