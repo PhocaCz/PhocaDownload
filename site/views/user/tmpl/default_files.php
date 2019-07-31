@@ -151,21 +151,21 @@ if (is_array($rows)) {
 	$times = '';
 	if (isset($row->publish_up)) {
 		if ($row->publish_up == $nullDate) {
-			$times .= JText::_( 'COM_PHOCADOWNLOAD_START') . ': '.JText::_( 'COM_PHOCADOWNLOAD_ALWAYS' );
+			$times .= "\n". JText::_( 'COM_PHOCADOWNLOAD_START') . ': '.JText::_( 'COM_PHOCADOWNLOAD_ALWAYS' );
 		} else {
-			$times .= JText::_( 'COM_PHOCADOWNLOAD_START') .": ". $publish_up->format("D, d M Y H:i:s");
+			$times .= "\n". JText::_( 'COM_PHOCADOWNLOAD_START') .": ". $publish_up->format("D, d M Y, H:i:s");
 		}
 	}
 	if (isset($row->publish_down)) {
 		if ($row->publish_down == $nullDate) {
-			$times .= "<br />". JText::_( 'COM_PHOCADOWNLOAD_FINISH'). ': '. JText::_('COM_PHOCADOWNLOAD_NO_EXPIRY' );
+			$times .= "\n". JText::_( 'COM_PHOCADOWNLOAD_FINISH'). ': '. JText::_('COM_PHOCADOWNLOAD_NO_EXPIRY' );
 		} else {
-			$times .= "<br />". JText::_( 'COM_PHOCADOWNLOAD_FINISH') .": ". $publish_up->format("D, d M Y H:i:s");
+			$times .= "\n". JText::_( 'COM_PHOCADOWNLOAD_FINISH') .": ". $publish_up->format("D, d M Y, H:i:s");
 		}
 	}
 
 	if ( $times ) {
-		echo '<span class="editlinktip hasTip" title="'. JText::_( 'COM_PHOCADOWNLOAD_PUBLISH_INFORMATION' ).'::'. $times.'">'
+		echo '<span class="editlinktip hasTip" title="'. JText::_( 'COM_PHOCADOWNLOAD_PUBLISH_INFORMATION' ).': '. $times.'">'
 			.'<a href="javascript:void(0);" >'. $text.'</a></span>';
 	}
 
