@@ -141,7 +141,10 @@ class PhocaDownloadFileUploadMultiple
 		$js.='	   \'Status\' : \''.addslashes(JText::_('COM_PHOCADOWNLOAD_STATUS')).'\','."\n";
 		$js.='	   \'Size\' : \''.addslashes(JText::_('COM_PHOCADOWNLOAD_SIZE')).'\','."\n";
 		$js.='	   \'Add files\' : \''.addslashes(JText::_('COM_PHOCADOWNLOAD_ADD_FILES')).'\','."\n";
+		$js.='	   \'Add Files\' : \''.addslashes(JText::_('COM_PHOCADOWNLOAD_ADD_FILES')).'\','."\n";
 		$js.='	   \'Start upload\':\''.addslashes(JText::_('COM_PHOCADOWNLOAD_START_UPLOAD')).'\','."\n";
+		$js.='	   \'Start Upload\':\''.addslashes(JText::_('COM_PHOCADOWNLOAD_START_UPLOAD')).'\','."\n";
+		$js.='	   \'Stop Upload\' : \''.addslashes(JText::_('COM_PHOCADOWNLOAD_STOP_CURRENT_UPLOAD')).'\','."\n";
 		$js.='	   \'Stop current upload\' : \''.addslashes(JText::_('COM_PHOCADOWNLOAD_STOP_CURRENT_UPLOAD')).'\','."\n";
 		$js.='	   \'Start uploading queue\' : \''.addslashes(JText::_('COM_PHOCADOWNLOAD_START_UPLOADING_QUEUE')).'\','."\n";
 		$js.='	   \'Drag files here.\' : \''.addslashes(JText::_('COM_PHOCADOWNLOAD_DRAG_FILES_HERE')).'\''."\n";
