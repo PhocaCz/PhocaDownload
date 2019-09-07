@@ -185,7 +185,26 @@ if (!empty($this->file[0])) {
 			$pdDownloads = '';
 			if ($this->t['display_downloads'] == 1) {
 				$pdDownloads .= '<div class="pd-downloads-txt">'.JText::_('COM_PHOCADOWNLOAD_DOWNLOADS').':</div>';
-				$pdDownloads .= '<div class="pd-fl-m">'.$v->hits.' x</div>';
+
+				for ($i = 2; $i < 1001; $i++) :
+					if (($v->hits > 1 && $v->hits < 5)
+					|| ($v->hits > $i*10+1 && $v->hits < $i*10+5)) {
+						$numD = 'COM_PHOCADOWNLOAD_NUMBER_OF_DOWNLOADS_3';
+						break;
+					}
+					elseif (($v->hits == 0)
+					|| ($v->hits > 4 && $v->hits < 22)
+					|| ($v->hits > $i*10+4 && $v->hits < $i*10+12)) {
+						$numD = 'COM_PHOCADOWNLOAD_NUMBER_OF_DOWNLOADS_2';
+						break;
+					}
+					elseif ($v->hits == 1) {
+						$numD = 'COM_PHOCADOWNLOAD_NUMBER_OF_DOWNLOADS_1';
+						break;
+					}
+				endfor;
+
+				$pdDownloads .= '<div class="pd-fl-m">'.$v->hits.' '.JText::_($numD).'</div>';
 			}
 
 			$pdDescription = '';
