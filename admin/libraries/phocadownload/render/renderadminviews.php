@@ -273,7 +273,7 @@ class PhocaDownloadRenderAdminViews
 		.'<input type="hidden" name="filter_order" value="'.$listOrder.'" />'. "\n"
 		.'<input type="hidden" name="filter_order_Dir" value="'.$listDirn.'" />'. "\n"
 		. JHtml::_('form.token'). "\n"
-		.'<input type="hidden" name="original_order_values" value="'. implode($originalOrders, ',').'" />'. "\n";
+		.'<input type="hidden" name="original_order_values" value="'. implode(',', $originalOrders).'" />'. "\n";
 	}
 
 	public function td($value, $class = '') {
@@ -371,23 +371,23 @@ class PhocaDownloadRenderAdminViews
 		$times = '';
 		if (isset($publishUp)) {
 			if ($publishUp == $nullDate) {
-				$times .= JText::_( $langPref . '_START') . ': '.JText::_( $langPref . '_ALWAYS' );
+				$times .= "\n". JText::_( $langPref . '_START') . ': '.JText::_( $langPref . '_ALWAYS' );
 			} else {
-				$times .= JText::_( $langPref . '_START') .": ". JHtml::_('date', $publish_up, 'D, d M Y H:i:s');
+				$times .= "\n". JText::_( $langPref . '_START') .": ". JHtml::_('date', $publish_up, 'D, d M Y H:i:s');
 			}
 		}
 		if (isset($publishDown)) {
 
 			if ($publishDown == $nullDate) {
-				$times .= "<br />". JText::_( $langPref . '_FINISH'). ': '. JText::_( $langPref . '_NO_EXPIRY' );
+				$times .= "\n". JText::_( $langPref . '_FINISH'). ': '. JText::_( $langPref . '_NO_EXPIRY' );
 			} else {
-				$times .= "<br />". JText::_( $langPref . '_FINISH') .": ". JHtml::_('date', $publish_down, 'D, d M Y H:i:s');
+				$times .= "\n". JText::_( $langPref . '_FINISH') .": ". JHtml::_('date', $publish_down, 'D, d M Y H:i:s');
 			}
 		}
 
 		if ( $times ) {
 			$o .= '<td align="center">'
-				.'<span class="editlinktip hasTip" title="'. JText::_( $langPref . '_PUBLISH_INFORMATION' ).'::'. $times.'">'
+				.'<span class="editlinktip hasTip" title="'. JText::_( $langPref . '_PUBLISH_INFORMATION' ).': '. $times.'">'
 				.'<a href="javascript:void(0);" >'. $text.'</a></span>'
 				.'</td>'. "\n";
 		} else {

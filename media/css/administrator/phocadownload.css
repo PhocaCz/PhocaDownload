@@ -619,3 +619,30 @@ span.icon-32-approve {
 	transform: scale(0.6);
 	transform-origin: 0 50%;
 }
+
+.ph-img-table a img {
+	max-width: fit-content;
+}
+
+.plupload_filelist .plupload_file_name {
+    width: auto;
+}
+
+#phocadownloadfiles .modal-body,
+#phocadownloadcats .modal-body {
+	padding: 10px;
+}
+
+.ph-wrap-12 {
+	overflow-wrap: break-word;
+}
+@media (max-width: 768px) {
+	.ph-wrap-12 { max-width: 6em;}
+}
+@media (max-width: 1366px) {
+	.ph-wrap-12 { max-width: 12em;}
+}
+@media  (min-width: 1367px) {
+	.ph-wrap-12 { max-width: 24em;}
+}
+

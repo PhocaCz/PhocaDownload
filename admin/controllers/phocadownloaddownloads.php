@@ -14,7 +14,7 @@ class PhocaDownloadCpControllerPhocaDownloadDownloads extends JControllerForm
 {
 	protected	$option 		= 'com_phocadownload';
 
-	public function &getModel($name = 'PhocaDownloadDownloads', $prefix = 'PhocaDownloadCpModel', $config = array('ignore_request' => true))
+	public function &getModel($name = 'PhocaDownloadDownload', $prefix = 'PhocaDownloadCpModel', $config = array('ignore_request' => true))
 	{
 		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
 		return $model;
@@ -40,6 +40,24 @@ class PhocaDownloadCpControllerPhocaDownloadDownloads extends JControllerForm
 		}
 
 		$link = 'index.php?option=com_phocadownload&view=phocadownloaddownloads&id='.(int)$idFile;
+		$this->setRedirect($link, $msg);
+	}
+
+	function delete() {
+
+
+		$cid					= JFactory::getApplication()->input->get( 'cid', array(0), 'post', 'array' );
+
+
+		$model = $this->getModel( 'phocadownloaddownload' );
+
+		if ($model->delete($cid)) {
+			$msg = JText::_( 'COM_PHOCADOWNLOAD_SUCCESS_DELETE_USER_STAT' );
+		} else {
+			$msg = JText::_( 'COM_PHOCADOWNLOAD_ERROR_DELETE_USER_STAT' );
+		}
+
+		$link = 'index.php?option=com_phocadownload&view=phocadownloaddownloads';
 		$this->setRedirect($link, $msg);
 	}
 }

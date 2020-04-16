@@ -44,7 +44,7 @@ echo $r->inputFilterSearchClear('JSEARCH_FILTER_SUBMIT', 'JSEARCH_FILTER_CLEAR')
 echo $r->inputFilterSearchLimit('JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC', $this->pagination->getLimitBox());
 echo $r->selectFilterDirection('JFIELD_ORDERING_DESC', 'JGLOBAL_ORDER_ASCENDING', 'JGLOBAL_ORDER_DESCENDING', $listDirn);
 echo $r->selectFilterSortBy('JGLOBAL_SORT_BY', $sortFields, $listOrder);
-echo $r->endFilterBar();		
+echo $r->endFilterBar();
 
 echo $r->startTable('categoryList');
 
@@ -59,7 +59,7 @@ echo '<th class="ph-filename-long">'.JHTML::_('grid.sort',  	$this->t['l'].'_FIL
 echo '<th class="ph-hits">'.JHTML::_('grid.sort',  		$this->t['l'].'_DOWNLOADS', 'a.hits', $listDirn, $listOrder ).'</th>'."\n";
 
 echo $r->endTblHeader();
-			
+
 
 echo '<tbody>'. "\n";
 
@@ -69,8 +69,8 @@ $colors = array (
 '#CCFF80','#99FF80','#80FF80','#80FFC9','#80FFFF','#80C9FF','#809FFF','#9191FF','#AA80FF','#B580FF',
 '#D580FF','#FF80FF','#FF80DF','#FF80B8');
 
-$originalOrders = array();	
-$parentsStr 	= "";		
+$originalOrders = array();
+$parentsStr 	= "";
 $j 				= 0;
 
 if (is_array($this->items)) {
@@ -78,12 +78,12 @@ if (is_array($this->items)) {
 		//if ($i >= (int)$this->pagination->limitstart && $j < (int)$this->pagination->limit) {
 			if ($item->textonly == 0) {
 				$j++;
-			
-			
+
+
 $urlEdit		= 'index.php?option='.$this->t['o'].'&task='.$this->t['task'].'.edit&id=';
 $urlTask		= 'index.php?option='.$this->t['o'].'&task='.$this->t['task'];
-$orderkey   	= array_search($item->id, $this->ordering[0]);		
-$ordering		= ($listOrder == 'a.ordering');			
+$orderkey   	= array_search($item->id, $this->ordering[0]);
+$ordering		= ($listOrder == 'a.ordering');
 $canCreate		= $user->authorise('core.create', $this->t['o']);
 $canEdit		= $user->authorise('core.edit', $this->t['o']);
 $canCheckin		= $user->authorise('core.manage', 'com_checkin') || $item->checked_out==$user->get('id') || $item->checked_out==0;
@@ -97,7 +97,7 @@ echo '<tr class="row'.$iD.'" sortable-group-id="'.$item->category_id.'" item-id=
 
 echo $r->tdOrder($canChange, $saveOrder, $orderkey, $item->ordering);
 //echo $r->td(JHtml::_('grid.id', $i, $item->id), "small hidden-phone");
-echo $r->td('');					
+echo $r->td('');
 $checkO = '';
 /*if ($item->checked_out) {
 	$checkO .= JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, $this->t['tasks'].'.', $canCheckin);
@@ -108,9 +108,9 @@ if ($canCreate || $canEdit) {
 	$checkO .= $this->escape($item->title);
 //}
 $checkO .= '<br /><span class="smallsub">(<span>'.JText::_($this->t['l'].'_FIELD_ALIAS_LABEL').':</span>'. $this->escape($item->alias).')</span>';
-echo $r->td($checkO, "small hidden-phone");
+echo $r->td($checkO, "small hidden-phone ph-wrap-12");
 
-echo $r->td($item->filename);
+echo $r->td($item->filename, 'ph-wrap-12');
 
 
 if ((int)$this->maxandsum->maxhit == 0) {
@@ -120,14 +120,14 @@ if ((int)$this->maxandsum->maxhit == 0) {
 	$per 		= round((int)$item->hits / (int)$this->maxandsum->maxhit * 500);
 	$perOutput 	= round((int)$item->hits / (int)$this->maxandsum->sumhit * 100);
 }
-	
+
 echo '<td>';
 echo '<div style="background:'.$colors[$color].' url(\''. JURI::root(true).'/media/com_phocadownload/images/white-space.png'.'\') '.$per.'px 0px no-repeat;width:500px;padding:5px 0px;margin:5px 0px;border:1px solid #ccc;">';
 //	echo '<small style="color:#666666">['. $row->id .']</small>';
 echo '<div> &nbsp;'.$item->hits.' ('.$perOutput .' %) &nbsp;</div>';
 echo '</div>';
 echo '</td></tr>';
-	
+
 $color++;
 if ($color > 23) {
 	$color = 0;
@@ -136,7 +136,7 @@ if ($color > 23) {
 
 
 echo '</tr>'. "\n";
-			}			
+			}
 		//}
 	}
 }

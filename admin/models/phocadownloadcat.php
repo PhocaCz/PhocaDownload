@@ -562,7 +562,7 @@ class PhocaDownloadCpModelPhocaDownloadCat extends JModelAdmin
 		$done = false;
 
 		if (!empty($commands['assetgroup_id'])) {
-			if (!$this->batchAccess($commands['assetgroup_id'], $pks)) {
+			if (!$this->batchAccess($commands['assetgroup_id'], $pks, $contexts)) {
 				return false;
 			}
 

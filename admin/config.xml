@@ -51,6 +51,7 @@
 	<option value="0">COM_PHOCADOWNLOAD_NO</option>
 </field>
 
+<field name="most_download_files_num" default="5" size="10" type="text" label="COM_PHOCADOWNLOAD_FIELD_MOST_DOWNLOAD_FILES_NUMBER_LABEL" description="COM_PHOCADOWNLOAD_FIELD_MOST_DOWNLOAD_FILES_NUMBER_DESC" />
 	
 <field name="display_file_view" type="list" default="0" label="COM_PHOCADOWNLOAD_FIELD_DISPLAY_FILE_VIEW_LABEL" description="COM_PHOCADOWNLOAD_FIELD_DISPLAY_FILE_VIEW_DESC">
 	<option value="0">COM_PHOCADOWNLOAD_NO</option>
@@ -99,7 +100,22 @@
 	<option value="8">COM_PHOCADOWNLOAD_ID_DESC</option>
 	<option value="11">COM_PHOCADOWNLOAD_FILENAME_ASC</option>
 	<option value="12">COM_PHOCADOWNLOAD_FILENAME_DESC</option>
+	<option value="15">COM_PHOCADOWNLOAD_COUNT_ASC</option>
+	<option value="16">COM_PHOCADOWNLOAD_COUNT_DESC</option>
+	<option value="13">COM_PHOCADOWNLOAD_AVERAGE_ASC</option>
+	<option value="14">COM_PHOCADOWNLOAD_AVERAGE_DESC</option>
+	<option value="9">COM_PHOCADOWNLOAD_DOWNLOADS_ASC</option>
+	<option value="10">COM_PHOCADOWNLOAD_DOWNLOADS_DESC</option>
 </field>
+
+
+<field name="file_ordering_values" default="1,2,3,4,5,6,11,12,15,16,13,14,9,10" size="18" type="text" label="COM_PHOCADOWNLOAD_FIELD_FILE_ORDERING_VALUES_LABEL" description="COM_PHOCADOWNLOAD_FIELD_FILE_ORDERING_VALUES_DESC"/>
+
+<field name="ordering_asc_desc_arrows" default="0" type="radio" class="btn-group btn-group-yesno" label="COM_PHOCADOWNLOAD_FIELD_ORDERING_ASC_DESC_ARROWS_LABEL"
+                   description="COM_PHOCADOWNLOAD_FIELD_ORDERING_ASC_DESC_ARROWS_DESC">
+                <option value="1">COM_PHOCADOWNLOAD_YES</option>
+                <option value="0">COM_PHOCADOWNLOAD_NO</option>
+            </field>
 
 
 <field name="default_pagination" default="20" size="18" type="text" label="COM_PHOCADOWNLOAD_FIELD_DEFAULT_VALUE_PAGINATION_LABEL" description="COM_PHOCADOWNLOAD_FIELD_DEFAULT_VALUE_PAGINATION_DESC" />
@@ -489,9 +505,6 @@
 </field>
 
 <field name="multiple_upload_method" type="list" default="4" label="COM_PHOCADOWNLOAD_FIELD_MULTIPLE_UPLOAD_METHOD_LABEL" description="COM_PHOCADOWNLOAD_FIELD_MULTIPLE_UPLOAD_METHOD_DESC">
-	<option value="1">COM_PHOCADOWNLOAD_FLASH_UPLOADER</option>
-	<option value="2">COM_PHOCADOWNLOAD_GEARS_UPLOADER</option>
-	<option value="3">COM_PHOCADOWNLOAD_SILVERLIGHT_UPLOADER</option> 
 	<option value="4">COM_PHOCADOWNLOAD_HTML5_UPLOADER</option>
 	<option value="5">COM_PHOCADOWNLOAD_BROWSERPLUS_UPLOADER</option>
 	<option value="6">COM_PHOCADOWNLOAD_HTML4_UPLOADER</option>

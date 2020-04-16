@@ -34,9 +34,11 @@ class PhocaDownloadModelCategory extends JModelLegacy
 		
 		$config = JFactory::getConfig();		
 		
-		$paramsC 			= JComponentHelper::getParams('com_phocadownload') ;
+		//$paramsC 			= JComponentHelper::getParams('com_phocadownload') ;
+		$paramsC = $app->getParams();
 		$defaultPagination	= $paramsC->get( 'default_pagination', '20' );
 		$file_ordering		= $paramsC->get( 'file_ordering', 1 );
+		
 		$context			= $this->_context.'.';
 		
 		// Get the pagination request variables

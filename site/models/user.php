@@ -554,6 +554,14 @@ class PhocaDownloadModelUser extends JModelLegacy
 			return false;
 		}
 
+		 //Delete record from statistics table
+		$query = 'DELETE FROM #__phocadownload_user_stat WHERE fileid='.(int)$id;
+		$this->_db->setQuery( $query );
+		if(!$this->_db->query()) {
+			throw new Exception('Database Error - Delete User Stats (Files)', 500);
+			return false;
+		}
+  
 		// Delete tags
 		$query = 'DELETE FROM #__phocadownload_tags_ref'
 			. ' WHERE fileid ='.(int)$id;

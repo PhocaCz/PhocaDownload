@@ -54,7 +54,7 @@ echo $r->selectFilterLanguage('JOPTION_SELECT_LANGUAGE', $this->state->get('filt
 echo $r->selectFilterCategory(PhocaDownloadCategory::options($this->t['o']), 'JOPTION_SELECT_CATEGORY', $this->state->get('filter.category_id'));
 echo $r->endFilterBar();
 
-echo $r->endFilterBar();		
+echo $r->endFilterBar();
 
 echo $r->startTable('categoryList');
 
@@ -64,7 +64,7 @@ echo $r->thOrdering('JGRID_HEADING_ORDERING', $listDirn, $listOrder);
 echo $r->thCheck('JGLOBAL_CHECK_ALL');
 echo '<th class="ph-title">'.JHTML::_('grid.sort',  	$this->t['l'].'_TITLE', 'a.title', $listDirn, $listOrder ).'</th>'."\n";
 echo '<th class="ph-filename-long">'.JHTML::_('grid.sort',  	$this->t['l'].'_FILENAME', 'a.filename', $listDirn, $listOrder ).'</th>'."\n";
-echo '<th class="ph-published">'.JHTML::_('grid.sort',  $this->t['l'].'_PUBLISHED', 'a.published', $listDirn, $listOrder ).'</th>'."\n";	
+echo '<th class="ph-published">'.JHTML::_('grid.sort',  $this->t['l'].'_PUBLISHED', 'a.published', $listDirn, $listOrder ).'</th>'."\n";
 echo '<th class="ph-approved">'.JHTML::_('grid.sort',  	$this->t['l'].'_APPROVED', 'a.approved', $listDirn, $listOrder ).'</th>'."\n";
 echo '<th class="ph-parentcattitle">'.JHTML::_('grid.sort', $this->t['l'].'_CATEGORY', 'category_id', $listDirn, $listOrder ).'</th>'."\n";
 echo '<th class="ph-owner">'.JHTML::_('grid.sort',  	$this->t['l'].'_OWNER', 'category_owner_id', $listDirn, $listOrder ).'</th>'."\n";
@@ -76,11 +76,11 @@ echo '<th class="ph-language">'.JHTML::_('grid.sort',  	'JGRID_HEADING_LANGUAGE'
 echo '<th class="ph-id">'.JHTML::_('grid.sort',  		$this->t['l'].'_ID', 'a.id', $listDirn, $listOrder ).'</th>'."\n";
 
 echo $r->endTblHeader();
-		
+
 echo '<tbody>'. "\n";
 
-$originalOrders = array();	
-$parentsStr 	= "";		
+$originalOrders = array();
+$parentsStr 	= "";
 $j 				= 0;
 
 if (is_array($this->items)) {
@@ -90,8 +90,8 @@ if (is_array($this->items)) {
 
 $urlEdit		= 'index.php?option='.$this->t['o'].'&task='.$this->t['task'].'.edit&id=';
 $urlTask		= 'index.php?option='.$this->t['o'].'&task='.$this->t['task'];
-$orderkey   	= array_search($item->id, $this->ordering[$item->catid]);		
-$ordering		= ($listOrder == 'a.ordering');			
+$orderkey   	= array_search($item->id, $this->ordering[$item->catid]);
+$ordering		= ($listOrder == 'a.ordering');
 $canCreate		= $user->authorise('core.create', $this->t['o']);
 $canEdit		= $user->authorise('core.edit', $this->t['o']);
 $canCheckin		= $user->authorise('core.manage', 'com_checkin') || $item->checked_out==$user->get('id') || $item->checked_out==0;
@@ -110,7 +110,7 @@ echo '<tr class="row'.$iD.'" sortable-group-id="'.$item->category_id.'" >'. "\n"
 
 echo $r->tdOrder($canChange, $saveOrder, $orderkey, $item->ordering);
 echo $r->td(JHtml::_('grid.id', $i, $item->id), "small hidden-phone");
-					
+
 $checkO = '';
 if ($item->checked_out) {
 	$checkO .= JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, $this->t['tasks'].'.', $canCheckin);
@@ -121,9 +121,9 @@ if ($canCreate || $canEdit) {
 	$checkO .= $this->escape($item->title);
 }
 $checkO .= '<br /><span class="smallsub">(<span>'.JText::_($this->t['l'].'_FIELD_ALIAS_LABEL').':</span>'. $this->escape($item->alias).')</span>';
-echo $r->td($checkO, "small hidden-phone");
+echo $r->td($checkO, "small hidden-phone ph-wrap-12");
 
-echo $r->td($item->filename);
+echo $r->td($item->filename, "small ph-wrap-12");
 
 echo $r->td(JHtml::_('jgrid.published', $item->published, $i, $this->t['tasks'].'.', $canChange), "small hidden-phone");
 echo $r->td(PhocaDownloadJGrid::approved( $item->approved, $i, $this->t['tasks'].'.', $canChange), "small hidden-phone");
@@ -133,8 +133,8 @@ if ($canEditCat) {
 } else {
 	$catO = $this->escape($item->category_title);
 }
-echo $r->td($catO, "small hidden-phone");	
-//echo $r->td($this->escape($item->access_level), "small hidden-phone");	
+echo $r->td($catO, "small hidden-phone");
+//echo $r->td($this->escape($item->access_level), "small hidden-phone");
 
 $usrO = $item->usernameno;
 if ($item->username) {$usrO = $usrO . ' ('.$item->username.')';}
@@ -142,7 +142,7 @@ echo $r->td($usrO, "small hidden-phone");
 
 $usrU = $item->uploadname;
 if ($item->uploadusername) {$usrU = $usrU . ' ('.$item->uploadusername.')';}
-echo $r->td($usrU, "small hidden-phone");							
+echo $r->td($usrU, "small hidden-phone");
 
 echo $r->td($item->hits, "small hidden-phone");
 
@@ -154,7 +154,7 @@ echo $r->tdLanguage($item->language, $item->language_title, $this->escape($item-
 echo $r->td($item->id, "small hidden-phone");
 
 echo '</tr>'. "\n";
-						
+
 		//}
 	}
 }

@@ -9,6 +9,8 @@
 defined('_JEXEC') or die();
 jimport('joomla.application.component.modellist');
 
+
+
 class PhocaDownloadCpModelPhocaDownloadRaFile extends JModelList
 {
 	protected	$option 		= 'com_phocadownload';
@@ -202,7 +204,7 @@ class PhocaDownloadCpModelPhocaDownloadRaFile extends JModelList
 			}
 
 			foreach ($images as $valueImgId) {
-				$updated = PhocaDownloadRateHelper::updateVoteStatisticsFile( $valueImgId->imgid );
+				$updated = PhocaDownloadRate::updateVoteStatisticsFile( $valueImgId->imgid );
 				if(!$updated) {
 					return false;
 				}

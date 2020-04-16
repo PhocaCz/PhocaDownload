@@ -164,6 +164,11 @@ class PhocaDownloadUtils
 				return preg_replace( '/[^.0-9]/', '', $string );
 				break;
 
+			case 'number2':
+       			//return preg_replace( '/[^0-9\.,+-]/', '', $string );
+       			return preg_replace( '/[^0-9\.,-]/', '', $string );
+			break;
+
 			case 'alphanumeric':
 				return preg_replace("/[^a-zA-Z0-9]+/", '', $string);
 				break;

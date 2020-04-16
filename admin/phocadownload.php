@@ -37,6 +37,7 @@ phocadownloadimport('phocadownload.file.fileuploadmultiple');
 phocadownloadimport('phocadownload.file.fileuploadsingle');
 phocadownloadimport('phocadownload.category.category');
 phocadownloadimport('phocadownload.tag.tag');
+phocadownloadimport('phocadownload.rate.rate');
 
 jimport('joomla.application.component.controller');
 $controller	= JControllerLegacy::getInstance('PhocaDownloadCp');

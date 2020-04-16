@@ -64,7 +64,7 @@ echo '<div id="phocadownloadmanager">';
 
 if ($this->manager == 'filemultiple') {
 	echo $r->startForm($this->t['o'], $this->t['task'], 'adminForm', 'adminForm');
-	echo '<div class="span4 form-horizontal" style="border-right: 1px solid #d3d3d3;padding-right: 5px;">';
+	echo '<div class="span5 form-horizontal" style="border-right: 1px solid #d3d3d3;padding-right: 5px;">';
 	echo '<h4>'. JText::_('COM_PHOCADOWNLOAD_MULTIPLE_ADD').'</h4>';
 
 	echo '<div>'."\n";
@@ -76,7 +76,7 @@ if ($this->manager == 'filemultiple') {
 }
 
 if ($this->manager == 'filemultiple') {
-	echo '<div class="span8 form-horizontal">';
+	echo '<div class="span7 form-horizontal">';
 } else {
 	echo '<div class="span12 form-horizontal">';
 }

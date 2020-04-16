@@ -81,16 +81,24 @@ if ((int)$this->t['tagid'] > 0) {
 				echo '</div>';
 			 }
 
-			// Subcategories
-
+			
 			if (!empty($this->subcategories)) {
 				foreach ($this->subcategories as $valueSubCat) {
+					
+					$rightDisplaySub	= 0;
+					if (!empty($valueSubCat)) {
+						$rightDisplaySub = PhocaDownloadAccess::getUserRight('accessuserid', $valueSubCat->cataccessuserid, $valueSubCat->cataccess, $this->t['user']->getAuthorisedViewLevels(), $this->t['user']->get('id', 0), 0);
+					}
+					// - - - - - - - - - - - - - - - - - - - - - -
+					
+					if ($rightDisplaySub == 1) {
 
-					echo '<div class="pd-subcategory">';
-					echo '<a href="'. JRoute::_(PhocaDownloadRoute::getCategoryRoute($valueSubCat->id, $valueSubCat->alias))
-						 .'">'. $valueSubCat->title.'</a>';
-					echo ' <small>('.$valueSubCat->numdoc.')</small></div>' . "\n";
-					$subcategory = 1;
+						echo '<div class="pd-subcategory">';
+						echo '<a href="'. JRoute::_(PhocaDownloadRoute::getCategoryRoute($valueSubCat->id, $valueSubCat->alias))
+							 .'">'. $valueSubCat->title.'</a>';
+						echo ' <small>('.$valueSubCat->numdoc.')</small></div>' . "\n";
+						$subcategory = 1;
+					}
 				}
 
 				echo '<div class="pd-hr-cb"></div>';
