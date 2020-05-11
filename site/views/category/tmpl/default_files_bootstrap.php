@@ -254,7 +254,7 @@ if (!empty($this->files)) {
 			$pdDownloads = '';
 			if ($this->t['display_downloads'] == 1) {
 				$pdDownloads .= '<div class="pd-downloads-txt">'.JText::_('COM_PHOCADOWNLOAD_DOWNLOADS').':</div>';
-				$pdDownloads .= '<div class="pd-fl-m">'.$v->hits.' x</div>';
+				$pdDownloads .= '<div class="pd-fl-m">'.JText::plural('COM_PHOCADOWNLOAD_TOTAL_DOWNLOADS', $v->hits).'</div>';
 				$d .= $pdDownloads;
 			}
 			
