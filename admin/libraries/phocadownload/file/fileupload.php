@@ -487,7 +487,11 @@ class PhocaDownloadFileUpload
 			$disallowedMimeType = PhocaDownloadFile::getMimeTypeString($dft);
 
 			$ignoreUploadCh = 0;
-			$ignoreUploadCheck = $params->get( 'ignore_file_types_check', 2 );
+			// 1 ... upload all
+			// 2 ... upload admin only
+			// 4 ... upload and download all
+			// 5 ... upload and download admin only
+			$ignoreUploadCheck = $paramsC->get( 'ignore_file_types_check', 2 );
 			if ($ignoreUploadCheck == 1 || $ignoreUploadCheck == 4 ) {
 				$ignoreUploadCh = 1;
 			}
@@ -501,7 +505,7 @@ class PhocaDownloadFileUpload
 
 			$ignoreUploadCh = 0;
 			$ignoreUploadCheck = $paramsC->get( 'ignore_file_types_check', 2 );
-			if ($ignoreUploadCheck == 5 || $ignoreUploadCheck == 5 ) {
+			if ($ignoreUploadCheck == 1 || $ignoreUploadCheck == 4 || $ignoreUploadCheck == 2 || $ignoreUploadCheck == 5 ) {
 				$ignoreUploadCh = 1;
 			}
 		}
@@ -630,7 +634,7 @@ class PhocaDownloadFileUpload
 			$illegal_mime = explode(',', $paramsL['upload_mime_illegal']);
 			if(function_exists('finfo_open')) {// We have fileinfo
 				$finfo	= finfo_open(FILEINFO_MIME);
-				$type	= finfo_file($finfo, $file['tmp_name']);
+				$type	= finfo_file($finfo, $file['tmp_name'], FILEINFO_MIME_TYPE);
 				if(strlen($type) && !in_array($type, $allowed_mime) && in_array($type, $illegal_mime)) {
 					$err = 'COM_PHOCADOWNLOAD_WARNINVALIDMIME';
 					return false;
@@ -699,7 +703,7 @@ class PhocaDownloadFileUpload
 		.'<input class="update-folder" type="hidden" name="folderbase" id="folderbase" value="'.PhocaDownloadUtils::filterValue($currentFolder, 'folderpath').'" />'
 		.' <button type="submit" class="btn">'. JText::_( 'COM_PHOCADOWNLOAD_CREATE_FOLDER' ).'</button>'
 		.'</div>'."\n"
-		.JHTML::_( 'form.token' )
+		.Joomla\CMS\HTML\HTMLHelper::_( 'form.token' )
 		.'</form>';
 		return $folderOutput;
 	}

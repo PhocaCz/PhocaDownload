@@ -7,7 +7,7 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
  defined('_JEXEC') or die('Restricted access'); ?>
-<?php JHTML::_('behavior.tooltip'); ?>
+<?php Joomla\CMS\HTML\HTMLHelper::_('behavior.tooltip'); ?>
 
 
 
@@ -68,7 +68,7 @@
 	<input type="hidden" name="option" value="com_phocadownload" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="controller" value="phocadownloadset" />
-	<?php echo JHTML::_( 'form.token' ); ?>
+	<?php echo Joomla\CMS\HTML\HTMLHelper::_( 'form.token' ); ?>
 	</form>
 
 

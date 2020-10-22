@@ -12,7 +12,7 @@ $user 	= JFactory::getUser();
 //Ordering allowed ?
 $ordering = ($this->t['lists']['order'] == 'a.ordering');
 
-JHTML::_('behavior.tooltip');
+Joomla\CMS\HTML\HTMLHelper::_('behavior.tooltip');
 
 if ($this->t['type'] == 0) {
 	$view = 'file';
@@ -26,106 +26,105 @@ if ($this->t['type'] == 0) {
 	$view = 'filelist';
 }
 
-
-?>
-<script type="text/javascript">
-//<![CDATA[
+$js = '';
+$js .= '
 function insertLink() {
 	var title = document.getElementById("title").value;
-	if (title != '') {
+	if (title != "") {
 		title = "|text="+title;
-	}
-	<?php if ($this->t['type'] == 0) { ?>
-	var target = document.getElementById("target").value;
-	if (target != '') {
-		target = "|target="+target;
-	}
-	<?php } else if ($this->t['type'] == 1 || $this->t['type'] == 2) { ?>
-	var playerwidth = document.getElementById("playerwidth").value;
-	if (playerwidth != '') {
-		playerwidth = "|playerwidth="+playerwidth;
-	}
-	var playerheight = document.getElementById("playerheight").value;
-	if (playerheight != '') {
-		playerheight = "|playerheight="+playerheight;
-	}
-	var playerheightmp3 = document.getElementById("playerheightmp3").value;
-	if (playerheightmp3 != '') {
-		playerheightmp3 = "|playerheightmp3="+playerheightmp3;
-	}
-	<?php } else if ($this->t['type'] == 3) { ?>
-	var previewwidth = document.getElementById("previewwidth").value;
-	if (previewwidth != '') {
-		previewwidth = "|previewwidth="+previewwidth;
-	}
-	var previewheight = document.getElementById("previewheight").value;
-	if (previewheight != '') {
-		previewheight = "|previewheight="+previewheight;
+	}';
+    if ($this->t['type'] == 0) {
+        $js .= 'var target = document.getElementById("target").value;
+        if (target != "") {
+            target = "|target="+target;
+        }';
+	} else if ($this->t['type'] == 1 || $this->t['type'] == 2) {
+        $js .= 'var playerwidth = document.getElementById("playerwidth").value;
+        if (playerwidth != "") {
+            playerwidth = "|playerwidth="+playerwidth;
+        }
+        var playerheight = document.getElementById("playerheight").value;
+        if (playerheight != "") {
+            playerheight = "|playerheight="+playerheight;
+        }
+        var playerheightmp3 = document.getElementById("playerheightmp3").value;
+        if (playerheightmp3 != "") {
+            playerheightmp3 = "|playerheightmp3="+playerheightmp3;
+        }';
+	} else if ($this->t['type'] == 3) {
+        $js .= 'var previewwidth = document.getElementById("previewwidth").value;
+        if (previewwidth != "") {
+            previewwidth = "|previewwidth="+previewwidth;
+        }
+        var previewheight = document.getElementById("previewheight").value;
+        if (previewheight != "") {
+            previewheight = "|previewheight="+previewheight;
+        }';
+
+	} else if ($this->t['type'] == 4) {
+        $js .= 'var limit = document.getElementById("limit").value;
+        if (limit != "") {
+            limit = "|limit="+limit;
+        }
+        var categoryid = document.getElementById("catid").value;
+        if (categoryid != "" && parseInt(categoryid) > 0) {
+            categoryIdOutput = "|id="+categoryid;
+        } else {
+            categoryIdOutput = "";
+        }';
+
 	}
 
-	<?php } else if ($this->t['type'] == 4) { ?>
-	var limit = document.getElementById("limit").value;
-	if (limit != '') {
-		limit = "|limit="+limit;
-	}
-	var categoryid = document.getElementById("catid").value;
-	if (categoryid != '' && parseInt(categoryid) > 0) {
-		categoryIdOutput = "|id="+categoryid;
-	} else {
-		categoryIdOutput = '';
-	}
-
-	<?php } ?>
-
-	var fileIdOutput;
-	fileIdOutput = '';
+$js .= 'var fileIdOutput;
+	fileIdOutput = "";
 	len = document.getElementsByName("fileid").length;
 	for (i = 0; i <len; i++) {
-		if (document.getElementsByName('fileid')[i].checked) {
-			fileid = document.getElementsByName('fileid')[i].value;
-			if (fileid != '' && parseInt(fileid) > 0) {
+		if (document.getElementsByName(\'fileid\')[i].checked) {
+			fileid = document.getElementsByName(\'fileid\')[i].value;
+			if (fileid != "" && parseInt(fileid) > 0) {
 				fileIdOutput = "|id="+fileid;
 			} else {
-				fileIdOutput = '';
+				fileIdOutput = "";
 			}
 		}
 	}
 
-	if (fileIdOutput != '' &&  parseInt(fileid) > 0) {
-		<?php if ($this->t['type'] == 0) { ?>
-			var tag = "{phocadownload view=<?php echo $view ?>"+fileIdOutput+title+target+"}";
-		<?php } else if ($this->t['type'] == 1) { ?>
-			var tag = "{phocadownload view=<?php echo $view ?>"+fileIdOutput+title+playerwidth+playerheight+playerheightmp3+"}";
-		<?php } else if ($this->t['type'] == 2) { ?>
-			var tag = "{phocadownload view=<?php echo $view ?>"+fileIdOutput+title+playerwidth+playerheight+playerheightmp3+"}";
-		<?php } else if ($this->t['type'] == 3) { ?>
-			var tag = "{phocadownload view=<?php echo $view ?>"+fileIdOutput+title+previewwidth+previewheight+"}";
-		<?php } else if ($this->t['type'] == 4) { ?>
-			var tag = "{phocadownload view=<?php echo $view ?>"+fileIdOutput+limit+"}";
-		<?php } ?>
-		window.parent.jInsertEditorText(tag, '<?php echo htmlspecialchars($this->t['ename']); ?>');
+	if (fileIdOutput != "" &&  parseInt(fileid) > 0) {';
+		if ($this->t['type'] == 0) {
+			$js .= 'var tag = "{phocadownload view='. $view .'"+fileIdOutput+title+target+"}";';
+		} else if ($this->t['type'] == 1) {
+			$js .= 'var tag = "{phocadownload view='. $view .'"+fileIdOutput+title+playerwidth+playerheight+playerheightmp3+"}";';
+		} else if ($this->t['type'] == 2) {
+			$js .= 'var tag = "{phocadownload view='. $view .'"+fileIdOutput+title+playerwidth+playerheight+playerheightmp3+"}";';
+		} else if ($this->t['type'] == 3) {
+			$js .= 'var tag = "{phocadownload view='. $view .'"+fileIdOutput+title+previewwidth+previewheight+"}";';
+		} else if ($this->t['type'] == 4) {
+			$js .= 'var tag = "{phocadownload view='. $view .'"+fileIdOutput+limit+"}";';
+		}
+		$js .= 'window.parent.jInsertEditorText(tag, \''. htmlspecialchars($this->t['ename']).'\');';
 		//window.parent.document.getElementById('sbox-window').close();
-		window.parent.SqueezeBox.close();
+		$js .= 'window.parent.SqueezeBox.close();
 		return false;
-	} else {
-		<?php if ($this->t['type'] == 4) { ?>
+	} else {';
+		if ($this->t['type'] == 4) {
 
-		if (categoryIdOutput != '' &&  parseInt(categoryid) > 0) {
-			var tag = "{phocadownload view=<?php echo $view ?>"+categoryIdOutput+limit+"}";
-			window.parent.jInsertEditorText(tag, '<?php echo htmlspecialchars($this->t['ename']); ?>');
+		$js .= 'if (categoryIdOutput != \'\' &&  parseInt(categoryid) > 0) {
+			var tag = "{phocadownload view='. $view .'"+categoryIdOutput+limit+"}";
+			window.parent.jInsertEditorText(tag, \''. htmlspecialchars($this->t['ename']).'\');
 			window.parent.SqueezeBox.close();
 		} else {
-			alert("<?php echo JText::_( 'COM_PHOCADOWNLOAD_YOU_MUST_SELECT_CATEGORY', true ); ?>");
+			alert("'. JText::_( 'COM_PHOCADOWNLOAD_YOU_MUST_SELECT_CATEGORY', true ).'");
 			return false;
+		}';
+		} else {
+		$js .= 'alert("'. JText::_( 'COM_PHOCADOWNLOAD_YOU_MUST_SELECT_FILE', true ).'");
+		return false;';
 		}
-		<?php } else { ?>
-		alert("<?php echo JText::_( 'COM_PHOCADOWNLOAD_YOU_MUST_SELECT_FILE', true ); ?>");
-		return false;
-		<?php } ?>
-	}
-}
-//]]>
-</script>
+	$js .= '}';
+$js .= '}';
+
+JFactory::getDocument()->addScriptDeclaration($js); ?>
+
 <div id="phocadownload-links">
 <fieldset class="adminform">
 
@@ -159,11 +158,11 @@ function insertLink() {
 				<tr>
 					<th width="5%"><?php echo JText::_( 'COM_PHOCADOWNLOAD_NUM' ); ?></th>
 					<th width="5%"></th>
-					<th class="title" width="60%"><?php echo JHTML::_('grid.sort',  'COM_PHOCADOWNLOAD_TITLE', 'a.title', $this->t['lists']['order_Dir'], $this->t['lists']['order'] ); ?>
+					<th class="title" width="60%"><?php echo Joomla\CMS\HTML\HTMLHelper::_('grid.sort',  'COM_PHOCADOWNLOAD_TITLE', 'a.title', $this->t['lists']['order_Dir'], $this->t['lists']['order'] ); ?>
 					</th>
-					<th width="20%" nowrap="nowrap"><?php echo JHTML::_('grid.sort',  'COM_PHOCADOWNLOAD_FILENAME', 'a.filename', $this->t['lists']['order_Dir'], $this->t['lists']['order'] ); ?>
+					<th width="20%" nowrap="nowrap"><?php echo Joomla\CMS\HTML\HTMLHelper::_('grid.sort',  'COM_PHOCADOWNLOAD_FILENAME', 'a.filename', $this->t['lists']['order_Dir'], $this->t['lists']['order'] ); ?>
 					</th>
-					<th width="10%" nowrap="nowrap"><?php echo JHTML::_('grid.sort',  'COM_PHOCADOWNLOAD_ID', 'a.id', $this->t['lists']['order_Dir'], $this->t['lists']['order'] ); ?>
+					<th width="10%" nowrap="nowrap"><?php echo Joomla\CMS\HTML\HTMLHelper::_('grid.sort',  'COM_PHOCADOWNLOAD_ID', 'a.id', $this->t['lists']['order_Dir'], $this->t['lists']['order'] ); ?>
 					</th>
 				</tr>
 			</thead>

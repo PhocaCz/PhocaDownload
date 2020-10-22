@@ -8,7 +8,7 @@
  */
 defined('_JEXEC') or die();
 jimport( 'joomla.application.component.view');
-jimport( 'joomla.filesystem.folder' ); 
+jimport( 'joomla.filesystem.folder' );
 jimport( 'joomla.filesystem.file' );
 
 class PhocaDownloadViewFile extends JViewLegacy
@@ -17,8 +17,8 @@ class PhocaDownloadViewFile extends JViewLegacy
 	protected $category;
 	protected $t;
 
-	function display($tpl = null){		
-		
+	function display($tpl = null){
+
 		$app					= JFactory::getApplication();
 		$this->t['p'] 				= $app->getParams();
 		$this->t['user'] 		= JFactory::getUser();
@@ -26,11 +26,11 @@ class PhocaDownloadViewFile extends JViewLegacy
 		$model					= $this->getModel();
 		$document				= JFactory::getDocument();
 		$fileId					= $app->input->get('id', 0, 'int');
-		
+
 		//if ($fileId == 0) {
 		//	throw new Exception(JText::_('COM_PHOCADOWNLOAD_FILE_NOT_FOUND'), 404);
 		//}
-		
+
 		$this->t['limitstart']	= $app->input->get( 'start', 0, 'int');// we need it for category back link
 		$this->t['tmpl']		= $app->input->get( 'tmpl', '', 'string' );
 		$this->t['mediapath']	= PhocaDownloadPath::getPathMedia();
@@ -45,13 +45,13 @@ class PhocaDownloadViewFile extends JViewLegacy
 		} else {
 			$this->t['limitstarturl'] = '';
 		}
-		
+
 		$this->category			= $model->getCategory($fileId);
 		$this->file				= $model->getFile($fileId, $this->t['limitstarturl']);
-		
+
 		PhocaDownloadRenderFront::renderAllCSS();
-		
-		$document->addCustomTag('<script type="text/javascript" src="'.JURI::root().'components/com_phocadownload/assets/overlib/overlib_mini.js"></script>');
+
+		$document->addCustomTag('<script type="text/javascript" src="'.JURI::root().'media/com_phocadownload/js/overlib/overlib_mini.js"></script>');
 		$js	= 'var enableDownloadButtonPD = 0;'
 			 .'function enableDownloadPD() {'
 			 .' if (enableDownloadButtonPD == 0) {'
@@ -64,7 +64,7 @@ class PhocaDownloadViewFile extends JViewLegacy
 			 .'}';
 		$document->addScriptDeclaration($js);
 
-		
+
 		// Params
 		$this->t['licenseboxheight']		= $this->t['p']->get( 'license_box_height', 300 );
 		$this->t['filename_or_name'] 		= $this->t['p']->get( 'filename_or_name', 'filename' );
@@ -95,10 +95,10 @@ class PhocaDownloadViewFile extends JViewLegacy
 		$this->t['fb_comment_width']		= $this->t['p']->get( 'fb_comment_width', '550' );
 		$this->t['fb_comment_lang'] 		= $this->t['p']->get( 'fb_comment_lang', 'en_US' );
 		$this->t['fb_comment_count'] 		= $this->t['p']->get( 'fb_comment_count', '' );
-		
+
 		// Rating
 		if ($this->t['display_rating_file'] == 2 || $this->t['display_rating_file'] == 3 ) {
-			JHTML::_('jquery.framework', true);
+			Joomla\CMS\HTML\HTMLHelper::_('jquery.framework', true);
 			PhocaDownloadRate::renderRateFileJS(1);
 			$this->t['display_rating_file'] = 1;
 		} else {
@@ -106,7 +106,7 @@ class PhocaDownloadViewFile extends JViewLegacy
 		}
 
 		// DOWNLOAD
-		// - - - - - - - - - - - - - - - 
+		// - - - - - - - - - - - - - - -
 		$download				= $app->input->get( 'download', array(0), 'array' );
 		$licenseAgree			= $app->input->get( 'license_agree', '', 'string' );
 		$downloadId		 		= (int) $download[0];
@@ -116,42 +116,42 @@ class PhocaDownloadViewFile extends JViewLegacy
 			} else {
 				$currentLink	= 'index.php?option=com_phocadownload&view=categories&Itemid='. $app->input->get('Itemid', 0, 'int');
 			}
-		
+
 			// Check Token
 			if (!JSession::checkToken()) {
-				
+
 				$app->redirect(JRoute::_('index.php', false), JText::_('COM_PHOCADOWNLOAD_INVALID_TOKEN'));
 				exit;
 			}
-			
+
 			// Check License Agreement
 			if (empty($licenseAgree)) {
 				$app->redirect(JRoute::_($currentLink, false), JText::_('COM_PHOCADOWNLOAD_WARNING_AGREE_LICENSE_TERMS'));
 				exit;
 			}
-			
+
 			$fileData		= PhocaDownloadDownload::getDownloadData($downloadId, $currentLink);
 			PhocaDownloadDownload::download($fileData, $downloadId, $currentLink);
 		}
-		// - - - - - - - - - - - - - - - 
-		
+		// - - - - - - - - - - - - - - -
+
 		$imagePath				= PhocaDownloadPath::getPathSet('icon');
 		$this->t['cssimgpath']	= str_replace ( '../', JURI::base(true).'/', $imagePath['orig_rel_ds']);
 		$filePath				= PhocaDownloadPath::getPathSet('file');
 		$this->t['absfilepath']	= $filePath['orig_abs_ds'];
-		$this->t['action']		= $uri->toString();	
-		
+		$this->t['action']		= $uri->toString();
+
 		if (isset($this->category[0]) && is_object($this->category[0]) && isset($this->file[0]) && is_object($this->file[0])){
 			$this->_prepareDocument($this->category[0], $this->file[0]);
 		}
 
-		
+
 		// Bootstrap 3 Layout
 		$this->t['display_bootstrap3_layout']	= $this->t['p']->get( 'display_bootstrap3_layout', 0 );
-		
+
 		if ($this->t['display_bootstrap3_layout'] > 0) {
-			
-			JHtml::_('jquery.framework', false);
+
+			Joomla\CMS\HTML\HTMLHelper::_('jquery.framework', false);
 			if ((int)$this->t['display_bootstrap3_layout'] == 2) {
 				JHTML::stylesheet('media/com_phocadownload/bootstrap/css/bootstrap.min.css' );
 				JHTML::stylesheet('media/com_phocadownload/bootstrap/css/bootstrap.extended.css' );
@@ -164,26 +164,26 @@ class PhocaDownloadViewFile extends JViewLegacy
 				jQuery(\'.ph-thumbnail\').equalHeights();
 			});');*/
 		}
-		
+
 		if ($this->t['display_bootstrap3_layout'] > 0) {
-			parent::display('bootstrap');	
+			parent::display('bootstrap');
 		} else {
-			parent::display($tpl);	
+			parent::display($tpl);
 		}
-		
+
 	}
-	
+
 	protected function _prepareDocument($category, $file) {
-		
+
 		$app			= JFactory::getApplication();
 		$menus			= $app->getMenu();
 		$menu 			= $menus->getActive();
 		$pathway 		= $app->getPathway();
 		$title 			= null;
-		
+
 		$this->t['downloadmetakey'] 	= $this->t['p']->get( 'download_metakey', '' );
 		$this->t['downloadmetadesc'] 	= $this->t['p']->get( 'download_metadesc', '' );
-		
+
 		if ($menu) {
 			$this->t['p']->def('page_heading', $this->t['p']->get('page_title', $menu->title));
 		} else {
@@ -202,20 +202,20 @@ class PhocaDownloadViewFile extends JViewLegacy
 		//$this->document->setTitle($title);
 
 		$this->document->setTitle($title);*/
-		
+
 		$title = $this->t['p']->get('page_title', '');
-		$this->t['display_file_name_title'] = 1; 
+		$this->t['display_file_name_title'] = 1;
 		if (empty($title)) {
 			$title = htmlspecialchars_decode($app->get('sitename'));
 		} else if ($app->get('sitename_pagetitles', 0) == 1) {
 			$title = JText::sprintf('JPAGETITLE', htmlspecialchars_decode($app->get('sitename')), $title);
-			
+
 			if ($this->t['display_file_name_title'] == 1 && isset($file->title) && $file->title != '') {
 				$title = $title .' - ' .  $file->title;
 			}
-			
+
 		} else if ($app->get('sitename_pagetitles', 0) == 2) {
-			
+
 			if ($this->t['display_file_name_title'] == 1 && isset($file->title) && $file->title != '') {
 				$title = $title .' - ' .  $file->title;
 			}
@@ -224,14 +224,14 @@ class PhocaDownloadViewFile extends JViewLegacy
 		}
 		$this->document->setTitle($title);
 
-		
+
 		if ($file->metadesc != '') {
 			$this->document->setDescription($file->metadesc);
 		} else if ($this->t['downloadmetadesc'] != '') {
 			$this->document->setDescription($this->t['downloadmetadesc']);
 		} else if ($this->t['p']->get('menu-meta_description', '')) {
 			$this->document->setDescription($this->t['p']->get('menu-meta_description', ''));
-		} 
+		}
 
 		if ($file->metakey != '') {
 			$this->document->setMetadata('keywords', $file->metakey);
@@ -244,7 +244,7 @@ class PhocaDownloadViewFile extends JViewLegacy
 		if ($app->get('MetaTitle') == '1' && $this->t['p']->get('menupage_title', '')) {
 			$this->document->setMetaData('title', $this->t['p']->get('page_title', ''));
 		}
-		
+
 		// Breadcrumbs TO DO (Add the whole tree)
 		$pathway 		= $app->getPathway();
 		if (isset($category->id)) {
@@ -252,7 +252,7 @@ class PhocaDownloadViewFile extends JViewLegacy
 				$pathway->addItem($category->title, JRoute::_(PhocaDownloadRoute::getCategoryRoute($category->id, $category->alias)));
 			}
 		}
-		
+
 		if (!empty($file->title)) {
 			$pathway->addItem($file->title);
 		}

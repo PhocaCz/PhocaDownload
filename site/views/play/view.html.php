@@ -38,7 +38,7 @@ class PhocaDownloadViewPlay extends JViewLegacy
 			if ($canPlay) {
 				$this->t['playfilewithpath']	= $filePath . $file[0]->filename_play;
 				//$this->t['playerpath']		= JURI::base().'components/com_phocadownload/assets/jwplayer/';
-				$this->t['playerpath']			= JURI::base().'components/com_phocadownload/assets/flowplayer/';
+				$this->t['playerpath']			= JURI::base().'media/com_phocadownload/js/flowplayer/';
 				$this->t['playerwidth']			= $params->get( 'player_width', 328 );
 				$this->t['playerheight']		= $params->get( 'player_height', 200 );
 				$this->t['html5_play']			= $params->get( 'html5_play', 1 );

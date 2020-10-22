@@ -40,7 +40,7 @@ class PhocaDownloadCpModelPhocaDownloadDownloads extends JModelList
 	}
 
 
-	protected function populateState($ordering = NULL, $direction = NULL)
+	protected function populateState($ordering = 'username', $direction = 'ASC')
 	{
 		// Initialise variables.
 		$app = JFactory::getApplication('administrator');
@@ -52,8 +52,8 @@ class PhocaDownloadCpModelPhocaDownloadDownloads extends JModelList
 		$accessId = $app->getUserStateFromRequest($this->context.'.filter.access', 'filter_access', null, 'int');
 		$this->setState('filter.access', $accessId);
 
-		$state = $app->getUserStateFromRequest($this->context.'.filter.state', 'filter_published', '', 'string');
-		$this->setState('filter.state', $state);
+		$state = $app->getUserStateFromRequest($this->context.'.filter.published', 'filter_published', '', 'string');
+		$this->setState('filter.published', $state);
 */
 		$id = JFactory::getApplication()->input->get( 'id', '', '', 'int');
 		if ((int)$id > 0) {
@@ -71,7 +71,7 @@ class PhocaDownloadCpModelPhocaDownloadDownloads extends JModelList
 		$this->setState('params', $params);
 
 		// List state information.
-		parent::populateState('username', 'asc');
+		parent::populateState($ordering, $direction);
 	}
 
 	protected function getStoreId($id = '')
@@ -79,7 +79,7 @@ class PhocaDownloadCpModelPhocaDownloadDownloads extends JModelList
 		// Compile the store id.
 		$id	.= ':'.$this->getState('filter.search');
 		/*$id	.= ':'.$this->getState('filter.access');
-		$id	.= ':'.$this->getState('filter.state');
+		$id	.= ':'.$this->getState('filter.published');
 		$id	.= ':'.$this->getState('filter.category_id');*/
 		$id	.= ':'.$this->getState('filter.filestat_id');
 
@@ -142,7 +142,7 @@ class PhocaDownloadCpModelPhocaDownloadDownloads extends JModelList
 		//}
 
 		// Filter by published state.
-		/*$published = $this->getState('filter.state');
+		/*$published = $this->getState('filter.published');
 		if (is_numeric($published)) {
 			$query->where('a.published = '.(int) $published);
 		}

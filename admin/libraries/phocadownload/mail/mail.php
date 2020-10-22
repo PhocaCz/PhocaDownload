@@ -18,15 +18,15 @@ class PhocaDownloadMail
 	 */
 	public static function sendMail ( $id, $fileName, $method = 1 ) {
 		$app = JFactory::getApplication();
-		
+
 		$db 		= JFactory::getDBO();
 		$sitename 	= $app->get( 'sitename' );
 		$mailfrom 	= $app->get( 'mailfrom' );
 		$fromname	= $sitename;
-		$date		= JHTML::_('date',  gmdate('Y-m-d H:i:s'), JText::_( 'DATE_FORMAT_LC2' ));
+		$date		= Joomla\CMS\HTML\HTMLHelper::_('date',  gmdate('Y-m-d H:i:s'), JText::_( 'DATE_FORMAT_LC2' ));
 		$user 		= JFactory::getUser();
 		$params 	= $app->getParams();
-		
+
 		if (isset($user->name) && $user->name != '') {
 			$name = $user->name;
 		} else {
@@ -37,7 +37,7 @@ class PhocaDownloadMail
 		} else {
 			$userName = '';
 		}
-		
+
 		if ($method == 1) {
 			$subject 		= $sitename. ' - ' . JText::_( 'COM_PHOCADOWNLOAD_FILE_DOWNLOADED' );
 			$title 			= JText::_( 'COM_PHOCADOWNLOAD_FILE_DOWNLOADED' );
@@ -47,7 +47,7 @@ class PhocaDownloadMail
 			$title 			= JText::_( 'COM_PHOCADOWNLOAD_SUCCESS_NEW_FILE_UPLOADED' );
 			$messageText 	= JText::_( 'COM_PHOCADOWNLOAD_FILE') . ' "' .$fileName . '" '.JText::_('COM_PHOCADOWNLOAD_WAS_UPLOADED_BY'). ' '.$name . $userName.'.';
 		}
-		
+
 		//get all super administrator
 		$query = 'SELECT name, email, sendEmail' .
 		' FROM #__users' .
@@ -55,12 +55,12 @@ class PhocaDownloadMail
 		' ORDER BY id';
 		$db->setQuery( $query );
 		$rows = $db->loadObjectList();
-		
+
 		if (isset($rows[0]->email)) {
 			$email 	= $rows[0]->email;
 		}
 
-		
+
 		$message = $title . "\n\n"
 		. JText::_( 'COM_PHOCADOWNLOAD_WEBSITE' ) . ': '. $sitename . "\n"
 		. JText::_( 'COM_PHOCADOWNLOAD_DATE' ) . ': '. $date . "\n"
@@ -71,12 +71,12 @@ class PhocaDownloadMail
 		. "\n\n"
 		. JText::_( 'COM_PHOCADOWNLOAD_REGARDS' ) .", \n"
 		. $sitename ."\n";
-					
+
 		$subject = html_entity_decode($subject, ENT_QUOTES);
 		$message = html_entity_decode($message, ENT_QUOTES);
-		
+
 		$mail = JFactory::getMailer();
-		$mail->sendMail($mailfrom, $fromname, $email, $subject, $message);	
+		$mail->sendMail($mailfrom, $fromname, $email, $subject, $message);
 		return true;
 	}
 }

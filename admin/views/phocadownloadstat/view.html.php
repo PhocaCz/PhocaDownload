@@ -8,7 +8,7 @@
  */
 defined('_JEXEC') or die();
 jimport( 'joomla.application.component.view' );
- 
+
 class PhocaDownloadCpViewPhocaDownloadStat extends JViewLegacy
 {
 	protected $items;
@@ -16,32 +16,36 @@ class PhocaDownloadCpViewPhocaDownloadStat extends JViewLegacy
 	protected $state;
 	protected $maxandsum;
 	protected $t;
-	
+	protected $r;
+
 	function display($tpl = null) {
-		
+
 		$this->t			= PhocaDownloadUtils::setVars('stat');
-		$this->items		= $this->get('Items');
-		$this->pagination	= $this->get('Pagination');
-		$this->state		= $this->get('State');
+		$this->r = new PhocaDownloadRenderAdminViews();
+        $this->items		= $this->get('Items');
+        $this->pagination	= $this->get('Pagination');
+        $this->state		= $this->get('State');
+        $this->filterForm   = $this->get('FilterForm');
+        $this->activeFilters = $this->get('ActiveFilters');
 		$this->maxandsum	= $this->get('MaxAndSum');
-	
+
 		foreach ($this->items as &$item) {
 			if ($item->textonly == 0) {
 				$this->ordering[0][] = $item->id;
 			}
 		}
-		
-		JHTML::stylesheet( $this->t['s'] );
+
+
 
 		if (count($errors = $this->get('Errors'))) {
 			throw new Exception(implode("\n", $errors), 500);
 			return false;
 		}
-		
+
 		$this->addToolbar();
 		parent::display($tpl);
 	}
-	
+
 	function addToolbar() {
 		require_once JPATH_COMPONENT.'/helpers/'.$this->t['task'].'.php';
 		$class	= ucfirst($this->t['task']).'Helper';
@@ -52,14 +56,14 @@ class PhocaDownloadCpViewPhocaDownloadStat extends JViewLegacy
 		JToolbarHelper::divider();
 		JToolbarHelper::help( 'screen.'.$this->t['c'], true );
 	}
-	
+
 	protected function getSortFields() {
 		return array(
-			'a.ordering'	=> JText::_('JGRID_HEADING_ORDERING'),
+			/*'a.ordering'	=> JText::_('JGRID_HEADING_ORDERING'),*/
 			'a.title' 		=> JText::_($this->t['l'] . '_TITLE'),
 			'a.filename' 	=> JText::_($this->t['l'] . '_FILENAME'),
-			'a.hits' 		=> JText::_($this->t['l'] . '_DOWNLOADS'),
-			'a.id' 			=> JText::_('JGRID_HEADING_ID')
+			'a.hits' 		=> JText::_($this->t['l'] . '_DOWNLOADS')
+			/*'a.id' 			=> JText::_('JGRID_HEADING_ID')*/
 		);
 	}
 }

@@ -9,41 +9,31 @@
  defined('_JEXEC') or die;
 
 use Joomla\CMS\Application\CMSApplication;
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.formvalidation');
-JHtml::_('behavior.keepalive');
-JHtml::_('formbehavior.chosen', 'select');
-
-
 
 $extlink 	= 0;
 if (isset($this->item->extid) && $this->item->extid != '') {
 	$extlink = 1;
 }
-$class		= $this->t['n'] . 'RenderAdminView';
-$r 			=  new $class();
 
-?>
-<script type="text/javascript">
-Joomla.submitbutton = function(task){
-	if (task != '<?php echo $this->t['task'] ?>.cancel' && document.getElementById('jform_catid').value == '') {
-		alert('<?php echo JText::_('JGLOBAL_VALIDATION_FORM_FAILED', true) . ' - '. JText::_($this->t['l'].'_ERROR_CATEGORY_NOT_SELECTED', true);?>');
-	} else if (task == '<?php echo $this->t['task'] ?>.cancel' || document.formvalidator.isValid(document.getElementById('adminForm'))) {
-		<?php echo $this->form->getField('description')->save(); ?>
-		<?php echo $this->form->getField('features')->save(); ?>
-		<?php echo $this->form->getField('changelog')->save(); ?>
-		<?php echo $this->form->getField('notes')->save(); ?>
-		Joomla.submitform(task, document.getElementById('adminForm'));
+$r = $this->r;
+
+JFactory::getDocument()->addScriptDeclaration(
+
+'Joomla.submitbutton = function(task) {
+	if (task != "'. $this->t['task'].'.cancel" && document.getElementById("jform_catid").value == "") {
+		alert("'. $this->escape(JText::_('JGLOBAL_VALIDATION_FORM_FAILED')) . ' - '. $this->escape(JText::_('COM_PHOCADOWNLOAD_CATEGORY_NOT_SELECTED')).'");
+	} else if (task == "'. $this->t['task'].'.cancel" || document.formvalidator.isValid(document.getElementById("adminForm"))) {
+		Joomla.submitform(task, document.getElementById("adminForm"));
+	} else {
+        Joomla.renderMessages({"error": ["'. JText::_('JGLOBAL_VALIDATION_FORM_FAILED', true).'"]});
 	}
-	else {
-		Joomla.renderMessages({"error": ["<?php echo JText::_('JGLOBAL_VALIDATION_FORM_FAILED', true);?>"]});
-		<?php /* alert('<?php echo JText::_('JGLOBAL_VALIDATION_FORM_FAILED', true);?>'); */ ?>
-	}
-}
-</script><?php
+}'
+
+);
+
 echo $r->startForm($this->t['o'], $this->t['task'], $this->item->id, 'adminForm', 'adminForm');
 // First Column
-echo '<div class="span10 form-horizontal">';
+echo '<div class="span12 form-horizontal">';
 $tabs = array (
 'general' 		=> JText::_($this->t['l'].'_GENERAL_OPTIONS'),
 'publishing' 	=> JText::_($this->t['l'].'_PUBLISHING_OPTIONS'),
@@ -53,47 +43,17 @@ $tabs = array (
 );
 echo $r->navigation($tabs);
 
-echo '<div class="tab-content">'. "\n";
+echo $r->startTabs();
 
-echo '<div class="tab-pane active" id="general">'."\n";
+echo $r->startTab('general', $tabs['general'], 'active');
 $formArray = array ('title', 'alias', 'catid', 'ordering',
 			'filename', 'filename_play', 'filename_preview', 'image_filename', 'image_filename_spec1', 'image_filename_spec2', 'image_download', 'project_name', 'version', 'author', 'author_url', 'author_email', 'license', 'license_url', 'confirm_license', 'directlink', 'link_external', 'access', 'unaccessible_file', 'userid', 'owner_id');
 echo $r->group($this->form, $formArray);
 $formArray = array('description', 'features', 'changelog', 'notes' );
 echo $r->group($this->form, $formArray, 1);
-echo '</div>'. "\n";
-
-echo '<div class="tab-pane" id="publishing">'."\n";
-foreach($this->form->getFieldset('publish') as $field) {
-	echo '<div class="control-group">';
-	if (!$field->hidden) {
-		echo '<div class="control-label">'.$field->label.'</div>';
-	}
-	echo '<div class="controls">';
-	echo $field->input;
-	echo '</div></div>';
-}
-echo '</div>';
-
-echo '<div class="tab-pane" id="metadata">'. "\n";
-echo $this->loadTemplate('metadata');
-echo '</div>'. "\n";
-
-echo '<div class="tab-pane" id="mirror">'. "\n";
-$formArray = array ('mirror1link', 'mirror1title', 'mirror1target', 'mirror2link',  'mirror2title', 'mirror2target');
-echo $r->group($this->form, $formArray);
-echo '</div>'. "\n";
-
-echo '<div class="tab-pane" id="video">'. "\n";
-$formArray = array ('video_filename');
-echo $r->group($this->form, $formArray);
-echo '</div>'. "\n";
 
 
-echo '</div>';//end tab content
-echo '</div>';//end span10
-// Second Column
-echo '<div class="span2">';
+echo '<div class="ph-float-right ph-admin-additional-box">';
 
 if (isset($this->item->id) && isset($this->item->catid) && isset($this->item->token)
 	&& (int)$this->item->id > 0 && (int)$this->item->catid > 0 && $this->item->token != '') {
@@ -111,10 +71,49 @@ if (isset($this->item->id) && isset($this->item->catid) && isset($this->item->to
 	echo '<textarea rows="7">'.$frontendUrl.'</textarea>';
 	echo '<div><small>('.JText::_('COM_PHOCADOWNLOAD_URL_FORMAT_DEPENDS_ON_SEF').')</small></div>';
 }
+echo '</div>';
+
+
+echo $r->endTab();
+
+echo $r->startTab('publishing', $tabs['publishing']);
+foreach($this->form->getFieldset('publish') as $field) {
+	echo '<div class="control-group">';
+	if (!$field->hidden) {
+		echo '<div class="control-label">'.$field->label.'</div>';
+	}
+	echo '<div class="controls">';
+	echo $field->input;
+	echo '</div></div>';
+}
+echo $r->endTab();
+
+echo $r->startTab('metadata', $tabs['metadata']);
+echo $this->loadTemplate('metadata');
+echo $r->endTab();
+
+echo $r->startTab('mirror', $tabs['mirror']);
+$formArray = array ('mirror1link', 'mirror1title', 'mirror1target', 'mirror2link',  'mirror2title', 'mirror2target');
+echo $r->group($this->form, $formArray);
+echo $r->endTab();
+
+echo $r->startTab('video', $tabs['video']);
+$formArray = array ('video_filename');
+echo $r->group($this->form, $formArray);
+echo $r->endTab();
+
+
+echo $r->endTabs();
+//echo '</div>';//end span10
+// Second Column
+//echo '<div class="span2">';
 
 
 echo '</div>';//end span2
-echo $r->formInputs();
+
+
+
+echo $r->formInputs($this->t['task']);
 echo $r->endForm();
 ?>
 

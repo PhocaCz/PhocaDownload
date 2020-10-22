@@ -10,6 +10,7 @@
  */
 defined('_JEXEC') or die();
 jimport( 'joomla.application.component.view' );
+phocadownloadimport('phocadownload.render.renderadminviews');
 use Joomla\String\StringHelper;
 
 class PhocaDownloadViewPhocaDownloadLinkFile extends JViewLegacy
@@ -22,10 +23,8 @@ class PhocaDownloadViewPhocaDownloadLinkFile extends JViewLegacy
 		$uri		= \Joomla\CMS\Uri\Uri::getInstance();
 		$document	= JFactory::getDocument();
 		$db		    = JFactory::getDBO();
-		JHtml::_('behavior.tooltip');
-		JHtml::_('behavior.formvalidation');
-		JHtml::_('behavior.keepalive');
-		JHtml::_('formbehavior.chosen', 'select');
+		$this->r = new PhocaDownloadRenderAdminViews();
+		$this->t = PhocaDownloadUtils::setVars('linkfile');
 
 		//Frontend Changes
 		$tUri = '';
@@ -50,7 +49,7 @@ class PhocaDownloadViewPhocaDownloadLinkFile extends JViewLegacy
 		//$redirect			= $sectionid;
 		$option				= JFactory::getApplication()->input->getCmd( 'option' );
 
-		$filter_state		= $app->getUserStateFromRequest( $this->_context.'.filter_state',	'filter_state', '',	'word' );
+		$filter_published		= $app->getUserStateFromRequest( $this->_context.'.filter_published',	'filter_published', '',	'word' );
 		$filter_catid		= $app->getUserStateFromRequest( $this->_context.'.filter_catid',	'filter_catid', 0,	'int' );
 		$catid				= $app->getUserStateFromRequest( $this->_context.'.catid',	'catid', 0,	'int');
 	//	$filter_sectionid	= $app->getUserStateFromRequest( $this->_context.'.filter_sectionid','filter_sectionid',	-1,	'int');
@@ -105,7 +104,7 @@ class PhocaDownloadViewPhocaDownloadLinkFile extends JViewLegacy
 		$lists['sectionid'] = PhocaDownloadCategory::filterSection($query, $filter_sectionid);*/
 
 		// state filter
-		$lists['state']	= JHTML::_('grid.state',  $filter_state );
+		$lists['state']	= Joomla\CMS\HTML\HTMLHelper::_('grid.state',  $filter_published );
 
 		// table ordering
 		$lists['order_Dir'] = $filter_order_Dir;

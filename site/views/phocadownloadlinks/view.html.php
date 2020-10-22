@@ -8,6 +8,7 @@
  */
 defined('_JEXEC') or die();
 jimport( 'joomla.application.component.view' );
+phocadownloadimport('phocadownload.render.renderadminviews');
  
 class phocaDownloadViewphocaDownloadLinks extends JViewLegacy
 {
@@ -15,14 +16,7 @@ class phocaDownloadViewphocaDownloadLinks extends JViewLegacy
 	
 	function display($tpl = null) {
 		$app	= JFactory::getApplication();
-		JHtml::_('behavior.tooltip');
-		JHtml::_('behavior.formvalidation');
-		JHtml::_('behavior.keepalive');
-		JHtml::_('formbehavior.chosen', 'select');
-		JHtml::_('behavior.tooltip');
-		JHtml::_('behavior.formvalidation');
-		JHtml::_('behavior.keepalive');
-		JHtml::_('formbehavior.chosen', 'select');
+
 		
 		//Frontend Changes
 		$tUri = '';
@@ -30,7 +24,8 @@ class phocaDownloadViewphocaDownloadLinks extends JViewLegacy
 			$tUri = JURI::base();
 			
 		}
-		
+		$this->r = new PhocaDownloadRenderAdminViews();
+		$this->t = PhocaDownloadUtils::setVars('links');
 		$document	= JFactory::getDocument();
 		$uri		= \Joomla\CMS\Uri\Uri::getInstance();
 		JHTML::stylesheet( 'media/com_phocadownload/css/administrator/phocadownload.css' );

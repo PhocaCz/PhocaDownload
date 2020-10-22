@@ -7,11 +7,11 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die('Restricted access');
-JHTML::_('behavior.tooltip');
+Joomla\CMS\HTML\HTMLHelper::_('behavior.tooltip');
 ?>
 <script type="text/javascript">
 function insertLink() {
-	
+
 	var urlOutput;
 	var url = document.getElementById("url").value;
 	if (url != '' ) {
@@ -35,8 +35,8 @@ function insertLink() {
 <legend><?php echo JText::_( 'COM_PHOCADOWNLOAD_YOUTUBE_VIDEO' ); ?></legend>
 <form name="adminFormLink" id="adminFormLink">
 <table class="admintable" width="100%">
-	
-	
+
+
 	<tr >
 		<td class="key" align="right" >
 			<label for="url">
@@ -48,7 +48,7 @@ function insertLink() {
 		</td>
 	</tr>
 
-	
+
 	<tr>
 		<td>&nbsp;</td>
 		<td align="right"><button class="btn btn-primary plg-button-insert " onclick="insertLink();return false;"><span class="icon-ok"></span> <?php echo JText::_( 'COM_PHOCADOWNLOAD_INSERT_CODE' ); ?></button></td>

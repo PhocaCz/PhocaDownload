@@ -18,8 +18,8 @@ class PhocaDownloadCpModelPhocaDownloadstat extends JModelList
 {
 	protected	$option 		= 'com_phocadownload';
 	public 		$typeAlias 		= 'com_phocadownload.phocadownloadstat';
-	
-	
+
+
 	public function __construct($config = array())
    {
       if (empty($config['filter_fields'])) {
@@ -33,8 +33,8 @@ class PhocaDownloadCpModelPhocaDownloadstat extends JModelList
 
       parent::__construct($config);
    }
-	
-	protected function populateState($ordering = NULL, $direction = NULL)
+
+	protected function populateState($ordering = 'a.hits', $direction = 'DESC')
 	{
 		// Initialise variables.
 		$app = JFactory::getApplication('administrator');
@@ -43,11 +43,11 @@ class PhocaDownloadCpModelPhocaDownloadstat extends JModelList
 		$search = $app->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
 		$this->setState('filter.search', $search);
 
-		
 
-		$state = $app->getUserStateFromRequest($this->context.'.filter.state', 'filter_published', '', 'string');
-		
-		$this->setState('filter.state', $state);
+
+		$state = $app->getUserStateFromRequest($this->context.'.filter.published', 'filter_published', '', 'string');
+
+		$this->setState('filter.published', $state);
 
 		$categoryId = $app->getUserStateFromRequest($this->context.'.filter.category_id', 'filter_category_id', null);
 		$this->setState('filter.category_id', $categoryId);
@@ -60,22 +60,22 @@ class PhocaDownloadCpModelPhocaDownloadstat extends JModelList
 
 		// List state information.
 		//parent::populateState('uc.name', 'asc');
-		parent::populateState('a.hits', 'desc');
+		parent::populateState($ordering, $direction);
 	}
-	
+
 	protected function getStoreId($id = '')
 	{
 		// Compile the store id.
 		$id	.= ':'.$this->getState('filter.search');
 		$id	.= ':'.$this->getState('filter.access');
-		$id	.= ':'.$this->getState('filter.state');
+		$id	.= ':'.$this->getState('filter.published');
 		$id	.= ':'.$this->getState('filter.category_id');
 		$id	.= ':'.$this->getState('filter.file_id');
 
 		return parent::getStoreId($id);
 	}
-	
-	
+
+
 	protected function getListQuery()
 	{
 		/*
@@ -107,12 +107,12 @@ class PhocaDownloadCpModelPhocaDownloadstat extends JModelList
 		//$query->join('LEFT', '`#__languages` AS l ON l.lang_code = a.language');
 
 		// Join over the users for the checked out user.
-		
-		
+
+
 		$query->select('uc.name AS editor');
 		$query->join('LEFT', '#__users AS uc ON uc.id=a.checked_out');
-		
-	
+
+
 
 		// Join over the asset groups.
 		//$query->select('ag.title AS access_level');
@@ -121,10 +121,10 @@ class PhocaDownloadCpModelPhocaDownloadstat extends JModelList
 		// Join over the categories.
 		$query->select('c.title AS category_title, c.id AS category_id');
 		$query->join('LEFT', '#__phocadownload_categories AS c ON c.id = a.catid');
-		
+
 		//$query->select('ua.id AS userid, ua.username AS username, ua.name AS usernameno');
 		//$query->join('LEFT', '#__users AS ua ON ua.id = a.owner_id');
-		
+
 		//$query->select('v.average AS ratingavg');
 		//$query->join('LEFT', '#__phocadownload_img_votes_statistics AS v ON v.imgid = a.id');
 
@@ -134,7 +134,7 @@ class PhocaDownloadCpModelPhocaDownloadstat extends JModelList
 		//}
 
 		// Filter by published state.
-		$published = $this->getState('filter.state');
+		$published = $this->getState('filter.published');
 		if (is_numeric($published)) {
 			$query->where('a.published = '.(int) $published);
 		}
@@ -161,7 +161,7 @@ class PhocaDownloadCpModelPhocaDownloadstat extends JModelList
 				$query->where('( a.title LIKE '.$search.' OR a.filename LIKE '.$search.')');
 			}
 		}
-		
+
 		//$query->group('a.id');
 
 		// Add the list ordering clause.
@@ -175,19 +175,19 @@ class PhocaDownloadCpModelPhocaDownloadstat extends JModelList
 		//echo nl2br(str_replace('#__', 'jos_', $query->__toString()));
 		return $query;
 	}
-	
+
 	function getMaxAndSum() {
-		
+
 		$db		= $this->getDbo();
 		$query	= $db->getQuery(true);
-		
+
 		$query->select(
 			$this->getState(
 				'list.select',
 				'MAX(a.hits) AS maxhit, SUM(a.hits) AS sumhit'
 			)
 		);
-		
+
 		$query->from('`#__phocadownload` AS a');
 
 		$query->select('uc.name AS editor');
@@ -197,7 +197,7 @@ class PhocaDownloadCpModelPhocaDownloadstat extends JModelList
 		//$query->join('LEFT', '#__phocadownload_categories AS c ON c.id = a.catid');
 
 		// Filter by published state.
-		$published = $this->getState('filter.state');
+		$published = $this->getState('filter.published');
 		if (is_numeric($published)) {
 			$query->where('a.published = '.(int) $published);
 		}
@@ -224,7 +224,7 @@ class PhocaDownloadCpModelPhocaDownloadstat extends JModelList
 				$query->where('a.title LIKE '.$search.' OR a.filename LIKE '.$search);
 			}
 		}
-		
+
 		$query->group('a.id, uc.name');
 
 		// Add the list ordering clause.
@@ -237,12 +237,12 @@ class PhocaDownloadCpModelPhocaDownloadstat extends JModelList
 
 		$db->setQuery($query, 0, 1);
 		$maxAndSum = $db->loadObject();
-		
+
 		//echo nl2br(str_replace('#__', 'jos_', $query->__toString()));
 		return $maxAndSum;
-	
+
 	}
-	
-	
+
+
 }
 ?>

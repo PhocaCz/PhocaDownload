@@ -12,19 +12,19 @@ class PhocaDownloadCpControllerPhocaDownloadLogs extends PhocaDownloadCpControll
 {
 	function __construct() {
 		parent::__construct();
-		$this->registerTask( 'reset', 'reset');		
+		$this->registerTask( 'reset', 'reset');
 	}
-	
+
 	function reset() {
 
 		$model = $this->getModel( 'phocadownloadlog' );
 
-		if ($model->reset($cid)) {
+		if ($model->reset()) {
 			$msg = JText::_( 'COM_PHOCADOWNLOAD_SUCCESS_RESET_LOG_STAT' );
 		} else {
 			$msg = JText::_( 'COM_PHOCADOWNLOAD_ERROR_RESET_LOG_STAT' );
 		}
-		
+
 		$link = 'index.php?option=com_phocadownload&view=phocadownloadlogs';
 		$this->setRedirect($link, $msg);
 	}

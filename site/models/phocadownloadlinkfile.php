@@ -18,7 +18,7 @@ class PhocaDownloadViewPhocaDownloadLinkFilePagination extends JPagination
 	protected function _buildDataObject()
 	{
 		$data = new stdClass;
-		
+
 		$uri 					= \Joomla\CMS\Uri\Uri::getInstance();
 		$uriS					= $uri->toString();
 
@@ -52,15 +52,15 @@ class PhocaDownloadViewPhocaDownloadLinkFilePagination extends JPagination
 			// Set the empty for removal from route
 			// @to do remove code: $page = $page == 0 ? '' : $page;
 
-			
-			
+
+
 			$data->start->base = '0';
 			$data->start->link = $uriS . '' . $params . '&' . $this->prefix . 'limitstart=0';
 			$data->previous->base = $page;
 			$data->previous->link = $uriS . '' .$params . '&' . $this->prefix . 'limitstart=' . $page;
-			
-			
-			
+
+
+
 		}
 
 		// Set the next and end data objects.
@@ -110,7 +110,7 @@ class PhocaDownloadModelPhocaDownloadLinkFile extends JModelLegacy
 	var $_context		= 'com_phocadownload.phocadownloadlinkfile';
 
 	function __construct() {
-		parent::__construct();		
+		parent::__construct();
 		$app = JFactory::getApplication();
 		// Get the pagination request variables
 		$limit	= $app->getUserStateFromRequest( $this->_context.'.list.limit', 'limit', $app->get('list_limit'), 'int' );
@@ -118,7 +118,7 @@ class PhocaDownloadModelPhocaDownloadLinkFile extends JModelLegacy
 		// In case limit has been changed, adjust limitstart accordingly
 		$limitstart = ($limit != 0 ? (floor($limitstart / $limit) * $limit) : 0);
 
-		
+
 		$this->setState('limit', $limit);
 		$this->setState('limitstart', $limitstart);
 	}
@@ -146,7 +146,7 @@ class PhocaDownloadModelPhocaDownloadLinkFile extends JModelLegacy
 		}
 		return $this->_pagination;
 	}
-	
+
 	function _buildQuery() {
 		$where		= $this->_buildContentWhere();
 		$orderby	= $this->_buildContentOrderBy();
@@ -179,7 +179,7 @@ class PhocaDownloadModelPhocaDownloadLinkFile extends JModelLegacy
 
 	function _buildContentWhere() {
 		$app = JFactory::getApplication();
-		$filter_state		= $app->getUserStateFromRequest( $this->_context.'.filter_state',	'filter_state',	'',	'word' );
+		$filter_published		= $app->getUserStateFromRequest( $this->_context.'.filter_published',	'filter_published',	'',	'word' );
 		$filter_catid		= $app->getUserStateFromRequest( $this->_context.'.catid','catid',0,	'int' );
 		//$filter_sectionid	= $app->getUserStateFromRequest( $this->_context.'.filter_sectionid',	'filter_sectionid',	0,	'int' );
 		$filter_order		= $app->getUserStateFromRequest( $this->_context.'.filter_order',	'filter_order',	'a.ordering',	'cmd' );
@@ -195,19 +195,19 @@ class PhocaDownloadModelPhocaDownloadLinkFile extends JModelLegacy
 		if ($search) {
 			$where[] = 'LOWER(a.title) LIKE '.$this->_db->Quote('%'.$search.'%');
 		}
-		if ( $filter_state ) {
-			if ( $filter_state == 'P' ) {
+		if ( $filter_published ) {
+			if ( $filter_published == 'P' ) {
 				$where[] = 'a.published = 1';
-			} else if ($filter_state == 'U' ) {
+			} else if ($filter_published == 'U' ) {
 				$where[] = 'a.published = 0';
 			}
 		}
-		
-		
+
+
 		$where[] = 'a.published = 1';
 		$where[] = 'a.approved 	= 1';
 		$where[] = 'a.textonly <> 1';
-		
+
 		$where 		= ( count( $where ) ? ' WHERE '. implode( ' AND ', $where ) : '' );
 		return $where;
 	}

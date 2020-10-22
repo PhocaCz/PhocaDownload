@@ -1,0 +1,59 @@
+.phTabs {
+   margin-top: 1em;
+}
+.phTabs ul.phTabsUl {
+   font-size: 1em;
+   box-sizing: content-box;
+   padding: 0;
+   padding-left: 0.7em;
+}
+
+.phTabs ul.phTabsUl li.phTabsLi {
+   float: left;
+   list-style: none;
+   border-top: 1px solid #d0d0d0;
+   border-left: 1px solid #d0d0d0;
+   border-right: 1px solid #d0d0d0;
+   margin-right: 5px;
+   border-top-left-radius: 3px;
+   border-top-right-radius: 3px;
+   outline: none;
+   margin-left: 0;
+}
+
+.phTabs ul.phTabsUl li.phTabsLi a.phTabsA {
+   cursor: pointer;
+   border-top-left-radius: 3px;
+   border-top-right-radius: 3px;
+   padding: 0.5em 1em;
+   text-decoration: none;
+   outline: none;
+   display: block;
+   color: #777;
+   background: #f0f0f0;
+}
+
+
+.phTabs ul.phTabsUl li.phTabsLi a.phTabsA.active {
+   
+   background: #FFF;
+   border-bottom: 1px solid #ffffff;
+   margin-bottom: -1px;
+}
+
+
+
+.phTabs ul.phTabsUl li.phTabsLi a.phTabsA:hover {
+   color: #129ED9;
+   outline: none;
+}
+
+.phTabsContainer {
+   clear: both;
+   border: 1px solid #d0d0d0;
+   border-radius: 3px;
+   text-align: left;
+   padding: 1em;
+   background: #ffffff;
+   box-shadow: 1px 2px 1px 0 rgba(0, 0, 0, .15);
+}

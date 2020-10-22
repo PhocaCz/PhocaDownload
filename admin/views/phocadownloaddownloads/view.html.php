@@ -16,16 +16,21 @@ class PhocaDownloadCpViewPhocaDownloadDownloads extends JViewLegacy
 	protected $state;
 	protected $maxandsum;
 	protected $t;
+	protected $r;
+	public $filterForm;
+	public $activeFilters;
 
 	function display($tpl = null) {
 
 		$this->t			= PhocaDownloadUtils::setVars('download');
+		$this->r	= new PhocaDownloadRenderAdminviews();
 		$this->items		= $this->get('Items');
 		$this->pagination	= $this->get('Pagination');
 		$this->state		= $this->get('State');
+		$this->filterForm   = $this->get('FilterForm');
+		$this->activeFilters = $this->get('ActiveFilters');
 		$this->maxandsum	= $this->get('MaxAndSum');
 
-		JHTML::stylesheet( $this->t['s'] );
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) {
@@ -69,8 +74,6 @@ class PhocaDownloadCpViewPhocaDownloadDownloads extends JViewLegacy
 	protected function getSortFields() {
 		return array(
 
-
-			'usernameno'	=> JText::_($this->t['l'] . '_USER'),
 			'username'		=> JText::_($this->t['l'] . '_USERNAME'),
 			'a.count'	 	=> JText::_($this->t['l'] . '_COUNT'),
 			'filename'		=> JText::_($this->t['l'] . '_FILENAME')

@@ -60,16 +60,16 @@ if ($this->t['catidfiles'] == 0 || $this->t['catidfiles'] == '') {
 <table class="adminlist">
 <thead>
 	<tr>
-	<th class="title" width="50%"><?php echo JHTML::_('grid.sort',  'COM_PHOCADOWNLOAD_TITLE', 'a.title', $this->t['listsfiles']['order_Dir'], $this->t['listsfiles']['order'], 'image'); ?></th>
-	<th width="3%" nowrap="nowrap"><?php echo JHTML::_('grid.sort',  'COM_PHOCADOWNLOAD_PUBLISHED', 'a.published', $this->t['listsfiles']['order_Dir'], $this->t['listsfiles']['order'], 'image' ); ?></th>
+	<th class="title" width="50%"><?php echo Joomla\CMS\HTML\HTMLHelper::_('grid.sort',  'COM_PHOCADOWNLOAD_TITLE', 'a.title', $this->t['listsfiles']['order_Dir'], $this->t['listsfiles']['order'], 'image'); ?></th>
+	<th width="3%" nowrap="nowrap"><?php echo Joomla\CMS\HTML\HTMLHelper::_('grid.sort',  'COM_PHOCADOWNLOAD_PUBLISHED', 'a.published', $this->t['listsfiles']['order_Dir'], $this->t['listsfiles']['order'], 'image' ); ?></th>
 	<th width="3%" nowrap="nowrap"><?php echo JText::_('COM_PHOCADOWNLOAD_DELETE'); ?></th>
 	<th width="3%" nowrap="nowrap"><?php echo JText::_('COM_PHOCADOWNLOAD_ACTIVE'); ?></th>
-	<th width="3%" nowrap="nowrap"><?php echo JHTML::_('grid.sort', 'COM_PHOCADOWNLOAD_APPROVED', 'a.approved', $this->t['listsfiles']['order_Dir'], $this->t['listsfiles']['order'], 'image' ); ?></th>
+	<th width="3%" nowrap="nowrap"><?php echo Joomla\CMS\HTML\HTMLHelper::_('grid.sort', 'COM_PHOCADOWNLOAD_APPROVED', 'a.approved', $this->t['listsfiles']['order_Dir'], $this->t['listsfiles']['order'], 'image' ); ?></th>
 
-	<th width="3%" nowrap="nowrap"><?php echo JHTML::_('grid.sort', 'COM_PHOCADOWNLOAD_DATE_UPLOAD', 'a.date', $this->t['listsfiles']['order_Dir'], $this->t['listsfiles']['order'], 'image' ); ?></th>
+	<th width="3%" nowrap="nowrap"><?php echo Joomla\CMS\HTML\HTMLHelper::_('grid.sort', 'COM_PHOCADOWNLOAD_DATE_UPLOAD', 'a.date', $this->t['listsfiles']['order_Dir'], $this->t['listsfiles']['order'], 'image' ); ?></th>
 
 
-	<th width="3%" nowrap="nowrap"><?php echo JHTML::_('grid.sort', 'COM_PHOCADOWNLOAD_CATEGORY', 'a.catid', $this->t['listsfiles']['order_Dir'], $this->t['listsfiles']['order'], 'image' ); ?></th>
+	<th width="3%" nowrap="nowrap"><?php echo Joomla\CMS\HTML\HTMLHelper::_('grid.sort', 'COM_PHOCADOWNLOAD_CATEGORY', 'a.catid', $this->t['listsfiles']['order_Dir'], $this->t['listsfiles']['order'], 'image' ); ?></th>
 
 </thead>
 
@@ -107,19 +107,19 @@ if (is_array($rows)) {
 	if ($row->published == 1) {
 		if ($rightDisplayDelete) {
 			echo '<a href="javascript:void(0)" onclick="javascript:Joomla.submitbutton(\'unpublish\', '.(int)$row->id.');" >';
-			echo JHTML::_('image', $this->t['pi'].'icon-publish.png', JText::_('COM_PHOCADOWNLOAD_PUBLISHED'));
+			echo Joomla\CMS\HTML\HTMLHelper::_('image', $this->t['pi'].'icon-publish.png', JText::_('COM_PHOCADOWNLOAD_PUBLISHED'));
 			echo '</a>';
 		} else {
-			echo JHTML::_('image', $this->t['pi'].'icon-publish-g.png', JText::_('COM_PHOCADOWNLOAD_PUBLISHED'));
+			echo Joomla\CMS\HTML\HTMLHelper::_('image', $this->t['pi'].'icon-publish-g.png', JText::_('COM_PHOCADOWNLOAD_PUBLISHED'));
 		}
 	}
 	if ($row->published == 0) {
 		if ($rightDisplayDelete) {
 			echo '<a href="javascript:void(0)" onclick="javascript:Joomla.submitbutton(\'publish\', '.(int)$row->id.');" >';
-			echo JHTML::_('image', $this->t['pi'].'icon-unpublish.png', JText::_('COM_PHOCADOWNLOAD_UNPUBLISHED'));
+			echo Joomla\CMS\HTML\HTMLHelper::_('image', $this->t['pi'].'icon-unpublish.png', JText::_('COM_PHOCADOWNLOAD_UNPUBLISHED'));
 			echo '</a>';
 		} else {
-			echo JHTML::_('image', $this->t['pi'].'icon-unpublish-g.png', JText::_('COM_PHOCADOWNLOAD_UNPUBLISHED'));
+			echo Joomla\CMS\HTML\HTMLHelper::_('image', $this->t['pi'].'icon-unpublish-g.png', JText::_('COM_PHOCADOWNLOAD_UNPUBLISHED'));
 		}
 	}
 	echo '</td>';
@@ -127,10 +127,10 @@ if (is_array($rows)) {
 	echo '<td align="center">';
 	if ($rightDisplayDelete) {
 		echo '<a href="javascript:void(0)" onclick="javascript: if (confirm(\''.JText::_('COM_PHOCADOWNLOAD_WARNING_DELETE_ITEMS').'\')) {Joomla.submitbutton(\'delete\', '.(int)$row->id.');}" >';
-		echo JHTML::_('image', $this->t['pi'].'icon-trash.png', JText::_('COM_PHOCADOWNLOAD_DELETE'));
+		echo Joomla\CMS\HTML\HTMLHelper::_('image', $this->t['pi'].'icon-trash.png', JText::_('COM_PHOCADOWNLOAD_DELETE'));
 		echo '</a>';
 	} else {
-		echo JHTML::_('image', $this->t['pi'].'icon-trash-g.png', JText::_('COM_PHOCADOWNLOAD_DELETE'));
+		echo Joomla\CMS\HTML\HTMLHelper::_('image', $this->t['pi'].'icon-trash-g.png', JText::_('COM_PHOCADOWNLOAD_DELETE'));
 	}
 	echo '</td>';
 
@@ -178,9 +178,9 @@ if (is_array($rows)) {
 	// Approved
 	echo '<td align="center">';
 	if ($row->approved == 1) {
-		echo JHTML::_('image', $this->t['pi'].'icon-publish.png', JText::_('COM_PHOCADOWNLOAD_APPROVED'));
+		echo Joomla\CMS\HTML\HTMLHelper::_('image', $this->t['pi'].'icon-publish.png', JText::_('COM_PHOCADOWNLOAD_APPROVED'));
 	} else {
-		echo JHTML::_('image', $this->t['pi'].'icon-unpublish.png', JText::_('COM_PHOCADOWNLOAD_NOT_APPROVED'));
+		echo Joomla\CMS\HTML\HTMLHelper::_('image', $this->t['pi'].'icon-unpublish.png', JText::_('COM_PHOCADOWNLOAD_NOT_APPROVED'));
 	}
 	echo '</td>';
 
@@ -231,7 +231,7 @@ if (!empty($this->t['filesitems'])) {
 </table>
 
 
-<?php echo JHTML::_( 'form.token' ); ?>
+<?php echo Joomla\CMS\HTML\HTMLHelper::_( 'form.token' ); ?>
 
 <input type="hidden" name="controller" value="user" />
 <input type="hidden" name="task" value=""/>
@@ -342,7 +342,7 @@ if ($this->t['errorcatid'] != '') {
 	<input type="hidden" name="filter_order_Dir" value="" />
 	<input type="hidden" name="catidfiles" value="<?php echo $this->t['catidfiles'] ?>"/>
 </form>
-<div id="loading-label-file"><div style="text-align:center"><?php echo JHTML::_('image', $this->t['pi'].'icon-loading.gif', '') . JText::_('COM_PHOCADOWNLOAD_LOADING'); ?></div></div>
+<div id="loading-label-file"><div style="text-align:center"><?php echo Joomla\CMS\HTML\HTMLHelper::_('image', $this->t['pi'].'icon-loading.gif', '') . JText::_('COM_PHOCADOWNLOAD_LOADING'); ?></div></div>
 
 	<?php
 }

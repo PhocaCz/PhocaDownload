@@ -6,7 +6,7 @@
  * @copyright Copyright (C) Jan Pavelka www.phoca.cz
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
- defined('_JEXEC') or die('Restricted access'); 
+ defined('_JEXEC') or die('Restricted access');
 
 $this->t['action'] = str_replace('&amp;', '&', $this->t['action']);
 //$this->t['action'] = str_replace('&', '&amp;', $this->t['action']);
@@ -23,10 +23,10 @@ if ($this->t['p']->get('show_ordering_files') || $this->t['p']->get('show_pagina
 	}
 
 	if ($this->t['p']->get('show_pagination_limit')) {
-		
+
 			echo JText::_('COM_PHOCADOWNLOAD_DISPLAY_NUM') .'&nbsp;'
 			.$this->t['pagination']->getLimitBox() . ' &nbsp;';
-			
+
 	}
 	if ($this->t['p']->get('show_pagination')) {
 		echo $this->t['pagination']->getPagesCounter();
@@ -38,7 +38,7 @@ if ($this->t['p']->get('show_pagination')) {
 	echo '<div style="margin:0 10px 0 10px;display:inline;" class="sectiontablefooter'.$this->t['p']->get( 'pageclass_sfx' ).'" id="pg-pagination" >'
 		.$this->t['pagination']->getPagesLinks()
 		.'</div>';
-	
+
 		/*.'<div style="margin:0 10px 0 10px;display:inline;" class="pagecounter">'
 		.$this->t['pagination']->getPagesCounter()
 		.'</div>';*/
@@ -47,6 +47,6 @@ if ($this->t['p']->get('show_pagination')) {
 echo '</div></div>'. "\n";
 
 //echo '<input type="hidden" name="controller" value="category" />';
-echo JHTML::_( 'form.token' );
+echo Joomla\CMS\HTML\HTMLHelper::_( 'form.token' );
 echo '</form>';
 ?>

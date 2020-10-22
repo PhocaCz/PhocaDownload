@@ -22,14 +22,16 @@ class PhocaDownloadCpViewPhocaDownloadManager extends JViewLegacy
 	protected $session;
 	protected $currentFolder;
 	protected $t;
+	protected $r;
 
 	public function display($tpl = null) {
 
 		$this->t		= PhocaDownloadUtils::setVars('manager');
+		$this->r = new PhocaDownloadRenderAdminView();
 		$this->field	= JFactory::getApplication()->input->get('field');
 		$this->fce 		= 'phocaSelectFileName_'.$this->field;
 
-		JHTML::stylesheet( $this->t['s'] );
+
 
 
 		$this->folderstate	= $this->get('FolderState');
@@ -146,7 +148,7 @@ class PhocaDownloadCpViewPhocaDownloadManager extends JViewLegacy
 
 		$this->addToolbar();
 		parent::display($tpl);
-		echo JHTML::_('behavior.keepalive');
+		echo Joomla\CMS\HTML\HTMLHelper::_('behavior.keepalive');
 	}
 
 	function setFolder($index = 0) {

@@ -9,7 +9,7 @@
 defined('_JEXEC') or die();
 jimport( 'joomla.application.component.view' );
 
-jimport( 'joomla.filesystem.file' ); 
+jimport( 'joomla.filesystem.file' );
 class PhocaDownloadCpViewPhocaDownloadUploads extends JViewLegacy
 {
 
@@ -17,30 +17,36 @@ class PhocaDownloadCpViewPhocaDownloadUploads extends JViewLegacy
 	protected $pagination;
 	protected $state;
 	protected $t;
-	
-	
-	function display($tpl = null) {
-		
-		$this->t			= PhocaDownloadUtils::setVars('upload');
-		$this->items			= $this->get('Items');
-		$this->pagination		= $this->get('Pagination');
-		$this->state			= $this->get('State');
+	protected $r;
+	public $filterForm;
+    public $activeFilters;
 
-		JHTML::stylesheet( $this->t['s'] );
+
+	function display($tpl = null) {
+
+		$this->t			= PhocaDownloadUtils::setVars('upload');
+		$this->r = new PhocaDownloadRenderAdminViews();
+		$this->items		= $this->get('Items');
+        $this->pagination	= $this->get('Pagination');
+        $this->state		= $this->get('State');
+        $this->filterForm   = $this->get('FilterForm');
+        $this->activeFilters = $this->get('ActiveFilters');
+
+
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) {
 			throw new Exception(implode("\n", $errors), 500);
 			return false;
 		}
-		
+
 		$this->addToolbar();
 		parent::display($tpl);
-		
+
 	}
-	
+
 	function addToolbar() {
-	
+
 		require_once JPATH_COMPONENT.'/helpers/'.$this->t['tasks'].'.php';
 		//$state	= $this->get('State');
 		$class	= ucfirst($this->t['tasks']).'Helper';
@@ -49,29 +55,29 @@ class PhocaDownloadCpViewPhocaDownloadUploads extends JViewLegacy
 		JToolbarHelper::title( JText::_( $this->t['l'].'_UPLOADS' ), 'upload' );
 
 		if ($canDo->get('core.admin')) {
-			
+
 			$bar = JToolbar::getInstance('toolbar');
 
 			$dhtml = '<button class="btn btn-small" onclick="javascript:if(confirm(\''.addslashes(JText::_('COM_PHOCADOWNLOAD_WARNING_AUTHORIZE_ALL')).'\')){submitbutton(\'phocadownloaduploads.approveall\');}" ><i class="icon-approve" title="'.JText::_('COM_PHOCADOWNLOAD_APPROVE_ALL').'"></i> '.JText::_('COM_PHOCADOWNLOAD_APPROVE_ALL').'</button>';
 			$bar->appendButton('Custom', $dhtml);
-		
+
 
 			JToolbarHelper::divider();
 		}
-	
-		
+
+
 		JToolbarHelper::help( 'screen.'.$this->t['c'], true );
 	}
-	
+
 	protected function getSortFields() {
 		return array(
-			
-			'd.title' 		=> JText::_($this->t['l'] . '_TITLE'),
-			'd.filename' 	=> JText::_($this->t['l'] . '_FILENAME'),
-			'usernameno'	=> JText::_($this->t['l'] . '_USER'),
-			'username'		=> JText::_($this->t['l'] . '_USERNAME'),
-			'a.count'	 	=> JText::_($this->t['l'] . '_COUNT')
-			
+
+			//'d.title' 		=> JText::_($this->t['l'] . '_TITLE'),
+			//'d.filename' 	=> JText::_($this->t['l'] . '_FILENAME'),
+			//'usernameno'	=> JText::_($this->t['l'] . '_USER'),
+			'username'		=> JText::_($this->t['l'] . '_USERNAME')
+			//'a.count'	 	=> JText::_($this->t['l'] . '_COUNT')
+
 		);
 	}
 }

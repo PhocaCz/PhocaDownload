@@ -54,8 +54,8 @@
 </field>
 
 
-<field name="userid" type="user" section="com_phocadownload" default="" label="COM_PHOCADOWNLOAD_UPLOADED_BY_LABEL" description="COM_PHOCADOWNLOAD_UPLOADED_BY_DESC"/>
-<field name="owner_id" type="user" section="com_phocadownload" default="" label="COM_PHOCADOWNLOAD_OWNER_LABEL" description="COM_PHOCADOWNLOAD_OWNER_DESC"/>
+<field name="userid" type="user" section="com_phocadownload" default="" label="COM_PHOCADOWNLOAD_FIELD_UPLOADED_BY_LABEL" description="COM_PHOCADOWNLOAD_FIELD_UPLOADED_BY_DESC"/>
+<field name="owner_id" type="user" section="com_phocadownload" default="" label="COM_PHOCADOWNLOAD_FIELD_OWNER_LABEL" description="COM_PHOCADOWNLOAD_FIELD_OWNER_DESC"/>
 
 
 <field name="mirror1link" type="Text" class="inputbox" size="40" label="COM_PHOCADOWNLOAD_MIRROR_LINK_LINK_LABEL" description="COM_PHOCADOWNLOAD_FIELD_MIRROR_LINK_LINK_DESC"  />

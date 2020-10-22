@@ -4,20 +4,20 @@
 	<fieldset name="display" label="COM_PHOCADOWNLOAD_CONFIG_HEAD_DISPLAY_LABEL">
 
 <field name="phocahead1" type="phocahead"  default="COM_PHOCADOWNLOAD_CONFIG_CATEGORY_CATEGORIES_VIEW_LABEL" label="" description=""/>
-	
+
 <field name="filename_or_name" type="list" default="filenametitle" label="COM_PHOCADOWNLOAD_FIELD_FILENAME_OR_NAME_LABEL" description="COM_PHOCADOWNLOAD_FIELD_FILENAME_OR_NAME_LABEL_DESC">
 	<option value="filename">COM_PHOCADOWNLOAD_FILENAME</option>
 	<option value="title">COM_PHOCADOWNLOAD_TITLE</option>
 	<option value="filenametitle">COM_PHOCADOWNLOAD_FILENAME_AND_TITLE</option>
 </field>
-		
 
-	
+
+
 <field name="display_downloads" type="list" default="0" label="COM_PHOCADOWNLOAD_FIELD_DISPLAY_DOWNLOADS_LABEL" description="COM_PHOCADOWNLOAD_FIELD_DISPLAY_DOWNLOADS_DESC">
 		<option value="1">COM_PHOCADOWNLOAD_YES</option>
 		<option value="0">COM_PHOCADOWNLOAD_NO</option>
 	</field>
-	
+
 <field name="display_description" type="list" default="3" label="COM_PHOCADOWNLOAD_FIELD_DISPLAY_DESCRIPTION_LABEL" description="COM_PHOCADOWNLOAD_FIELD_DISPLAY_DESCRIPTION_DESC">
 	<option value="0">COM_PHOCADOWNLOAD_NONE</option>
 	<option value="1">COM_PHOCADOWNLOAD_TOP</option>
@@ -34,14 +34,14 @@
 	<option value="0">COM_PHOCADOWNLOAD_NO</option>
 	<option value="1">COM_PHOCADOWNLOAD_YES</option>
 </field>
-	
+
 <field name="display_detail" type="list" default="1" label="COM_PHOCADOWNLOAD_FIELD_DISPLAY_DETAIL_BUTTON_LABEL" description="COM_PHOCADOWNLOAD_FIELD_DISPLAY_DETAIL_BUTTON_DESC">
 	<option value="1">COM_PHOCADOWNLOAD_YES_OVERLIB</option>
 	<option value="2">COM_PHOCADOWNLOAD_YES_MODAL</option>
 	<option value="3">COM_PHOCADOWNLOAD_YES_STANDARD_POPUP_WINDOW</option>
 	<option value="0">COM_PHOCADOWNLOAD_NO</option>
 </field>
-	
+
 <field name="display_new" default="0" size="10" type="text" label="COM_PHOCADOWNLOAD_FIELD_DISPLAY_NEW_ICON_LABEL" description="COM_PHOCADOWNLOAD_FIELD_DISPLAY_NEW_ICON_DESC" />
 
 <field name="display_hot" default="0" size="10" type="text" label="COM_PHOCADOWNLOAD_FIELD_DISPLAY_HOT_ICON_LABEL" description="COM_PHOCADOWNLOAD_FIELD_DISPLAY_HOT_ICON_DESC" />
@@ -52,13 +52,13 @@
 </field>
 
 <field name="most_download_files_num" default="5" size="10" type="text" label="COM_PHOCADOWNLOAD_FIELD_MOST_DOWNLOAD_FILES_NUMBER_LABEL" description="COM_PHOCADOWNLOAD_FIELD_MOST_DOWNLOAD_FILES_NUMBER_DESC" />
-	
+
 <field name="display_file_view" type="list" default="0" label="COM_PHOCADOWNLOAD_FIELD_DISPLAY_FILE_VIEW_LABEL" description="COM_PHOCADOWNLOAD_FIELD_DISPLAY_FILE_VIEW_DESC">
 	<option value="0">COM_PHOCADOWNLOAD_NO</option>
 	<option value="1">COM_PHOCADOWNLOAD_YES</option>
 	<option value="2">COM_PHOCADOWNLOAD_YES_ONLY_MODALBOX</option>
 	</field>
-	
+
 <field name="display_date_type" type="list" default="0" label="COM_PHOCADOWNLOAD_FIELD_DISPLAY_DATE_TYPE_LABEL" description="COM_PHOCADOWNLOAD_FIELD_DISPLAY_DATE_TYPE_DESC">
 	<option value="0">COM_PHOCADOWNLOAD_DATABASE_TIME</option>
 	<option value="1">COM_PHOCADOWNLOAD_FILE_FILEMTIME</option>
@@ -70,14 +70,14 @@
 	<option value="_self">COM_PHOCADOWNLOAD_SELF</option>
 	<option value="_blank">COM_PHOCADOWNLOAD_BLANK</option>
 </field>
-	
+
 
 <field name="download_metadesc" type="textarea" label="COM_PHOCADOWNLOAD_FIELD_METADESC_LABEL" description="COM_PHOCADOWNLOAD_FIELD_METADESC_DESC" rows="2" cols="26" default="" />
 
-<field name="download_metakey" type="textarea" label="COM_PHOCADOWNLOAD_FIELD_METAKEY_LABEL" description="COM_PHOCADOWNLOAD_FIELD_METAKEY_DESC" rows="2" cols="26" default="" />	
-	
+<field name="download_metakey" type="textarea" label="COM_PHOCADOWNLOAD_FIELD_METAKEY_LABEL" description="COM_PHOCADOWNLOAD_FIELD_METAKEY_DESC" rows="2" cols="26" default="" />
 
-	
+
+
 <field name="category_ordering" type="list" default="1" label="COM_PHOCADOWNLOAD_FIELD_CATEGORY_ORDERING_LABEL" description="COM_PHOCADOWNLOAD_FIELD_CATEGORY_ORDERING_DESC">
 	<option value="1">COM_PHOCADOWNLOAD_ORDERING_ASC</option>
 	<option value="2">COM_PHOCADOWNLOAD_ORDERING_DESC</option>
@@ -100,8 +100,8 @@
 	<option value="8">COM_PHOCADOWNLOAD_ID_DESC</option>
 	<option value="11">COM_PHOCADOWNLOAD_FILENAME_ASC</option>
 	<option value="12">COM_PHOCADOWNLOAD_FILENAME_DESC</option>
-	<option value="15">COM_PHOCADOWNLOAD_COUNT_ASC</option>
-	<option value="16">COM_PHOCADOWNLOAD_COUNT_DESC</option>
+	<option value="15">COM_PHOCADOWNLOAD_RATING_COUNT_ASC</option>
+	<option value="16">COM_PHOCADOWNLOAD_RATING_COUNT_DESC</option>
 	<option value="13">COM_PHOCADOWNLOAD_AVERAGE_ASC</option>
 	<option value="14">COM_PHOCADOWNLOAD_AVERAGE_DESC</option>
 	<option value="9">COM_PHOCADOWNLOAD_DOWNLOADS_ASC</option>
@@ -182,8 +182,34 @@
 
 
 <field name="phocahead4" type="phocahead"  default="COM_PHOCADOWNLOAD_FILE_VIEW_LABEL" label="" description=""/>
-	
+
 <field name="license_box_height" default="300" size="10" type="text" label="COM_PHOCADOWNLOAD_FIELD_LICENSE_BOX_HEIGHT_LABEL" description="COM_PHOCADOWNLOAD_FIELD_LICENSE_BOX_HEIGHT_DESC" />
+
+<field name="phocahead8" type="phocahead"  default="COM_PHOCADOWNLOAD_GENERAL_DISPLAY_OPTIONS_LABEL" label="" description=""/>
+
+<field name="display_header_type" type="list" default="h1" label="COM_PHOCADOWNLOAD_FIELD_DISPLAY_HEADER_TYPE_LABEL" description="COM_PHOCADOWNLOAD_FIELD_DISPLAY_HEADER_TYPE_DESC">
+                <option value="h1">h1</option>
+                <option value="h2">h2</option>
+                <option value="h3">h3</option>
+                <option value="h4">h4</option>
+                <option value="h5">h5</option>
+                <option value="h6">h6</option>
+                <option value="div">div</option>
+                <option value="p">p</option>
+                <option value="-1">COM_PHOCADOWNLOAD_HIDE_HEADER</option>
+            </field>
+			
+			<field name="display_subheader_type" type="list" default="h3" label="COM_PHOCADOWNLOAD_FIELD_DISPLAY_SUBHEADER_TYPE_LABEL" description="COM_PHOCADOWNLOAD_FIELD_DISPLAY_SUBHEADER_TYPE_DESC">
+                <option value="h1">h1</option>
+                <option value="h2">h2</option>
+                <option value="h3">h3</option>
+                <option value="h4">h4</option>
+                <option value="h5">h5</option>
+                <option value="h6">h6</option>
+                <option value="div">div</option>
+                <option value="p">p</option>
+                <option value="-1">COM_PHOCADOWNLOAD_HIDE_HEADER</option>
+            </field>
 
 <field name="phocahead2" type="phocahead"  default="COM_PHOCADOWNLOAD_CONFIG_COMMENTS_SETTINGS_LABEL" label="" description=""/>
 
@@ -213,7 +239,7 @@
 <option value="3">COM_PHOCADOWNLOAD_YES_CATEGORY_FILE_VIEW</option>
 </field>
 
-	
+
 <field name="phocahead3" type="phocahead"  default="COM_PHOCADOWNLOAD_CONFIG_THEME_SETTINGS_LABEL" label="" description=""/>
 
 <field name="file_icon_size" type="list" default="16" label="COM_PHOCADOWNLOAD_FIELD_FILE_ICON_SIZE_LABEL" description="COM_PHOCADOWNLOAD_FIELD_FILE_ICON_SIZE_DESC">
@@ -235,19 +261,19 @@
 </field>
 
 
-	
-	
+
+
 <field name="display_specific_layout" type="list" default="0" label="COM_PHOCADOWNLOAD_DISPLAY_SPEC_LAYOUT_LABEL" description="COM_PHOCADOWNLOAD_DISPLAY_SPEC_LAYOUT_DESC">
 		<option value="0">COM_PHOCADOWNLOAD_NO</option>
 		<option value="1">COM_PHOCADOWNLOAD_YES</option>
 	</field>
-	
+
 <field name="display_bootstrap3_layout" type="list" default="0" label="COM_PHOCADOWNLOAD_DISPLAY_BOOTSTRAP3_LAYOUT_LABEL" description="COM_PHOCADOWNLOAD_DISPLAY_BOOTSTRAP3_LAYOUT_DESC">
 		<option value="0">COM_PHOCADOWNLOAD_NO</option>
 		<option value="1">COM_PHOCADOWNLOAD_YES</option>
 		<option value="2">COM_PHOCADOWNLOAD_YES_LOAD_BOOTSTRAP_LIBRARY</option>
 	</field>
-	
+
 
 
 
@@ -562,11 +588,11 @@
 	<option value="0">COM_PHOCADOWNLOAD_NO</option>
 </field>
 
-		
+
 <field name="enable_cache" type="list" default="0" label="COM_PHOCADOWNLOAD_FIELD_ENABLE_CACHE_LABEL" description="COM_PHOCADOWNLOAD_FIELD_ENABLE_CACHE_DESC">
 	<option value="1">COM_PHOCADOWNLOAD_YES</option>
 	<option value="0">COM_PHOCADOWNLOAD_NO</option>
-</field>	
+</field>
 
 <field name="bt_cat_col_left" default="" size="40" type="text" label="COM_PHOCADOWNLOAD_FIELD_COLUMN_SIZE_CATEGORY_VIEW_LABEL" description="COM_PHOCADOWNLOAD_FIELD_COLUMN_SIZE_CATEGORY_VIEW_DESC" />
 
@@ -576,6 +602,6 @@
 <fieldset name="permissions" description="JCONFIG_PERMISSIONS_DESC" label="JCONFIG_PERMISSIONS_LABEL">
 	<field name="rules" type="rules" component="com_phocadownload" filter="rules" label="COM_PHOCADOWNLOAD_FIELD_JCONFIG_PERMISSIONS_LABEL" section="component" description="COM_PHOCADOWNLOAD_FIELD_JCONFIG_PERMISSIONS_DESC"/>
 </fieldset>
-	
+
 	</fields>
 </config>

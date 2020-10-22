@@ -19,7 +19,7 @@ class PhocaDownloadCpViewPhocaDownloadset extends JViewLegacy
 		$uri		= \Joomla\CMS\Uri\Uri::getInstance();
 		$document	= JFactory::getDocument();
 		$db		    = JFactory::getDBO();
-		JHTML::stylesheet( 'phocadownload.css', 'administrator/components/com_phocadownload/assets/' );
+
 
 		// Get data from the model
 		$items		= & $this->get( 'Data');

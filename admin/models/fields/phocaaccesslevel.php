@@ -53,14 +53,14 @@ class JFormFieldPhocaAccessLevel extends JFormFieldList
 
 		// Get the field options.
 		$options = $this->getOptions();
-		
+
 
 		return $this->_level( $this->name, $this->value, $attr, $options, $this->id);
 	}
-	
-	
+
+
 	public static function _level($name, $selected, $attribs = '', $params = true, $id = false) {
-	
+
 		$db		= JFactory::getDbo();
 		$query	= $db->getQuery(true);
 
@@ -73,7 +73,7 @@ class JFormFieldPhocaAccessLevel extends JFormFieldList
 		$query->order('a.ordering ASC');
 		$query->order('`title` ASC');
 
-		
+
 
 		// Check for a database error.
 	/*	if ($db->getErrorNum()) {
@@ -85,7 +85,7 @@ class JFormFieldPhocaAccessLevel extends JFormFieldList
 			$db->setQuery($query);
 			$options = $db->loadObjectList();
 		} catch (RuntimeException $e) {
-			
+
 			throw new Exception($e->getMessage(), 500);
 			return false;
 		}
@@ -96,10 +96,10 @@ class JFormFieldPhocaAccessLevel extends JFormFieldList
 		}
 		// If all levels is allowed, push it into the array.
 		elseif ($params) {
-			array_unshift($options, JHtml::_('select.option', '', JText::_('JOPTION_ACCESS_SHOW_ALL_LEVELS')));
+			array_unshift($options, Joomla\CMS\HTML\HTMLHelper::_('select.option', '', JText::_('JOPTION_ACCESS_SHOW_ALL_LEVELS')));
 		}
 
-		return JHtml::_('select.genericlist', $options, $name,
+		return Joomla\CMS\HTML\HTMLHelper::_('select.genericlist', $options, $name,
 			array(
 				'list.attr' => $attribs,
 				'list.select' => $selected,

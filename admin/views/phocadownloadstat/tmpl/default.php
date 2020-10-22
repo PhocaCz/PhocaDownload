@@ -7,21 +7,16 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die;
-JHtml::_('bootstrap.tooltip');
-JHtml::_('behavior.multiselect');
-JHtml::_('dropdown.init');
-JHtml::_('formbehavior.chosen', 'select');
-//$class		= $this->t['n'] . 'RenderAdminViews';
-$r 			=  new PhocaDownloadRenderAdminViews();
+$r = $this->r;
 $user		= JFactory::getUser();
 $userId		= $user->get('id');
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
 $canOrder	= $user->authorise('core.edit.state', $this->t['o']);
 $saveOrder	= $listOrder == 'a.ordering';
-if ($saveOrder) {
-	$saveOrderingUrl = 'index.php?option='.$this->t['o'].'&task='.$this->t['task'].'.saveOrderAjax&tmpl=component';
-	JHtml::_('sortablelist.sortable', 'categoryList', 'adminForm', strtolower($listDirn), $saveOrderingUrl, false, true);
+$saveOrderingUrl = '';
+if ($saveOrder && !empty($this->items)) {
+	$saveOrderingUrl = $r->saveOrder($this->t, $listDirn);
 }
 $sortFields = $this->getSortFields();
 
@@ -30,13 +25,14 @@ echo $r->jsJorderTable($listOrder);
 echo '<div class="clearfix"></div>';
 
 echo $r->startForm($this->t['o'], $this->t['task'], 'adminForm');
-echo $r->startFilter();
+//echo $r->startFilter();
 //echo $r->startFilter($this->t['l'].'_FILTER');
-//echo $r->selectFilterPublished('JOPTION_SELECT_PUBLISHED', $this->state->get('filter.state'));
+//echo $r->selectFilterPublished('JOPTION_SELECT_PUBLISHED', $this->state->get('filter.published'));
 //echo $r->selectFilterLanguage('JOPTION_SELECT_LANGUAGE', $this->state->get('filter.language'));
-echo $r->endFilter();
+//echo $r->endFilter();
 
 echo $r->startMainContainer();
+/*
 echo $r->startFilterBar();
 echo $r->inputFilterSearch($this->t['l'].'_FILTER_SEARCH_LABEL', $this->t['l'].'_FILTER_SEARCH_DESC',
 							$this->escape($this->state->get('filter.search')));
@@ -44,24 +40,27 @@ echo $r->inputFilterSearchClear('JSEARCH_FILTER_SUBMIT', 'JSEARCH_FILTER_CLEAR')
 echo $r->inputFilterSearchLimit('JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC', $this->pagination->getLimitBox());
 echo $r->selectFilterDirection('JFIELD_ORDERING_DESC', 'JGLOBAL_ORDER_ASCENDING', 'JGLOBAL_ORDER_DESCENDING', $listDirn);
 echo $r->selectFilterSortBy('JGLOBAL_SORT_BY', $sortFields, $listOrder);
-echo $r->endFilterBar();
+echo $r->endFilterBar();*/
+echo JLayoutHelper::render('joomla.searchtools.default', array('view' => $this));
 
 echo $r->startTable('categoryList');
 
 echo $r->startTblHeader();
+echo $r->firstColumnHeader($listDirn, $listOrder, 'a', true);
+echo $r->secondColumnHeader($listDirn, $listOrder, 'a', true);
 
-//echo $r->thOrdering('JGRID_HEADING_ORDERING', $listDirn, $listOrder);
-echo '<th class="nowrap center hidden-phone ph-ordering"></th>';
+//echo $r->thOrderingXML('JGRID_HEADING_ORDERING', $listDirn, $listOrder);
+//echo '<th class="nowrap center hidden-phone ph-ordering"></th>';
 //echo $r->thCheck('JGLOBAL_CHECK_ALL');
-echo '<th class=""></th>'."\n";
-echo '<th class="ph-title">'.JHTML::_('grid.sort',  	$this->t['l'].'_TITLE', 'a.title', $listDirn, $listOrder ).'</th>'."\n";
-echo '<th class="ph-filename-long">'.JHTML::_('grid.sort',  	$this->t['l'].'_FILENAME', 'a.filename', $listDirn, $listOrder ).'</th>'."\n";
-echo '<th class="ph-hits">'.JHTML::_('grid.sort',  		$this->t['l'].'_DOWNLOADS', 'a.hits', $listDirn, $listOrder ).'</th>'."\n";
+//echo '<th class=""></th>'."\n";
+echo '<th class="ph-title">'.Joomla\CMS\HTML\HTMLHelper::_('searchtools.sort',  	$this->t['l'].'_TITLE', 'a.title', $listDirn, $listOrder ).'</th>'."\n";
+echo '<th class="ph-filename-long">'.Joomla\CMS\HTML\HTMLHelper::_('searchtools.sort',  	$this->t['l'].'_FILENAME', 'a.filename', $listDirn, $listOrder ).'</th>'."\n";
+echo '<th class="ph-hits">'.Joomla\CMS\HTML\HTMLHelper::_('searchtools.sort',  		$this->t['l'].'_DOWNLOADS', 'a.hits', $listDirn, $listOrder ).'</th>'."\n";
 
 echo $r->endTblHeader();
 
 
-echo '<tbody>'. "\n";
+echo $r->startTblBody($saveOrder, $saveOrderingUrl, $listDirn);
 
 $color 	= 0;
 $colors = array (
@@ -91,16 +90,12 @@ $canChange		= $user->authorise('core.edit.state', $this->t['o']) && $canCheckin;
 $linkEdit 		= JRoute::_( $urlEdit. $item->id );
 
 
-$iD = $i % 2;
-echo "\n\n";
-echo '<tr class="row'.$iD.'" sortable-group-id="'.$item->category_id.'" item-id="'.$item->id.'" parents="'.$item->category_id.'" level="0">'. "\n";
-
-echo $r->tdOrder($canChange, $saveOrder, $orderkey, $item->ordering);
-//echo $r->td(JHtml::_('grid.id', $i, $item->id), "small hidden-phone");
-echo $r->td('');
+echo $r->startTr($i, isset($item->catid) ? (int)$item->catid : 0);
+echo $r->firstColumn($i, $item->id, $canChange, $saveOrder, $orderkey, $item->ordering);
+echo $r->secondColumn($i, $item->id, $canChange, $saveOrder, $orderkey, $item->ordering);
 $checkO = '';
 /*if ($item->checked_out) {
-	$checkO .= JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, $this->t['tasks'].'.', $canCheckin);
+	$checkO .= Joomla\CMS\HTML\HTMLHelper::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, $this->t['tasks'].'.', $canCheckin);
 }
 if ($canCreate || $canEdit) {
 	$checkO .= '<a href="'. JRoute::_($linkEdit).'">'. $this->escape($item->title).'</a>';
@@ -135,18 +130,18 @@ if ($color > 23) {
 
 
 
-echo '</tr>'. "\n";
+echo $r->endTr();
 			}
 		//}
 	}
 }
-echo '</tbody>'. "\n";
+echo $r->endTblBody();
 
 echo $r->tblFoot($this->pagination->getListFooter(), 5);
 echo $r->endTable();
 
-//echo $r->formInputs($listOrder, $originalOrders);
-echo $r->formInputs($listOrder, $listDirn, $originalOrders);
+//echo $r->formInputsXML($listOrder, $originalOrders);
+echo $r->formInputsXML($listOrder, $listDirn, $originalOrders);
 echo $r->endMainContainer();
 echo $r->endForm();
 ?>

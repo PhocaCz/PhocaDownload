@@ -1,0 +1,47 @@
+.com_phocadownload a[target=_blank]:before {
+	content: "" !important;
+}
+
+#toolbar a.btn.btn-small i {
+	margin-inline-end: .5rem;
+}
+
+.ph-extension-info-box {
+	background: #fff;
+	padding: 1em;
+} 
+
+.ph-extension-links-box {
+	margin-top: 1em;
+	padding: 1em;
+	background: #fff;
+}
+
+.ph-extension-info-box {
+
+	padding-bottom: 2em;
+}
+
+.tpl-bettum.com_phocadownload .ph-extension-info-box,
+.tpl-bettum.com_phocadownload .ph-extension-links-box {
+
+	background: #505050;
+
+}
+
+.tpl-bettum.com_phocadownload .ph-cpanel-logo {
+	background: #000;
+	padding-left: 1em;
+	margin-bottom: 1em;
+}
+
+
+.tpl-bettum.com_phocadownload .ph-cp-item-icon {
+    background: transparent;
+}
+
+.tpl-bettum.com_phocadownload .phi {
+
+	color: #fff !important;
+
+}

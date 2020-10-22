@@ -7,7 +7,7 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die('Restricted access');
-JHTML::_('behavior.tooltip');
+Joomla\CMS\HTML\HTMLHelper::_('behavior.tooltip');
 ?>
 
 <script type="text/javascript">
@@ -59,7 +59,7 @@ function insertLink() {
 			</select>
 		</td>
 	</tr>
-	
+
 	<tr>
 		<td>&nbsp;</td>
 		<td align="right"><button class="btn btn-primary plg-button-insert " onclick="insertLink();"><span class="icon-ok"></span> <?php echo JText::_( 'COM_PHOCADOWNLOAD_INSERT_CODE' ); ?></button></td>

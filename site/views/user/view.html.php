@@ -15,7 +15,8 @@ use Joomla\String\StringHelper;
 class PhocaDownloadViewUser extends JViewLegacy
 {
 	protected $_context_files			= 'com_phocadownload.phocadownloaduserfiles';
-	protected $t;
+	protected $r;
+
 	function display($tpl = null) {
 
 		$app				= JFactory::getApplication();
@@ -43,7 +44,7 @@ class PhocaDownloadViewUser extends JViewLegacy
 
 		PhocaDownloadRenderFront::renderAllCSS();
 
-		JHtml::_('jquery.framework', false);
+		Joomla\CMS\HTML\HTMLHelper::_('jquery.framework', false);
 		$document	= JFactory::getDocument();
 		$document->addScriptDeclaration(
 		'jQuery(document).ready(function(){
@@ -226,7 +227,7 @@ class PhocaDownloadViewUser extends JViewLegacy
 		$this->t['filestotal'] 		= $model->getTotalFiles($user->id);
 		$this->t['filespagination'] 	= $model->getPaginationFiles($user->id);
 
-		$filter_state_files		= $app->getUserStateFromRequest( $this->_context_files.'.filter_state','filter_state', '','word');
+		$filter_published_files		= $app->getUserStateFromRequest( $this->_context_files.'.filter_published','filter_published', '','word');
 		$filter_catid_files		= $app->getUserStateFromRequest( $this->_context_files.'.filter_catid','filter_catid',0, 'int' );
 		$catid_files			= $app->getUserStateFromRequest( $this->_context_files. '.catid',	'catid', 0,	'int');
 		//$filter_sectionid_files	= $app->getUserStateFromRequest( $this->_context_files.'.filter_sectionid',	'filter_sectionid',	0,	'int' );
@@ -273,15 +274,15 @@ class PhocaDownloadViewUser extends JViewLegacy
 
 
 		// state filter
-	/*	$state_files[] 		= JHTML::_('select.option',  '', '- '. JText::_( 'Select State' ) .' -' );
-		$state_files[] 		= JHTML::_('select.option',  'P', JText::_( 'Published' ) );
-		$state_files[] 		= JHTML::_('select.option',  'U', JText::_( 'Unpublished') );
-		$lists_image['state']	= JHTML::_('select.genericlist',   $state_files, 'filter_state', 'class="inputbox" size="1" onchange="document.phocadownloadfilesform.submit();"', 'value', 'text', $filter_state );*/
+	/*	$state_files[] 		= Joomla\CMS\HTML\HTMLHelper::_('select.option',  '', '- '. JText::_( 'Select State' ) .' -' );
+		$state_files[] 		= Joomla\CMS\HTML\HTMLHelper::_('select.option',  'P', JText::_( 'Published' ) );
+		$state_files[] 		= Joomla\CMS\HTML\HTMLHelper::_('select.option',  'U', JText::_( 'Unpublished') );
+		$lists_image['state']	= Joomla\CMS\HTML\HTMLHelper::_('select.genericlist',   $state_files, 'filter_published', 'class="inputbox" size="1" onchange="document.phocadownloadfilesform.submit();"', 'value', 'text', $filter_published );*/
 
 		//$lists_files['sectionid'] = PhocaDownloadCategory::filterSection($query, $filter_sectionid_files, TRUE);
 
 		// state filter
-		$lists_files['state']	= JHTML::_('grid.state',  $filter_state_files );
+		$lists_files['state']	= Joomla\CMS\HTML\HTMLHelper::_('grid.state',  $filter_published_files );
 
 		// table ordering
 		$lists_files['order_Dir'] = $filter_order_Dir_files;
@@ -340,7 +341,7 @@ class PhocaDownloadViewUser extends JViewLegacy
 		$this->t['display_bootstrap3_layout']	= $this->t['p']->get( 'display_bootstrap3_layout', 0 );
 		if ($this->t['display_bootstrap3_layout'] > 0) {
 
-			JHtml::_('jquery.framework', false);
+			Joomla\CMS\HTML\HTMLHelper::_('jquery.framework', false);
 			if ((int)$this->t['display_bootstrap3_layout'] == 2) {
 				JHTML::stylesheet('media/com_phocadownload/bootstrap/css/bootstrap.min.css' );
 				JHTML::stylesheet('media/com_phocadownload/bootstrap/css/bootstrap.extended.css' );

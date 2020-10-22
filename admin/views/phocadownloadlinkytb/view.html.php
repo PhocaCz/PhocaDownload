@@ -14,13 +14,12 @@ jimport( 'joomla.application.component.view' );
 class phocaDownloadCpViewphocaDownloadLinkYtb extends JViewLegacy
 {
 	protected $t;
+	protected $r;
 
 	function display($tpl = null) {
 		$app	= JFactory::getApplication();
-		JHtml::_('behavior.tooltip');
-		JHtml::_('behavior.formvalidation');
-		JHtml::_('behavior.keepalive');
-		JHtml::_('formbehavior.chosen', 'select');
+		$this->r = new PhocaDownloadRenderAdminViews();
+		$this->t = PhocaDownloadUtils::setVars('linkytb');
 		$document	= JFactory::getDocument();
 		$uri		= \Joomla\CMS\Uri\Uri::getInstance();
 		//Frontend Changes
@@ -29,7 +28,7 @@ class phocaDownloadCpViewphocaDownloadLinkYtb extends JViewLegacy
 			$tUri = JURI::base();
 
 		}
-		JHTML::stylesheet( 'media/com_phocadownload/css/administrator/phocadownload.css' );
+		
 
 		$eName				= JFactory::getApplication()->input->get('e_name');
 		$this->t['ename']		= preg_replace( '#[^A-Z0-9\-\_\[\]]#i', '', $eName );

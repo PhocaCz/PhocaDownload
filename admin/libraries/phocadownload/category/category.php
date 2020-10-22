@@ -11,48 +11,48 @@ jimport('joomla.application.component.model');
 
 class PhocaDownloadCategory
 {
-	public static function CategoryTreeOption($data, $tree, $id=0, $text='', $currentId) {		
+	public static function CategoryTreeOption($data, $tree, $id=0, $text='', $currentId) {
 
-		foreach ($data as $key) {	
+		foreach ($data as $key) {
 			$show_text =  $text . $key->text;
-			
+
 			if ($key->parentid == $id && $currentId != $id && $currentId != $key->value) {
 				$tree[$key->value] 			= new JObject();
 				$tree[$key->value]->text 	= $show_text;
 				$tree[$key->value]->value 	= $key->value;
-				$tree = PhocaDownloadCategory::CategoryTreeOption($data, $tree, $key->value, $show_text . " - ", $currentId );	
-			}	
+				$tree = PhocaDownloadCategory::CategoryTreeOption($data, $tree, $key->value, $show_text . " - ", $currentId );
+			}
 		}
 		return($tree);
 	}
 
 	public static function filterCategory($query, $active = NULL, $frontend = NULL, $onChange = TRUE, $fullTree = NULL ) {
-		
+
 		$db	= JFactory::getDBO();
 
 		$form = 'adminForm';
 		if ($frontend == 1) {
 			$form = 'phocadownloadfilesform';
 		}
-		
+
 		if ($onChange) {
 			$onChO = 'class="inputbox" size="1" onchange="document.'.$form.'.submit( );"';
 		} else {
 			$onChO = 'class="inputbox" size="1"';
 		}
-		
-		$categories[] = JHTML::_('select.option', '0', '- '.JText::_('COM_PHOCADOWNLOAD_SELECT_CATEGORY').' -');
+
+		$categories[] = Joomla\CMS\HTML\HTMLHelper::_('select.option', '0', '- '.JText::_('COM_PHOCADOWNLOAD_SELECT_CATEGORY').' -');
 		$db->setQuery($query);
 		$catData = $db->loadObjectList();
-		
-		
-		
+
+
+
 		if ($fullTree) {
-			
+
 			// Start - remove in case there is a memory problem
 			$tree = array();
 			$text = '';
-			
+
 			$queryAll = ' SELECT cc.id AS value, cc.title AS text, cc.parent_id as parentid'
 					.' FROM #__phocadownload_categories AS cc'
 					.' ORDER BY cc.ordering';
@@ -60,7 +60,7 @@ class PhocaDownloadCategory
 			$catDataAll 		= $db->loadObjectList();
 
 			$catDataTree	= PhocaDownloadCategory::CategoryTreeOption($catDataAll, $tree, 0, $text, -1);
-			
+
 			$catDataTreeRights = array();
 			/*foreach ($catData as $k => $v) {
 				foreach ($catDataTree as $k2 => $v2) {
@@ -70,7 +70,7 @@ class PhocaDownloadCategory
 					}
 				}
 			}*/
-			
+
 			foreach ($catDataTree as $k => $v) {
                 foreach ($catData as $k2 => $v2) {
                    if ($v->value == $v2->value) {
@@ -81,25 +81,25 @@ class PhocaDownloadCategory
                 }
              }
 
-			
-			
+
+
 			$catDataTree = array();
 			$catDataTree = $catDataTreeRights;
 			// End - remove in case there is a memory problem
-			
+
 			// Uncomment in case there is a memory problem
 			//$catDataTree	= $catData;
 		} else {
 			$catDataTree	= $catData;
-		}	
-	
+		}
+
 		$categories = array_merge($categories, $catDataTree );
 
-		$category = JHTML::_('select.genericlist',  $categories, 'catid', $onChO, 'value', 'text', $active);
+		$category = Joomla\CMS\HTML\HTMLHelper::_('select.genericlist',  $categories, 'catid', $onChO, 'value', 'text', $active);
 
 		return $category;
 	}
-	
+
 	public static function options($type = 0)
 	{
 		if ($type == 1) {
@@ -111,7 +111,7 @@ class PhocaDownloadCategory
 			$tree[1]->value 	= 2;
 			return $tree;
 		}
-		
+
 		$db = JFactory::getDBO();
 
        //build the list of categories
@@ -121,19 +121,19 @@ class PhocaDownloadCategory
 		. ' ORDER BY a.ordering';
 		$db->setQuery( $query );
 		$items = $db->loadObjectList();
-	
+
 		$catId	= -1;
-		
+
 		$javascript 	= 'class="inputbox" size="1" onchange="submitform( );"';
-		
+
 		$tree = array();
 		$text = '';
 		$tree = PhocaDownloadCategory::CategoryTreeOption($items, $tree, 0, $text, $catId);
-		
+
 		return $tree;
 
 	}
-	
+
 	public static function getCategoryByFile($id = 0) {
 		$db	= JFactory::getDBO();
 		$query = 'SELECT c.id, c.title, c.alias'
@@ -146,7 +146,7 @@ class PhocaDownloadCategory
 		$db->setQuery( $query );
 		$item = $db->loadObject();
 		return $item;
-		
+
 	}
 }
 ?>

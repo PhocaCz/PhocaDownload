@@ -13,50 +13,53 @@ jimport( 'joomla.html.pane' );
 class PhocaDownloadCpViewPhocaDownloadCp extends JViewLegacy
 {
 	protected $t;
+	protected $r;
 	protected $views;
-	
+
 	function display($tpl = null) {
-		
-		$this->t	= PhocaDownloadUtils::setVars();
+
+		$this->t	= PhocaDownloadUtils::setVars('cp');
+		$this->r	= new PhocaDownloadRenderAdminview();
+		$i = ' icon-';
+		$d = 'duotone ';
+
 		$this->views= array(
-		'files'		=> $this->t['l'] . '_FILES',
-		'cats'		=> $this->t['l'] . '_CATEGORIES',
-		'lics'		=> $this->t['l'] . '_LICENSES',
-		'stat'		=> $this->t['l'] . '_STATISTICS',
-		'downloads'	=> $this->t['l'] . '_DOWNLOADS',
-		'uploads'	=> $this->t['l'] . '_UPLOADS',
-		'rafile'	=> $this->t['l'] . '_FILE_RATING',
-		'tags'		=> $this->t['l'] . '_TAGS',
-		'layouts'	=> $this->t['l'] . '_LAYOUT',
-		'styles'	=> $this->t['l'] . '_STYLES',
-		'logs'		=> $this->t['l'] . '_LOGGING',
-		'info'		=> $this->t['l'] . '_INFO'
+		'files'		=> array($this->t['l'] . '_FILES', $d.$i.'archive', '#c1a46d'),
+		'cats'		=> array($this->t['l'] . '_CATEGORIES', $d.$i.'folder-open', '#da7400'),
+		'lics'		=> array($this->t['l'] . '_LICENSES', $d.$i.'file-check', '#fb1000'),
+		'stat'		=> array($this->t['l'] . '_STATISTICS', $d.$i.'chart', '#8c0069'),
+		'downloads'	=> array($this->t['l'] . '_DOWNLOADS', $i.'box-remove', '#33af49'),
+		'uploads'	=> array($this->t['l'] . '_UPLOADS', $i.'box-add', '#ff9326'),
+		'rafile'	=> array($this->t['l'] . '_FILE_RATING', $i.'featured', '#FFC93C'),
+		'tags'		=> array($this->t['l'] . '_TAGS', $d.$i.'tag-double', '#CC0033'),
+		'layouts'	=> array($this->t['l'] . '_LAYOUT', $d.$i.'modules', '#cd76cc'),
+		'styles'	=> array($this->t['l'] . '_STYLES', $i.'styles', '#9900CC'),
+		'logs'		=> array($this->t['l'] . '_LOGGING', $d.$i.'logs', '#c0c0c0'),
+		'info'		=> array($this->t['l'] . '_INFO', $d.$i.'info-circle', '#3378cc')
 		);
-		
-		JHTML::stylesheet( $this->t['s'] );
-		JHTML::_('behavior.tooltip');
-		$class	= $this->t['n'] . 'Utils';
-		$this->t['version'] = $class::getExtensionVersion();
+
+
+		$this->t['version'] = PhocaDownloadUtils::getExtensionVersion();
 		$this->addToolbar();
 		parent::display($tpl);
 	}
-	
+
 	protected function addToolbar() {
-		require_once JPATH_COMPONENT.'/helpers/'.$this->t['c'].'cp.php';
-		$class	= $this->t['n'] . 'CpHelper';
-		$canDo	= $class::getActions($this->t['c']);
+		require_once JPATH_COMPONENT.'/helpers/phocadownloadcp.php';
+
+		$canDo	= PhocaDownloadCpHelper::getActions($this->t['c']);
 		JToolbarHelper::title( JText::_( $this->t['l'].'_PD_CONTROL_PANEL' ), 'home-2 cpanel' );
-		
+
 		// This button is unnecessary but it is displayed because Joomla! design bug
 		$bar = JToolbar::getInstance( 'toolbar' );
 		$dhtml = '<a href="index.php?option=com_phocadownload" class="btn btn-small"><i class="icon-home-2" title="'.JText::_($this->t['l'].'_CONTROL_PANEL').'"></i> '.JText::_($this->t['l'].'_CONTROL_PANEL').'</a>';
 		$bar->appendButton('Custom', $dhtml);
-		
+
 		if ($canDo->get('core.admin')) {
-			JToolbarHelper::preferences($this->t['o']);
+			JToolbarHelper::preferences('com_phocadownload');
 			JToolbarHelper::divider();
 		}
-		JToolbarHelper::help( 'screen.'.$this->t['c'], true );
+		JToolbarHelper::help( 'screen.phocadownload', true );
 	}
 }
 ?>

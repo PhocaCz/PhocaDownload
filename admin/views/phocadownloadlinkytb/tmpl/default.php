@@ -7,36 +7,38 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die('Restricted access');
-JHTML::_('behavior.tooltip');
-?>
-<script type="text/javascript">
+
+$js = '';
+$js .= '
 function insertLink() {
 	
 	var urlOutput;
 	var url = document.getElementById("url").value;
-	if (url != '' ) {
+	if (url != \'\' ) {
 		urlOutput = "|url="+url;
 	}
 
-	if (urlOutput != '' && urlOutput) {
+	if (urlOutput != \'\' && urlOutput) {
 		var tag = "{phocadownload view=youtube"+urlOutput+"}";
-		window.parent.jInsertEditorText(tag, '<?php echo $this->t['ename']; ?>');
-		//window.parent.document.getElementById('sbox-window').close();
+		window.parent.jInsertEditorText(tag, \''. $this->t['ename'].'\');
+		//window.parent.document.getElementById(\'sbox-window\').close();
 		window.parent.SqueezeBox.close();
 		return false;
 	} else {
-		alert("<?php echo JText::_( 'COM_PHOCADOWNLOAD_WARNING_SET_YOUTUBE_URL', true ); ?>");
+		alert("'. JText::_( 'COM_PHOCADOWNLOAD_WARNING_SET_YOUTUBE_URL', true ).'");
 		return false;
 	}
-}
-</script>
+}';
+
+JFactory::getDocument()->addScriptDeclaration($js); ?>
+
 <div id="phocadownload-links">
 <fieldset class="adminform">
 <legend><?php echo JText::_( 'COM_PHOCADOWNLOAD_YOUTUBE_VIDEO' ); ?></legend>
 <form name="adminFormLink" id="adminFormLink">
 <table class="admintable" width="100%">
-	
-	
+
+
 	<tr >
 		<td class="key" align="right" >
 			<label for="url">
@@ -48,7 +50,7 @@ function insertLink() {
 		</td>
 	</tr>
 
-	
+
 	<tr>
 		<td>&nbsp;</td>
 		<td align="right"><button class="btn btn-primary plg-button-insert " onclick="insertLink();return false;"><span class="icon-ok"></span> <?php echo JText::_( 'COM_PHOCADOWNLOAD_INSERT_CODE' ); ?></button></td>

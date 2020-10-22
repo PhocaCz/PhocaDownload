@@ -14,7 +14,7 @@ jimport( 'joomla.filesystem.file' );
 class PhocaDownloadCpModelPhocaDownloadFiles extends JModelList
 {
 	protected	$option 		= 'com_phocadownload';
-	
+
 	public function __construct($config = array())
 	{
 		if (empty($config['filter_fields'])) {
@@ -42,8 +42,8 @@ class PhocaDownloadCpModelPhocaDownloadFiles extends JModelList
 
 		parent::__construct($config);
 	}
-	
-	protected function populateState($ordering = NULL, $direction = NULL)
+
+	protected function populateState($ordering = 'a.title', $direction = 'ASC')
 	{
 		// Initialise variables.
 		$app = JFactory::getApplication('administrator');
@@ -55,8 +55,8 @@ class PhocaDownloadCpModelPhocaDownloadFiles extends JModelList
 		$accessId = $app->getUserStateFromRequest($this->context.'.filter.access', 'filter_access', null, 'int');
 		$this->setState('filter.access', $accessId);
 
-		$state = $app->getUserStateFromRequest($this->context.'.filter.state', 'filter_published', '', 'string');
-		$this->setState('filter.state', $state);
+		$state = $app->getUserStateFromRequest($this->context.'.filter.published', 'filter_published', '', 'string');
+		$this->setState('filter.published', $state);
 
 		$categoryId = $app->getUserStateFromRequest($this->context.'.filter.category_id', 'filter_category_id', null);
 		$this->setState('filter.category_id', $categoryId);
@@ -69,22 +69,22 @@ class PhocaDownloadCpModelPhocaDownloadFiles extends JModelList
 		$this->setState('params', $params);
 
 		// List state information.
-		parent::populateState('a.title', 'asc');
+		parent::populateState($ordering, $direction);
 	}
-	
+
 	protected function getStoreId($id = '')
 	{
 		// Compile the store id.
 		$id	.= ':'.$this->getState('filter.search');
 		$id	.= ':'.$this->getState('filter.access');
-		$id	.= ':'.$this->getState('filter.state');
+		$id	.= ':'.$this->getState('filter.published');
 		$id	.= ':'.$this->getState('filter.category_id');
 		$id	.= ':'.$this->getState('filter.image_id');
 
 		return parent::getStoreId($id);
 	}
-	
-	
+
+
 	protected function getListQuery()
 	{
 		/*
@@ -114,11 +114,11 @@ class PhocaDownloadCpModelPhocaDownloadFiles extends JModelList
 		$query->join('LEFT', '`#__languages` AS l ON l.lang_code = a.language');
 
 		// Join over the users for the checked out user.
-		
-		
+
+
 		$query->select('uc.name AS editor');
 		$query->join('LEFT', '#__users AS uc ON uc.id=a.checked_out');
-		
+
 		$query->select('uua.id AS uploaduserid, uua.username AS uploadusername, uua.name AS uploadname');
 		$query->join('LEFT', '#__users AS uua ON uua.id=a.userid');
 
@@ -129,10 +129,10 @@ class PhocaDownloadCpModelPhocaDownloadFiles extends JModelList
 		// Join over the categories.
 		$query->select('c.title AS category_title, c.id AS category_id');
 		$query->join('LEFT', '#__phocadownload_categories AS c ON c.id = a.catid');
-		
+
 		$query->select('ua.id AS userid, ua.username AS username, ua.name AS usernameno');
 		$query->join('LEFT', '#__users AS ua ON ua.id = a.owner_id');
-		
+
 		//$query->select('v.average AS ratingavg');
 		//$query->join('LEFT', '#__phocadownload_img_votes_statistics AS v ON v.imgid = a.id');
 
@@ -142,7 +142,7 @@ class PhocaDownloadCpModelPhocaDownloadFiles extends JModelList
 		}
 
 		// Filter by published state.
-		$published = $this->getState('filter.state');
+		$published = $this->getState('filter.published');
 		if (is_numeric($published)) {
 			$query->where('a.published = '.(int) $published);
 		}
@@ -155,7 +155,7 @@ class PhocaDownloadCpModelPhocaDownloadFiles extends JModelList
 		if (is_numeric($categoryId)) {
 			$query->where('a.catid = ' . (int) $categoryId);
 		}
-		
+
 		// Filter on the language.
 		if ($language = $this->getState('filter.language')) {
 			$query->where('a.language = ' . $db->quote($language));
@@ -174,7 +174,7 @@ class PhocaDownloadCpModelPhocaDownloadFiles extends JModelList
 				$query->where('( a.title LIKE '.$search.' OR a.filename LIKE '.$search.')');
 			}
 		}
-		
+
 		//$query->group('a.id, a.catid, a.sectionid, a.sid, a.owner_id, a.title, a.alias, a.filename, a.filename_play, a.filename_preview, a.filesize, a.author, a.author_email');
 
 		// Add the list ordering clause.
@@ -190,9 +190,9 @@ class PhocaDownloadCpModelPhocaDownloadFiles extends JModelList
 		//echo nl2br(str_replace('#__', 'jos_', $query->__toString()));
 		return $query;
 	}
-	
+
 	public function getNotApprovedFile() {
-		
+
 		$query = 'SELECT COUNT(a.id) AS count'
 			.' FROM #__phocadownload AS a'
 			.' WHERE approved = 0';

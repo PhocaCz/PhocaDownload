@@ -15,14 +15,14 @@ use Joomla\String\StringHelper;
 class PhocaDownloadCpViewPhocaDownloadLinkFile extends JViewLegacy
 {
 	public $_context 	= 'com_phocadownload.phocadownloadlinkfile';
+	
 	protected $t;
+	protected $r;
 
 	function display($tpl = null) {
 		$app = JFactory::getApplication();
-		JHtml::_('behavior.tooltip');
-		JHtml::_('behavior.formvalidation');
-		JHtml::_('behavior.keepalive');
-		JHtml::_('formbehavior.chosen', 'select');
+		$this->r = new PhocaDownloadRenderAdminViews();
+		$this->t = PhocaDownloadUtils::setVars('linkfile');
 
 		$uri		= \Joomla\CMS\Uri\Uri::getInstance();
 		$document	= JFactory::getDocument();
@@ -35,11 +35,11 @@ class PhocaDownloadCpViewPhocaDownloadLinkFile extends JViewLegacy
 
 		}
 
-		JHTML::stylesheet( 'media/com_phocadownload/css/administrator/phocadownload.css' );
+		//JHTML::stylesheet( 'media/com_phocadownload/css/administrator/phocadownload.css' );
 
-		$eName				= JFactory::getApplication()->input->get('e_name');
+		$eName				= $app->input->get('e_name');
 		$this->t['ename']		= preg_replace( '#[^A-Z0-9\-\_\[\]]#i', '', $eName );
-		$this->t['type']		= JFactory::getApplication()->input->get( 'type', 1, '', 'int' );
+		$this->t['type']		= $app->input->get( 'type', 1, '', 'int' );
 		$this->t['backlink']	= $tUri.'index.php?option=com_phocadownload&amp;view=phocadownloadlinks&amp;tmpl=component&amp;e_name='.$this->t['ename'];
 
 
@@ -51,7 +51,7 @@ class PhocaDownloadCpViewPhocaDownloadLinkFile extends JViewLegacy
 		//$redirect			= $sectionid;
 		$option				= JFactory::getApplication()->input->getCmd( 'option' );
 
-		$filter_state		= $app->getUserStateFromRequest( $this->_context.'.filter_state',	'filter_state', '',	'word' );
+		$filter_published		= $app->getUserStateFromRequest( $this->_context.'.filter_published',	'filter_published', '',	'word' );
 		$filter_catid		= $app->getUserStateFromRequest( $this->_context.'.filter_catid',	'filter_catid', 0,	'int' );
 		$catid				= $app->getUserStateFromRequest( $this->_context.'.catid',	'catid', 0,	'int');
 	//	$filter_sectionid	= $app->getUserStateFromRequest( $this->_context.'.filter_sectionid','filter_sectionid',	-1,	'int');
@@ -107,7 +107,7 @@ class PhocaDownloadCpViewPhocaDownloadLinkFile extends JViewLegacy
 		$lists['sectionid'] = PhocaDownloadCategory::filterSection($query, $filter_sectionid);*/
 
 		// state filter
-		$lists['state']	= JHTML::_('grid.state',  $filter_state );
+		$lists['state']	= Joomla\CMS\HTML\HTMLHelper::_('grid.state',  $filter_published );
 
 		// table ordering
 		$lists['order_Dir'] = $filter_order_Dir;

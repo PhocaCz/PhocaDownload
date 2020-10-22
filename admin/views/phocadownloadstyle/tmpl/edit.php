@@ -7,13 +7,13 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die;
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.formvalidation');
-JHtml::_('behavior.keepalive');
-JHtml::_('formbehavior.chosen', 'select');
+Joomla\CMS\HTML\HTMLHelper::_('behavior.tooltip');
+Joomla\CMS\HTML\HTMLHelper::_('behavior.formvalidation');
+Joomla\CMS\HTML\HTMLHelper::_('behavior.keepalive');
+Joomla\CMS\HTML\HTMLHelper::_('formbehavior.chosen', 'select');
 
 $class		= $this->t['n'] . 'RenderAdminView';
-$r 			=  new $class();
+$r = $this->r;
 
 ?>
 <script type="text/javascript">
@@ -36,9 +36,9 @@ $tabs = array (
 'publishing' 	=> JText::_($this->t['l'].'_PUBLISHING_OPTIONS'));
 echo $r->navigation($tabs);
 
-echo '<div class="tab-content">'. "\n";
+echo $r->startTabs();
 
-echo '<div class="tab-pane active" id="general">'."\n";
+echo $r->startTab('general', $tabs['general'], 'active');
 
 if ($this->ftp) { echo $this->loadTemplate('ftp');}
 
@@ -63,7 +63,7 @@ echo '</div>';
 
 echo '</div>'. "\n";
 
-echo '<div class="tab-pane" id="publishing">'."\n"; 
+echo '<div class="tab-pane" id="publishing">'."\n";
 foreach($this->form->getFieldset('publish') as $field) {
 	echo '<div class="control-group">';
 	if (!$field->hidden) {
@@ -77,6 +77,6 @@ echo '</div>';
 
 // Second Column
 echo '<div class="span2"></div>';//end span2
-echo $r->formInputs();
+echo $r->formInputs($this->t['task']);
 echo $r->endForm();
 ?>

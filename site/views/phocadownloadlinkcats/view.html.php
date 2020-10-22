@@ -10,6 +10,7 @@
  */
 defined('_JEXEC') or die();
 jimport( 'joomla.application.component.view' );
+phocadownloadimport('phocadownload.render.renderadminviews');
 
 class phocaDownloadViewphocaDownloadLinkCats extends JViewLegacy
 {
@@ -18,10 +19,8 @@ class phocaDownloadViewphocaDownloadLinkCats extends JViewLegacy
 
 	function display($tpl = null) {
 		$app	= JFactory::getApplication();
-		JHtml::_('behavior.tooltip');
-		JHtml::_('behavior.formvalidation');
-		JHtml::_('behavior.keepalive');
-		JHtml::_('formbehavior.chosen', 'select');
+		$this->r = new PhocaDownloadRenderAdminViews();
+		$this->t = PhocaDownloadUtils::setVars('linkcats');
 
 		//Frontend Changes
 		$tUri = '';
@@ -64,7 +63,7 @@ class phocaDownloadViewphocaDownloadLinkCats extends JViewLegacy
 		$ctrl		.= '';
 		//$value		= implode( '|', )
 
-		$categoriesOutput = JHTML::_('select.genericlist', $tree, $ctrl, $attribs, 'value', 'text', 0, 'hidecategories' );
+		$categoriesOutput = Joomla\CMS\HTML\HTMLHelper::_('select.genericlist', $tree, $ctrl, $attribs, 'value', 'text', 0, 'hidecategories' );
 
 		//$this->assignRef('categoriesoutput',	$categoriesOutput);
 		//$this->assignRef('tmpl',	$this->t);*/

@@ -10,9 +10,10 @@ defined('_JEXEC') or die('Restricted access');
 
 echo '<div id="phoca-dl-file-box" class="pd-file-view'.$this->t['p']->get( 'pageclass_sfx' ).'" >';
 
-if ( $this->t['p']->get( 'show_page_heading' ) ) {
-	echo '<h1>'. $this->escape($this->t['p']->get('page_heading')) . '</h1>';
-}
+//if ( $this->t['p']->get( 'show_page_heading' ) ) {
+//	echo '<h1>'. $this->escape($this->t['p']->get('page_heading')) . '</h1>';
+//}
+echo PhocaDownloadRenderFront::renderHeader(array());
 
 if (!empty($this->category[0])) {
 	echo '<div class="pd-file">';
@@ -53,7 +54,8 @@ if (!empty($this->file[0])) {
 
 		$l = new PhocaDownloadLayout();
 
-		echo '<h3 class="pdfv-name">'.$l->getName($v->title, $v->filename, 1). '</h3>';
+		//echo '<h3 class="pdfv-name">'.$l->getName($v->title, $v->filename, 1). '</h3>';
+		echo PhocaDownloadRenderFront::renderSubHeader(array($l->getName($v->title, $v->filename, 1)), '', 'pd-ctitle pdfv-name');
 
 
 // =====================================================================================

@@ -18,6 +18,7 @@ class PhocaDownloadViewCategory extends JViewLegacy
 	protected $files;
 	protected $t;
 
+
 	function display($tpl = null) {
 
 		$app					= JFactory::getApplication();
@@ -43,7 +44,7 @@ class PhocaDownloadViewCategory extends JViewLegacy
 		$this->t['pagination']	= $model->getPagination($this->t['categoryid'], $this->t['tagid']);
 
 		PhocaDownloadRenderFront::renderAllCSS();
-		$document->addCustomTag('<script type="text/javascript" src="'.JURI::root().'components/com_phocadownload/assets/overlib/overlib_mini.js"></script>');
+		$document->addCustomTag('<script type="text/javascript" src="'.JURI::root().'media/com_phocadownload/js/overlib/overlib_mini.js"></script>');
 
 		if ($limitStart > 0 ) {
 			$this->t['limitstarturl'] =  '&start='.$limitStart;
@@ -98,7 +99,7 @@ class PhocaDownloadViewCategory extends JViewLegacy
 
 		// Rating
 		if ($this->t['display_rating_file'] == 1 || $this->t['display_rating_file'] == 3) {
-			JHtml::_('jquery.framework', false);
+			Joomla\CMS\HTML\HTMLHelper::_('jquery.framework', false);
 			PhocaDownloadRate::renderRateFileJS(1);
 			$this->t['display_rating_file'] = 1;
 		} else {
@@ -223,7 +224,7 @@ class PhocaDownloadViewCategory extends JViewLegacy
 		$this->t['display_bootstrap3_layout']	= $this->t['p']->get( 'display_bootstrap3_layout', 0 );
 		if ((int)$this->t['display_bootstrap3_layout'] > 0) {
 
-			JHtml::_('jquery.framework', false);
+			Joomla\CMS\HTML\HTMLHelper::_('jquery.framework', false);
 			if ((int)$this->t['display_bootstrap3_layout'] == 2) {
 				JHTML::stylesheet('media/com_phocadownload/bootstrap/css/bootstrap.min.css' );
 				JHTML::stylesheet('media/com_phocadownload/bootstrap/css/bootstrap.extended.css' );
@@ -237,8 +238,8 @@ class PhocaDownloadViewCategory extends JViewLegacy
 			});');*/
 		} else {
 			// Because of modals
-			JHTML::_('behavior.framework', true);
-			JHTML::_('behavior.modal', 'a.pd-modal-button');
+			Joomla\CMS\HTML\HTMLHelper::_('behavior.framework', true);
+			Joomla\CMS\HTML\HTMLHelper::_('behavior.modal', 'a.pd-modal-button');
 		}
 
 		if (isset($this->category[0]) && is_object($this->category[0])){

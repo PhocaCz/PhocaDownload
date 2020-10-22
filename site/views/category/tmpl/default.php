@@ -10,9 +10,11 @@ defined('_JEXEC') or die('Restricted access');
 
 echo '<div id="phoca-dl-category-box" class="pd-category-view'.$this->t['p']->get( 'pageclass_sfx' ).'">';
 
-if ( $this->t['p']->get( 'show_page_heading' ) ) {
-	echo '<h1>'. $this->escape($this->t['p']->get('page_heading')) . '</h1>';
-}
+
+//if ( $this->t['p']->get( 'show_page_heading' ) ) {
+//	echo '<h1>'. $this->escape($this->t['p']->get('page_heading')) . '</h1>';
+//}
+echo PhocaDownloadRenderFront::renderHeader(array());
 // Search by tags - the category rights must be checked for every file
 $this->checkRights = 1;
 // -------------------------------------------------------------------
@@ -42,7 +44,7 @@ if ((int)$this->t['tagid'] > 0) {
 				}
 				echo '<div class="pdtop">'
 					.'<a title="'.$linkUpText.'" href="'. $linkUp.'" >'
-					.JHTML::_('image', $this->t['mediapath']->media_img_rel . 'up.png', JText::_('COM_PHOCADOWNLOAD_UP'))
+					.Joomla\CMS\HTML\HTMLHelper::_('image', $this->t['mediapath']->media_img_rel . 'up.png', JText::_('COM_PHOCADOWNLOAD_UP'))
 					.'</a></div>';
 			}
 		}
@@ -63,8 +65,8 @@ if ((int)$this->t['tagid'] > 0) {
 			$this->checkRights = 0;
 			$l = new PhocaDownloadLayout();
 
-			echo '<h3 class="pd-ctitle">'.$this->category[0]->title. '</h3>';
-
+			//echo '<h3 class="pd-ctitle">'.$this->category[0]->title. '</h3>';
+			echo PhocaDownloadRenderFront::renderSubHeader(array($this->category[0]->title), '', 'pd-ctitle');
 			// Description
 			/*if ($l->isValueEditor($this->category[0]->description)) {
 				echo '<div class="pd-cdesc">'.$this->category[0]->description.'</div>';
@@ -73,20 +75,20 @@ if ((int)$this->t['tagid'] > 0) {
 			// Description
 			 if ($l->isValueEditor($this->category[0]->description)) {
 				echo '<div class="pd-cdesc">';
-				echo JHTML::_('content.prepare', $this->category[0]->description);
+				echo Joomla\CMS\HTML\HTMLHelper::_('content.prepare', $this->category[0]->description);
 				echo '</div>';
 			 }
 
 			// Subcategories
 			if (!empty($this->subcategories)) {
 				foreach ($this->subcategories as $valueSubCat) {
-					
+
 					$rightDisplaySub	= 0;
 					if (!empty($valueSubCat)) {
 						$rightDisplaySub = PhocaDownloadAccess::getUserRight('accessuserid', $valueSubCat->cataccessuserid, $valueSubCat->cataccess, $this->t['user']->getAuthorisedViewLevels(), $this->t['user']->get('id', 0), 0);
 					}
 					// - - - - - - - - - - - - - - - - - - - - - -
-					
+
 					if ($rightDisplaySub == 1) {
 
 						echo '<div class="pd-subcategory">';

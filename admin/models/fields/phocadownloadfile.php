@@ -15,7 +15,7 @@ class JFormFieldPhocaDownloadFile extends JFormField
    protected $type = 'PhocaDownloadFile';
 
    protected function getInput() {
-   
+
       $db = JFactory::getDBO();
 
        //build the list of files
@@ -29,18 +29,18 @@ class JFormFieldPhocaDownloadFile extends JFormField
       $options = array();
       if ($messages)
       {
-         foreach($messages as $message) 
+         foreach($messages as $message)
          {
-            $options[] = JHtml::_('select.option', $message->id, $message->title);
+            $options[] = Joomla\CMS\HTML\HTMLHelper::_('select.option', $message->id, $message->title);
          }
       }
-	  
+
 	  $attr = '';
 		$attr .= $this->required ? ' required aria-required="true"' : '';
 		$attr .= ' class="inputbox"';
-		
-      array_unshift($options, JHTML::_('select.option', '', '- '.JText::_('COM_PHOCADOWNLOAD_SELECT_FILE').' -', 'value', 'text'));
-      return JHTML::_('select.genericlist',  $options,  $this->name, trim($attr), 'value', 'text', $this->value, $this->id );
+
+      array_unshift($options, Joomla\CMS\HTML\HTMLHelper::_('select.option', '', '- '.JText::_('COM_PHOCADOWNLOAD_SELECT_FILE').' -', 'value', 'text'));
+      return Joomla\CMS\HTML\HTMLHelper::_('select.genericlist',  $options,  $this->name, trim($attr), 'value', 'text', $this->value, $this->id );
 
    }
 }

@@ -12,7 +12,7 @@ $user 	= JFactory::getUser();
 //Ordering allowed ?
 $ordering = ($this->t['lists']['order'] == 'a.ordering');
 
-JHTML::_('behavior.tooltip');
+Joomla\CMS\HTML\HTMLHelper::_('behavior.tooltip');
 
 if ($this->t['type'] == 0) {
 	$view = 'file';
@@ -159,11 +159,11 @@ function insertLink() {
 				<tr>
 					<th width="5%"><?php echo JText::_( 'COM_PHOCADOWNLOAD_NUM' ); ?></th>
 					<th width="5%"></th>
-					<th class="title" width="60%"><?php echo JHTML::_('grid.sort',  'COM_PHOCADOWNLOAD_TITLE', 'a.title', $this->t['lists']['order_Dir'], $this->t['lists']['order'] ); ?>
+					<th class="title" width="60%"><?php echo Joomla\CMS\HTML\HTMLHelper::_('grid.sort',  'COM_PHOCADOWNLOAD_TITLE', 'a.title', $this->t['lists']['order_Dir'], $this->t['lists']['order'] ); ?>
 					</th>
-					<th width="20%" nowrap="nowrap"><?php echo JHTML::_('grid.sort',  'COM_PHOCADOWNLOAD_FILENAME', 'a.filename', $this->t['lists']['order_Dir'], $this->t['lists']['order'] ); ?>
+					<th width="20%" nowrap="nowrap"><?php echo Joomla\CMS\HTML\HTMLHelper::_('grid.sort',  'COM_PHOCADOWNLOAD_FILENAME', 'a.filename', $this->t['lists']['order_Dir'], $this->t['lists']['order'] ); ?>
 					</th>
-					<th width="10%" nowrap="nowrap"><?php echo JHTML::_('grid.sort',  'COM_PHOCADOWNLOAD_ID', 'a.id', $this->t['lists']['order_Dir'], $this->t['lists']['order'] ); ?>
+					<th width="10%" nowrap="nowrap"><?php echo Joomla\CMS\HTML\HTMLHelper::_('grid.sort',  'COM_PHOCADOWNLOAD_ID', 'a.id', $this->t['lists']['order_Dir'], $this->t['lists']['order'] ); ?>
 					</th>
 				</tr>
 			</thead>

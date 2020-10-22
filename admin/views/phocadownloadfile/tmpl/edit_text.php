@@ -7,17 +7,17 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
  defined('_JEXEC') or die;
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.formvalidation');
-JHtml::_('behavior.keepalive');
-JHtml::_('formbehavior.chosen', 'select');
+Joomla\CMS\HTML\HTMLHelper::_('behavior.tooltip');
+Joomla\CMS\HTML\HTMLHelper::_('behavior.formvalidation');
+Joomla\CMS\HTML\HTMLHelper::_('behavior.keepalive');
+Joomla\CMS\HTML\HTMLHelper::_('formbehavior.chosen', 'select');
 
 $extlink 	= 0;
 if (isset($this->item->extid) && $this->item->extid != '') {
 	$extlink = 1;
 }
 $class		= $this->t['n'] . 'RenderAdminView';
-$r 			=  new $class();
+$r = $this->r;
 
 ?>
 <script type="text/javascript">
@@ -42,9 +42,9 @@ $tabs = array (
 );
 echo $r->navigation($tabs);
 
-echo '<div class="tab-content">'. "\n";
+echo $r->startTabs();
 
-echo '<div class="tab-pane active" id="general">'."\n";
+echo $r->startTab('general', $tabs['general'], 'active');
 $formArray = array ('title', 'alias', 'catid', 'ordering','access');
 echo $r->group($this->form, $formArray);
 $formArray = array('description');
@@ -70,6 +70,6 @@ echo '<div class="span2"></div>';//end span2
 
 echo '<input type="hidden" name="jform[filename]" id="jform_filename" value="-" />'
 	.'<input type="hidden" name="jform[textonly]" id="jform_textonly" value="1" />';
-echo $r->formInputs();
+echo $r->formInputs($this->t['task']);
 echo $r->endForm();
 ?>

@@ -8,14 +8,14 @@
  * @copyright Copyright (C) Jan Pavelka www.phoca.cz
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
  */
- 
+
 defined( '_JEXEC' ) or die();
 jimport('joomla.application.component.modellist');
 
 class PhocaDownloadCpModelPhocaDownloadTags extends JModelList
 {
 	protected	$option 		= 'com_phocadownload';
-	
+
 	public function __construct($config = array())
 	{
 		if (empty($config['filter_fields'])) {
@@ -25,19 +25,19 @@ class PhocaDownloadCpModelPhocaDownloadTags extends JModelList
 				'alias', 'a.alias',
 				'checked_out', 'a.checked_out',
 				'checked_out_time', 'a.checked_out_time',
-				
+
 				'ordering', 'a.ordering',
-				
+
 				'published','a.published',
-				
-				
+
+
 			);
 		}
 
 		parent::__construct($config);
 	}
-	
-	protected function populateState($ordering = NULL, $direction = NULL)
+
+	protected function populateState($ordering = 'a.title', $direction = 'ASC')
 	{
 		// Initialise variables.
 		$app = JFactory::getApplication('administrator');
@@ -48,11 +48,11 @@ class PhocaDownloadCpModelPhocaDownloadTags extends JModelList
 
 /*		$accessId = $app->getUserStateFromRequest($this->context.'.filter.access', 'filter_access', null, 'int');
 		$this->setState('filter.access', $accessId);*/
-		
 
 
-		$state = $app->getUserStateFromRequest($this->context.'.filter.state', 'filter_published', '', 'string');
-		$this->setState('filter.state', $state);
+
+		$state = $app->getUserStateFromRequest($this->context.'.filter.published', 'filter_published', '', 'string');
+		$this->setState('filter.published', $state);
 
 		//$language = $app->getUserStateFromRequest($this->context.'.filter.language', 'filter_language', '');
 		//$this->setState('filter.language', $language);
@@ -62,21 +62,21 @@ class PhocaDownloadCpModelPhocaDownloadTags extends JModelList
 		$this->setState('params', $params);
 
 		// List state information.
-		parent::populateState('a.title', 'asc');
+		parent::populateState($ordering, $direction);
 	}
-	
+
 	protected function getStoreId($id = '')
 	{
 		// Compile the store id.
 		$id	.= ':'.$this->getState('filter.search');
 		//$id	.= ':'.$this->getState('filter.access');
-		$id	.= ':'.$this->getState('filter.state');
+		$id	.= ':'.$this->getState('filter.published');
 		$id	.= ':'.$this->getState('filter.tag_id');
-		
+
 
 		return parent::getStoreId($id);
 	}
-	
+
 	protected function getListQuery()
 	{
 		/*
@@ -104,17 +104,17 @@ class PhocaDownloadCpModelPhocaDownloadTags extends JModelList
 		// Join over the users for the checked out user.
 		$query->select('uc.name AS editor');
 		$query->join('LEFT', '#__users AS uc ON uc.id=a.checked_out');
-		
+
 
 		// Filter by access level.
 /*		if ($access = $this->getState('filter.access')) {
 			$query->where('a.access = '.(int) $access);
 		}*/
-		
+
 
 
 		// Filter by published state.
-		$published = $this->getState('filter.state');
+		$published = $this->getState('filter.published');
 		if (is_numeric($published)) {
 			$query->where('a.published = '.(int) $published);
 		}
@@ -136,16 +136,16 @@ class PhocaDownloadCpModelPhocaDownloadTags extends JModelList
 				$query->where('( a.title LIKE '.$search.' OR a.alias LIKE '.$search.')');
 			}
 		}
-	
+
 		$orderCol	= $this->state->get('list.ordering');
 		$orderDirn	= $this->state->get('list.direction');
 		$query->order($db->escape($orderCol.' '.$orderDirn));
 
 		//echo nl2br(str_replace('#__', 'jos_', $query->__toString()));
 		return $query;
-		
+
 	}
-	
-	
+
+
 }
 ?>

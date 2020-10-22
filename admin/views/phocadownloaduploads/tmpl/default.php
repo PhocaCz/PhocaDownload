@@ -8,21 +8,16 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die;
-JHtml::_('bootstrap.tooltip');
-JHtml::_('behavior.multiselect');
-JHtml::_('dropdown.init');
-JHtml::_('formbehavior.chosen', 'select');
-$class		= $this->t['n'] . 'RenderAdminViews';
-$r 			=  new $class();
+$r = $this->r;
 $user		= JFactory::getUser();
 $userId		= $user->get('id');
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
 $canOrder	= $user->authorise('core.edit.state', $this->t['o']);
 $saveOrder	= $listOrder == 'a.ordering';
-if ($saveOrder) {
-	$saveOrderingUrl = 'index.php?option='.$this->t['o'].'&task='.$this->t['tasks'].'.saveOrderAjax&tmpl=component';
-	JHtml::_('sortablelist.sortable', 'categoryList', 'adminForm', strtolower($listDirn), $saveOrderingUrl, false, true);
+$saveOrderingUrl = '';
+if ($saveOrder && !empty($this->items)) {
+	$saveOrderingUrl = $r->saveOrder($this->t, $listDirn);
 }
 $sortFields = $this->getSortFields();
 
@@ -34,10 +29,11 @@ if (isset($this->tmpl['notapproved']->count) && (int)$this->tmpl['notapproved']-
 }
 
 echo $r->startForm($this->t['o'], $this->t['tasks'], 'adminForm');
-echo $r->startFilter();
-echo $r->endFilter();
+//echo $r->startFilter();
+//echo $r->endFilter();
 
 echo $r->startMainContainer();
+/*
 echo $r->startFilterBar();
 echo $r->inputFilterSearch($this->t['l'].'_FILTER_SEARCH_LABEL', $this->t['l'].'_FILTER_SEARCH_DESC',
 							$this->escape($this->state->get('filter.search')));
@@ -47,30 +43,33 @@ echo $r->selectFilterDirection('JFIELD_ORDERING_DESC', 'JGLOBAL_ORDER_ASCENDING'
 echo $r->selectFilterSortBy('JGLOBAL_SORT_BY', $sortFields, $listOrder);
 
 echo $r->startFilterBar(2);
-echo $r->selectFilterPublished('JOPTION_SELECT_PUBLISHED', $this->state->get('filter.state'));
+echo $r->selectFilterPublished('JOPTION_SELECT_PUBLISHED', $this->state->get('filter.published'));
 echo $r->endFilterBar();
 
 
-echo $r->endFilterBar();		
+echo $r->endFilterBar();*/
+echo JLayoutHelper::render('joomla.searchtools.default', array('view' => $this));
 
 echo $r->startTable('categoryList');
 
 echo $r->startTblHeader();
 
-echo '<th class="nowrap center hidden-phone ph-ordering"></th>';//$r->thOrdering('JGRID_HEADING_ORDERING', $listDirn, $listOrder);
-echo $r->thCheck('JGLOBAL_CHECK_ALL');
-echo '<th class="ph-uploaduser">'.JHTML::_('grid.sort', $this->t['l'].'_USER', 'username', $listDirn, $listOrder ).'</th>'."\n";
+echo $r->firstColumnHeader($listDirn, $listOrder, 'a', true);
+echo $r->secondColumnHeader($listDirn, $listOrder, 'a', true);
+//echo '<th class="nowrap center hidden-phone ph-ordering"></th>';//$r->thOrderingXML('JGRID_HEADING_ORDERING', $listDirn, $listOrder);
+//echo $r->thCheck('JGLOBAL_CHECK_ALL');
+echo '<th class="ph-uploaduser">'.Joomla\CMS\HTML\HTMLHelper::_('searchtools.sort', $this->t['l'].'_USER', 'username', $listDirn, $listOrder ).'</th>'."\n";
 echo '<th class="ph-count">'.JText::_('COM_PHOCADOWNLOAD_COUNT_USER_FILES_APPROVED').'</th>'."\n";
 echo '<th class="ph-count">'.JText::_('COM_PHOCADOWNLOAD_COUNT_USER_FILES_NOT_APPROVED').'</th>'."\n";
-	
-//echo '<th class="ph-id">'.JHTML::_('grid.sort',  		$this->t['l'].'_ID', 'a.id', $listDirn, $listOrder ).'</th>'."\n";
+
+//echo '<th class="ph-id">'.Joomla\CMS\HTML\HTMLHelper::_('searchtools.sort',  		$this->t['l'].'_ID', 'a.id', $listDirn, $listOrder ).'</th>'."\n";
 
 echo $r->endTblHeader();
-			
-echo '<tbody>'. "\n";
 
-$originalOrders = array();	
-$parentsStr 	= "";		
+echo $r->startTblBody($saveOrder, $saveOrderingUrl, $listDirn);
+
+$originalOrders = array();
+$parentsStr 	= "";
 $j 				= 0;
 
 if (is_array($this->items)) {
@@ -80,8 +79,8 @@ if (is_array($this->items)) {
 /*
 $urlEdit		= 'index.php?option='.$this->t['o'].'&task='.$this->t['task'].'.edit&id=';
 $urlTask		= 'index.php?option='.$this->t['o'].'&task='.$this->t['task'];
-$orderkey   	= array_search($item->id, $this->ordering[$item->catid]);		
-$ordering		= ($listOrder == 'a.ordering');			
+$orderkey   	= array_search($item->id, $this->ordering[$item->catid]);
+$ordering		= ($listOrder == 'a.ordering');
 $canCreate		= $user->authorise('core.create', $this->t['o']);
 $canEdit		= $user->authorise('core.edit', $this->t['o']);
 $canCheckin		= $user->authorise('core.manage', 'com_checkin') || $item->checked_out==$user->get('id') || $item->checked_out==0;
@@ -90,14 +89,13 @@ $linkEdit 		= JRoute::_( $urlEdit. $item->id );
 
 $linkCat	= JRoute::_( 'index.php?option='.$this->t['o'].'&task='.$this->t['c'].'cat.edit&id='.(int) $item->category_id );
 $canEditCat	= $user->authorise('core.edit', $this->t['o']);*/
+$canChange = false;
+$orderkey   	= 0;
+$item->ordering = 0;
 
-
-$iD = $i % 2;
-echo "\n\n";
-echo '<tr class="row'.$iD.'" sortable-group-id="0" item-id="0" parents="0" level="0">'. "\n";
-
-echo $r->tdOrder(0,0,0);
-echo $r->td(JHtml::_('grid.id', $i, $item->id), "small hidden-phone");
+echo $r->startTr($i, isset($item->catid) ? (int)$item->catid : 0);
+echo $r->firstColumn($i, $item->id, $canChange, $saveOrder, $orderkey, $item->ordering);
+echo $r->secondColumn($i, $item->id, $canChange, $saveOrder, $orderkey, $item->ordering);
 
 $usrO = $item->usernameno;
 if ($item->username) {$usrO = $usrO . ' ('.$item->username.')';}
@@ -120,18 +118,18 @@ echo $r->td($this->escape($cntfnid), 'ph-center');
 
 //echo $r->td($item->id, "small hidden-phone");
 
-echo '</tr>'. "\n";
-						
+echo $r->endTr();
+
 		//}
 	}
 }
-echo '</tbody>'. "\n";
+echo $r->endTblBody();
 
 echo $r->tblFoot($this->pagination->getListFooter(), 15);
 echo $r->endTable();
 
-//echo $r->formInputs($listOrder, $originalOrders);
-echo $r->formInputs($listOrder, $listDirn, $originalOrders);
+//echo $r->formInputsXML($listOrder, $originalOrders);
+echo $r->formInputsXML($listOrder, $listDirn, $originalOrders);
 echo $r->endMainContainer();
 echo $r->endForm();
 ?>

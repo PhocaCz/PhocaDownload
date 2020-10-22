@@ -15,7 +15,7 @@ class JFormFieldPhocaDownloadLicense extends JFormField
 	protected $type 		= 'PhocaDownloadLicense';
 
 	protected function getInput() {
-		
+
 		$db = JFactory::getDBO();
 
        //build the list of categories
@@ -28,10 +28,10 @@ class JFormFieldPhocaDownloadLicense extends JFormField
 
 		$id 		= $this->form->getValue('id'); // id of current license
 		$required	= ((string) $this->element['required'] == 'true') ? TRUE : FALSE;
-		
-		array_unshift($licenses, JHTML::_('select.option', '', '- '.JText::_('COM_PHOCADOWNLOAD_SELECT_LICENSE').' -', 'value', 'text'));
-		
-		return JHTML::_('select.genericlist',  $licenses,  $this->name, 'class="inputbox"', 'value', 'text', $this->value, $this->id );
+
+		array_unshift($licenses, Joomla\CMS\HTML\HTMLHelper::_('select.option', '', '- '.JText::_('COM_PHOCADOWNLOAD_SELECT_LICENSE').' -', 'value', 'text'));
+
+		return Joomla\CMS\HTML\HTMLHelper::_('select.genericlist',  $licenses,  $this->name, 'class="inputbox"', 'value', 'text', $this->value, $this->id );
 	}
 }
 ?>

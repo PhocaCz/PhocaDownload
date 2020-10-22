@@ -10,9 +10,10 @@ defined('_JEXEC') or die('Restricted access');
 
 echo '<div id="phoca-dl-file-box" class="pd-file-view'.$this->t['p']->get( 'pageclass_sfx' ).'" >';
 
-if ( $this->t['p']->get( 'show_page_heading' ) ) {
-	echo '<h1>'. $this->escape($this->t['p']->get('page_heading')) . '</h1>';
-}
+//if ( $this->t['p']->get( 'show_page_heading' ) ) {
+//	echo '<h1>'. $this->escape($this->t['p']->get('page_heading')) . '</h1>';
+//}
+echo PhocaDownloadRenderFront::renderHeader(array());
 
 if (!empty($this->category[0])) {
 	echo '<div class="pd-file">';
@@ -28,7 +29,7 @@ if (!empty($this->category[0])) {
 			}
 			echo '<div class="pdtop">'
 				.'<a title="'.$linkUpText.'" href="'. $linkUp.'" >'
-				.JHTML::_('image', $this->t['mediapath']->media_img_rel . 'up.png', JText::_('COM_PHOCADOWNLOAD_UP'))
+				.Joomla\CMS\HTML\HTMLHelper::_('image', $this->t['mediapath']->media_img_rel . 'up.png', JText::_('COM_PHOCADOWNLOAD_UP'))
 				.'</a></div>';
 		}
 	}
@@ -52,8 +53,8 @@ if (!empty($this->file[0])) {
 
 		$l = new PhocaDownloadLayout();
 
-		echo '<h3 class="pd-ctitle">'.$l->getName($v->title, $v->filename, 1). '</h3>';
-
+		//echo '<h3 class="pd-ctitle">'.$l->getName($v->title, $v->filename, 1). '</h3>';
+		echo PhocaDownloadRenderFront::renderSubHeader(array($l->getName($v->title, $v->filename, 1)), '', 'pd-ctitle');
 
 // =====================================================================================
 // BEGIN LAYOUT AREA
@@ -208,7 +209,8 @@ if (!empty($this->file[0])) {
 
 			$pdDescription = '';
 			if ($l->isValueEditor($v->description)) {
-				$pdDescription .= '<div class="pd-fdesc">'.$v->description.'</div>';
+				//$pdDescription .= '<div class="pd-fdesc">'.$v->description.'</div>';
+				$pdDescription .= '<div class="pd-desc">'. Joomla\CMS\HTML\HTMLHelper::_('content.prepare', $v->description) . '</div>';
 			}
 
 			$pdFeatures = '';

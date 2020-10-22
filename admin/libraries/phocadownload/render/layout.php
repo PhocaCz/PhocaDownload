@@ -236,10 +236,12 @@ class PhocaDownloadLayout
 						case '2.5': $c = 'pd-j-25'; break;
 						case '3.x': $c = 'pd-j-3x'; break;
 						case '3.5': $c = 'pd-j-35'; break;
-						default: $c = 'label-default';break;
+						case '4.x': $c = 'pd-j-4x'; break;
+						case '4.0': $c = 'pd-j-40'; break;
+						default: $c = 'label-default badge-default';break;
 					}
 
-					$o[] = '<span class="label '.$c.'">'.$v.'</span>';
+					$o[] = '<span class="label badge '.$c.'">'.$v.'</span>';
 				}
 			}
 		}

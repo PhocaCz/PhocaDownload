@@ -15,24 +15,26 @@ class PhocaDownloadCpViewPhocaDownloadCat extends JViewLegacy
 	protected $item;
 	protected $form;
 	protected $t;
+	protected $r;
 
 	public function display($tpl = null) {
-	
+
 		$this->t			= PhocaDownloadUtils::setVars('cat');
-		
+		$this->r	= new PhocaDownloadRenderAdminview();
+
 		$this->state	= $this->get('State');
 		$this->form		= $this->get('Form');
 		$this->item		= $this->get('Item');
 		$user 			= JFactory::getUser();
 		$model			= $this->getModel();
 
-		JHTML::_('behavior.calendar');
-		JHTML::stylesheet( $this->t['s'] );
-		
+		//Joomla\CMS\HTML\HTMLHelper::_('behavior.calendar');
+
+
 		//Data from model
 		//$this->item	=& $this->get('Data');
 
-		$lists 	= array();		
+		$lists 	= array();
 		$isNew	= ((int)$this->item->id == 0);
 
 		// Edit or Create?
@@ -49,10 +51,10 @@ class PhocaDownloadCpViewPhocaDownloadCat extends JViewLegacy
 		$this->addToolbar();
 		parent::display($tpl);
 	}
-	
-	
+
+
 	protected function addToolbar() {
-		
+
 		require_once JPATH_COMPONENT.'/helpers/'.$this->t['tasks'].'.php';
 		JFactory::getApplication()->input->set('hidemainmenu', true);
 		$bar 		= JToolbar::getInstance('toolbar');
@@ -70,7 +72,7 @@ class PhocaDownloadCpViewPhocaDownloadCat extends JViewLegacy
 			JToolbarHelper::apply($this->t['task'].'.apply', 'JTOOLBAR_APPLY');
 			JToolbarHelper::save($this->t['task'].'.save', 'JTOOLBAR_SAVE');
 			JToolbarHelper::addNew($this->t['task'].'.save2new', 'JTOOLBAR_SAVE_AND_NEW');
-			
+
 		}
 		// If an existing item, can save to a copy.
 		if (!$isNew && $canDo->get('core.create')) {

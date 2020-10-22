@@ -91,7 +91,7 @@ class PhocaDownloadModelUser extends JModelLegacy
 
 	function _buildContentWhereFiles($userId) {
 		$app				= JFactory::getApplication();
-		$filter_state		= $app->getUserStateFromRequest( $this->_context_files.'.filter_state','filter_state','',	'word' );
+		$filter_published		= $app->getUserStateFromRequest( $this->_context_files.'.filter_published','filter_published','',	'word' );
 		$filter_catid		= $app->getUserStateFromRequest( $this->_context_files.'.catid','catid',0,'int' );
 		//$filter_sectionid	= $app->getUserStateFromRequest( $this->_context_files.'.filter_sectionid',	'filter_sectionid',	0,	'int' );
 		$filter_order		= $app->getUserStateFromRequest( $this->_context_files.'.filter_order','filter_order','a.ordering','cmd' );
@@ -110,10 +110,10 @@ class PhocaDownloadModelUser extends JModelLegacy
 		if ($search) {
 			$where[] = 'LOWER(a.title) LIKE '.$this->_db->Quote('%'.$search.'%');
 		}
-		if ( $filter_state ) {
-			if ( $filter_state == 'P' ) {
+		if ( $filter_published ) {
+			if ( $filter_published == 'P' ) {
 				$where[] = 'a.published = 1';
-			} else if ($filter_state == 'U' ) {
+			} else if ($filter_published == 'U' ) {
 				$where[] = 'a.published = 0';
 			}
 		}
@@ -561,7 +561,7 @@ class PhocaDownloadModelUser extends JModelLegacy
 			throw new Exception('Database Error - Delete User Stats (Files)', 500);
 			return false;
 		}
-  
+
 		// Delete tags
 		$query = 'DELETE FROM #__phocadownload_tags_ref'
 			. ' WHERE fileid ='.(int)$id;

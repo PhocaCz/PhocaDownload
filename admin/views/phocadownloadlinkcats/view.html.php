@@ -14,12 +14,12 @@ jimport( 'joomla.application.component.view' );
 class phocaDownloadCpViewphocaDownloadLinkCats extends JViewLegacy
 {
 	protected $t;
+	protected $r;
+
 	function display($tpl = null) {
 		$app	= JFactory::getApplication();
-		JHtml::_('behavior.tooltip');
-		JHtml::_('behavior.formvalidation');
-		JHtml::_('behavior.keepalive');
-		JHtml::_('formbehavior.chosen', 'select');
+		$this->r = new PhocaDownloadRenderAdminViews();
+		$this->t = PhocaDownloadUtils::setVars('linkcats');
 
 		//Frontend Changes
 		$tUri = '';
@@ -30,9 +30,8 @@ class phocaDownloadCpViewphocaDownloadLinkCats extends JViewLegacy
 
 		$document	= JFactory::getDocument();
 		$uri		= \Joomla\CMS\Uri\Uri::getInstance();
-		JHTML::stylesheet( 'media/com_phocadownload/css/administrator/phocadownload.css' );
 
-		$eName				= JFactory::getApplication()->input->get('e_name');
+		$eName				= $app->input->get('e_name');
 		$this->t['ename']		= preg_replace( '#[^A-Z0-9\-\_\[\]]#i', '', $eName );
 		$this->t['backlink']	= $tUri.'index.php?option=com_phocadownload&amp;view=phocadownloadlinks&amp;tmpl=component&amp;e_name='.$this->t['ename'];
 
@@ -62,7 +61,7 @@ class phocaDownloadCpViewphocaDownloadLinkCats extends JViewLegacy
 		$ctrl		.= '';
 		//$value		= implode( '|', )
 
-		$categoriesOutput = JHTML::_('select.genericlist', $tree, $ctrl, $attribs, 'value', 'text', 0, 'hidecategories' );
+		$categoriesOutput = Joomla\CMS\HTML\HTMLHelper::_('select.genericlist', $tree, $ctrl, $attribs, 'value', 'text', 0, 'hidecategories' );
 
 		$this->assignRef('categoriesoutput',	$categoriesOutput);*/
 

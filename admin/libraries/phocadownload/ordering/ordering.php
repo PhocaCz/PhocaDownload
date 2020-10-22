@@ -103,7 +103,7 @@ class PhocaDownloadOrdering
 			break;
 		}
 
-		$html 	= JHTML::_('select.genericlist',  $typeOrdering, $ordering, 'class="inputbox" size="1" onchange="this.form.submit()"', 'value', 'text', $selected);
+		$html 	= Joomla\CMS\HTML\HTMLHelper::_('select.genericlist',  $typeOrdering, $ordering, 'class="inputbox" size="1" onchange="this.form.submit()"', 'value', 'text', $selected);
 
 		return $html;
 	}
@@ -159,8 +159,8 @@ class PhocaDownloadOrdering
 				11 => JText::_('COM_PHOCADOWNLOAD_FILENAME_ASC'),
 				12 => JText::_('COM_PHOCADOWNLOAD_FILENAME_DESC'),
 
-				15 => JText::_('COM_PHOCADOWNLOAD_COUNT_ASC'),
-				16 => JText::_('COM_PHOCADOWNLOAD_COUNT_DESC'),
+				15 => JText::_('COM_PHOCADOWNLOAD_RATING_COUNT_ASC'),
+				16 => JText::_('COM_PHOCADOWNLOAD_RATING_COUNT_DESC'),
 				13 => JText::_('COM_PHOCADOWNLOAD_AVERAGE_ASC'),
 				14 => JText::_('COM_PHOCADOWNLOAD_AVERAGE_DESC'),
 				9 => JText::_('COM_PHOCADOWNLOAD_DOWNLOADS_ASC'),
@@ -192,8 +192,8 @@ class PhocaDownloadOrdering
 				6 => JText::_('COM_PHOCADOWNLOAD_DATE_DESC'),
 				//7 => JText::_('COM_PHOCADOWNLOAD_ID_ASC'),
 				//8 => JText::_('COM_PHOCADOWNLOAD_ID_DESC'),
-				11 => JText::_('COM_PHOCADOWNLOAD_COUNT_ASC'),
-				12 => JText::_('COM_PHOCADOWNLOAD_COUNT_DESC'),
+				11 => JText::_('COM_PHOCADOWNLOAD_RATING_COUNT_ASC'),
+				12 => JText::_('COM_PHOCADOWNLOAD_RATING_COUNT_DESC'),
 				13 => JText::_('COM_PHOCADOWNLOAD_AVERAGE_ASC'),
 				14 => JText::_('COM_PHOCADOWNLOAD_AVERAGE_DESC'),
 				15 => JText::_('COM_PHOCADOWNLOAD_HITS_ASC'),

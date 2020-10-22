@@ -10,12 +10,13 @@ defined('_JEXEC') or die('Restricted access');
 
 echo '<div id="phoca-dl-categories-box" class="pd-categories-view'.$this->t['p']->get( 'pageclass_sfx' ).'">';
 
-if ( $this->t['p']->get( 'show_page_heading' ) ) {
-	echo '<h1>'. $this->escape($this->t['p']->get('page_heading')) . '</h1>';
-}
+//if ( $this->t['p']->get( 'show_page_heading' ) ) {
+//	echo '<h1>'. $this->escape($this->t['p']->get('page_heading')) . '</h1>';
+//}
+echo PhocaDownloadRenderFront::renderHeader(array());
 
 if ( $this->t['description'] != '') {
-	echo '<div class="pd-desc">'. JHTML::_('content.prepare', $this->t['description']) . '</div>';
+	echo '<div class="pd-desc">'. Joomla\CMS\HTML\HTMLHelper::_('content.prepare', $this->t['description']) . '</div>';
 }
 
 
@@ -93,7 +94,7 @@ if (!empty($this->t['categories'])) {
 			}
 
 			if ($this->t['displaymaincatdesc']	 == 1) {
-				$pdDesc .= JHTML::_('content.prepare', $value->description);
+				$pdDesc .= Joomla\CMS\HTML\HTMLHelper::_('content.prepare', $value->description);
 			} else {
 				if ($catOutput != '') {
 					$pdSubcategories .= $catOutput;

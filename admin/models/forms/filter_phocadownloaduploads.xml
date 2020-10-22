@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+<fieldset addfieldpath="/administrator/components/com_phocadownload/models/fields">
+	<fields name="filter">
+		
+		
+	<field name="search" type="text" inputmode="search" label="COM_PHOCADOWNLOAD_SEARCH" description="COM_PHOCADOWNLOAD_SEARCH" hint="JSEARCH_FILTER" />
+
+		
+		<input type="hidden" name="form_submited" value="1"/>
+	</fields>
+
+	<fields name="list">
+		<field name="fullordering" type="list" label="COM_PHOCADOWNLOAD_LIST_FULL_ORDERING" description="COM_PHOCADOWNLOAD_LIST_FULL_ORDERING_DESC" onchange="this.form.submit();" default="username ASC" validate="options" >
+			<option value="">JGLOBAL_SORT_BY</option>
+			<!--<option value="d.title ASC">JGLOBAL_TITLE_ASC</option>
+			<option value="d.title DESC">JGLOBAL_TITLE_DESC</option>
+			<option value="d.filename ASC">COM_PHOCADOWNLOAD_FILENAME_ASC</option>
+			<option value="d.filename DESC">COM_PHOCADOWNLOAD_FILENAME_DESC</option>
+			<option value="a.count ASC">COM_PHOCADOWNLOAD_COUNT_ASC</option>
+			<option value="a.count DESC">COM_PHOCADOWNLOAD_COUNT_DESC</option>-->
+			<option value="username ASC">COM_PHOCADOWNLOAD_USER_ASC</option>
+			<option value="username DESC">COM_PHOCADOWNLOAD_USER_DESC</option>
+			
+		</field>
+
+		<field name="limit" type="limitbox" label="COM_PHOCADOWNLOAD_LIST_LIMIT" description="COM_PHOCADOWNLOAD_LIST_LIMIT_DESC" class="input-mini" default="25" onchange="this.form.submit();" />
+	</fields>
+	</fieldset>
+</form>

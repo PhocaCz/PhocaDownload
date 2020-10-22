@@ -12,14 +12,15 @@ jimport( 'joomla.application.component.view' );
 class PhocaDownloadCpViewPhocaDownloadInfo extends JViewLegacy
 {
 	protected $t;
+	protected $r;
 	
 	function display($tpl = null) {
 		
-		$this->t	= PhocaDownloadUtils::setVars();
-		JHTML::stylesheet( $this->t['s'] );
-		JHTML::_('behavior.tooltip');
-		$class	= $this->t['n'] . 'Utils';
-		$this->t['version'] = $class::getExtensionVersion();
+		$this->t	= PhocaDownloadUtils::setVars('info');
+		$this->r	= new PhocaDownloadRenderAdminview();
+		$this->t['component_head'] 	= 'COM_PHOCADOWNLOAD_PHOCA_DOWNLOAD';
+		$this->t['component_links']	= $this->r->getLinks(1);
+		$this->t['version'] = PhocaDownloadUtils::getExtensionVersion();
 		$this->addToolbar();
 		parent::display($tpl);
 	}
@@ -29,7 +30,7 @@ class PhocaDownloadCpViewPhocaDownloadInfo extends JViewLegacy
 		$class	= $this->t['n'] . 'CpHelper';
 		$canDo	= $class::getActions($this->t['c']);
 
-		JToolbarHelper::title( JText::_($this->t['l'].'_PD_INFO' ), 'info.png' );
+		JToolbarHelper::title( JText::_($this->t['l'].'_PD_INFO' ), 'info' );
 		
 		// This button is unnecessary but it is displayed because Joomla! design bug
 		$bar = JToolbar::getInstance( 'toolbar' );

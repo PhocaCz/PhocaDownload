@@ -16,7 +16,7 @@ class PhocaDownloadCpModelPhocaDownloadLogs extends JModelList
 
 	protected	$option 		= 'com_phocadownload';
 	public 		$context		= 'com_phocadownload.phocadownloadlogs';
-	
+
 	public function __construct($config = array())
 	{
 		if (empty($config['filter_fields'])) {
@@ -37,8 +37,8 @@ class PhocaDownloadCpModelPhocaDownloadLogs extends JModelList
 
 		parent::__construct($config);
 	}
-	
-	protected function populateState($ordering = NULL, $direction = NULL)
+
+	protected function populateState($ordering = 'a.date', $direction = 'ASC')
 	{
 		// Initialise variables.
 		$app = JFactory::getApplication('administrator');
@@ -50,8 +50,8 @@ class PhocaDownloadCpModelPhocaDownloadLogs extends JModelList
 		$accessId = $app->getUserStateFromRequest($this->context.'.filter.access', 'filter_access', null, 'int');
 		$this->setState('filter.access', $accessId);
 */
-		//$state = $app->getUserStateFromRequest($this->context.'.filter.state', 'filter_published', '', 'string');
-	//	$this->setState('filter.state', $state);
+		//$state = $app->getUserStateFromRequest($this->context.'.filter.published', 'filter_published', '', 'string');
+	//	$this->setState('filter.published', $state);
 /*
 		$categoryId = $app->getUserStateFromRequest($this->context.'.filter.category_id', 'filter_category_id', null);
 		$this->setState('filter.category_id', $categoryId);
@@ -67,20 +67,20 @@ class PhocaDownloadCpModelPhocaDownloadLogs extends JModelList
 		$this->setState('params', $params);
 
 		// List state information.
-		parent::populateState('a.date', 'asc');
+		parent::populateState($ordering, $direction);
 	}
-	
+
 	protected function getStoreId($id = '')
 	{
 		// Compile the store id.
 		$id	.= ':'.$this->getState('filter.search');
 		$id	.= ':'.$this->getState('filter.type');
 		//$id	.= ':'.$this->getState('filter.access');
-		//$id	.= ':'.$this->getState('filter.state');
+		//$id	.= ':'.$this->getState('filter.published');
 
 		return parent::getStoreId($id);
 	}
-	
+
 	protected function getListQuery()
 	{
 
@@ -100,26 +100,26 @@ class PhocaDownloadCpModelPhocaDownloadLogs extends JModelList
 		// Join over the language
 		//$query->select('l.title AS language_title');
 		//$query->join('LEFT', '#__languages AS l ON l.lang_code = a.language');
-		
-		
+
+
 		$query->select('f.id as file_id, f.title as file_title, f.filename as filename');
 		$query->join('LEFT', '#__phocadownload AS f ON f.id = a.fileid');
-		
+
 		$query->select('cc.id as category_id');
 		$query->join('LEFT', '#__phocadownload_categories AS cc ON cc.id = f.catid');
 
 		// Join over the users for the checked out user.
 		//$query->select('ua.id AS userid, ua.username AS username, ua.name AS usernameno');
 		//$query->join('LEFT', '#__users AS ua ON ua.id=a.userid');
-		
+
 		$query->select('ua.id AS userid, ua.username AS username, ua.name AS usernameno');
 		$query->join('LEFT', '#__users AS ua ON ua.id = a.userid');
-		
+
 		//$query->select('uc.name AS editor');
 		//$query->join('LEFT', '#__users AS uc ON uc.id=f.checked_out');
-		
 
-			
+
+
 
 
 /*		// Join over the asset groups.
@@ -133,28 +133,28 @@ class PhocaDownloadCpModelPhocaDownloadLogs extends JModelList
 		}*/
 
 		// Filter by published state.
-		/*$published = $this->getState('filter.state');
+		/*$published = $this->getState('filter.published');
 		if (is_numeric($published)) {
 			$query->where('a.published = '.(int) $published);
 		}
 		else if ($published === '') {
 			$query->where('(a.published IN (0, 1))');
 		}*/
-		
-		
+
+
 		// Filter by published type.
 		$type = $this->getState('filter.type');
-		
+
 		if (is_numeric($type)) {
 			$query->where('a.type = '.(int) $type);
-			
+
 		}
 		else if ($type === '') {
 			$query->where('(a.type IN (1, 2))');
-			
+
 		}
 
-		
+
 		// Filter by category.
 		/*$categoryId = $this->getState('filter.category_id');
 		if (is_numeric($categoryId)) {
@@ -174,14 +174,14 @@ class PhocaDownloadCpModelPhocaDownloadLogs extends JModelList
 				$query->where('( ua.username LIKE '.$search.' OR ua.name LIKE '.$search.' OR f.title LIKE '.$search.' OR f.filename LIKE '.$search.' or a.ip LIKE '.$search.')');
 			}
 		}
-		
+
 		//$query->group('a.id');
 
 		// Add the list ordering clause.
 		$orderCol	= $this->state->get('list.ordering', 'date');
 		$orderDirn	= $this->state->get('list.direction', 'asc');
-		
-	
+
+
 		if ($orderCol == 'a.id' || $orderCol == 'username') {
 			$orderCol = 'username '.$orderDirn.', a.id';
 		}

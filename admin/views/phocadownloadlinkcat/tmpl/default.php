@@ -7,7 +7,7 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die('Restricted access');
-JHTML::_('behavior.tooltip');
+Joomla\CMS\HTML\HTMLHelper::_('behavior.tooltip');
 ?>
 <script type="text/javascript">
 //<![CDATA[

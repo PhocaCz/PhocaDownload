@@ -7,32 +7,33 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
  defined('_JEXEC') or die('Restricted access');
-JHtml::_('bootstrap.tooltip');
-JHtml::_('behavior.multiselect');
-JHtml::_('dropdown.init');
-JHtml::_('formbehavior.chosen', 'select');
+Joomla\CMS\HTML\HTMLHelper::_('bootstrap.tooltip');
+Joomla\CMS\HTML\HTMLHelper::_('behavior.multiselect');
+Joomla\CMS\HTML\HTMLHelper::_('dropdown.init');
+Joomla\CMS\HTML\HTMLHelper::_('formbehavior.chosen', 'select');
 
 $r 			=  new PhocaDownloadRenderAdminView();
 
 if ($this->manager == 'filemultiple') {
 
-	?><script language="javascript" type="text/javascript">
+    JFactory::getDocument()->addScriptDeclaration('
+	
 	Joomla.submitbutton = function(task)
 	{
-		if (task == 'phocadownloadm.cancel') {
+		if (task == \'phocadownloadm.cancel\') {
 			submitform(task);
 		}
 
-		if (task == 'phocadownloadm.save') {
-			phocadownloadmform = document.getElementById('adminForm');
+		if (task == \'phocadownloadm.save\') {
+			var phocadownloadmform = document.getElementById(\'adminForm\');
 			if (phocadownloadmform.boxchecked.value==0) {
-				alert( "<?php echo JText::_( 'COM_PHOCADOWNLOAD_WARNING_SELECT_FILENAME_OR_FOLDER', true ); ?>" );
+				alert( "'. JText::_( 'COM_PHOCADOWNLOAD_WARNING_SELECT_FILENAME_OR_FOLDER', true ).'" );
 			} else  {
 				var f = phocadownloadmform;
 				var nSelectedImages = 0;
 				var nSelectedFolders = 0;
 				var i=0;
-				cb = eval( 'f.cb' + i );
+				cb = eval( \'f.cb\' + i );
 				while (cb) {
 					if (cb.checked == false) {
 						// Do nothing
@@ -45,19 +46,19 @@ if ($this->manager == 'filemultiple') {
 					}
 					// Get next
 					i++;
-					cb = eval( 'f.cb' + i );
+					cb = eval( \'f.cb\' + i );
 				}
 
 				if (phocadownloadmform.jform_catid.value == "" && nSelectedImages > 0){
-					alert( "<?php echo JText::_( 'COM_PHOCADOWNLOAD_WARNING_FILE_SELECTED_SELECT_CATEGORY', true ); ?>" );
+					alert( "'. JText::_( 'COM_PHOCADOWNLOAD_WARNING_FILE_SELECTED_SELECT_CATEGORY', true ).'" );
 				} else {
 					submitform(task);
 				}
 			}
 		}
 		//submitform(task);
-	}
-	</script><?php
+	}');
+
 }
 
 echo '<div id="phocadownloadmanager">';
@@ -146,7 +147,7 @@ if ($this->manager == 'filemultiple') {
 	echo '<input type="hidden" name="task" value="" />'. "\n";
 	echo '<input type="hidden" name="boxchecked" value="0" />'. "\n";
 	echo '<input type="hidden" name="layout" value="edit" />'. "\n";
-	echo JHtml::_('form.token');
+	echo Joomla\CMS\HTML\HTMLHelper::_('form.token');
 	echo $r->endForm();
 
 	echo '</div>';
@@ -159,37 +160,54 @@ if ($this->manager == 'filemultiple') {
 <?php
 if ($this->t['displaytabs'] > 0) {
 
-	echo '<ul class="nav nav-tabs" id="configTabs">';
+	/*echo '<ul class="nav nav-tabs" id="configTabs">';
 
-	$label = JHTML::_( 'image', $this->t['i'].'icon-16-upload.png','') . '&nbsp;'.JText::_($this->t['l'].'_UPLOAD');
+	$label = Joomla\CMS\HTML\HTMLHelper::_( 'image', $this->t['i'].'icon-16-upload.png','') . '&nbsp;'.JText::_($this->t['l'].'_UPLOAD');
 	echo '<li><a href="#upload" data-toggle="tab">'.$label.'</a></li>';
 
 	if((int)$this->t['enablemultiple']  > 0) {
-		$label = JHtml::_( 'image', $this->t['i'].'icon-16-upload-multiple.png','') . '&nbsp;'.JText::_($this->t['l'].'_MULTIPLE_UPLOAD');
+		$label = Joomla\CMS\HTML\HTMLHelper::_( 'image', $this->t['i'].'icon-16-upload-multiple.png','') . '&nbsp;'.JText::_($this->t['l'].'_MULTIPLE_UPLOAD');
 		echo '<li><a href="#multipleupload" data-toggle="tab">'.$label.'</a></li>';
 	}
 
-	$label = JHtml::_( 'image', $this->t['i'].'icon-16-folder.png','') . '&nbsp;'.JText::_($this->t['l'].'_CREATE_FOLDER');
+	$label = Joomla\CMS\HTML\HTMLHelper::_( 'image', $this->t['i'].'icon-16-folder.png','') . '&nbsp;'.JText::_($this->t['l'].'_CREATE_FOLDER');
 	echo '<li><a href="#createfolder" data-toggle="tab">'.$label.'</a></li>';
 
-	echo '</ul>';
+	echo '</ul>';*/
 
+	$activeTab = 'multipleupload';
+	if (isset($this->t['tab']) && $this->t['tab'] != '') {
+	    $activeTab = $this->t['tab'];
+    }
 
-	echo '<div class="tab-content">'. "\n";
+	echo $r->startTabs($activeTab);
 
-	echo '<div class="tab-pane" id="upload">'. "\n";
-	echo $this->loadTemplate('upload');
-	echo '</div>'. "\n";
-	echo '<div class="tab-pane" id="multipleupload">'. "\n";
+	$tabs = array();
+	$tabs['multipleupload'] = '<span class="ph-cp-item"><i class="phi phi-fs-s phi-fc-bl duotone icon-upload"></i></span>' . '&nbsp;'.JText::_('COM_PHOCADOWNLOAD_MULTIPLE_UPLOAD');
+	$tabs['upload'] = '<span class="ph-cp-item"><i class="phi phi-fs-s phi-fc-bd duotone icon-upload"></i></span>' . '&nbsp;'.JText::_('COM_PHOCADOWNLOAD_UPLOAD');
+
+	if (!empty($this->t['javaupload'])) {
+	    $tabs['javaupload'] = '<span class="ph-cp-item"><i class="phi phi-fs-s phi-fc-rl duotone icon-upload"></i></span>' . '&nbsp;'.JText::_('COM_PHOCADOWNLOAD_JAVA_UPLOAD');
+    }
+
+	$tabs['createfolder'] = '<span class="ph-cp-item"><i class="phi phi-fs-s phi-fc-brd duotone icon-folder"></i></span>' . '&nbsp;'.JText::_('COM_PHOCADOWNLOAD_CREATE_FOLDER');
+
+	echo $r->navigation($tabs, $activeTab);
+
+	echo $r->startTab('multipleupload', $tabs['multipleupload'], $activeTab == 'multipleupload' ? 'active' : '');
 	echo $this->loadTemplate('multipleupload');
-	echo '</div>'. "\n";
+	echo $r->endTab();
 
-	echo '<div class="tab-pane" id="createfolder">'. "\n";
-	//echo PhocaDownloadFileUpload::renderCreateFolder($this->session->getName(), $this->session->getId(), $this->currentFolder, 'phocadownloadmanager', 'manager='.$this->manager.'&amp;tab='.$this->t['currenttab']['upload'].'&amp;field='. $this->field );
-	echo PhocaDownloadFileUpload::renderCreateFolder($this->session->getName(), $this->session->getId(), $this->currentFolder, 'phocadownloadmanager', 'manager='.PhocaDownloadUtils::filterValue($this->manager, 'alphanumeric').'&amp;tab=createfolder&amp;field='. PhocaDownloadUtils::filterValue($this->field, 'alphanumeric2') );
-	echo '</div>'. "\n";
+	echo $r->startTab('upload', $tabs['upload'], $activeTab == 'upload' ? 'active' : '');
+	echo $this->loadTemplate('upload');
+	echo $r->endTab();
 
-	echo '</div>'. "\n";
+	echo $r->startTab('createfolder', $tabs['createfolder'], $activeTab == 'createfolder' ? 'active' : '');
+
+	echo PhocaDownloadFileUpload::renderCreateFolder($this->session->getName(), $this->session->getId(), $this->currentFolder, 'phocagallerym', 'tab=createfolder' );
+	echo $r->endTab();
+
+	echo $r->endTabs();
 }
 echo '</div>';
 

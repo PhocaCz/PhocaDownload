@@ -71,6 +71,7 @@ class PhocaDownloadFile
 			case 'ods':
 			case 'xls':
 			case 'xlsx':
+			case 'xlsm':
 				$icon = 'spreadsheet';
 			break;
 
@@ -224,8 +225,9 @@ class PhocaDownloadFile
 
 
 
-	public static function getFileTime($filename, $function, $format = DATE_FORMAT_LC3) {
+	public static function getFileTime($filename, $function, $format = 'DATE_FORMAT_LC3') {
 
+		//$format = JText::_($format);
 		$path			= PhocaDownloadPath::getPathSet();
 		$fileNameAbs	= JPath::clean($path['orig_abs'] . '/' . $filename);
 		if (JFile::exists($fileNameAbs)) {

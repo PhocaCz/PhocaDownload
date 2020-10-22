@@ -8,16 +8,10 @@
  */
  defined('_JEXEC') or die('Restricted access');
 
-$heading = '';
-if ($this->t['p']->get( 'page_heading' ) != '') {
-	$heading .= $this->t['p']->get( 'page_heading' );
-}
-
-if ($this->t['showpageheading'] != 0) {
-	if ( $heading != '') {
-	    echo '<h1>'. $this->escape($heading) . '</h1>';
-	}
-}
+//if ( $this->t['p']->get( 'show_page_heading' ) ) {
+//	echo '<h1>'. $this->escape($this->t['p']->get('page_heading')) . '</h1>';
+//}
+echo PhocaDownloadRenderFront::renderHeader(array());
 $tab = 0;
 switch ($this->t['tab']) {
 	case 'up':
@@ -33,19 +27,37 @@ switch ($this->t['tab']) {
 echo '<div>&nbsp;</div>';
 
 if ($this->t['displaytabs'] > 0) {
+	
+	$tabItems = array();
+	phocadownloadimport('phocadownload.render.rendertabs');
+	$tabs = new PhocaDownloadRenderTabs();
+	echo $tabs->startTabs();
+	$tabItems[0] = array('id' => 'files', 'title' => JText::_('COM_PHOCADOWNLOAD_UPLOAD'), 'image' => 'document-16', 'icon' => 'file');
+	$tabs->setActiveTab(isset($tabItems[$this->t['tab']]['id']) ? $tabItems[$this->t['tab']]['id'] : 0);
+	echo $tabs->renderTabsHeader($tabItems);
+	echo $tabs->startTab('files');
+	echo $this->loadTemplate('files');
+	echo $tabs->endTab();
+	echo $tabs->endTabs();
+	
+	
+	/*
 	echo '<div id="phocadownload-pane">';
 	//$pane =& J Pane::getInstance('Tabs', array('startOffset'=> $this->t['tab']));
 	//echo $pane->startPane( 'pane' );
-	echo JHtml::_('tabs.start', 'config-tabs-com_phocadownload-user', array('useCookie'=>1, 'startOffset'=> $this->t['tab']));
+	echo Joomla\CMS\HTML\HTMLHelper::_('tabs.start', 'config-tabs-com_phocadownload-user', array('useCookie'=>1, 'startOffset'=> $this->t['tab']));
 
-	//echo $pane->startPanel( JHTML::_( 'image .site', $this->t['pi'].'icon-document-16.png','', '', '', '', '') . '&nbsp;'.JText::_('COM_PHOCADOWNLOAD_UPLOAD'), 'files' );
-	echo JHtml::_('tabs.panel', JHtml::_( 'image', $this->t['pi'].'icon-document-16.png', '') . '&nbsp;'.JText::_('COM_PHOCADOWNLOAD_UPLOAD'), 'files' );
+	//echo $pane->startPanel( Joomla\CMS\HTML\HTMLHelper::_( 'image .site', $this->t['pi'].'icon-document-16.png','', '', '', '', '') . '&nbsp;'.JText::_('COM_PHOCADOWNLOAD_UPLOAD'), 'files' );
+	echo Joomla\CMS\HTML\HTMLHelper::_('tabs.panel', Joomla\CMS\HTML\HTMLHelper::_( 'image', $this->t['pi'].'icon-document-16.png', '') . '&nbsp;'.JText::_('COM_PHOCADOWNLOAD_UPLOAD'), 'files' );
 	echo $this->loadTemplate('files');
 	//echo $pane->endPanel();
 
 	//echo $pane->endPane();
-	echo JHtml::_('tabs.end');
+	echo Joomla\CMS\HTML\HTMLHelper::_('tabs.end');
 	echo '</div>';
+	*/
+	
+	
 }
 echo PhocaDownloadUtils::getInfo();
 ?>

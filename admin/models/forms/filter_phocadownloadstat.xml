@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+<fieldset addfieldpath="/administrator/components/com_phocadownload/models/fields">
+	<fields name="filter">
+		
+		
+	<field name="search" type="text" inputmode="search" label="COM_PHOCADOWNLOAD_SEARCH" description="COM_PHOCADOWNLOAD_SEARCH" hint="JSEARCH_FILTER" />
+
+		<!--<field name="published" type="list" label="JOPTION_FILTER_PUBLISHED" description="JOPTION_FILTER_PUBLISHED_DESC" onchange="this.form.submit();" >
+		<option value="">JOPTION_SELECT_PUBLISHED</option>
+		<option value="1">COM_PHOCADOWNLOAD_PUBLISHED</option>
+		<option value="0">COM_PHOCADOWNLOAD_UNPUBLISHED</option>
+		</field>-->
+
+		
+		<input type="hidden" name="form_submited" value="1"/>
+	</fields>
+
+	<fields name="list">
+		<field name="fullordering" type="list" label="COM_PHOCADOWNLOAD_LIST_FULL_ORDERING" description="COM_PHOCADOWNLOAD_LIST_FULL_ORDERING_DESC" onchange="this.form.submit();" default="a.title ASC" validate="options" >
+			<option value="">JGLOBAL_SORT_BY</option>
+			<option value="a.title ASC">JGLOBAL_TITLE_ASC</option>
+			<option value="a.title DESC">JGLOBAL_TITLE_DESC</option>
+			<option value="a.filename ASC">COM_PHOCADOWNLOAD_FILENAME_ASC</option>
+			<option value="a.filename DESC">COM_PHOCADOWNLOAD_FILENAME_DESC</option>
+			<option value="a.hits ASC">COM_PHOCADOWNLOAD_DOWNLOADS_ASC</option>
+			<option value="a.hits DESC">COM_PHOCADOWNLOAD_DOWNLOADS_DESC</option>
+		</field>
+
+		<field name="limit" type="limitbox" label="COM_PHOCADOWNLOAD_LIST_LIMIT" description="COM_PHOCADOWNLOAD_LIST_LIMIT_DESC" class="input-mini" default="25" onchange="this.form.submit();" />
+	</fields>
+	</fieldset>
+</form>

@@ -16,7 +16,7 @@ class PhocaDownloadCpModelPhocaDownloadUploads extends JModelList
 
 	protected	$option 		= 'com_phocadownload';
 	public 		$context		= 'com_phocadownload.phocadownloaduploads';
-	
+
 	public function __construct($config = array())
 	{
 		if (empty($config['filter_fields'])) {
@@ -39,8 +39,8 @@ class PhocaDownloadCpModelPhocaDownloadUploads extends JModelList
 
 		parent::__construct($config);
 	}
-	
-	protected function populateState($ordering = NULL, $direction = NULL)
+
+	protected function populateState($ordering = 'username', $direction = 'ASC')
 	{
 		// Initialise variables.
 		$app = JFactory::getApplication('administrator');
@@ -52,8 +52,8 @@ class PhocaDownloadCpModelPhocaDownloadUploads extends JModelList
 		$accessId = $app->getUserStateFromRequest($this->context.'.filter.access', 'filter_access', null, 'int');
 		$this->setState('filter.access', $accessId);
 */
-		$state = $app->getUserStateFromRequest($this->context.'.filter.state', 'filter_published', '', 'string');
-		$this->setState('filter.state', $state);
+		$state = $app->getUserStateFromRequest($this->context.'.filter.published', 'filter_published', '', 'string');
+		$this->setState('filter.published', $state);
 /*
 		$categoryId = $app->getUserStateFromRequest($this->context.'.filter.category_id', 'filter_category_id', null);
 		$this->setState('filter.category_id', $categoryId);
@@ -66,19 +66,19 @@ class PhocaDownloadCpModelPhocaDownloadUploads extends JModelList
 		$this->setState('params', $params);
 
 		// List state information.
-		parent::populateState('username', 'asc');
+		parent::populateState($ordering, $direction);
 	}
-	
+
 	protected function getStoreId($id = '')
 	{
 		// Compile the store id.
 		$id	.= ':'.$this->getState('filter.search');
 		//$id	.= ':'.$this->getState('filter.access');
-		$id	.= ':'.$this->getState('filter.state');
+		$id	.= ':'.$this->getState('filter.published');
 
 		return parent::getStoreId($id);
 	}
-	
+
 	protected function getListQuery()
 	{
 		/*
@@ -89,20 +89,20 @@ class PhocaDownloadCpModelPhocaDownloadUploads extends JModelList
 			. ' LEFT JOIN #__phocadownload_sections AS s ON s.id = f.sectionid '
 			. ' LEFT JOIN #__groups AS g ON g.id = f.access '
 			. ' LEFT JOIN #__users AS aa ON aa.id = f.checked_out '
-			
-			
+
+
 			. ' LEFT JOIN (SELECT  fa.owner_id, fa.id, count(*) AS countfaid'
 			. ' FROM #__phocadownload AS fa'
 			. ' WHERE fa.approved = 1'
 			. ' GROUP BY fa.owner_id) AS fa '
 			. ' ON a.id = fa.owner_id'
-			
+
 			. ' LEFT JOIN (SELECT  fn.owner_id, fn.id, count(*) AS countfnid'
 			. ' FROM #__phocadownload AS fn'
 			. ' WHERE fn.approved = 0'
 			. ' GROUP BY fn.owner_id) AS fn '
 			. ' ON a.id = fn.owner_id'
-			
+
 			. $where
 			. ' GROUP by a.id'
 			. $orderby;
@@ -123,39 +123,39 @@ class PhocaDownloadCpModelPhocaDownloadUploads extends JModelList
 		// Join over the language
 		//$query->select('l.title AS language_title');
 		//$query->join('LEFT', '#__languages AS l ON l.lang_code = a.language');
-		
-		
+
+
 		$query->select('GROUP_CONCAT(DISTINCT f.id) AS file_id');
 		$query->join('LEFT', '#__phocadownload AS f ON f.owner_id = a.id');
-		
+
 		$query->select('cc.id as category_id');
 		$query->join('LEFT', '#__phocadownload_categories AS cc ON cc.id = f.catid');
 
 		// Join over the users for the checked out user.
 		//$query->select('ua.id AS userid, ua.username AS username, ua.name AS usernameno');
 		//$query->join('LEFT', '#__users AS ua ON ua.id=a.userid');
-		
+
 		$query->select('ua.id AS userid, ua.username AS username, ua.name AS usernameno');
 		$query->join('LEFT', '#__users AS ua ON ua.id=f.owner_id');
-		
+
 		$query->select('uc.name AS editor');
 		$query->join('LEFT', '#__users AS uc ON uc.id=f.checked_out');
-		
+
 		$query->select('fa.countfaid');
 		$query->join('LEFT', '(SELECT  fa.owner_id, count(*) AS countfaid'
 			. ' FROM #__phocadownload AS fa'
 			. ' WHERE fa.approved = 1'
 			. ' GROUP BY fa.owner_id) AS fa '
 			. ' ON a.id = fa.owner_id ');
-			
-			
-		$query->select('fn.countfnid');	
+
+
+		$query->select('fn.countfnid');
 		$query->join('LEFT', '(SELECT fn.owner_id, count(*) AS countfnid'
 			. ' FROM #__phocadownload AS fn'
 			. ' WHERE fn.approved = 0'
 			. ' GROUP BY fn.owner_id) AS fn '
 			. ' ON a.id = fn.owner_id');
-			
+
 
 
 /*		// Join over the asset groups.
@@ -169,17 +169,17 @@ class PhocaDownloadCpModelPhocaDownloadUploads extends JModelList
 		}*/
 
 		// Filter by published state.
-		/*$published = $this->getState('filter.state');
+		/*$published = $this->getState('filter.published');
 		if (is_numeric($published)) {
 			$query->where('a.published = '.(int) $published);
 		}
 		else if ($published === '') {
 			$query->where('(a.published IN (0, 1))');
 		}*/
-		
+
 		$query->where('a.id > 0');
 		$query->where('(fa.countfaid > 0 OR fn.countfnid > 0)');
-		
+
 		// Filter by category.
 		/*$categoryId = $this->getState('filter.category_id');
 		if (is_numeric($categoryId)) {
@@ -199,7 +199,7 @@ class PhocaDownloadCpModelPhocaDownloadUploads extends JModelList
 				$query->where('( ua.username LIKE '.$search.' OR ua.name LIKE '.$search.')');
 			}
 		}
-		
+
 		$query->group('a.username, ua.id, a.id, a.name, cc.id, ua.username, ua.name, uc.name, fa.countfaid, fn.countfnid');
 
 		// Add the list ordering clause.
@@ -207,8 +207,8 @@ class PhocaDownloadCpModelPhocaDownloadUploads extends JModelList
 		//$orderDirn	= $this->state->get('list.direction');
 		$orderCol	= $this->state->get('list.ordering', 'username');
 		$orderDirn	= $this->state->get('list.direction', 'asc');
-		
-	
+
+
 		if ($orderCol == 'a.id' || $orderCol == 'username') {
 			$orderCol = 'a.username '.$orderDirn.', a.id';
 		}

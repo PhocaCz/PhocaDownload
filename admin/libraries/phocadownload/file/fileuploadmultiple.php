@@ -9,6 +9,7 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\HTML\HTMLHelper;
 
 class PhocaDownloadFileUploadMultiple
 {
@@ -31,8 +32,8 @@ class PhocaDownloadFileUploadMultiple
 		$chunkMethod 	= $paramsC->get( 'multiple_upload_chunk', 0 );
 		$uploadMethod 	= $paramsC->get( 'multiple_upload_method', 4 );
 
-		JHtml::_('behavior.framework', true);// Load it here to be sure, it is loaded before jquery
-		JHtml::_('jquery.framework', false);// Load it here because of own nonConflict method (nonconflict is set below)
+		Joomla\CMS\HTML\HTMLHelper::_('behavior.framework', true);// Load it here to be sure, it is loaded before jquery
+		Joomla\CMS\HTML\HTMLHelper::_('jquery.framework', false);// Load it here because of own nonConflict method (nonconflict is set below)
 		$document			= JFactory::getDocument();
 		// No more used  - - - - -
 		//$document->addScript(JURI::root(true).'/components/com_phocadownload/assets/jquery/jquery-1.6.4.min.js');//USE SYSTEM
@@ -48,7 +49,7 @@ class PhocaDownloadFileUploadMultiple
 		if ($uploadMethod == 5) {
 			//$document->addScript(JURI::root(true).'/components/com_phocadownload/assets/plupload/plupload.browserplus.js');
 		}
-		$document->addScript(JURI::root(true).'/components/com_phocadownload/assets/plupload/plupload.js');
+		HTMLHelper::_('script', 'media/com_phocadownload/js/plupload/plupload.js');
 		//if ($uploadMethod == 2) {
 		//	$document->addScript(JURI::root(true).'/components/com_phocadownload/assets/plupload/plupload.gears.js');
 		//}
@@ -59,16 +60,16 @@ class PhocaDownloadFileUploadMultiple
 		//	$document->addScript(JURI::root(true).'/components/com_phocadownload/assets/plupload/plupload.flash.js');
 		//}
 		if ($uploadMethod == 5) {
-			$document->addScript(JURI::root(true).'/components/com_phocadownload/assets/plupload/plupload.browserplus.js');
+			HTMLHelper::_('script', 'media/com_phocadownload/js/plupload/plupload.browserplus.js');
 		}
 		if ($uploadMethod == 6) {
-			$document->addScript(JURI::root(true).'/components/com_phocadownload/assets/plupload/plupload.html4.js');
+			HTMLHelper::_('script', 'media/com_phocadownload/js/plupload/plupload.html4.js');
 		}
 		if ($uploadMethod == 4) {
-			$document->addScript(JURI::root(true).'/components/com_phocadownload/assets/plupload/plupload.html5.js');
+			HTMLHelper::_('script', 'media/com_phocadownload/js/plupload/plupload.html5.js');
 		}
-		$document->addScript(JURI::root(true).'/components/com_phocadownload/assets/plupload/jquery.plupload.queue/jquery.plupload.queue.js');
-		JHTML::stylesheet( 'components/com_phocadownload/assets/plupload/jquery.plupload.queue/css/jquery.plupload.queue.css' );
+		HTMLHelper::_('script', 'media/com_phocadownload/js/plupload/jquery.plupload.queue/jquery.plupload.queue.js');
+		HTMLHelper::_('stylesheet', 'media/com_phocadownload/js/plupload/jquery.plupload.queue/css/jquery.plupload.queue.css' );
 	}
 
 	public static function getMultipleUploadSizeFormat($size) {
@@ -180,9 +181,9 @@ class PhocaDownloadFileUploadMultiple
 			}
 		}*/
 		if ($this->method == 1) {
-			$js.='		flash_swf_url : \''.JURI::root(true).'/components/com_phocadownload/assets/plupload/plupload.flash.swf\''."\n";
+			//$js.='		flash_swf_url : \''.JURI::root(true).'/components/com_phocadownload/assets/plupload/plupload.flash.swf\''."\n";
 		} else if ($this->method == 3) {
-			$js.='		silverlight_xap_url : \''.JURI::root(true).'/components/com_phocadownload/assets/plupload/plupload.silverlight.xap\''."\n";
+			//$js.='		silverlight_xap_url : \''.JURI::root(true).'/components/com_phocadownload/assets/plupload/plupload.silverlight.xap\''."\n";
 		}
 		$js.='	});'."\n";
 

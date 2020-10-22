@@ -10,9 +10,10 @@ defined('_JEXEC') or die('Restricted access');
 
 echo '<div id="phoca-dl-categories-box" class="pd-categories-view'.$this->t['p']->get( 'pageclass_sfx' ).'">';
 
-if ( $this->t['p']->get( 'show_page_heading' ) ) {
-	echo '<h1>'. $this->escape($this->t['p']->get('page_heading')) . '</h1>';
-}
+//if ( $this->t['p']->get( 'show_page_heading' ) ) {
+//	echo '<h1>'. $this->escape($this->t['p']->get('page_heading')) . '</h1>';
+//}
+echo PhocaDownloadRenderFront::renderHeader(array());
 
 if ( $this->t['description'] != '') {
 	echo '<div class="pd-desc">'. $this->t['description']. '</div>';
