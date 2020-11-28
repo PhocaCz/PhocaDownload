@@ -211,7 +211,8 @@ if (!empty($this->file[0])) {
 
 			$pdDescription = '';
 			if ($l->isValueEditor($v->description)) {
-				$pdDescription .= '<div class="pd-fdesc">'.$v->description.'</div>';
+				//$pdDescription .= '<div class="pd-fdesc">'.$v->description.'</div>';
+				$pdDescription .= '<div class="pd-fdesc">'. Joomla\CMS\HTML\HTMLHelper::_('content.prepare', $v->description) . '</div>';
 			}
 
 			$pdFeatures = '';

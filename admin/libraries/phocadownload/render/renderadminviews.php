@@ -500,7 +500,7 @@ class PhocaDownloadRenderAdminViews
 		}
 	}
 
-	public function secondColumnHeader($listDirn, $listOrder, $empty = false) {
+	public function secondColumnHeader($listDirn, $listOrder, $prefix = 'a', $empty = false) {
 		if ($this->compatible) {
 			return $this->thOrderingXML('JGRID_HEADING_ORDERING', $listDirn, $listOrder, $prefix, $empty);
 		} else {

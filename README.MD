@@ -2,7 +2,7 @@
 
 
 
-![Phoca Download](https://github.com/PhocaCz/PhocaDownload/blob/master/phocadownload.png)
+![Phoca Download](https://github.com/PhocaCz/PhocaDownload/blob/master/phocadownload.png?raw=true)
 
 # Phoca Download
 
@@ -92,7 +92,7 @@ Phoca Download is download manager for Joomla! CMS. It includes component, modul
 
 ## Version
 
-3.2.1
+3.2.2
 
 
 

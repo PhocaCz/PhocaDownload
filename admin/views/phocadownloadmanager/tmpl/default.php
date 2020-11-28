@@ -204,7 +204,8 @@ if ($this->t['displaytabs'] > 0) {
 
 	echo $r->startTab('createfolder', $tabs['createfolder'], $activeTab == 'createfolder' ? 'active' : '');
 
-	echo PhocaDownloadFileUpload::renderCreateFolder($this->session->getName(), $this->session->getId(), $this->currentFolder, 'phocagallerym', 'tab=createfolder' );
+	
+	echo PhocaDownloadFileUpload::renderCreateFolder($this->session->getName(), $this->session->getId(), $this->currentFolder, 'phocadownloadmanager', 'manager='.PhocaDownloadUtils::filterValue($this->manager, 'alphanumeric').'&amp;tab=createfolder&amp;field='. PhocaDownloadUtils::filterValue($this->field, 'alphanumeric2') );
 	echo $r->endTab();
 
 	echo $r->endTabs();

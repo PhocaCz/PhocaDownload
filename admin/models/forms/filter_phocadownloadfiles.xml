@@ -38,8 +38,6 @@
 			<option value="a.approved DESC" >COM_PHOCADOWNLOAD_APPROVED_DESC</option>
 			<option value="category_id ASC">JCATEGORY_ASC</option>
 			<option value="category_id DESC">JCATEGORY_DESC</option>
-			<option value="category_owner_id ASC">COM_PHOCADOWNLOAD_OWNER_ASC</option>
-			<option value="category_owner_id DESC">COM_PHOCADOWNLOAD_OWNER_DESC</option>
 			<option value="uploadusername ASC">COM_PHOCADOWNLOAD_UPLOADED_BY_ASC</option>
 			<option value="uploadusername DESC">COM_PHOCADOWNLOAD_UPLOADED_BY_DESC</option>
 			<option value="a.owner_id ASC">COM_PHOCADOWNLOAD_OWNER_ASC</option>

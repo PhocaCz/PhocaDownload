@@ -882,9 +882,9 @@ ul.plupload_filelist li.plupload_file_name {
 	width: 35%;
 }
 ul.plupload_filelist li .plupload_file_name:before {
-	font-family: 'Glyphicons Halflings';
+	font-family: 'JoomlaFont' !important;
 	color: #d0d0d0;
-    content: "\e022";
+    content: "\13b2a";
 	float: left;
 	margin: 0px 5px 5px 0px;
 	padding-bottom: 2px;
@@ -908,9 +908,9 @@ li.plupload_droptext {
 }
 
 li.plupload_droptext:before {
-	font-family: 'Glyphicons Halflings';
+	font-family: 'JoomlaFont' !important;
 	color: #d0d0d0;
-    content: "\e022 ";
+    content: "\13b2a";
 	font-size: 200%;
 	text-align: center;
 	margin: 0px auto;
