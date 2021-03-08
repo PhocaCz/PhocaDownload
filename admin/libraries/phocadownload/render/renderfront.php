@@ -39,7 +39,7 @@ class PhocaDownloadRenderFront
 		}
 	}
 
-	public static function displayMirrorLinks($view = 1, $link, $title, $target) {
+	public static function displayMirrorLinks($view = 1, $link = '', $title = '', $target = '') {
 
 		$paramsC							= JComponentHelper::getParams( 'com_phocadownload' );
 		$param['display_mirror_links']		= $paramsC->get( 'display_mirror_links', 0 );
@@ -287,7 +287,7 @@ class PhocaDownloadRenderFront
 	<a type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#phModalDetail" data-href="..." data-height="500px">..</a>
 	*/
 
-	public static function bootstrapModalHtml($item = 'phModal', $title) {
+	public static function bootstrapModalHtml($item = 'phModal', $title = '') {
 
 		$close = JText::_('COM_PHOCADOWNLAD_CLOSE');
 		$o = '<div id="'.$item.'" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="'.$item.'Label">

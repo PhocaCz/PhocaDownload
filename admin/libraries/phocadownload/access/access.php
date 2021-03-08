@@ -10,7 +10,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 class PhocaDownloadAccess
 {
 	public static function getCategoryAccess($id) {
-		
+
 		$output = array();
 		$db 	= JFactory::getDBO();
 		$query 	= 'SELECT c.access, c.uploaduserid, c.deleteuserid' .
@@ -21,9 +21,9 @@ class PhocaDownloadAccess
 		$output = $db->loadObject();
 		return $output;
 	}
-	
+
 	public static function getCategoryAccessByFileId($id) {
-		
+
 		$output = array();
 		$db 	= JFactory::getDBO();
 		$query 	= 'SELECT c.access, c.uploaduserid, c.deleteuserid' .
@@ -35,9 +35,9 @@ class PhocaDownloadAccess
 		$output = $db->loadObject();
 		return $output;
 	}
-	
 
-	
+
+
 	/**
 	 * Method to check if the user have access to category
 	 * Display or hide the not accessible categories - subcat folder will be not displayed
@@ -56,21 +56,21 @@ class PhocaDownloadAccess
 	 * $rightUsers -> $userId
 	 * $rightGroup -> $userAID
 	 */
-	 
-	
-	 
-	 public static function getUserRight($rightType = 'accessuserid', $rightUsers, $rightGroup = 0, $userAID = array(), $userId = 0 , $additionalParam = 0 ) {	
-	 
+
+
+
+	 public static function getUserRight($rightType = 'accessuserid', $rightUsers = array(), $rightGroup = 0, $userAID = array(), $userId = 0 , $additionalParam = 0 ) {
+
 		$user = JFactory::getUser();
 		// we can get the variables here, not before function call
 		$userAID = $user->getAuthorisedViewLevels();
 		$userId = $user->get('id', 0);
-		
+
 		$guest = 0;
 		if (isset($user->guest) && $user->guest == 1) {
 			$guest = 1;
 		}
-		
+
 		// User ACL
 		$rightGroupAccess = 0;
 		// User can be assigned to different groups
@@ -81,7 +81,7 @@ class PhocaDownloadAccess
 			}
 		}
 		;
-		
+
 		$rightUsersIdArray = array();
 		if (!empty($rightUsers)) {
 			$rightUsersIdArray = explode( ',', trim( $rightUsers ) );
@@ -92,7 +92,7 @@ class PhocaDownloadAccess
 		$rightDisplay = 1;
 		if ($additionalParam == 0) { // We want not to display unaccessable categories ($display_access_category)
 			if ($rightGroup != 0) {
-			
+
 				if ($rightGroupAccess == 0) {
 					$rightDisplay  = 0;
 				} else { // Access level only for one registered user
@@ -117,48 +117,48 @@ class PhocaDownloadAccess
 							$rightDisplay = 0;
 						}
 					} else {
-						
+
 						// Access rights (Default open for all)
 						// Upload and Delete rights (Default closed for all)
 						switch ($rightType) {
 							case 'accessuserid':
 								$rightDisplay = 1;
 							break;
-							
+
 							Default:
 								$rightDisplay = 0;
 							break;
 						}
 					}
-				}	
+				}
 			}
 		}
 		return $rightDisplay;
 	}
 
-	
+
 	/*
 	 *
 	 */
 	public static function getNeededAccessLevels() {
-	
+
 		$paramsC 				= JComponentHelper::getParams('com_phocadownload');
 		$registeredAccessLevel 	= $paramsC->get( 'registered_access_level', array(2,3,4) );
 		return $registeredAccessLevel;
 	}
-	
+
 	/*
 	 * Check if user's groups access rights (e.g. user is public, registered, special) can meet needed Levels
 	 */
-	
+
 	public static function isAccess($userLevels, $neededLevels) {
-		
+
 		$rightGroupAccess = 0;
-		
+
 		// User can be assigned to different groups
 		foreach($userLevels as $keyuserLevels => $valueuserLevels) {
 			foreach($neededLevels as $keyneededLevels => $valueneededLevels) {
-			
+
 				if ((int)$valueneededLevels == (int)$valueuserLevels) {
 					$rightGroupAccess = 1;
 					break;

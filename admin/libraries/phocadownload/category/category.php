@@ -11,7 +11,7 @@ jimport('joomla.application.component.model');
 
 class PhocaDownloadCategory
 {
-	public static function CategoryTreeOption($data, $tree, $id=0, $text='', $currentId) {
+	public static function CategoryTreeOption($data, $tree, $id=0, $text='', $currentId = 0) {
 
 		foreach ($data as $key) {
 			$show_text =  $text . $key->text;

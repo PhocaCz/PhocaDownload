@@ -62,6 +62,14 @@ class PhocaDownloadOrdering
 				$orderingOutput	= 'filename DESC';
 			break;
 
+			case 13:
+				$orderingOutput 	= 'average ASC';
+				$pref = 'r';
+			break;
+			case 14:
+				$orderingOutput 	= 'average DESC';
+				$pref = 'r';
+			break;
 
 			case 15:
 				$orderingOutput 	= 'count ASC';
@@ -72,13 +80,20 @@ class PhocaDownloadOrdering
 				$pref = 'r';
 			break;
 
-			case 13:
-				$orderingOutput 	= 'average ASC';
-				$pref = 'r';
+			case 17:
+				$orderingOutput	= 'publish_up ASC';
 			break;
-			case 14:
-				$orderingOutput 	= 'average DESC';
-				$pref = 'r';
+
+			case 18:
+				$orderingOutput	= 'publish_up DESC';
+			break;
+
+			case 19:
+				$orderingOutput	= 'publish_down ASC';
+			break;
+
+			case 20:
+				$orderingOutput	= 'publish_down DESC';
 			break;
 
 			case 1:
