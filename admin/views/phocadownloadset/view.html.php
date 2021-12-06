@@ -9,16 +9,21 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Language\Text;
 jimport( 'joomla.application.component.view' );
 
-class PhocaDownloadCpViewPhocaDownloadset extends JViewLegacy
+class PhocaDownloadCpViewPhocaDownloadset extends HtmlView
 {
 	function display($tpl = null) {
 
 
-		$uri		= \Joomla\CMS\Uri\Uri::getInstance();
-		$document	= JFactory::getDocument();
-		$db		    = JFactory::getDBO();
+		$uri		= Uri::getInstance();
+		$document	= Factory::getDocument();
+		$db		    = Factory::getDBO();
 
 
 		// Get data from the model
@@ -33,11 +38,11 @@ class PhocaDownloadCpViewPhocaDownloadset extends JViewLegacy
 	}
 
 	function _setToolbar() {
-		JToolbarHelper::title(   JText::_( 'Phoca Download Settings' ), 'settings.png' );
-		JToolbarHelper::save();
-		JToolbarHelper::apply();
-		JToolbarHelper::cancel( 'cancel', 'Close' );
-		JToolbarHelper::help( 'screen.phocadownload', true );
+		ToolbarHelper::title(   Text::_( 'Phoca Download Settings' ), 'settings.png' );
+		ToolbarHelper::save();
+		ToolbarHelper::apply();
+		ToolbarHelper::cancel( 'cancel', 'Close' );
+		ToolbarHelper::help( 'screen.phocadownload', true );
 	}
 }
 ?>

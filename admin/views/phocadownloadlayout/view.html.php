@@ -7,9 +7,14 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Toolbar\Toolbar;
+use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Language\Text;
 jimport( 'joomla.application.component.view' );
 
-class PhocaDownloadCpViewPhocaDownloadLayout extends JViewLegacy
+class PhocaDownloadCpViewPhocaDownloadLayout extends HtmlView
 {
 	protected $state;
 	protected $item;
@@ -34,24 +39,24 @@ class PhocaDownloadCpViewPhocaDownloadLayout extends JViewLegacy
 	protected function addToolbar() {
 
 		require_once JPATH_COMPONENT.'/helpers/'.$this->t['tasks'].'.php';
-		JFactory::getApplication()->input->set('hidemainmenu', true);
-		$bar 		= JToolbar::getInstance('toolbar');
-		$user		= JFactory::getUser();
+		Factory::getApplication()->input->set('hidemainmenu', true);
+		$bar 		= Toolbar::getInstance('toolbar');
+		$user		= Factory::getUser();
 		//$isNew		= ($this->item->id == 0);
 		//$checkedOut	= !($this->item->checked_out == 0 || $this->item->checked_out == $user->get('id'));
 		$class		= ucfirst($this->t['tasks']).'Helper';
 		$canDo		= $class::getActions($this->t);
 
-		JToolbarHelper::title(   JText::_( $this->t['l'].'_LAYOUT' ), 'file-2' );
-		JToolbarHelper::custom($this->t['task'].'.back', 'home-2', '', $this->t['l'].'_CONTROL_PANEL', false);
+		ToolbarHelper::title(   Text::_( $this->t['l'].'_LAYOUT' ), 'file-2' );
+		ToolbarHelper::custom($this->t['task'].'.back', 'home-2', '', $this->t['l'].'_CONTROL_PANEL', false);
 		//JToolbarHelper::cancel('phocadownloadlayout.cancel', 'JTOOLBAR_CANCEL');
 
 		if ($canDo->get('core.edit')) {
-			JToolbarHelper::apply($this->t['task'].'.apply', 'JTOOLBAR_APPLY');
+			ToolbarHelper::apply($this->t['task'].'.apply', 'JTOOLBAR_APPLY');
 			//JToolbarHelper::save('phocapdfplugin.save', 'JTOOLBAR_SAVE');
 		}
-		JToolbarHelper::divider();
-		JToolbarHelper::help( 'screen.'.$this->t['c'], true );
+		ToolbarHelper::divider();
+		ToolbarHelper::help( 'screen.'.$this->t['c'], true );
 	}
 }
 ?>

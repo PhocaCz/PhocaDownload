@@ -9,10 +9,13 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Plugin\PluginHelper;
 jimport('joomla.application.component.model');
 
 
-class PhocaDownloadModelCategories extends JModelLegacy
+class PhocaDownloadModelCategories extends BaseDatabaseModel
 {
 	var $_categories 			= null;
 	var $_most_viewed_docs 		= null;
@@ -20,7 +23,7 @@ class PhocaDownloadModelCategories extends JModelLegacy
 	var $_category_ordering		= null;
 
 	function __construct() {
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		parent::__construct();
 
 		$this->setState('filter.language',$app->getLanguageFilter());
@@ -72,9 +75,9 @@ class PhocaDownloadModelCategories extends JModelLegacy
 	function _getCategoriesListQuery(  ) {
 
 		$wheres		= array();
-		$app		= JFactory::getApplication();
+		$app		= Factory::getApplication();
 		$params 	= $app->getParams();
-		$user 		= JFactory::getUser();
+		$user 		= Factory::getUser();
 		$userLevels	= implode (',', $user->getAuthorisedViewLevels());
 
 
@@ -101,10 +104,10 @@ class PhocaDownloadModelCategories extends JModelLegacy
 
 		if ($pQ == 1) {
 			// GWE MOD - to allow for access restrictions
-			JPluginHelper::importPlugin("phoca");
+			PluginHelper::importPlugin("phoca");
 			//$dispatcher = JEventDispatcher::getInstance();
 			$joins = array();
-			$results = \JFactory::getApplication()->triggerEvent('onGetCategoriesList', array (&$wheres, &$joins,  $params));
+			$results = Factory::getApplication()->triggerEvent('onGetCategoriesList', array (&$wheres, &$joins,  $params));
 			// END GWE MOD
 		}
 
@@ -126,9 +129,9 @@ class PhocaDownloadModelCategories extends JModelLegacy
 	function _getCategoryListQuery( $parentCatId ) {
 
 		$wheres		= array();
-		$app		= JFactory::getApplication();
+		$app		= Factory::getApplication();
 		$params 	= $app->getParams();
-		$user 		= JFactory::getUser();
+		$user 		= Factory::getUser();
 		$userLevels	= implode (',', $user->getAuthorisedViewLevels());
 
 		$pQ					= $params->get( 'enable_plugin_query', 0 );
@@ -154,10 +157,10 @@ class PhocaDownloadModelCategories extends JModelLegacy
 
 		if ($pQ == 1) {
 			// GWE MOD - to allow for access restrictions
-			JPluginHelper::importPlugin("phoca");
+			PluginHelper::importPlugin("phoca");
 			//$dispatcher = JEventDispatcher::getInstance();
 			$joins = array();
-			$results = \JFactory::getApplication()->triggerEvent('onGetCategoryList', array (&$wheres, &$joins,  $params));
+			$results = Factory::getApplication()->triggerEvent('onGetCategoryList', array (&$wheres, &$joins,  $params));
 			// END GWE MOD
 		}
 
@@ -186,9 +189,9 @@ class PhocaDownloadModelCategories extends JModelLegacy
 	function _getMostViewedDocsListQuery() {
 
 		$wheres		= array();
-		$app		= JFactory::getApplication();
+		$app		= Factory::getApplication();
 		$params 	= $app->getParams();
-		$user 		= JFactory::getUser();
+		$user 		= Factory::getUser();
 		$userLevels	= implode (',', $user->getAuthorisedViewLevels());
 
 		$pQ						= $params->get( 'enable_plugin_query', 0 );
@@ -219,7 +222,7 @@ class PhocaDownloadModelCategories extends JModelLegacy
 		}
 
 		// Active
-		$jnow		= JFactory::getDate();
+		$jnow		= Factory::getDate();
 		$now		= $jnow->toSql();
 		$nullDate	= $this->_db->getNullDate();
 		$wheres[] = ' ( c.publish_up = '.$this->_db->Quote($nullDate).' OR c.publish_up <= '.$this->_db->Quote($now).' )';
@@ -229,10 +232,10 @@ class PhocaDownloadModelCategories extends JModelLegacy
 
 		if ($pQ == 1) {
 			// GWE MOD - to allow for access restrictions
-			JPluginHelper::importPlugin("phoca");
+			PluginHelper::importPlugin("phoca");
 			//$dispatcher = JEventDispatcher::getInstance();
 			$joins = array();
-			$results = \JFactory::getApplication()->triggerEvent('onGetMostViewedDocs', array (&$wheres, &$joins, 0, $params));
+			$results = Factory::getApplication()->triggerEvent('onGetMostViewedDocs', array (&$wheres, &$joins, 0, $params));
 			// END GWE MOD
 		}
 
@@ -248,7 +251,7 @@ class PhocaDownloadModelCategories extends JModelLegacy
 	function _getCategoryOrdering() {
 		if (empty($this->_category_ordering)) {
 
-			$app						= JFactory::getApplication();
+			$app						= Factory::getApplication();
 			$params 					= $app->getParams();
 			$ordering					= $params->get( 'category_ordering', 1 );
 			$this->_category_ordering 	= PhocaDownloadOrdering::getOrderingText($ordering, 2);

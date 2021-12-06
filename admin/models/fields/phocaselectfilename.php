@@ -9,9 +9,13 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
  */
 defined('JPATH_BASE') or die;
+use Joomla\CMS\Form\FormField;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 jimport('joomla.form.formfield');
 
-class JFormFieldPhocaSelectFilename extends JFormField
+class JFormFieldPhocaSelectFilename extends FormField
 {
 	public $type = 'PhocaSelectFilename';
 
@@ -23,10 +27,13 @@ class JFormFieldPhocaSelectFilename extends JFormField
 
 		$idA		= 'phFileNameModal';
 		$onchange 	= (string) $this->element['onchange'];
-		$size     = ($v = $this->element['size']) ? ' size="' . $v . '"' : '';
-		$class    = ($v = $this->element['class']) ? ' class="' . $v . '"' : 'class="text_area"';
+		//$size     = ($v = $this->element['size']) ? ' size="' . $v . '"' : '';
+		//$class    = ($v = $this->element['class']) ? ' class="' . $v . '"' : 'class="form-control"';
 		$required = ($v = $this->element['required']) ? ' required="required"' : '';
 
+		// Initialize some field attributes.
+		$attr = $this->element['class'] ? ' class="'.(string) $this->element['class'].'"' : 'form-control';
+		$attr .= $this->element['size'] ? ' size="'.(int) $this->element['size'].'"' : '';
 
 		// Manager
 		$manager		=	$this->element['manager'] ? $this->element['manager'] : '';
@@ -40,8 +47,50 @@ class JFormFieldPhocaSelectFilename extends JFormField
 
 
 
+		HTMLHelper::_('jquery.framework');
+
+		$script = array();
+		$script[] = '	function phocaSelectFileName_'.$this->id.'(title) {';
+		$script[] = '		document.getElementById("'.$this->id.'").value = title;';
+		$script[] = '		'.$onchange;
+		//$script[] = '		jModalClose();';
+
+		$script[] = '   jQuery(\'#'.$idA.'\').modal(\'toggle\');';
+
+		//$script[] = '		SqueezeBox.close();';
+		//$script[] = '		jQuery(\'#'.$idA.'\').modal(\'toggle\');';
+		$script[] = '	}';
+
+		// Add the script to the document head.
+		Factory::getDocument()->addScriptDeclaration(implode("\n", $script));
+
+		$html[] = '<div class="input-append input-group">';
+        $html[] = '<span class="input-append input-group"><input type="text" id="' . $this->id . '" name="' . $this->name . '"'
+            . ' value="' . $this->value . '"' . $attr . ' />';
+        $html[] = '<a href="'.$link.'" role="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#'.$idA.'" title="' . Text::_($textButton) . '">'
+            . '<span class="icon-list icon-white"></span> '
+            . Text::_($textButton) . '</a></span>';
+        $html[] = '</div>'. "\n";
+
+        $html[] = HTMLHelper::_(
+            'bootstrap.renderModal',
+            $idA,
+            array(
+                'url'    => $link,
+                'title'  => Text::_($textButton),
+                'width'  => '',
+                'height' => '',
+                'modalWidth' => '80',
+                'bodyHeight' => '80',
+                'footer' => '<div  class="ph-info-modal"></div><button type="button" class="btn btn-primary" data-bs-dismiss="modal" aria-hidden="true">'
+                    . Text::_('COM_PHOCADOWNLOAD_CLOSE') . '</button>'
+            )
+        );
+
+        return implode("\n", $html);
+
 		// Load the modal behavior script.
-		//Joomla\CMS\HTML\HTMLHelper::_('behavior.modal', 'a.modal_'.$this->id);
+		//JHtml::_('behavior.modal', 'a.modal_'.$this->id);
 
 
 
@@ -54,7 +103,7 @@ class JFormFieldPhocaSelectFilename extends JFormField
 		$script[] = '	}';
 
 		// Add the script to the document head.
-		JFactory::getDocument()->addScriptDeclaration(implode("\n", $script));
+		Factory::getDocument()->addScriptDeclaration(implode("\n", $script));
 
 */
 		/*$html[] = '<div class="fltlft">';
@@ -65,43 +114,40 @@ class JFormFieldPhocaSelectFilename extends JFormField
 		// Create the user select button.
 		$html[] = '<div class="button2-left">';
 		$html[] = '  <div class="blank">';
-		$html[] = '		<a class="modal_'.$this->id.'" title="'.JText::_($textButton).'"' .
+		$html[] = '		<a class="modal_'.$this->id.'" title="'.Text::_($textButton).'"' .
 							' href="'.($this->element['readonly'] ? '' : $link).'"' .
 							' rel="{handler: \'iframe\', size: {x: 780, y: 560}}">';
-		$html[] = '			'.JText::_($textButton).'</a>';
+		$html[] = '			'.Text::_($textButton).'</a>';
 		$html[] = '  </div>';
 		$html[] = '</div>';*/
 
-
-		Joomla\CMS\HTML\HTMLHelper::_('jquery.framework');
-
-		JFactory::getDocument()->addScriptDeclaration('
+	/*	Factory::getDocument()->addScriptDeclaration('
 			function phocaSelectFileName_' . $this->id . '(name) {
 				document.getElementById("' . $this->id . '").value = name;
 				jQuery(\'#'.$idA.'\').modal(\'toggle\');
 			}
-		');
+		');*/
 
-		$html[] = '<span class="input-append"><input type="text" ' . $required . ' id="' . $this->id . '" name="' . $this->name . '"'
+		/*$html[] = '<span class="input-append"><input type="text" ' . $required . ' id="' . $this->id . '" name="' . $this->name . '"'
 			. ' value="' . $this->value . '"' . $size . $class . ' />';
-		$html[] = '<a href="#'.$idA.'" role="button" class="btn btn-primary" data-toggle="modal" title="' . JText::_($textButton) . '">'
+		$html[] = '<a href="#'.$idA.'" role="button" class="btn btn-primary" data-toggle="modal" title="' . Text::_($textButton) . '">'
 			. '<span class="icon-list icon-white"></span> '
-			. JText::_($textButton) . '</a></span>';
-		$html[] = Joomla\CMS\HTML\HTMLHelper::_(
+			. Text::_($textButton) . '</a></span>';
+		$html[] = HTMLHelper::_(
 			'bootstrap.renderModal',
 			$idA,
 			array(
 				'url'    => $link,
-				'title'  => JText::_($textButton),
+				'title'  => Text::_($textButton),
 				'width'  => '700px',
 				'height' => '400px',
 				'modalWidth' => '80',
 				'bodyHeight' => '70',
-				'footer' => '<button type="button" class="btn" data-dismiss="modal" aria-hidden="true">'
-					. JText::_('COM_PHOCADOWNLOAD_CLOSE') . '</button>'
+				'footer' => '<button type="button" class="btn btn-primary" data-bs-dismiss="modal" aria-hidden="true">'
+					. Text::_('COM_PHOCADOWNLOAD_CLOSE') . '</button>'
 			)
-		);
+		);*/
 
-		return implode("\n", $html);
+
 	}
 }

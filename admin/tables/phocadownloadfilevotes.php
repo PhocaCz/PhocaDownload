@@ -10,9 +10,10 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Table\Table;
 jimport('joomla.filter.input');
 
-class TablePhocaDownloadFileVotes extends JTable
+class TablePhocaDownloadFileVotes extends Table
 {
 	function __construct(& $db) {
 		parent::__construct('#__phocadownload_file_votes', 'id', $db);

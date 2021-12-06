@@ -7,11 +7,17 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined( '_JEXEC' ) or die();
+use Joomla\CMS\MVC\Model\ListModel;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Filesystem\Path;
+use Joomla\CMS\Filesystem\Folder;
+use Joomla\CMS\Language\Text;
 jimport( 'joomla.application.component.modellist' );
 jimport( 'joomla.filesystem.folder' );
 jimport( 'joomla.filesystem.file' );
 
-class PhocaDownloadCpModelPhocaDownloadStyles extends JModelList
+class PhocaDownloadCpModelPhocaDownloadStyles extends ListModel
 {
 	protected	$option 		= 'com_phocadownload';
 
@@ -37,7 +43,7 @@ class PhocaDownloadCpModelPhocaDownloadStyles extends JModelList
 	protected function populateState($ordering = 'a.ordering', $direction = 'ASC')
 	{
 		// Initialise variables.
-		$app = JFactory::getApplication('administrator');
+		$app = Factory::getApplication('administrator');
 
 		// Load the filter state.
 		$search = $app->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
@@ -56,7 +62,7 @@ class PhocaDownloadCpModelPhocaDownloadStyles extends JModelList
 		$this->setState('filter.language', $language);
 
 		// Load the parameters.
-		$params = JComponentHelper::getParams('com_phocadownload');
+		$params = ComponentHelper::getParams('com_phocadownload');
 		$this->setState('params', $params);
 
 		// List state information.
@@ -150,7 +156,7 @@ class PhocaDownloadCpModelPhocaDownloadStyles extends JModelList
 	}
 
 	protected function getItemsCheck() {
-		$db = JFactory::getDBO();
+		$db = Factory::getDBO();
 		$query = 'SELECT a.id, a.filename, a.type'
 		.' FROM #__phocadownload_styles AS a';
 		$db->setQuery($query);
@@ -160,7 +166,7 @@ class PhocaDownloadCpModelPhocaDownloadStyles extends JModelList
 
 	public function checkItems() {
 
-		$db = JFactory::getDBO();
+		$db = Factory::getDBO();
 		$files = $this->getFiles();
 		$items = $this->getItemsCheck();
 		if (!empty($files)) {
@@ -221,10 +227,10 @@ class PhocaDownloadCpModelPhocaDownloadStyles extends JModelList
 		jimport('joomla.filesystem.folder');
 
 		$paths		= PhocaDownloadPath::getPathMedia();
-		$path		= JPath::clean($paths->media_css_abs . '/main/');
+		$path		= Path::clean($paths->media_css_abs . '/main/');
 
 		if (is_dir($path)) {
-			$files = JFolder::files($path, '\.css$', false, false);
+			$files = Folder::files($path, '\.css$', false, false);
 
 			foreach ($files as $file) {
 				$fileO 	= new stdClass;
@@ -235,13 +241,13 @@ class PhocaDownloadCpModelPhocaDownloadStyles extends JModelList
 			}
 		} else {
 
-			throw new Exception(JText::_('COM_PHOCADOWNLOAD_ERROR_CSS_FOLDER_NOT_FOUND') . ' (1)', 500);
+			throw new Exception(Text::_('COM_PHOCADOWNLOAD_ERROR_CSS_FOLDER_NOT_FOUND') . ' (1)', 500);
 			return false;
 		}
 
-		$path	= JPath::clean($paths->media_css_abs . '/custom/');
+		$path	= Path::clean($paths->media_css_abs . '/custom/');
 		if (is_dir($path)) {
-			$files = JFolder::files($path, '\.css$', false, false);
+			$files = Folder::files($path, '\.css$', false, false);
 
 			foreach ($files as $file) {
 				$fileO 	= new stdClass;
@@ -252,7 +258,7 @@ class PhocaDownloadCpModelPhocaDownloadStyles extends JModelList
 			}
 		} else {
 
-			throw new Exception(JText::_('COM_PHOCADOWNLOAD_ERROR_CSS_FOLDER_NOT_FOUND') . ' (2)', 500);
+			throw new Exception(Text::_('COM_PHOCADOWNLOAD_ERROR_CSS_FOLDER_NOT_FOUND') . ' (2)', 500);
 			return false;
 		}
 		return $result;

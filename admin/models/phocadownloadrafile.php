@@ -7,11 +7,16 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\Model\ListModel;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\Application\ApplicationHelper;
 jimport('joomla.application.component.modellist');
 
 
 
-class PhocaDownloadCpModelPhocaDownloadRaFile extends JModelList
+class PhocaDownloadCpModelPhocaDownloadRaFile extends ListModel
 {
 	protected	$option 		= 'com_phocadownload';
 	public 		$typeAlias 		= 'com_phocadownload.phocadownloadrafile';
@@ -45,7 +50,7 @@ class PhocaDownloadCpModelPhocaDownloadRaFile extends JModelList
 	protected function populateState($ordering = 'ua.username', $direction = 'ASC')
 	{
 		// Initialise variables.
-		$app = JFactory::getApplication('administrator');
+		$app = Factory::getApplication('administrator');
 
 		// Load the filter state.
 		$search = $app->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
@@ -64,7 +69,7 @@ class PhocaDownloadCpModelPhocaDownloadRaFile extends JModelList
 		$this->setState('filter.language', $language);
 */
 		// Load the parameters.
-		$params = JComponentHelper::getParams('com_phocadownload');
+		$params = ComponentHelper::getParams('com_phocadownload');
 		$this->setState('params', $params);
 
 
@@ -187,7 +192,7 @@ class PhocaDownloadCpModelPhocaDownloadRaFile extends JModelList
 	function delete($cid = array()) {
 
 		if (count( $cid )) {
-			\Joomla\Utilities\ArrayHelper::toInteger($cid);
+			ArrayHelper::toInteger($cid);
 			$cids = implode( ',', $cid );
 
 			//Select affected catids
@@ -201,7 +206,7 @@ class PhocaDownloadCpModelPhocaDownloadRaFile extends JModelList
 				. ' WHERE id IN ( '.$cids.' )';
 			$this->_db->setQuery( $query );
 			if(!$this->_db->execute()) {
-				throw new Exception($this->_db->getErrorMsg(), 500);
+				throw new Exception($this->_db->getError());
 				return false;
 			}
 
@@ -218,14 +223,14 @@ class PhocaDownloadCpModelPhocaDownloadRaFile extends JModelList
 	protected function prepareTable(&$table)
 	{
 		jimport('joomla.filter.output');
-		$date = JFactory::getDate();
-		$user = JFactory::getUser();
+		$date = Factory::getDate();
+		$user = Factory::getUser();
 
 		$table->title		= htmlspecialchars_decode($table->title, ENT_QUOTES);
-		$table->alias		= JApplicationHelper::stringURLSafe($table->alias);
+		$table->alias		= ApplicationHelper::stringURLSafe($table->alias);
 
 		if (empty($table->alias)) {
-			$table->alias = JApplicationHelper::stringURLSafe($table->title);
+			$table->alias = ApplicationHelper::stringURLSafe($table->title);
 		}
 
 		if (empty($table->id)) {
@@ -234,7 +239,7 @@ class PhocaDownloadCpModelPhocaDownloadRaFile extends JModelList
 
 			// Set ordering to the last item if not set
 			if (empty($table->ordering)) {
-				$db = JFactory::getDbo();
+				$db = Factory::getDbo();
 				$db->setQuery('SELECT MAX(ordering) FROM #__phocadownload_file_votes');
 				$max = $db->loadResult();
 

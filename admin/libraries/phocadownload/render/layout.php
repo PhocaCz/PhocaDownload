@@ -9,6 +9,13 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Filesystem\Path;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
 class PhocaDownloadLayout
 {
 	public $params;
@@ -19,7 +26,7 @@ class PhocaDownloadLayout
 
 	public function __construct() {
 		if (empty($params)) {
-			$this->params = JComponentHelper::getParams('com_phocadownload') ;
+			$this->params = ComponentHelper::getParams('com_phocadownload') ;
 		}
 
 		if ($this->filePath == '') {
@@ -31,7 +38,7 @@ class PhocaDownloadLayout
 		}
 
 		if ($this->cssImagePath == '') {
-			$this->cssImagePath	= str_replace ( '../', JURI::base(true).'/', $this->iconPath['orig_rel_ds']);
+			$this->cssImagePath	= str_replace ( '../', Uri::base(true).'/', $this->iconPath['orig_rel_ds']);
 		}
 
 		if ($this->fileAbsPath == '') {
@@ -102,8 +109,8 @@ class PhocaDownloadLayout
 
 		$size = '';
 		if ($filename != '') {
-			$absFile = str_replace('\\', '/', JPath::clean($this->fileAbsPath . $filename));
-			if (JFile::exists($absFile)) {
+			$absFile = str_replace('\\', '/', Path::clean($this->fileAbsPath . $filename));
+			if (File::exists($absFile)) {
 				$size = PhocaDownloadFile::getFileSizeReadable(filesize($absFile));
 			} else {
 				$size = '';
@@ -115,8 +122,8 @@ class PhocaDownloadLayout
 
 	public function getProtectEmail($email) {
 
-		$email = str_replace('@', '['.JText::_('COM_PHOCADOWNLOAD_AT').']', $email);
-		$email = str_replace('.', '['.JText::_('COM_PHOCADOWNLOAD_DOT').']', $email);
+		$email = str_replace('@', '['.Text::_('COM_PHOCADOWNLOAD_AT').']', $email);
+		$email = str_replace('.', '['.Text::_('COM_PHOCADOWNLOAD_DOT').']', $email);
 
 		return $email;
 	}
@@ -130,7 +137,7 @@ class PhocaDownloadLayout
 				$dateO = PhocaDownloadFile::getFileTime($filename, $ddt);
 			}
 		} else {
-			$dateO = JHTML::Date($date, JText::_('DATE_FORMAT_LC3'));
+			$dateO = HTMLHelper::Date($date, Text::_('DATE_FORMAT_LC3'));
 		}
 
 		return $dateO;
@@ -152,7 +159,7 @@ class PhocaDownloadLayout
 	public function displayTags($fileId, $type = 0) {
 
 		$o = '';
-		$db = JFactory::getDBO();
+		$db = Factory::getDBO();
 
 		$query = 'SELECT a.id, a.title, a.link_ext, a.link_cat'
 		.' FROM #__phocadownload_tags AS a'
@@ -238,7 +245,7 @@ class PhocaDownloadLayout
 						case '3.5': $c = 'pd-j-35'; break;
 						case '4.x': $c = 'pd-j-4x'; break;
 						case '4.0': $c = 'pd-j-40'; break;
-						default: $c = 'label-default badge-default';break;
+						default: $c = 'label-default bg-default';break;
 					}
 
 					$o[] = '<span class="label badge '.$c.'">'.$v.'</span>';
@@ -254,7 +261,7 @@ class PhocaDownloadLayout
 
 		$o = '';
 
-		$app			= JFactory::getApplication();
+		$app			= Factory::getApplication();
 
 
 		if ($view == 0) {

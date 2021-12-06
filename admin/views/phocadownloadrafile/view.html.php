@@ -7,9 +7,14 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Toolbar\Toolbar;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Language\Text;
 jimport( 'joomla.application.component.view' );
 
-class PhocaDownloadCpViewPhocaDownloadRaFile extends JViewLegacy
+class PhocaDownloadCpViewPhocaDownloadRaFile extends HtmlView
 {
 	protected $items;
 	protected $pagination;
@@ -43,8 +48,8 @@ class PhocaDownloadCpViewPhocaDownloadRaFile extends JViewLegacy
 
 		require_once JPATH_COMPONENT.'/helpers/'.$this->t['task'].'.php';
 
-		$bar 		= JToolbar::getInstance('toolbar');
-		$user		= JFactory::getUser();
+		$bar 		= Toolbar::getInstance('toolbar');
+		$user		= Factory::getUser();
 		$state	= $this->get('State');
 		//$isNew		= ($this->item->id == 0);
 		//$checkedOut	= !($this->item->checked_out == 0 || $this->item->checked_out == $user->get('id'));
@@ -52,23 +57,23 @@ class PhocaDownloadCpViewPhocaDownloadRaFile extends JViewLegacy
 		$canDo		= $class::getActions($this->t, $state->get('filter.category_id'));
 
 
-		JToolbarHelper::title( JText::_( $this->t['l'].'_FILE_RATING' ), 'star' );
+		ToolbarHelper::title( Text::_( $this->t['l'].'_FILE_RATING' ), 'star' );
 
 		if ($canDo->get('core.delete')) {
-			JToolbarHelper::deleteList(  JText::_( $this->t['l'].'_WARNING_DELETE_ITEMS' ), $this->t['task'].'.delete', $this->t['l'].'_DELETE');
+			ToolbarHelper::deleteList(  Text::_( $this->t['l'].'_WARNING_DELETE_ITEMS' ), $this->t['task'].'.delete', $this->t['l'].'_DELETE');
 		}
-		JToolbarHelper::divider();
-		JToolbarHelper::help( 'screen.'.$this->t['c'], true );
+		ToolbarHelper::divider();
+		ToolbarHelper::help( 'screen.'.$this->t['c'], true );
 	}
 
 	protected function getSortFields() {
 		return array(
 
-			'ua.username' 	=> JText::_($this->t['l'] . '_USER'),
-			'file_title'	=> JText::_($this->t['l'] . '_FILENAME'),
-			'category_title' 	=> JText::_($this->t['l'] . '_CATEGORY'),
-			'a.rating' 		=> JText::_($this->t['l'] . '_RATING'),
-			'a.id' 			=> JText::_('JGRID_HEADING_ID')
+			'ua.username' 	=> Text::_($this->t['l'] . '_USER'),
+			'file_title'	=> Text::_($this->t['l'] . '_FILENAME'),
+			'category_title' 	=> Text::_($this->t['l'] . '_CATEGORY'),
+			'a.rating' 		=> Text::_($this->t['l'] . '_RATING'),
+			'a.id' 			=> Text::_('JGRID_HEADING_ID')
 		);
 	}
 }

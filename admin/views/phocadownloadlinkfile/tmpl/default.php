@@ -7,12 +7,15 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die('Restricted access');
-$user 	= JFactory::getUser();
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+$user 	= Factory::getUser();
 
 //Ordering allowed ?
 $ordering = ($this->t['lists']['order'] == 'a.ordering');
 
-Joomla\CMS\HTML\HTMLHelper::_('behavior.tooltip');
+JHtml::_('behavior.tooltip');
 
 if ($this->t['type'] == 0) {
 	$view = 'file';
@@ -113,11 +116,11 @@ $js .= 'var fileIdOutput;
 			window.parent.jInsertEditorText(tag, \''. htmlspecialchars($this->t['ename']).'\');
 			window.parent.SqueezeBox.close();
 		} else {
-			alert("'. JText::_( 'COM_PHOCADOWNLOAD_YOU_MUST_SELECT_CATEGORY', true ).'");
+			alert("'. Text::_( 'COM_PHOCADOWNLOAD_YOU_MUST_SELECT_CATEGORY', true ).'");
 			return false;
 		}';
 		} else {
-		$js .= 'alert("'. JText::_( 'COM_PHOCADOWNLOAD_YOU_MUST_SELECT_FILE', true ).'");
+		$js .= 'alert("'. Text::_( 'COM_PHOCADOWNLOAD_YOU_MUST_SELECT_FILE', true ).'");
 		return false;';
 		}
 	$js .= '}';
@@ -128,23 +131,23 @@ JFactory::getDocument()->addScriptDeclaration($js); ?>
 <div id="phocadownload-links">
 <fieldset class="adminform">
 
-<legend><?php echo JText::_( 'COM_PHOCADOWNLOAD_FILE' ); ?></legend>
+<legend><?php echo Text::_( 'COM_PHOCADOWNLOAD_FILE' ); ?></legend>
 <form action="<?php echo $this->t['request_url']; ?>" method="post" name="adminForm" id="adminForm">
 		<?php if ($this->t['type'] != 4) { ?>
 		<table class="admintable" width="100%">
 		<tr>
 			<td class="key" align="right" width="20%">
 				<label for="title">
-					<?php echo JText::_( 'COM_PHOCADOWNLOAD_FILTER' ); ?>
+					<?php echo Text::_( 'COM_PHOCADOWNLOAD_FILTER' ); ?>
 				</label>
 			</td>
 			<td width="80%">
-				<div class="input-append"><input type="text" name="search" id="search" value="<?php echo PhocaDownloadUtils::filterValue($this->t['lists']['search'], 'text');?>" class="text_area" onchange="document.adminForm.submit();" /> <button class="btn" onclick="this.form.submit();"><?php echo JText::_('COM_PHOCADOWNLOAD_FILTER'); ?></button> <button class="btn" onclick="document.getElementById('search').value='';this.form.submit();"><?php echo JText::_('COM_PHOCADOWNLOAD_RESET'); ?></button></div>
+				<div class="input-append"><input type="text" name="search" id="search" value="<?php echo PhocaDownloadUtils::filterValue($this->t['lists']['search'], 'text');?>" class="form-control" onchange="document.adminForm.submit();" /> <button class="btn btn-primary" onclick="this.form.submit();"><?php echo Text::_('COM_PHOCADOWNLOAD_FILTER'); ?></button> <button class="btn btn-primary" onclick="document.getElementById('search').value='';this.form.submit();"><?php echo Text::_('COM_PHOCADOWNLOAD_RESET'); ?></button></div>
 			</td>
 		</tr>
 		<tr>
 			<td class="key" align="right" nowrap="nowrap">
-			<label for="title" nowrap="nowrap"><?php echo JText::_( 'COM_PHOCADOWNLOAD_CATEGORY' ); ?></label>
+			<label for="title" nowrap="nowrap"><?php echo Text::_( 'COM_PHOCADOWNLOAD_CATEGORY' ); ?></label>
 			</td>
 			<td><?php echo $this->t['lists']['catid']; ?></td>
 		</tr>
@@ -156,13 +159,13 @@ JFactory::getDocument()->addScriptDeclaration($js); ?>
 		<table class="adminlist plg-button-tbl">
 			<thead>
 				<tr>
-					<th width="5%"><?php echo JText::_( 'COM_PHOCADOWNLOAD_NUM' ); ?></th>
+					<th width="5%"><?php echo Text::_( 'COM_PHOCADOWNLOAD_NUM' ); ?></th>
 					<th width="5%"></th>
-					<th class="title" width="60%"><?php echo Joomla\CMS\HTML\HTMLHelper::_('grid.sort',  'COM_PHOCADOWNLOAD_TITLE', 'a.title', $this->t['lists']['order_Dir'], $this->t['lists']['order'] ); ?>
+					<th class="title" width="60%"><?php echo HTMLHelper::_('grid.sort',  'COM_PHOCADOWNLOAD_TITLE', 'a.title', $this->t['lists']['order_Dir'], $this->t['lists']['order'] ); ?>
 					</th>
-					<th width="20%" nowrap="nowrap"><?php echo Joomla\CMS\HTML\HTMLHelper::_('grid.sort',  'COM_PHOCADOWNLOAD_FILENAME', 'a.filename', $this->t['lists']['order_Dir'], $this->t['lists']['order'] ); ?>
+					<th width="20%" nowrap="nowrap"><?php echo HTMLHelper::_('grid.sort',  'COM_PHOCADOWNLOAD_FILENAME', 'a.filename', $this->t['lists']['order_Dir'], $this->t['lists']['order'] ); ?>
 					</th>
-					<th width="10%" nowrap="nowrap"><?php echo Joomla\CMS\HTML\HTMLHelper::_('grid.sort',  'COM_PHOCADOWNLOAD_ID', 'a.id', $this->t['lists']['order_Dir'], $this->t['lists']['order'] ); ?>
+					<th width="10%" nowrap="nowrap"><?php echo HTMLHelper::_('grid.sort',  'COM_PHOCADOWNLOAD_ID', 'a.id', $this->t['lists']['order_Dir'], $this->t['lists']['order'] ); ?>
 					</th>
 				</tr>
 			</thead>
@@ -216,7 +219,7 @@ if ($this->t['type'] == 0) {
 	<tr >
 		<td class="key" align="right">
 			<label for="title">
-				<?php echo JText::_( 'COM_PHOCADOWNLOAD_TITLE' ); ?>
+				<?php echo Text::_( 'COM_PHOCADOWNLOAD_TITLE' ); ?>
 			</label>
 		</td>
 		<td>
@@ -226,22 +229,22 @@ if ($this->t['type'] == 0) {
 	<tr >
 		<td class="key" align="right">
 			<label for="target">
-				<?php echo JText::_( 'COM_PHOCADOWNLOAD_TARGET' ); ?>
+				<?php echo Text::_( 'COM_PHOCADOWNLOAD_TARGET' ); ?>
 			</label>
 		</td>
 		<td>
 			<select name="target" id="target">
-			<option value="s" selected="selected"><?php echo JText::_( 'COM_PHOCADOWNLOAD_TARGET_SELF' ); ?></option>
-			<option value="b"><?php echo JText::_( 'COM_PHOCADOWNLOAD_TARGET_BLANK' ); ?></option>
-			<option value="t"><?php echo JText::_( 'COM_PHOCADOWNLOAD_TARGET_TOP' ); ?></option>
-			<option value="p"><?php echo JText::_( 'COM_PHOCADOWNLOAD_TARGET_PARENT' ); ?></option>
+			<option value="s" selected="selected"><?php echo Text::_( 'COM_PHOCADOWNLOAD_TARGET_SELF' ); ?></option>
+			<option value="b"><?php echo Text::_( 'COM_PHOCADOWNLOAD_TARGET_BLANK' ); ?></option>
+			<option value="t"><?php echo Text::_( 'COM_PHOCADOWNLOAD_TARGET_TOP' ); ?></option>
+			<option value="p"><?php echo Text::_( 'COM_PHOCADOWNLOAD_TARGET_PARENT' ); ?></option>
 			</select>
 		</td>
 	</tr>
 
 	<tr>
 		<td>&nbsp;</td>
-		<td align="right"><button  class="btn btn-primary plg-button-insert " onclick="insertLink();return false;"><span class="icon-ok"></span> <?php echo JText::_( 'COM_PHOCADOWNLOAD_INSERT_CODE' ); ?></button></td>
+		<td align="right"><button  class="btn btn-primary plg-button-insert " onclick="insertLink();return false;"><span class="icon-ok"></span> <?php echo Text::_( 'COM_PHOCADOWNLOAD_INSERT_CODE' ); ?></button></td>
 	</tr>
 </table>
 </form>
@@ -257,7 +260,7 @@ if ($this->t['type'] == 0) {
 	<tr >
 		<td class="key" align="right">
 			<label for="title">
-				<?php echo JText::_( 'COM_PHOCADOWNLOAD_TITLE' ); ?>
+				<?php echo Text::_( 'COM_PHOCADOWNLOAD_TITLE' ); ?>
 			</label>
 		</td>
 		<td>
@@ -271,7 +274,7 @@ if ($this->t['type'] == 0) {
 	<tr >
 		<td class="key" align="right">
 			<label for="playerwidth">
-				<?php echo JText::_( 'COM_PHOCADOWNLOAD_PLAYER_WIDTH' ); ?>
+				<?php echo Text::_( 'COM_PHOCADOWNLOAD_PLAYER_WIDTH' ); ?>
 			</label>
 		</td>
 		<td>
@@ -282,7 +285,7 @@ if ($this->t['type'] == 0) {
 	<tr >
 		<td class="key" align="right">
 			<label for="playerheight">
-				<?php echo JText::_( 'COM_PHOCADOWNLOAD_PLAYER_HEIGHT' ); ?>
+				<?php echo Text::_( 'COM_PHOCADOWNLOAD_PLAYER_HEIGHT' ); ?>
 			</label>
 		</td>
 		<td>
@@ -293,7 +296,7 @@ if ($this->t['type'] == 0) {
 	<tr >
 		<td class="key" align="right">
 			<label for="playerheightmp3">
-				<?php echo JText::_( 'COM_PHOCADOWNLOAD_PLAYER_HEIGHT_MP3' ); ?>
+				<?php echo Text::_( 'COM_PHOCADOWNLOAD_PLAYER_HEIGHT_MP3' ); ?>
 			</label>
 		</td>
 		<td>
@@ -301,11 +304,11 @@ if ($this->t['type'] == 0) {
 		</td>
 	</tr>
 	<?php if ($this->t['type'] == 1) { ?>
-		<tr><td colspan="2"><?php echo JText::_('COM_PHOCADOWNLOAD_WARNING_PLAYER_SIZE')?></td></tr>
+		<tr><td colspan="2"><?php echo Text::_('COM_PHOCADOWNLOAD_WARNING_PLAYER_SIZE')?></td></tr>
 	<?php } ?>
 	<tr>
 		<td>&nbsp;</td>
-		<td align="right"><button  class="btn btn-primary plg-button-insert " onclick="insertLink();return false;"><span class="icon-ok"></span> <?php echo JText::_( 'COM_PHOCADOWNLOAD_INSERT_CODE' ); ?></button></td>
+		<td align="right"><button  class="btn btn-primary plg-button-insert " onclick="insertLink();return false;"><span class="icon-ok"></span> <?php echo Text::_( 'COM_PHOCADOWNLOAD_INSERT_CODE' ); ?></button></td>
 	</tr>
 </table>
 </form>
@@ -321,7 +324,7 @@ if ($this->t['type'] == 0) {
 	<tr >
 		<td class="key" align="right">
 			<label for="title">
-				<?php echo JText::_( 'COM_PHOCADOWNLOAD_TITLE' ); ?>
+				<?php echo Text::_( 'COM_PHOCADOWNLOAD_TITLE' ); ?>
 			</label>
 		</td>
 		<td>
@@ -335,7 +338,7 @@ if ($this->t['type'] == 0) {
 	<tr >
 		<td class="key" align="right">
 			<label for="previewwidth">
-				<?php echo JText::_( 'COM_PHOCADOWNLOAD_PREVIEW_WIDTH' ); ?>
+				<?php echo Text::_( 'COM_PHOCADOWNLOAD_PREVIEW_WIDTH' ); ?>
 			</label>
 		</td>
 		<td>
@@ -346,7 +349,7 @@ if ($this->t['type'] == 0) {
 	<tr >
 		<td class="key" align="right">
 			<label for="previewheight">
-				<?php echo JText::_( 'COM_PHOCADOWNLOAD_PREVIEW_HEIGHT' ); ?>
+				<?php echo Text::_( 'COM_PHOCADOWNLOAD_PREVIEW_HEIGHT' ); ?>
 			</label>
 		</td>
 		<td>
@@ -356,7 +359,7 @@ if ($this->t['type'] == 0) {
 
 	<tr>
 		<td>&nbsp;</td>
-		<td align="right"><button class="btn btn-primary plg-button-insert " onclick="insertLink();return false;"><span class="icon-ok"></span> <?php echo JText::_( 'COM_PHOCADOWNLOAD_INSERT_CODE' ); ?></button></td>
+		<td align="right"><button class="btn btn-primary plg-button-insert " onclick="insertLink();return false;"><span class="icon-ok"></span> <?php echo Text::_( 'COM_PHOCADOWNLOAD_INSERT_CODE' ); ?></button></td>
 	</tr>
 </table>
 </form>
@@ -370,14 +373,14 @@ if ($this->t['type'] == 0) {
 
 	<tr>
 		<td class="key" align="right" nowrap="nowrap">
-		<label for="title" nowrap="nowrap"><?php echo JText::_( 'COM_PHOCADOWNLOAD_CATEGORY' ); ?></label>
+		<label for="title" nowrap="nowrap"><?php echo Text::_( 'COM_PHOCADOWNLOAD_CATEGORY' ); ?></label>
 		</td>
 		<td><?php echo $this->t['lists']['catid']; ?></td>
 	</tr>
 	<tr >
 		<td class="key" align="right">
 			<label for="title">
-				<?php echo JText::_( 'COM_PHOCADOWNLOAD_LIMIT' ); ?>
+				<?php echo Text::_( 'COM_PHOCADOWNLOAD_LIMIT' ); ?>
 			</label>
 		</td>
 		<td>
@@ -391,7 +394,7 @@ if ($this->t['type'] == 0) {
 
 	<tr>
 		<td>&nbsp;</td>
-		<td align="right"><button class="btn btn-primary plg-button-insert " onclick="insertLink();return false;"><span class="icon-ok"></span> <?php echo JText::_( 'COM_PHOCADOWNLOAD_INSERT_CODE' ); ?></button></td>
+		<td align="right"><button class="btn btn-primary plg-button-insert " onclick="insertLink();return false;"><span class="icon-ok"></span> <?php echo Text::_( 'COM_PHOCADOWNLOAD_INSERT_CODE' ); ?></button></td>
 	</tr>
 </table>
 </form>
@@ -400,5 +403,5 @@ if ($this->t['type'] == 0) {
 }
 	?>
 </fieldset>
-<div style="text-align:left;"><span class="icon-16-edb-back"><a style="text-decoration:underline" href="<?php echo $this->t['backlink'];?>"><?php echo JText::_('COM_PHOCADOWNLOAD_BACK')?></a></span></div>
+<div style="text-align:left;"><span class="icon-16-edb-back"><a style="text-decoration:underline" href="<?php echo $this->t['backlink'];?>"><?php echo Text::_('COM_PHOCADOWNLOAD_BACK')?></a></span></div>
 </div>

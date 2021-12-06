@@ -9,17 +9,18 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 jimport('joomla.application.component.model');
 
 
-class PhocaDownloadModelRatingFileA extends JModelLegacy
+class PhocaDownloadModelRatingFileA extends BaseDatabaseModel
 {
-	
+
 	function rate($data) {
 		$row = $this->getTable('phocadownloadfilevotes');
-		
+
 		if (!$row->bind($data)) {
-			throw new Exception($this->_db->getErrorMsg(), 500);
+			throw new Exception($this->_db->getError());
 			return false;
 		}
 
@@ -33,20 +34,20 @@ class PhocaDownloadModelRatingFileA extends JModelLegacy
 		}
 
 		if (!$row->check()) {
-			throw new Exception($this->_db->getErrorMsg(), 500);
+			throw new Exception($this->_db->getError());
 			return false;
 		}
 
 		if (!$row->store()) {
-			throw new Exception($this->_db->getErrorMsg(), 500);
+			throw new Exception($this->_db->getError());
 			return false;
 		}
-		
+
 		// Update the Vote Statistics
 		if (!PhocaDownloadRate::updateVoteStatisticsFile( $data['fileid'])) {
 			return false;
 		}
-		
+
 		return true;
 	}
 }

@@ -9,9 +9,10 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 jimport('joomla.application.component.model');
 
-class PhocaDownloadModelPhocaDownloadLinkCat extends JModelLegacy
+class PhocaDownloadModelPhocaDownloadLinkCat extends BaseDatabaseModel
 {
 	//var $_data_sec;
 	var $_data_cat;

@@ -7,6 +7,7 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Factory;
 
 class PhocaDownloadSettings
 {
@@ -77,7 +78,7 @@ class PhocaDownloadSettings
 
 	public static function getLayoutText($type) {
 
-		$db = JFactory::getDBO();
+		$db = Factory::getDBO();
 
 		$query = 'SELECT a.'.$type
 		.' FROM #__phocadownload_layout AS a';

@@ -7,9 +7,12 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Language\Text;
 jimport( 'joomla.application.component.view' );
 
-class PhocaDownloadCpViewPhocaDownloadStat extends JViewLegacy
+class PhocaDownloadCpViewPhocaDownloadStat extends HtmlView
 {
 	protected $items;
 	protected $pagination;
@@ -50,19 +53,19 @@ class PhocaDownloadCpViewPhocaDownloadStat extends JViewLegacy
 		require_once JPATH_COMPONENT.'/helpers/'.$this->t['task'].'.php';
 		$class	= ucfirst($this->t['task']).'Helper';
 		$canDo	= $class::getActions($this->t);
-		JToolbarHelper::title( JText::_( $this->t['l'].'_STATISTICS' ), 'chart' );
-		JToolbarHelper::custom($this->t['task'].'.back', 'home-2', '', $this->t['l'].'_CONTROL_PANEL', false);
+		ToolbarHelper::title( Text::_( $this->t['l'].'_STATISTICS' ), 'chart' );
+		ToolbarHelper::custom($this->t['task'].'.back', 'home-2', '', $this->t['l'].'_CONTROL_PANEL', false);
 	//	JToolbarHelper::cancel($this->t['task'].'.cancel', 'JTOOLBAR_CLOSE');
-		JToolbarHelper::divider();
-		JToolbarHelper::help( 'screen.'.$this->t['c'], true );
+		ToolbarHelper::divider();
+		ToolbarHelper::help( 'screen.'.$this->t['c'], true );
 	}
 
 	protected function getSortFields() {
 		return array(
 			/*'a.ordering'	=> JText::_('JGRID_HEADING_ORDERING'),*/
-			'a.title' 		=> JText::_($this->t['l'] . '_TITLE'),
-			'a.filename' 	=> JText::_($this->t['l'] . '_FILENAME'),
-			'a.hits' 		=> JText::_($this->t['l'] . '_DOWNLOADS')
+			'a.title' 		=> Text::_($this->t['l'] . '_TITLE'),
+			'a.filename' 	=> Text::_($this->t['l'] . '_FILENAME'),
+			'a.hits' 		=> Text::_($this->t['l'] . '_DOWNLOADS')
 			/*'a.id' 			=> JText::_('JGRID_HEADING_ID')*/
 		);
 	}

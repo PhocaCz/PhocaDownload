@@ -7,9 +7,13 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Toolbar\Toolbar;
 jimport( 'joomla.application.component.view' );
 
-class PhocaDownloadCpViewPhocaDownloadDownloads extends JViewLegacy
+class PhocaDownloadCpViewPhocaDownloadDownloads extends HtmlView
 {
 	protected $items;
 	protected $pagination;
@@ -50,33 +54,33 @@ class PhocaDownloadCpViewPhocaDownloadDownloads extends JViewLegacy
 		$class	= ucfirst($this->t['tasks']).'Helper';
 		$canDo	= $class::getActions($this->t);
 
-		JToolbarHelper::title( JText::_( $this->t['l'].'_DOWNLOADS' ), 'download' );
+		ToolbarHelper::title( Text::_( $this->t['l'].'_DOWNLOADS' ), 'download' );
 
 		if ($canDo->get('core.edit')){
 
-			$bar = JToolbar::getInstance('toolbar');
+			$bar = Toolbar::getInstance('toolbar');
 
-			$dhtml = '<button class="btn btn-small" onclick="javascript:if(document.adminForm.boxchecked.value==0){alert(\''.JText::_('COM_PHOCADOWNLOAD_SELECT_ITEM_RESET').'\');}else{if(confirm(\''.JText::_('COM_PHOCADOWNLOAD_WARNING_RESET_DOWNLOADS').'\')){submitbutton(\''.$this->t['tasks'].'.reset\');}}" ><i class="icon-reset" title="'.JText::_('COM_PHOCADOWNLOAD_RESET').'"></i> '.JText::_('COM_PHOCADOWNLOAD_RESET').'</button>';
+			$dhtml = '<button class="btn btn-small" onclick="javascript:if(document.adminForm.boxchecked.value==0){alert(\''.Text::_('COM_PHOCADOWNLOAD_SELECT_ITEM_RESET').'\');}else{if(confirm(\''.Text::_('COM_PHOCADOWNLOAD_WARNING_RESET_DOWNLOADS').'\')){submitbutton(\''.$this->t['tasks'].'.reset\');}}" ><i class="icon-reset" title="'.Text::_('COM_PHOCADOWNLOAD_RESET').'"></i> '.Text::_('COM_PHOCADOWNLOAD_RESET').'</button>';
 			$bar->appendButton('Custom', $dhtml);
-			JToolbarHelper::divider();
+			ToolbarHelper::divider();
 			//JToolbarHelper::custom('phocadownloaduserstat.reset', 'reset.png', '', 'COM_PHOCADOWNLOAD_RESET' , false);
 
             if ($canDo->get('core.delete')) {
-			    JToolbarHelper::deleteList( JText::_( $this->t['l'].'_WARNING_DELETE_ITEMS' ), $this->t['tasks'].'.delete', $this->t['l'].'_DELETE');
+			    ToolbarHelper::deleteList( Text::_( $this->t['l'].'_WARNING_DELETE_ITEMS' ), $this->t['tasks'].'.delete', $this->t['l'].'_DELETE');
 		    }
 		}
 
 		//JToolbarHelper::cancel($this->t['tasks'].'.cancel', 'JTOOLBAR_CLOSE');
 
-		JToolbarHelper::help( 'screen.'.$this->t['c'], true );
+		ToolbarHelper::help( 'screen.'.$this->t['c'], true );
 	}
 
 	protected function getSortFields() {
 		return array(
 
-			'username'		=> JText::_($this->t['l'] . '_USERNAME'),
-			'a.count'	 	=> JText::_($this->t['l'] . '_COUNT'),
-			'filename'		=> JText::_($this->t['l'] . '_FILENAME')
+			'username'		=> Text::_($this->t['l'] . '_USERNAME'),
+			'a.count'	 	=> Text::_($this->t['l'] . '_COUNT'),
+			'filename'		=> Text::_($this->t['l'] . '_FILENAME')
 
 		);
 	}

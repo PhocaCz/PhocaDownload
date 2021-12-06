@@ -7,6 +7,9 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 
 class PhocaDownloadRenderAdmin
 {
@@ -14,12 +17,12 @@ class PhocaDownloadRenderAdmin
 	public static function quickIconButton( $link, $image, $text, $imgUrl ) {
 		return '<div class="thumbnails ph-icon">'
 		.'<a class="thumbnail ph-icon-inside" href="'.$link.'">'
-		.Joomla\CMS\HTML\HTMLHelper::_('image', $imgUrl . $image, $text )
+		.HTMLHelper::_('image', $imgUrl . $image, $text )
 		.'<br /><span>'.$text.'</span></a></div>'. "\n";
 	}
 
 	public static function getLinks() {
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		$option = $app->input->get('option');
 		$oT		= strtoupper($option);
 
@@ -61,7 +64,7 @@ class PhocaDownloadRenderAdmin
 
 		$o = '';
 		$o .= '<p>&nbsp;</p>';
-		$o .= '<h4 style="margin-bottom:5px;">'.JText::_($oT.'_USEFUL_LINKS'). '</h4>';
+		$o .= '<h4 style="margin-bottom:5px;">'.Text::_($oT.'_USEFUL_LINKS'). '</h4>';
 		$o .= '<ul>';
 		foreach ($links as $k => $v) {
 			$o .= '<li><a style="text-decoration:underline" href="'.$v[1].'" target="_blank">'.$v[0].'</a></li>';
@@ -70,7 +73,7 @@ class PhocaDownloadRenderAdmin
 
 		$o .= '<div>';
 		$o .= '<p>&nbsp;</p>';
-		$o .= '<h4 style="margin-bottom:5px;">'.JText::_($oT.'_USEFUL_TIPS'). '</h4>';
+		$o .= '<h4 style="margin-bottom:5px;">'.Text::_($oT.'_USEFUL_TIPS'). '</h4>';
 
 		$m = mt_rand(0, 10);
 		if ((int)$m > 0) {
@@ -80,7 +83,7 @@ class PhocaDownloadRenderAdmin
 			for ($i = 0; $i<3; $i++) {
 				$numO = $num[$i];
 				$o .= '<div style="float:left;width:33%;margin:0 auto;">';
-				$o .= '<div><a style="text-decoration:underline;" href="https://www.phoca.cz/'.$components[$numO][1].'" target="_blank">'.Joomla\CMS\HTML\HTMLHelper::_('image',  'media/'.$option.'/images/administrator/icon-box-'.$components[$numO][2].'.png', ''). '</a></div>';
+				$o .= '<div><a style="text-decoration:underline;" href="https://www.phoca.cz/'.$components[$numO][1].'" target="_blank">'.JHtml::_('image',  'media/'.$option.'/images/administrator/icon-box-'.$components[$numO][2].'.png', ''). '</a></div>';
 				$o .= '<div style="margin-top:-10px;"><small><a style="text-decoration:underline;" href="https://www.phoca.cz/'.$components[$numO][1].'" target="_blank">'.$components[$numO][0].'</a></small></div>';
 				$o .= '</div>';
 			}
@@ -90,12 +93,12 @@ class PhocaDownloadRenderAdmin
 			$num = range(0,(count($banners) - 1 ));
 			shuffle($num);
 			$numO = $num[0];
-			$o .= '<div><a href="https://www.phoca.cz/'.$banners[$numO][1].'" target="_blank">'.Joomla\CMS\HTML\HTMLHelper::_('image',  'media/'.$option.'/images/administrator/b-'.$banners[$numO][2].'.png', ''). '</a></div>';
+			$o .= '<div><a href="https://www.phoca.cz/'.$banners[$numO][1].'" target="_blank">'.JHtml::_('image',  'media/'.$option.'/images/administrator/b-'.$banners[$numO][2].'.png', ''). '</a></div>';
 
 		}
 
 		$o .= '<p>&nbsp;</p>';
-		$o .= '<h4 style="margin-bottom:5px;">'.JText::_($oT.'_PLEASE_READ'). '</h4>';
+		$o .= '<h4 style="margin-bottom:5px;">'.Text::_($oT.'_PLEASE_READ'). '</h4>';
 		$o .= '<div><a style="text-decoration:underline" href="https://www.phoca.cz/phoca-needs-your-help/" target="_blank">'.JText::_($oT.'_PHOCA_NEEDS_YOUR_HELP'). '</a></div>';
 
 		$o .= '</div>';

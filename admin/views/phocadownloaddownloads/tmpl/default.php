@@ -8,8 +8,13 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Layout\LayoutHelper;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Router\Route;
 $r = $this->r;
-$user		= JFactory::getUser();
+$user		= Factory::getUser();
 $userId		= $user->get('id');
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
@@ -35,8 +40,8 @@ echo $r->startForm($this->t['o'], $this->t['tasks'], 'adminForm');
 echo $r->startMainContainer();
 
 if (isset($this->tmpl['notapproved']->count) && (int)$this->tmpl['notapproved']->count > 0 ) {
-	echo '<div class="alert alert-error"><a class="close" data-dismiss="alert" href="#">&times;</a>'.JText::_($this->t['l'].'_NOT_APPROVED_FILES_COUNT').': '
-	.(int)$this->tmpl['notapproved']->count.'</div>';
+	echo '<div class="alert alert-danger alert-dismissible">'.Text::_($this->t['l'].'_NOT_APPROVED_FILES_COUNT').': '
+	.(int)$this->tmpl['notapproved']->count.'<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>';
 }
 /*
 echo $r->startFilterBar();
@@ -52,7 +57,7 @@ echo $r->selectFilterPublished('JOPTION_SELECT_PUBLISHED', $this->state->get('fi
 echo $r->endFilterBar();
 
 echo $r->endFilterBar();*/
-echo JLayoutHelper::render('joomla.searchtools.default', array('view' => $this));
+echo LayoutHelper::render('joomla.searchtools.default', array('view' => $this));
 
 echo $r->startTable('categoryList');
 
@@ -63,13 +68,13 @@ echo $r->secondColumnHeader($listDirn, $listOrder, 'a', true);
 
 //echo '<th class="nowrap center hidden-phone ph-ordering"></th>';//$r->thOrderingXML('JGRID_HEADING_ORDERING', $listDirn, $listOrder);
 //echo $r->thCheck('JGLOBAL_CHECK_ALL');
-echo '<th class="ph-uploaduser">'.Joomla\CMS\HTML\HTMLHelper::_('searchtools.sort', $this->t['l'].'_USER', 'username', $listDirn, $listOrder ).'</th>'."\n";
-//echo '<th class="ph-title-stat">'.Joomla\CMS\HTML\HTMLHelper::_('searchtools.sort',  	$this->t['l'].'_TITLE', 'd.title', $listDirn, $listOrder ).'</th>'."\n";
-echo '<th class="ph-filename-stat">'.Joomla\CMS\HTML\HTMLHelper::_('searchtools.sort',  	$this->t['l'].'_FILE', 'filename', $listDirn, $listOrder ).'</th>'."\n";
+echo '<th class="ph-uploaduser">'.HTMLHelper::_('searchtools.sort', $this->t['l'].'_USER', 'username', $listDirn, $listOrder ).'</th>'."\n";
+//echo '<th class="ph-title-stat">'.JHtml::_('searchtools.sort',  	$this->t['l'].'_TITLE', 'd.title', $listDirn, $listOrder ).'</th>'."\n";
+echo '<th class="ph-filename-stat">'.HTMLHelper::_('searchtools.sort',  	$this->t['l'].'_FILE', 'filename', $listDirn, $listOrder ).'</th>'."\n";
 
-//echo '<th class="ph-uploaduser">'.Joomla\CMS\HTML\HTMLHelper::_('searchtools.sort', $this->t['l'].'_USERNAME', 'username', $listDirn, $listOrder ).'</th>'."\n";
-echo '<th class="ph-count">'.Joomla\CMS\HTML\HTMLHelper::_('searchtools.sort',  $this->t['l'].'_COUNT', 'a.count', $listDirn, $listOrder ).'</th>'."\n";
-//echo '<th class="ph-id">'.Joomla\CMS\HTML\HTMLHelper::_('searchtools.sort',  		$this->t['l'].'_ID', 'a.id', $listDirn, $listOrder ).'</th>'."\n";
+//echo '<th class="ph-uploaduser">'.JHtml::_('searchtools.sort', $this->t['l'].'_USERNAME', 'username', $listDirn, $listOrder ).'</th>'."\n";
+echo '<th class="ph-count">'.HTMLHelper::_('searchtools.sort',  $this->t['l'].'_COUNT', 'a.count', $listDirn, $listOrder ).'</th>'."\n";
+//echo '<th class="ph-id">'.JHtml::_('searchtools.sort',  		$this->t['l'].'_ID', 'a.id', $listDirn, $listOrder ).'</th>'."\n";
 
 echo $r->endTblHeader();
 
@@ -92,9 +97,9 @@ $canCreate		= $user->authorise('core.create', $this->t['o']);
 $canEdit		= $user->authorise('core.edit', $this->t['o']);
 $canCheckin		= $user->authorise('core.manage', 'com_checkin') || $item->checked_out==$user->get('id') || $item->checked_out==0;
 $canChange		= $user->authorise('core.edit.state', $this->t['o']) && $canCheckin;
-$linkEdit 		= JRoute::_( $urlEdit. $item->id );
+$linkEdit 		= Route::_( $urlEdit. $item->id );
 
-$linkCat	= JRoute::_( 'index.php?option='.$this->t['o'].'&task='.$this->t['c'].'cat.edit&id='.(int) $item->category_id );
+$linkCat	= Route::_( 'index.php?option='.$this->t['o'].'&task='.$this->t['c'].'cat.edit&id='.(int) $item->category_id );
 $canEditCat	= $user->authorise('core.edit', $this->t['o']);*/
 $canChange = false;
 $orderkey   	= 0;
@@ -106,7 +111,7 @@ echo $r->secondColumn($i, $item->id, $canChange, $saveOrder, $orderkey, $item->o
 $usrO = $item->usernameno;
 if ($item->username) {$usrO = $usrO . ' ('.$item->username.')';}
 if (!$usrO) {
-	$usrO = JText::_('COM_PHOCADOWNLOAD_GUEST');
+	$usrO = Text::_('COM_PHOCADOWNLOAD_GUEST');
 }
 echo $r->td($usrO, "small hidden-phone");
 

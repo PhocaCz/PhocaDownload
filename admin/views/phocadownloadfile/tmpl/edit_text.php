@@ -7,51 +7,57 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
  defined('_JEXEC') or die;
-Joomla\CMS\HTML\HTMLHelper::_('behavior.tooltip');
-Joomla\CMS\HTML\HTMLHelper::_('behavior.formvalidation');
-Joomla\CMS\HTML\HTMLHelper::_('behavior.keepalive');
-Joomla\CMS\HTML\HTMLHelper::_('formbehavior.chosen', 'select');
-
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+/*JHtml::_('behavior.tooltip');
+JHtml::_('behavior.formvalidation');
+JHtml::_('behavior.keepalive');
+JHtml::_('formbehavior.chosen', 'select');
+*/
 $extlink 	= 0;
 if (isset($this->item->extid) && $this->item->extid != '') {
 	$extlink = 1;
 }
-$class		= $this->t['n'] . 'RenderAdminView';
+
 $r = $this->r;
 
-?>
-<script type="text/javascript">
-Joomla.submitbutton = function(task){
-	if (task != '<?php echo $this->t['task'] ?>.cancel' && document.getElementById('jform_catid').value == '') {
-		alert('<?php echo JText::_('JGLOBAL_VALIDATION_FORM_FAILED', true) . ' - '. JText::_($this->t['l'].'_ERROR_CATEGORY_NOT_SELECTED', true);?>');
-	} else if (task == '<?php echo $this->t['task'] ?>.cancel' || document.formvalidator.isValid(document.getElementById('adminForm'))) {
-		Joomla.submitform(task, document.getElementById('adminForm'));
+
+JFactory::getDocument()->addScriptDeclaration(
+
+'Joomla.submitbutton = function(task) {
+	if (task != "'. $this->t['task'].'.cancel" && document.getElementById("jform_catid").value == "") {
+		alert("'. $this->escape(Text::_('JGLOBAL_VALIDATION_FORM_FAILED')) . ' - '. $this->escape(Text::_('COM_PHOCADOWNLOAD_CATEGORY_NOT_SELECTED')).'");
+	} else if (task == "'. $this->t['task'].'.cancel" || document.formvalidator.isValid(document.getElementById("adminForm"))) {
+		Joomla.submitform(task, document.getElementById("adminForm"));
+	} else {
+        Joomla.renderMessages({"error": ["'. Text::_('JGLOBAL_VALIDATION_FORM_FAILED', true).'"]});
 	}
-	else {
-		Joomla.renderMessages({"error": ["<?php echo JText::_('JGLOBAL_VALIDATION_FORM_FAILED', true);?>"]});
-		<?php /* alert('<?php echo JText::_('JGLOBAL_VALIDATION_FORM_FAILED', true);?>'); */ ?>
-	}
-}
-</script><?php
+}'
+
+);
+
 echo $r->startForm($this->t['o'], $this->t['task'], $this->item->id, 'adminForm', 'adminForm');
 // First Column
-echo '<div class="span10 form-horizontal">';
+echo '<div class="span12 form-horizontal">';
 $tabs = array (
-'general' 		=> JText::_($this->t['l'].'_GENERAL_OPTIONS'),
-'publishing' 	=> JText::_($this->t['l'].'_PUBLISHING_OPTIONS')
+'general' 		=> Text::_($this->t['l'].'_GENERAL_OPTIONS'),
+'publishing' 	=> Text::_($this->t['l'].'_PUBLISHING_OPTIONS')
 );
 echo $r->navigation($tabs);
+
+$formArray = array ('title', 'alias');
+echo $r->groupHeader($this->form, $formArray);
 
 echo $r->startTabs();
 
 echo $r->startTab('general', $tabs['general'], 'active');
-$formArray = array ('title', 'alias', 'catid', 'ordering','access');
+$formArray = array ( 'catid', 'ordering','access');
 echo $r->group($this->form, $formArray);
 $formArray = array('description');
 echo $r->group($this->form, $formArray, 1);
-echo '</div>'. "\n";
+echo $r->endTab();
 
-echo '<div class="tab-pane" id="publishing">'."\n";
+echo $r->startTab('publishing', $tabs['publishing']);
 foreach($this->form->getFieldset('publish') as $field) {
 	echo '<div class="control-group">';
 	if (!$field->hidden) {
@@ -61,12 +67,13 @@ foreach($this->form->getFieldset('publish') as $field) {
 	echo $field->input;
 	echo '</div></div>';
 }
-echo '</div>';
+echo $r->endTab();
 
-echo '</div>';//end tab content
+
+echo $r->endTabs();
 echo '</div>';//end span10
 // Second Column
-echo '<div class="span2"></div>';//end span2
+//echo '<div class="span2"></div>';//end span2
 
 echo '<input type="hidden" name="jform[filename]" id="jform_filename" value="-" />'
 	.'<input type="hidden" name="jform[textonly]" id="jform_textonly" value="1" />';

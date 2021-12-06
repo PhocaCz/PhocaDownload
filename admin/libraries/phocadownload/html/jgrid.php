@@ -12,13 +12,16 @@ jimport('joomla.html.html.grid');
 jimport('joomla.html.html.jgrid');
 */
 defined('_JEXEC') or die();
-if (! class_exists('JHtmlJGrid')) {
-	require_once( JPATH_SITE.'/libraries/joomla/html/html/jgrid.php' );
+
+use Joomla\CMS\HTML\Helpers\JGrid;
+use Joomla\CMS\HTML\HTMLHelper;
+if (! class_exists('HTMLHelperJGrid')) {
+	require_once( JPATH_SITE.'/libraries/src/HTML/Helpers/JGrid.php' );
 }
 
-class PhocaDownloadJGrid extends JHtmlJGrid
+class PhocaDownloadJGrid extends JGrid
 {
-	
+
 	public static function approved($value, $i, $prefix = '', $enabled = true, $checkbox='cb')
 	{
 		if (is_array($prefix)) {
@@ -32,6 +35,6 @@ class PhocaDownloadJGrid extends JHtmlJGrid
 			0	=> array('approve',		'COM_PHOCADOWNLOAD_NOT_APPROVED',	'COM_PHOCADOWNLOAD_APPROVE_ITEM',	'COM_PHOCADOWNLOAD_NOT_APPROVED',	false,	'unpublish',	'unpublish')
 		);
 		return self::state($states, $value, $i, $prefix, $enabled, true, $checkbox);
-	}	
+	}
 }
 ?>

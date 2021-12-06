@@ -7,17 +7,25 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined( '_JEXEC' ) or die();
+use Joomla\CMS\MVC\Model\AdminModel;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Table\Table;
+use Joomla\Registry\Registry;
+use Joomla\CMS\Application\ApplicationHelper;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\Language\Text;
 jimport('joomla.application.component.modeladmin');
 use Joomla\String\StringHelper;
 
-class PhocaDownloadCpModelPhocaDownloadCat extends JModelAdmin
+class PhocaDownloadCpModelPhocaDownloadCat extends AdminModel
 {
 	protected	$option 		= 'com_phocadownload';
 	protected 	$text_prefix	= 'com_phocadownload';
 	public 		$typeAlias 		= 'com_phocadownload.phocadownloadcat';
 
 	protected function canDelete($record) {
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 
 		if (!empty($record->catid)) {
 			return $user->authorise('core.delete', 'com_phocadownload.phocadownloadcat.'.(int) $record->catid);
@@ -27,7 +35,7 @@ class PhocaDownloadCpModelPhocaDownloadCat extends JModelAdmin
 	}
 
 	protected function canEditState($record){
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 
 		if (!empty($record->catid)) {
 			return $user->authorise('core.edit.state', 'com_phocadownload.phocadownloadcat.'.(int) $record->catid);
@@ -37,12 +45,12 @@ class PhocaDownloadCpModelPhocaDownloadCat extends JModelAdmin
 	}
 
 	public function getTable($type = 'PhocaDownloadCat', $prefix = 'Table', $config = array()){
-		return JTable::getInstance($type, $prefix, $config);
+		return Table::getInstance($type, $prefix, $config);
 	}
 
 	public function getForm($data = array(), $loadData = true) {
 
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		$form 	= $this->loadForm('com_phocadownload.phocadownloadcat', 'phocadownloadcat', array('control' => 'jform', 'load_data' => $loadData));
 		if (empty($form)) {
 			return false;
@@ -53,7 +61,7 @@ class PhocaDownloadCpModelPhocaDownloadCat extends JModelAdmin
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_phocadownload.edit.phocadownloadcat.data', array());
+		$data = Factory::getApplication()->getUserState('com_phocadownload.edit.phocadownloadcat.data', array());
 
 		if (empty($data)) {
 			$data = $this->getItem();
@@ -66,7 +74,7 @@ class PhocaDownloadCpModelPhocaDownloadCat extends JModelAdmin
 		if ($item = parent::getItem($pk)) {
 			// Convert the params field to an array.
 			if (isset($item->metadata)) {
-				$registry = new JRegistry;
+				$registry = new Registry;
 				$registry->loadString($item->metadata);
 				$item->metadata = $registry->toArray();
 			}
@@ -77,16 +85,16 @@ class PhocaDownloadCpModelPhocaDownloadCat extends JModelAdmin
 
 	protected function prepareTable($table){
 		jimport('joomla.filter.output');
-		$date = JFactory::getDate();
-		$user = JFactory::getUser();
+		$date = Factory::getDate();
+		$user = Factory::getUser();
 
 		$table->title		= htmlspecialchars_decode($table->title, ENT_QUOTES);
-		$table->alias		= JApplicationHelper::stringURLSafe($table->alias);
+		$table->alias		= ApplicationHelper::stringURLSafe($table->alias);
 
 		$table->parent_id	= PhocaDownloadUtils::getIntFromString($table->parent_id);
 
 		if (empty($table->alias)) {
-			$table->alias = JApplicationHelper::stringURLSafe($table->title);
+			$table->alias = ApplicationHelper::stringURLSafe($table->title);
 		}
 
 		if (empty($table->id)) {
@@ -95,7 +103,7 @@ class PhocaDownloadCpModelPhocaDownloadCat extends JModelAdmin
 
 			// Set ordering to the last item if not set
 			if (empty($table->ordering)) {
-				$db = JFactory::getDbo();
+				$db = Factory::getDbo();
 				$db->setQuery('SELECT MAX(ordering) FROM #__phocadownload_categories');
 				$max = $db->loadResult();
 
@@ -159,7 +167,7 @@ class PhocaDownloadCpModelPhocaDownloadCat extends JModelAdmin
 		$isNew		= true;
 
 		// Include the content plugins for the on save events.
-		JPluginHelper::importPlugin('content');
+		PluginHelper::importPlugin('content');
 
 		// Load the row if saving an existing record.
 		if ($pk > 0) {
@@ -174,7 +182,7 @@ class PhocaDownloadCpModelPhocaDownloadCat extends JModelAdmin
 		}
 
 		if(intval($table->date) == 0) {
-			$table->date = JFactory::getDate()->toSql();
+			$table->date = Factory::getDate()->toSql();
 		}
 
 		// Prepare the row for saving
@@ -202,7 +210,7 @@ class PhocaDownloadCpModelPhocaDownloadCat extends JModelAdmin
 
 
 		// Clean the cache.
-		$cache = JFactory::getCache($this->option);
+		$cache = Factory::getCache($this->option);
 		$cache->clean();
 
 		// Trigger the onContentAfterSave event.
@@ -225,12 +233,12 @@ class PhocaDownloadCpModelPhocaDownloadCat extends JModelAdmin
 
 
 	function delete(&$cid = array()) {
-		$app	= JFactory::getApplication();
-		$db 	= JFactory::getDBO();
+		$app	= Factory::getApplication();
+		$db 	= Factory::getDBO();
 
 		$result = false;
 		if (count( $cid )) {
-			\Joomla\Utilities\ArrayHelper::toInteger($cid);
+			ArrayHelper::toInteger($cid);
 			$cids = implode( ',', $cid );
 
 			// FIRST - if there are subcategories - - - - -
@@ -261,7 +269,7 @@ class PhocaDownloadCpModelPhocaDownloadCat extends JModelAdmin
 
 			// Images with new cid - - - - -
 			if (count( $cid )) {
-				\Joomla\Utilities\ArrayHelper::toInteger($cid);
+				ArrayHelper::toInteger($cid);
 				$cids = implode( ',', $cid );
 
 				// Select id's from phocadownload tables. If the category has some images, don't delete it
@@ -295,7 +303,7 @@ class PhocaDownloadCpModelPhocaDownloadCat extends JModelAdmin
 					. ' WHERE id IN ( '.$cids.' )';
 					$db->setQuery( $query );
 					if (!$db->execute()) {
-						throw new Exception($this->_db->getErrorMsg(), 500);
+						throw new Exception($db->getError());
 						return false;
 					}
 
@@ -315,12 +323,12 @@ class PhocaDownloadCpModelPhocaDownloadCat extends JModelAdmin
 			if (count( $err_cat ) || count( $err_img )) {
 				if (count( $err_cat )) {
 					$cids_cat = implode( ", ", $err_cat );
-					$msg .= JText::plural( 'COM_PHOCADOWNLOAD_ERROR_DELETE_CONTAIN_CAT', $cids_cat );
+					$msg .= Text::plural( 'COM_PHOCADOWNLOAD_ERROR_DELETE_CONTAIN_CAT', $cids_cat );
 				}
 
 				if (count( $err_img )) {
 					$cids_img = implode( ", ", $err_img );
-					$msg .= JText::plural( 'COM_PHOCADOWNLOAD_ERROR_DELETE_CONTAIN_FILE', $cids_img );
+					$msg .= Text::plural( 'COM_PHOCADOWNLOAD_ERROR_DELETE_CONTAIN_FILE', $cids_img );
 				}
 				$link = 'index.php?option=com_phocadownload&view=phocadownloadcats';
 				$app->redirect($link, $msg);
@@ -333,13 +341,13 @@ class PhocaDownloadCpModelPhocaDownloadCat extends JModelAdmin
 	{
 		$categoryId	= (int) $value;
 
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$table	= $this->getTable();
 		$db		= $this->getDbo();
 
 		// Check that the category exists
 		if ($categoryId) {
-			$categoryTable = JTable::getInstance('PhocaDownloadCat', 'Table');
+			$categoryTable = Table::getInstance('PhocaDownloadCat', 'Table');
 
 			if (!$categoryTable->load($categoryId)) {
 				if ($error = $categoryTable->getError()) {
@@ -350,7 +358,7 @@ class PhocaDownloadCpModelPhocaDownloadCat extends JModelAdmin
 				}
 				else {
 
-					throw new Exception(JText::_('JLIB_APPLICATION_ERROR_BATCH_MOVE_CATEGORY_NOT_FOUND'), 500);
+					throw new Exception(Text::_('JLIB_APPLICATION_ERROR_BATCH_MOVE_CATEGORY_NOT_FOUND'), 500);
 					return false;
 				}
 			}
@@ -359,16 +367,16 @@ class PhocaDownloadCpModelPhocaDownloadCat extends JModelAdmin
 		//if (empty($categoryId)) {
 		if (!isset($categoryId)) {
 
-			throw new Exception(JText::_('JLIB_APPLICATION_ERROR_BATCH_MOVE_CATEGORY_NOT_FOUND'), 500);
+			throw new Exception(Text::_('JLIB_APPLICATION_ERROR_BATCH_MOVE_CATEGORY_NOT_FOUND'), 500);
 			return false;
 		}
 
 		// Check that the user has create permission for the component
-		$extension	= JFactory::getApplication()->input->getCmd('option');
-		$user		= JFactory::getUser();
+		$extension	= Factory::getApplication()->input->getCmd('option');
+		$user		= Factory::getUser();
 		if (!$user->authorise('core.create', $extension)) {
 
-			throw new Exception(JText::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_CREATE'), 500);
+			throw new Exception(Text::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_CREATE'), 500);
 			return false;
 		}
 
@@ -391,7 +399,7 @@ class PhocaDownloadCpModelPhocaDownloadCat extends JModelAdmin
 				}
 				else {
 					// Not fatal error
-					$app->enqueueMessage(JText::sprintf('JLIB_APPLICATION_ERROR_BATCH_MOVE_ROW_NOT_FOUND', $pk), 'error');
+					$app->enqueueMessage(Text::sprintf('JLIB_APPLICATION_ERROR_BATCH_MOVE_ROW_NOT_FOUND', $pk), 'error');
 					continue;
 				}
 			}
@@ -441,13 +449,13 @@ class PhocaDownloadCpModelPhocaDownloadCat extends JModelAdmin
 	protected function batchMove($value, $pks, $contexts)
 	{
 		$categoryId	= (int) $value;
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$table	= $this->getTable();
 		//$db		= $this->getDbo();
 
 		// Check that the category exists
 		if ($categoryId) {
-			$categoryTable = JTable::getInstance('PhocaDownloadCat', 'Table');
+			$categoryTable = Table::getInstance('PhocaDownloadCat', 'Table');
 			if (!$categoryTable->load($categoryId)) {
 				if ($error = $categoryTable->getError()) {
 					// Fatal error
@@ -456,7 +464,7 @@ class PhocaDownloadCpModelPhocaDownloadCat extends JModelAdmin
 				}
 				else {
 
-					throw new Exception(JText::_('JLIB_APPLICATION_ERROR_BATCH_MOVE_CATEGORY_NOT_FOUND'), 500);
+					throw new Exception(Text::_('JLIB_APPLICATION_ERROR_BATCH_MOVE_CATEGORY_NOT_FOUND'), 500);
 					return false;
 				}
 			}
@@ -464,22 +472,22 @@ class PhocaDownloadCpModelPhocaDownloadCat extends JModelAdmin
 
 		//if (empty($categoryId)) {
 		if (!isset($categoryId)) {
-			throw new Exception(JText::_('JLIB_APPLICATION_ERROR_BATCH_MOVE_CATEGORY_NOT_FOUND'), 500);
+			throw new Exception(Text::_('JLIB_APPLICATION_ERROR_BATCH_MOVE_CATEGORY_NOT_FOUND'), 500);
 			return false;
 		}
 
 		// Check that user has create and edit permission for the component
-		$extension	= JFactory::getApplication()->input->getCmd('option');
-		$user		= JFactory::getUser();
+		$extension	= Factory::getApplication()->input->getCmd('option');
+		$user		= Factory::getUser();
 		if (!$user->authorise('core.create', $extension)) {
 
-			throw new Exception(JText::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_CREATE'), 500);
+			throw new Exception(Text::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_CREATE'), 500);
 			return false;
 		}
 
 		if (!$user->authorise('core.edit', $extension)) {
 
-			throw new Exception(JText::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_EDIT'), 500);
+			throw new Exception(Text::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_EDIT'), 500);
 			return false;
 		}
 
@@ -496,7 +504,7 @@ class PhocaDownloadCpModelPhocaDownloadCat extends JModelAdmin
 				else {
 					// Not fatal error
 
-					$app->enqueueMessage(JText::sprintf('JLIB_APPLICATION_ERROR_BATCH_MOVE_ROW_NOT_FOUND', $pk), 'error');
+					$app->enqueueMessage(Text::sprintf('JLIB_APPLICATION_ERROR_BATCH_MOVE_ROW_NOT_FOUND', $pk), 'error');
 					continue;
 				}
 			}
@@ -508,7 +516,7 @@ class PhocaDownloadCpModelPhocaDownloadCat extends JModelAdmin
 			// Cannot move the node to be a child of itself.
 			if ((int)$table->id == (int)$categoryId) {
 
-				throw new Exception(JText::sprintf('JLIB_DATABASE_ERROR_INVALID_NODE_RECURSION', get_class($pk)), 500);
+				throw new Exception(Text::sprintf('JLIB_DATABASE_ERROR_INVALID_NODE_RECURSION', get_class($pk)), 500);
 				return false;
 			}
 
@@ -547,7 +555,7 @@ class PhocaDownloadCpModelPhocaDownloadCat extends JModelAdmin
 
 		// Sanitize user ids.
 		$pks = array_unique($pks);
-		\Joomla\Utilities\ArrayHelper::toInteger($pks);
+		ArrayHelper::toInteger($pks);
 
 		// Remove any values of zero.
 		if (array_search(0, $pks, true)) {
@@ -555,7 +563,7 @@ class PhocaDownloadCpModelPhocaDownloadCat extends JModelAdmin
 		}
 
 		if (empty($pks)) {
-			throw new Exception(JText::_('JGLOBAL_NO_ITEM_SELECTED'), 500);
+			throw new Exception(Text::_('JGLOBAL_NO_ITEM_SELECTED'), 500);
 			return false;
 		}
 
@@ -582,7 +590,7 @@ class PhocaDownloadCpModelPhocaDownloadCat extends JModelAdmin
 		if ($comCat)
 		//if (isset($commands['category_id']))
 		{
-			$cmd = \Joomla\Utilities\ArrayHelper::getValue($commands, 'move_copy', 'c');
+			$cmd = ArrayHelper::getValue($commands, 'move_copy', 'c');
 
 			if ($cmd == 'c')
 			{
@@ -615,7 +623,7 @@ class PhocaDownloadCpModelPhocaDownloadCat extends JModelAdmin
 
 		if (!$done) {
 
-			throw new Exception(JText::_('JLIB_APPLICATION_ERROR_INSUFFICIENT_BATCH_INFORMATION'), 500);
+			throw new Exception(Text::_('JLIB_APPLICATION_ERROR_INSUFFICIENT_BATCH_INFORMATION'), 500);
 			return false;
 		}
 

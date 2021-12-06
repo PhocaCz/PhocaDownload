@@ -15,7 +15,26 @@
 		<maintainer><![CDATA[ Phoca.cz ]]></maintainer>
 		<maintainerurl>https://www.phoca.cz/</maintainerurl>
 		<section>Updates</section>
-		<targetplatform name="joomla" version="3.9"/>
+		<targetplatform name="joomla" version="3.([89]|10)"/>
+		<client>administrator</client>
+	</update>
+	<update>
+		<name><![CDATA[ Phoca Download ]]></name>
+		<description><![CDATA[ Phoca Download is download manager for Joomla! CMS. It includes component, modules and plugins and allows displaying files on website which can be downloaded (previewed, played) by website visitors. ]]></description>
+		<element>com_phocadownload</element>
+		<type>component</type>
+		<version>4.0.0Beta</version>
+		<infourl title="Phoca Download 4.0.0Beta">http://www.phoca.cz/version/index.php?phocadownload=4.0.0Beta</infourl>
+		<downloads>
+			<downloadurl type="full" format="zip">https://github.com/PhocaCz/PhocaDownload/releases/download/4.0.0Beta/com_phocadownload_v4.0.0Beta.zip</downloadurl>
+		</downloads>
+		<tags>
+			<tag>stable</tag>
+		</tags>
+		<maintainer><![CDATA[ Phoca.cz ]]></maintainer>
+		<maintainerurl>https://www.phoca.cz/</maintainerurl>
+		<section>Updates</section>
+		<targetplatform name="joomla" version="4.[0]"/>
 		<client>administrator</client>
 	</update>
 </updates>

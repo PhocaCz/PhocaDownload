@@ -7,9 +7,14 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Toolbar\Toolbar;
 jimport( 'joomla.application.component.view' );
 
-class PhocaDownloadCpViewPhocaDownloadLogs extends JViewLegacy
+class PhocaDownloadCpViewPhocaDownloadLogs extends HtmlView
 {
 	protected $items;
 	protected $pagination;
@@ -29,7 +34,7 @@ class PhocaDownloadCpViewPhocaDownloadLogs extends JViewLegacy
         $this->state		= $this->get('State');
         $this->filterForm   = $this->get('FilterForm');
         $this->activeFilters = $this->get('ActiveFilters');
-		$this->t['p']       = JComponentHelper::getParams('com_phocadownload');
+		$this->t['p']       = ComponentHelper::getParams('com_phocadownload');
 
 
 
@@ -51,35 +56,35 @@ class PhocaDownloadCpViewPhocaDownloadLogs extends JViewLegacy
 		$class	= ucfirst($this->t['tasks']).'Helper';
 		$canDo	= $class::getActions($this->t);
 
-		JToolbarHelper::title( JText::_( $this->t['l'].'_LOGGING' ), 'file-2' );
+		ToolbarHelper::title( Text::_( $this->t['l'].'_LOGGING' ), 'file-2' );
 
 		if ($canDo->get('core.edit')){
 
-			$bar = JToolbar::getInstance('toolbar');
+			$bar = Toolbar::getInstance('toolbar');
 
-			$dhtml = '<button class="btn btn-small" onclick="javascript:if(confirm(\''.addslashes(JText::_('COM_PHOCADOWNLOAD_WARNING_RESET_LOG')).'\')){submitbutton(\'phocadownloadlogs.reset\');}" ><i class="icon-approve" title="'.JText::_('COM_PHOCADOWNLOAD_RESET_LOG').'"></i> '.JText::_('COM_PHOCADOWNLOAD_RESET_LOG').'</button>';
+			$dhtml = '<button class="btn btn-small" onclick="javascript:if(confirm(\''.addslashes(Text::_('COM_PHOCADOWNLOAD_WARNING_RESET_LOG')).'\')){submitbutton(\'phocadownloadlogs.reset\');}" ><i class="icon-approve" title="'.Text::_('COM_PHOCADOWNLOAD_RESET_LOG').'"></i> '.Text::_('COM_PHOCADOWNLOAD_RESET_LOG').'</button>';
 			$bar->appendButton('Custom', $dhtml);
-			JToolbarHelper::divider();
+			ToolbarHelper::divider();
 			//JToolbarHelper::custom('phocadownloaduserstat.reset', 'reset.png', '', 'COM_PHOCADOWNLOAD_RESET' , false);
 		}
 
 		//JToolbarHelper::cancel($this->t['tasks'].'.cancel', 'JTOOLBAR_CLOSE');
 
-		JToolbarHelper::help( 'screen.'.$this->t['c'], true );
+		ToolbarHelper::help( 'screen.'.$this->t['c'], true );
 	}
 
 	protected function getSortFields() {
 		return array(
-			'a.date'	 	=> JText::_($this->t['l'] . '_DATE'),
+			'a.date'	 	=> Text::_($this->t['l'] . '_DATE'),
 			//'usernameno'	=> JText::_($this->t['l'] . '_USER'),
-			'username'		=> JText::_($this->t['l'] . '_USERNAME'),
+			'username'		=> Text::_($this->t['l'] . '_USERNAME'),
 			//'d.title'		=> JText::_($this->t['l'] . '_TITLE'),
-			'filename'		=> JText::_($this->t['l'] . '_FILENAME'),
-			'category_id'	=> JText::_($this->t['l'] . '_CATEGORY'),
-			'a.ip'	 		=> JText::_($this->t['l'] . '_IP'),
-			'a.page'	 	=> JText::_($this->t['l'] . '_PAGE'),
-			'a.type'	 	=> JText::_($this->t['l'] . '_TYPE'),
-			'a.id'	 		=> JText::_($this->t['l'] . '_ID')
+			'filename'		=> Text::_($this->t['l'] . '_FILENAME'),
+			'category_id'	=> Text::_($this->t['l'] . '_CATEGORY'),
+			'a.ip'	 		=> Text::_($this->t['l'] . '_IP'),
+			'a.page'	 	=> Text::_($this->t['l'] . '_PAGE'),
+			'a.type'	 	=> Text::_($this->t['l'] . '_TYPE'),
+			'a.id'	 		=> Text::_($this->t['l'] . '_ID')
 
 		);
 	}

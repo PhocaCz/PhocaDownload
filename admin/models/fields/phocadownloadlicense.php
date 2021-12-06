@@ -9,14 +9,18 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\Form\FormField;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 
-class JFormFieldPhocaDownloadLicense extends JFormField
+class JFormFieldPhocaDownloadLicense extends FormField
 {
 	protected $type 		= 'PhocaDownloadLicense';
 
 	protected function getInput() {
 
-		$db = JFactory::getDBO();
+		$db = Factory::getDBO();
 
        //build the list of categories
 		$query = 'SELECT a.title AS text, a.id AS value'
@@ -29,9 +33,9 @@ class JFormFieldPhocaDownloadLicense extends JFormField
 		$id 		= $this->form->getValue('id'); // id of current license
 		$required	= ((string) $this->element['required'] == 'true') ? TRUE : FALSE;
 
-		array_unshift($licenses, Joomla\CMS\HTML\HTMLHelper::_('select.option', '', '- '.JText::_('COM_PHOCADOWNLOAD_SELECT_LICENSE').' -', 'value', 'text'));
+		array_unshift($licenses, HTMLHelper::_('select.option', '', '- '.Text::_('COM_PHOCADOWNLOAD_SELECT_LICENSE').' -', 'value', 'text'));
 
-		return Joomla\CMS\HTML\HTMLHelper::_('select.genericlist',  $licenses,  $this->name, 'class="inputbox"', 'value', 'text', $this->value, $this->id );
+		return HTMLHelper::_('select.genericlist',  $licenses,  $this->name, 'class="form-select"', 'value', 'text', $this->value, $this->id );
 	}
 }
 ?>

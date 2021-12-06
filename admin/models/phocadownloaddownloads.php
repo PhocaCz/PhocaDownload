@@ -7,9 +7,13 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined( '_JEXEC' ) or die();
+use Joomla\CMS\MVC\Model\ListModel;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\Utilities\ArrayHelper;
 jimport( 'joomla.application.component.modellist' );
 
-class PhocaDownloadCpModelPhocaDownloadDownloads extends JModelList
+class PhocaDownloadCpModelPhocaDownloadDownloads extends ListModel
 {
 	protected	$option 		= 'com_phocadownload';
 
@@ -43,7 +47,7 @@ class PhocaDownloadCpModelPhocaDownloadDownloads extends JModelList
 	protected function populateState($ordering = 'username', $direction = 'ASC')
 	{
 		// Initialise variables.
-		$app = JFactory::getApplication('administrator');
+		$app = Factory::getApplication('administrator');
 
 		// Load the filter state.
 		$search = $app->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
@@ -55,7 +59,7 @@ class PhocaDownloadCpModelPhocaDownloadDownloads extends JModelList
 		$state = $app->getUserStateFromRequest($this->context.'.filter.published', 'filter_published', '', 'string');
 		$this->setState('filter.published', $state);
 */
-		$id = JFactory::getApplication()->input->get( 'id', '', '', 'int');
+		$id = Factory::getApplication()->input->get( 'id', '', '', 'int');
 		if ((int)$id > 0) {
 			$this->setState('filter.filestat_id', $id);
 		} else {
@@ -67,7 +71,7 @@ class PhocaDownloadCpModelPhocaDownloadDownloads extends JModelList
 		$this->setState('filter.language', $language);*/
 
 		// Load the parameters.
-		$params = JComponentHelper::getParams('com_phocadownload');
+		$params = ComponentHelper::getParams('com_phocadownload');
 		$this->setState('params', $params);
 
 		// List state information.
@@ -193,7 +197,7 @@ class PhocaDownloadCpModelPhocaDownloadDownloads extends JModelList
 
 	function reset($cid = array()) {
 		if (count( $cid )) {
-			\Joomla\Utilities\ArrayHelper::toInteger($cid);
+			ArrayHelper::toInteger($cid);
 			$cids = implode( ',', $cid );
 			$date = gmdate('Y-m-d H:i:s');
 			//Delete it from DB
@@ -204,7 +208,7 @@ class PhocaDownloadCpModelPhocaDownloadDownloads extends JModelList
 
 			$this->_db->setQuery( $query );
 			if(!$this->_db->execute()) {
-				throw new Exception($this->_db->getErrorMsg(), 500);
+				throw new Exception($this->_db->getError());
 				return false;
 			}
 		}

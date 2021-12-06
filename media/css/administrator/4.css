@@ -22,26 +22,34 @@
 	padding-bottom: 2em;
 }
 
-.tpl-bettum.com_phocadownload .ph-extension-info-box,
-.tpl-bettum.com_phocadownload .ph-extension-links-box {
+.tpl-bettom.com_phocadownload .ph-extension-info-box,
+.tpl-bettom.com_phocadownload .ph-extension-links-box {
 
 	background: #505050;
 
 }
 
-.tpl-bettum.com_phocadownload .ph-cpanel-logo {
+.tpl-bettom.com_phocadownload .ph-cpanel-logo {
 	background: #000;
 	padding-left: 1em;
 	margin-bottom: 1em;
 }
 
 
-.tpl-bettum.com_phocadownload .ph-cp-item-icon {
+.tpl-bettom.com_phocadownload .ph-cp-item-icon {
     background: transparent;
 }
 
-.tpl-bettum.com_phocadownload .phi {
+.tpl-bettom.com_phocadownload .phi {
 
 	color: #fff !important;
 
+}
+
+.com_phocadownload .table > :not(caption) > * > * {
+    padding: 0.75rem 0.25rem;
+}
+
+.com_phocadownload .ph-multiple-table > :not(caption) > * > * {
+	padding: 0.15rem 0.25rem;
 }

@@ -7,6 +7,8 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
 
 echo '<div id="phoca-dl-download-box" class="pd-download-view'.$this->t['p']->get( 'pageclass_sfx' ).'" >';
 echo '<div class="pd-download">';
@@ -76,11 +78,11 @@ if ($this->t['found'] == 1) {
 		echo '<div class="pd-downloadbox-direct">'
 		.$pdFile
 		.'<div style="clear:both"></div>'
-		.'<div class="pd-center pd-download-direct pd-button-download"><a class="btn btn-success btn-large" href="'.JRoute::_($downloadLink).'">'.JText::_('COM_PHOCADOWNLOAD_DOWNLOAD_FILE').'</a></div></div>';
+		.'<div class="pd-center pd-download-direct"><a class="btn btn-success btn-large" href="'.Route::_($downloadLink).'">'.Text::_('COM_PHOCADOWNLOAD_DOWNLOAD_FILE').'</a></div></div>';
 
 	}
 } else {
-	echo '<div class="pd-not-found">'.JText::_('COM_PHOCADOWNLOAD_FILE_NOT_FOUND').'</div>';
+	echo '<div class="pd-not-found">'.Text::_('COM_PHOCADOWNLOAD_FILE_NOT_FOUND').'</div>';
 }
 
 

@@ -7,11 +7,18 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\Model\AdminModel;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Filesystem\Folder;
+use Joomla\CMS\Object\CMSObject;
+use Joomla\CMS\Filesystem\Path;
 jimport('joomla.application.component.modeladmin');
 jimport('joomla.filesystem.folder');
 jimport('joomla.filesystem.file');
 
-class PhocaDownloadCpModelPhocaDownloadManager extends JModelAdmin
+class PhocaDownloadCpModelPhocaDownloadManager extends AdminModel
 {
 	
 	protected	$option 		= 'com_phocadownload';
@@ -20,7 +27,7 @@ class PhocaDownloadCpModelPhocaDownloadManager extends JModelAdmin
 	
 	public function getTable($type = 'PhocaDownload', $prefix = 'Table', $config = array())
 	{
-		return JTable::getInstance($type, $prefix, $config);
+		return Table::getInstance($type, $prefix, $config);
 	}
 	
 	
@@ -36,7 +43,7 @@ class PhocaDownloadCpModelPhocaDownloadManager extends JModelAdmin
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_phocadownloadm.edit.phocadownloadm.data', array());
+		$data = Factory::getApplication()->getUserState('com_phocadownloadm.edit.phocadownloadm.data', array());
 
 		if (empty($data)) {
 			$data = $this->getItem();
@@ -49,9 +56,9 @@ class PhocaDownloadCpModelPhocaDownloadManager extends JModelAdmin
 		static $set;
 
 		if (!$set) {
-			$folder		= JFactory::getApplication()->input->get( 'folder', '', '', 'path' );
-			$upload		= JFactory::getApplication()->input->get( 'upload', '', '', 'int' );
-			$manager	= JFactory::getApplication()->input->get( 'manager', '', '', 'path' );
+			$folder		= Factory::getApplication()->input->get( 'folder', '', '', 'path' );
+			$upload		= Factory::getApplication()->input->get( 'upload', '', '', 'int' );
+			$manager	= Factory::getApplication()->input->get( 'manager', '', '', 'path' );
 			
 			$this->setState('folder', $folder);
 			$this->setState('manager', $manager);
@@ -79,7 +86,7 @@ class PhocaDownloadCpModelPhocaDownloadManager extends JModelAdmin
 		static $list;
 
 		//Params
-		$params	= JComponentHelper::getParams( 'com_phocadownload' );
+		$params	= ComponentHelper::getParams( 'com_phocadownload' );
 
 		// Only process the list once per request
 		if (is_array($list)) {
@@ -127,19 +134,19 @@ class PhocaDownloadCpModelPhocaDownloadManager extends JModelAdmin
 		
 
 		// Get the list of files and folders from the given folder
-		$file_list 		= JFolder::files($orig_path);
-		$folder_list 	= JFolder::folders($orig_path, '', false, false, array());
+		$file_list 		= Folder::files($orig_path);
+		$folder_list 	= Folder::folders($orig_path, '', false, false, array());
 		
 		// Iterate over the files if they exist
 		//file - abc.img, file_no - folder/abc.img
 		if ($file_list !== false) {
 			foreach ($file_list as $file) {
 				if (is_file($orig_path.'/'.$file) && substr($file, 0, 1) != '.' && strtolower($file) !== 'index.html') {			
-						$tmp 							= new JObject();
+						$tmp 							= new CMSObject();
 						$tmp->name 						= basename($file);
-						$tmp->path_with_name 			= str_replace('\\', '/', JPath::clean($orig_path . '/' . $file));
+						$tmp->path_with_name 			= str_replace('\\', '/', Path::clean($orig_path . '/' . $file));
 						$tmp->path_without_name_relative= $path['orig_rel_ds'] . str_replace($orig_path_server, '', $tmp->path_with_name);	
-						$tmp->path_with_name 			= str_replace('\\', '/', JPath::clean($orig_path . '/' . $file));
+						$tmp->path_with_name 			= str_replace('\\', '/', Path::clean($orig_path . '/' . $file));
 						$tmp->path_with_name_relative_no= str_replace($orig_path_server, '', $tmp->path_with_name);
 						$files[] = $tmp;
 						
@@ -151,9 +158,9 @@ class PhocaDownloadCpModelPhocaDownloadManager extends JModelAdmin
 		if ($folder_list !== false) {
 			foreach ($folder_list as $folder)
 			{
-				$tmp 							= new JObject();
+				$tmp 							= new CMSObject();
 				$tmp->name 						= basename($folder);
-				$tmp->path_with_name 			= str_replace('\\', '/', JPath::clean($orig_path . '/' . $folder));
+				$tmp->path_with_name 			= str_replace('\\', '/', Path::clean($orig_path . '/' . $folder));
 				$tmp->path_without_name_relative= $path['orig_rel_ds'] . str_replace($orig_path_server, '', $tmp->path_with_name);
 				$tmp->path_with_name_relative_no= str_replace($orig_path_server, '', $tmp->path_with_name);	
 

@@ -7,7 +7,9 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
  defined('_JEXEC') or die('Restricted access'); ?>
-<?php Joomla\CMS\HTML\HTMLHelper::_('behavior.tooltip'); ?>
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+<?php HTMLHelper::_('behavior.tooltip'); ?>
 
 
 
@@ -15,7 +17,7 @@
 
 	<div class="col60">
 		<fieldset class="adminform">
-			<legend><?php echo JText::_( 'Details' ); ?></legend>
+			<legend><?php echo Text::_( 'Details' ); ?></legend>
 
 				<table class="admintable">
 				<?php
@@ -23,8 +25,8 @@
 
 					echo '<tr>';
 					echo '<td class="key">';
-					echo '<label for="'.$value->title.'" width="100" title="'.JText::_($value->title . ' DESC').'">';
-					echo JText::_($value->title);
+					echo '<label for="'.$value->title.'" width="100" title="'.Text::_($value->title . ' DESC').'">';
+					echo Text::_($value->title);
 					echo '</label>';
 					echo '</td>';
 
@@ -47,8 +49,8 @@
 						case 'text':
 						default:
 							if ($value->title == 'absolute_path') {
-								echo '<div style="color:red;font-weight:bold">' . JText::_('Experts only!'). '</div>';
-								echo '<div>' . JText::_('Root Path') . ': ' . JPATH_ROOT . '</div>';
+								echo '<div style="color:red;font-weight:bold">' . Text::_('Experts only!'). '</div>';
+								echo '<div>' . Text::_('Root Path') . ': ' . JPATH_ROOT . '</div>';
 							}
 							echo PhocaDownloadHelper::getTextSettings($value->id, $value->title, $value->value);
 						break;
@@ -68,7 +70,7 @@
 	<input type="hidden" name="option" value="com_phocadownload" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="controller" value="phocadownloadset" />
-	<?php echo Joomla\CMS\HTML\HTMLHelper::_( 'form.token' ); ?>
+	<?php echo HTMLHelper::_( 'form.token' ); ?>
 	</form>
 
 

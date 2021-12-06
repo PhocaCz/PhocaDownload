@@ -9,9 +9,10 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\Controller\FormController;
 jimport('joomla.application.component.controllerform');
 
-class PhocaDownloadCpControllerPhocaDownloadLayouts extends JControllerForm
+class PhocaDownloadCpControllerPhocaDownloadLayouts extends FormController
 {
 	protected	$option 		= 'com_phocadownload';
 }

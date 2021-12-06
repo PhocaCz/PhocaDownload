@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="component" method="upgrade" version="3.9">
+<extension type="component" method="upgrade" version="4.0">
 	<name>com_phocadownload</name>
 	<author>Jan Pavelka (www.phoca.cz)</author>
-	<creationDate>08/03/2021</creationDate>
+	<creationDate>06/12/2021</creationDate>
 	<authorEmail></authorEmail>
 	<authorUrl>https://www.phoca.cz</authorUrl>
 	<copyright>Jan Pavelka</copyright>
 	<license>GNU/GPL</license>
-	<version>3.2.3</version>
+	<version>4.0.0Beta</version>
 	<description>COM_PHOCADOWNLOAD_XML_DESCRIPTION</description>
 	<scriptfile>script.php</scriptfile>
 	<projectName>PhocaDownload</projectName>
@@ -31,22 +31,23 @@
 	</update>
 
 	<files folder="site">
+		<folder>controllers</folder>
 		<folder>helpers</folder>
 		<folder>views</folder>
-		<folder>controllers</folder>
+		<folder>layouts</folder>
 		<folder>models</folder>
-		<filename>router.php</filename>
 		<filename>index.html</filename>
-		<filename>controller.php</filename>
 		<filename>phocadownload.php</filename>
+		<filename>router-old.php</filename>
+		<filename>router.php</filename>
+		<filename>controller.php</filename>
 	</files>
 
 	<media destination="com_phocadownload" folder="media">
-		<folder>css</folder>
-		<folder>bootstrap</folder>
-		<folder>images</folder>
 		<folder>duotone</folder>
+		<folder>css</folder>
 		<folder>js</folder>
+		<folder>images</folder>
 		<filename>index.html</filename>
 	</media>
 
@@ -69,27 +70,26 @@
 				<menu img="media/com_phocadownload/images/administrator/icon-16-pdl-menu-uploads.png" alt="COM_PHOCADOWNLOAD_UPLOADS" view="phocadownloaduploads" link="option=com_phocadownload&amp;view=phocadownloaduploads">COM_PHOCADOWNLOAD_UPLOADS</menu>
 				<menu img="media/com_phocadownload/images/administrator/icon-16-pdl-menu-vote-file.png" alt="COM_PHOCADOWNLOAD_FILE_RATING" view="phocadownloadrafile" link="option=com_phocadownload&amp;view=phocadownloadrafile">COM_PHOCADOWNLOAD_FILE_RATING</menu>
 				<menu img="media/com_phocadownload/images/administrator/icon-16-pdl-menu-tags.png" alt="COM_PHOCADOWNLOAD_TAGS" view="phocadownloadtags" link="option=com_phocadownload&amp;view=phocadownloadtags">COM_PHOCADOWNLOAD_TAGS</menu>
-				<menu img="media/com_phocadownload/images/administrator/icon-16-pdl-menu-layout.png" alt="COM_PHOCADOWNLOAD_LAYOUT" view="phocadownloadlayouts" link="option=com_phocadownload&amp;view=phocadownloadlayouts">COM_PHOCADOWNLOAD_LAYOUT</menu>
 				<menu img="media/com_phocadownload/images/administrator/icon-16-pdl-menu-style.png" alt="COM_PHOCADOWNLOAD_STYLES" view="phocadownloadstyles" link="option=com_phocadownload&amp;view=phocadownloadstyles">COM_PHOCADOWNLOAD_STYLES</menu>
 				<menu img="media/com_phocadownload/images/administrator/icon-16-pdl-menu-logs.png" alt="COM_PHOCADOWNLOAD_LOGGING" view="phocadownloadlogs" link="option=com_phocadownload&amp;view=phocadownloadlogs">COM_PHOCADOWNLOAD_LOGGING</menu>
 				<menu img="media/com_phocadownload/images/administrator/icon-16-pdl-menu-info.png" alt="COM_PHOCADOWNLOAD_INFO" view="phocadownloadinfo" link="option=com_phocadownload&amp;view=phocadownloadinfo">COM_PHOCADOWNLOAD_INFO</menu>
 			</submenu>
 
 		<files folder="admin">
-			<folder>helpers</folder>
-			<folder>help</folder>
-			<folder>views</folder>
 			<folder>libraries</folder>
+			<folder>controllers</folder>
 			<folder>install</folder>
 			<folder>update</folder>
-			<folder>controllers</folder>
-			<folder>models</folder>
 			<folder>tables</folder>
-			<filename>config.xml</filename>
+			<folder>helpers</folder>
+			<folder>views</folder>
+			<folder>help</folder>
+			<folder>models</folder>
 			<filename>index.html</filename>
-			<filename>controller.php</filename>
-			<filename>access.xml</filename>
 			<filename>phocadownload.php</filename>
+			<filename>config.xml</filename>
+			<filename>access.xml</filename>
+			<filename>controller.php</filename>
 		</files>
 
 		<languages folder="admin/language">

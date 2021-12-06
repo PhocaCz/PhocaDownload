@@ -10,9 +10,12 @@
  */
 
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\Controller\FormController;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Router\Route;
 jimport('joomla.application.component.controllerform');
 
-class PhocaDownloadCpControllerPhocaDownloadM extends JControllerForm
+class PhocaDownloadCpControllerPhocaDownloadM extends FormController
 {
 	protected	$option 		= 'com_phocadownload';
 	protected	$view_list		= 'phocadownloadmanager';
@@ -24,7 +27,7 @@ class PhocaDownloadCpControllerPhocaDownloadM extends JControllerForm
 	}
 
 	protected function allowAdd($data = array()) {
-		$user		= JFactory::getUser();
+		$user		= Factory::getUser();
 		$allow		= null;
 		$allow	= $user->authorise('core.create', 'com_phocadownload');
 		if ($allow === null) {
@@ -35,7 +38,7 @@ class PhocaDownloadCpControllerPhocaDownloadM extends JControllerForm
 	}
 
 	protected function allowEdit($data = array(), $key = 'id') {
-		$user		= JFactory::getUser();
+		$user		= Factory::getUser();
 		$allow		= null;
 		$allow	= $user->authorise('core.edit', 'com_phocadownload');
 		if ($allow === null) {
@@ -46,7 +49,7 @@ class PhocaDownloadCpControllerPhocaDownloadM extends JControllerForm
 	}
 	
 	function edit($key = NULL, $urlVar = NULL) {
-		$this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list.'&layout='.$this->layout.'&manager=filemultiple', false));
+		$this->setRedirect(Route::_('index.php?option='.$this->option.'&view='.$this->view_list.'&layout='.$this->layout.'&manager=filemultiple', false));
 	}
 	
 	function cancel($key = NULL) {

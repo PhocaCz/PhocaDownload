@@ -7,6 +7,10 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Filesystem\Path;
+use Joomla\CMS\Filesystem\File;
 
 echo '<div id="phoca-dl-categories-box" class="pd-categories-view'.$this->t['p']->get( 'pageclass_sfx' ).'">';
 
@@ -16,18 +20,21 @@ echo '<div id="phoca-dl-categories-box" class="pd-categories-view'.$this->t['p']
 echo PhocaDownloadRenderFront::renderHeader(array());
 
 if ( $this->t['description'] != '') {
-	echo '<div class="pd-desc">'. Joomla\CMS\HTML\HTMLHelper::_('content.prepare', $this->t['description']) . '</div>';
+	echo '<div class="pd-desc">'. $this->t['description']. '</div>';
 }
 
 
 if (!empty($this->t['categories'])) {
-	$i = 1;
-	foreach ($this->t['categories'] as $value) {
+	//$i = 1;
+    echo ' <div class="row row-cols-1 row-cols-md-3 g-4"> ';
+    foreach ($this->t['categories'] as $value) {
 
 		// Categories
 		$numDoc 	= 0;
 		$numSubcat	= 0;
 		$catOutput 	= '';
+
+		// We need $numDoc and $numSubcat always - we need to run this foreach even the subcategories will be not displayed
 		if (!empty($value->subcategories)) {
 			foreach ($value->subcategories as $valueCat) {
 
@@ -42,21 +49,29 @@ if (!empty($this->t['categories'])) {
 
 				if ($rightDisplay == 1) {
 
-					$catOutput 	.= '<div class="pd-subcategory">';
-					$catOutput 	.= '<a href="'. JRoute::_(PhocaDownloadRoute::getCategoryRoute($valueCat->id, $valueCat->alias))
+					$catOutput 	.= '<li class="list-group-item"><span class="pd-subcategory"></span><a href="'. Route::_(PhocaDownloadRoute::getCategoryRoute($valueCat->id, $valueCat->alias))
 								.'">'. $valueCat->title.'</a>';
 
 					if ($this->t['displaynumdocsecs'] == 1) {
 						$catOutput  .=' <small>('.$valueCat->numdoc .')</small>';
 					}
-					$catOutput 	.= '</div>' . "\n";
+
+					$catOutput .= '</li>';
 					$numDoc = (int)$valueCat->numdoc + (int)$numDoc;
 					$numSubcat++;
+
+
+
 				}
 			}
 		}
 
-		// Don't display parent category
+		if ($this->t['display_main_cat_subcategories'] != 1) {
+			$catOutput = '';
+		}
+
+
+ 		// Don't display parent category
 		// - if there is no catoutput
 		// - if there is no rigths for it
 
@@ -70,81 +85,63 @@ if (!empty($this->t['categories'])) {
 		// - - - - - - - - - - - - - - - - - - - - - -
 
 		if ($rightDisplay == 1) {
+            echo '<div class="col">';
+            echo '<div class="card h-100">';
 
-// =====================================================================================
-// BEGIN LAYOUT AREA
-// =====================================================================================
+            if (isset($value->image) && $value->image != '') {
+				echo '<img src="'.$this->t['cssimgpath'].$value->image.'" class="card-img-top"  alt="'.htmlspecialchars(strip_tags($value->title)).'" />';
+			}
 
-			$pdTitle = '<a href="'. JRoute::_(PhocaDownloadRoute::getCategoryRoute($value->id, $value->alias)).'">'. $value->title.'</a>';
+            echo '<div class="card-body">';
 
-			if ($this->t['displaynumdocsecsheader'] == 1) {
+            echo '<h3 class="card-title">';
+			echo '<a href="'. Route::_(PhocaDownloadRoute::getCategoryRoute($value->id, $value->alias)).'">'. $value->title.'</a>';
+
+			/*if ($this->t['displaynumdocsecsheader'] == 1) {
 				$numDocAll = (int)$numDoc + (int)$value->numdoc;
 				//$numDoc ... only files in subcategories
 				//$value->numdoc ... only files in the main category
 				//$numDocAll ... files in category and in subcategories
-				$pdTitle .= ' <small>('.$numSubcat.'/' . $numDocAll .')</small>';
+				echo ' <small>('.$numSubcat.'/' . $numDocAll .')</small>';
+			}*/
+			echo '</h3>';
+
+            if ($this->t['displaymaincatdesc']	 == 1) {
+				echo '<p class="card-text">'.$value->description.'</p>';
 			}
 
-
-			$pdDesc = '';
-			$pdSubcategories = '';
-			$pdImg = '';
-			if (isset($value->image) && $value->image != '') {
-				$pdImg = '<img src="'.$this->t['cssimgpath'].$value->image.'" alt="'.htmlspecialchars(strip_tags($value->title)).'" />';
+            if ($catOutput != '') {
+            	echo '<ul class="list-group list-group-flush">'.$catOutput. '</ul>';
 			}
+            echo '</div>'; // end card body
 
-			if ($this->t['displaymaincatdesc']	 == 1) {
-				$pdDesc .= Joomla\CMS\HTML\HTMLHelper::_('content.prepare', $value->description);
-			} else {
-				if ($catOutput != '') {
-					$pdSubcategories .= $catOutput;
-				} else {
-					$pdSubcategories .= '<div class="pd-no-subcat">'.JText::_('COM_PHOCADOWNLOAD_NO_SUBCATEGORIES').'</div>';
-				}
-			}
-
-			$pdClear = '';
-			if ($i%3==0) {
-				$pdClear .= '<div class="pd-cb"></div>';
-			}
-			$i++;
-
-
-
-
-			// ---------------------------------------------------
-			//Convert
-			// ---------------------------------------------------
-			if ($this->t['display_specific_layout'] == 0) {
-				echo '<div class="pd-categoriesbox">';
-				echo '<div class="pd-title">'.$pdTitle.'</div>';
-				if ($pdImg != '') { echo '<div class="ph-img">'.$pdImg.'</div>';}
-				if ($pdDesc != '') { echo '<div class="pd-desc">'.$pdDesc.'</div>';}
-				echo $pdSubcategories;
+            if ($this->t['displaynumdocsecsheader'] == 1) {
+				echo '<div class="card-footer">';
+					echo '<small class="text-muted float-end">';
+						if ($this->t['displaynumdocsecsheader'] == 1) {
+							$numDocAll = (int)$numDoc + (int)$value->numdoc;
+							//$numDoc ... only files in subcategories
+							//$value->numdoc ... only files in the main category
+							//$numDocAll ... files in category and in subcategories
+								echo '<span class="">'.Text::_('COM_PHOCADOWNLOAD_CATEGORIES').': '.$numSubcat.'</span>';
+								echo '&nbsp;/&nbsp;';
+								echo '<span class="">'.Text::_('COM_PHOCADOWNLOAD_FILES').': '.$numDocAll.'</span>';
+						}
+					echo '</small>';
 				echo '</div>';
-				echo $pdClear;
-			} else {
-				$categoriesLayout = PhocaDownloadSettings::getLayoutText('categories');
-
-				/*'<div class="pd-categoriesbox">
-				<div class="pd-title">{pdtitle}</div>
-				{pdsubcategories}
-				{pdclear}
-				</div>';
-				//<div class="pd-desc">{pdDescription}</div>*/
-
-				$categoriesLayoutParams 	= PhocaDownloadSettings::getLayoutParams('categories');
-
-				$replace	= array($pdTitle, $pdDesc, $pdSubcategories, $pdClear);
-				$output		= str_replace($categoriesLayoutParams['search'], $replace, $categoriesLayout);
-
-				echo $output;
 			}
+
+
+			echo '</div>'; // end card
+			echo '</div>'; // end col
+
 		}
 	}
+	echo '</div>';// end row
 }
-echo '</div>'
-    .'<div class="pd-cb"></div>';
+
+echo '</div>';
+echo '<div class="pd-cb"></div>';
 
 
 // - - - - - - - - - -
@@ -166,8 +163,8 @@ if (!empty($this->t['mostvieweddocs']) && $this->t['displaymostdownload'] == 1) 
 		if ($rightDisplay == 1) {
 			// FILESIZE
 			if ($value->filename !='') {
-				$absFile = str_replace('/', '/', JPath::clean($this->t['absfilepath'] . $value->filename));
-				if (JFile::exists($absFile)) {
+				$absFile = str_replace('/', '/', Path::clean($this->t['absfilepath'] . $value->filename));
+				if (File::exists($absFile)) {
 					$fileSize = PhocaDownloadFile::getFileSizeReadable(filesize($absFile));
 				} else {
 					$fileSize = '';
@@ -194,7 +191,7 @@ if (!empty($this->t['mostvieweddocs']) && $this->t['displaymostdownload'] == 1) 
 					. $imageFileName['filenamestyle'].'>';
 
 			$outputFile .= '<a href="'
-						. JRoute::_(PhocaDownloadRoute::getCategoryRoute($value->categoryid,$value->categoryalias))
+						. Route::_(PhocaDownloadRoute::getCategoryRoute($value->categoryid,$value->categoryalias))
 						.'">'. $value->title.'</a>'
 						.' <small>(' .$value->categorytitle.')</small>';
 
@@ -206,9 +203,9 @@ if (!empty($this->t['mostvieweddocs']) && $this->t['displaymostdownload'] == 1) 
 	}
 
 	if ($outputFile != '') {
-		echo '<div class="pd-hr" style="clear:both">&nbsp;</div>';
+		echo '<div class="pd-hr ph-cb">&nbsp;</div>';
 		echo '<div id="phoca-dl-most-viewed-box">';
-		echo '<div class="pd-documents"><h3>'. JText::_('COM_PHOCADOWNLOAD_MOST_DOWNLOADED_FILES').'</h3>';
+		echo '<div class="pd-documents"><h3>'. Text::_('COM_PHOCADOWNLOAD_MOST_DOWNLOADED_FILES').'</h3>';
 		echo $outputFile;
 		echo '</div></div>';
 	}

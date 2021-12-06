@@ -190,57 +190,6 @@ CREATE TABLE IF NOT EXISTS `#__phocadownload_layout` (
   PRIMARY KEY  (`id`)
 ) default CHARSET=utf8;
 
-INSERT INTO `#__phocadownload_layout` (
-
-`categories` ,
-`category` ,
-`file` ,
-`checked_out` ,
-`checked_out_time` ,
-`params`
-)
-VALUES (
- '<div class="pd-categoriesbox">
-<div class="pd-title">{pdtitle}</div>
-{pdsubcategories}
-{pdclear}
-</div>',
-
-'<div class="pd-filebox">
-{pdfiledesctop}
-{pdfile}
-<div class="pd-buttons">{pdbuttondownload}</div>
-<div class="pd-buttons">{pdbuttondetails}</div>
-<div class="pd-buttons">{pdbuttonpreview}</div>
-<div class="pd-buttons">{pdbuttonplay}</div>
-<div class="pd-mirrors">{pdmirrorlink2} {pdmirrorlink1}</div>
-<div class="pd-rating">{pdrating}</div>
-<div class="pd-tags">{pdtags}</div>
-{pdfiledescbottom}
-<div class="pd-cb"></div>
-</div>'
-
-, '<div class="pd-filebox">
-{pdimage}
-{pdfile}
-{pdfilesize}
-{pdversion}
-{pdlicense}
-{pdauthor}
-{pdauthoremail}
-{pdfiledate}
-{pddownloads}
-{pddescription}
-{pdfeatures}
-{pdchangelog}
-{pdnotes}
-<div class="pd-mirrors">{pdmirrorlink2} {pdmirrorlink1}</div>
-<div class="pd-report">{pdreportlink}</div>
-<div class="pd-rating">{pdrating}</div>
-<div class="pd-tags">{pdtags}</div>
-<div class="pd-cb"></div>
-</div>' , '0', '0000-00-00 00:00:00', NULL
-);
 
 CREATE TABLE IF NOT EXISTS `#__phocadownload_styles` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -261,10 +210,7 @@ CREATE TABLE IF NOT EXISTS `#__phocadownload_styles` (
 INSERT INTO `#__phocadownload_styles` (`id`, `title`, `alias`, `filename`, `menulink`, `type`, `published`, `checked_out`, `checked_out_time`, `ordering`, `params`, `language`) VALUES
 (1, 'Phocadownload', 'phocadownload', 'phocadownload.css', NULL, 1, 1, 0, '0000-00-00 00:00:00', 1, NULL, '*'),
 (2, 'Rating', 'rating', 'rating.css', NULL, 1, 1, 0, '0000-00-00 00:00:00', 2, NULL, '*'),
-(3, 'Button', 'button', 'button.css', NULL, 1, 0, 0, '0000-00-00 00:00:00', 3, NULL, '*'),
-(4, 'Button (Rounded Corners)', '', 'buttonrc.css', NULL, 1, 0, 0, '0000-00-00 00:00:00', 4, NULL, '*'),
-(5, 'Default', 'default', 'default.css', NULL, 2, 1, 0, '0000-00-00 00:00:00', 1, NULL, '*'),
-(6, 'Bootstrap', '', 'bootstrap.min.css', NULL, 1, 0, 0, '0000-00-00 00:00:00', 5, NULL, '*');
+(5, 'Default', 'default', 'default.css', NULL, 2, 1, 0, '0000-00-00 00:00:00', 1, NULL, '*');
 
 CREATE TABLE IF NOT EXISTS `#__phocadownload_logging` (
   `id` int(11) unsigned NOT NULL auto_increment,

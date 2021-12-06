@@ -8,9 +8,15 @@
  */
  
 defined('_JEXEC') or die;
+use Joomla\CMS\MVC\Controller\AdminController;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Factory;
+use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\Router\Route;
 jimport('joomla.application.component.controlleradmin');
 
-class PhocaDownloadCpControllerPhocaDownloadFiles extends JControllerAdmin
+class PhocaDownloadCpControllerPhocaDownloadFiles extends AdminController
 {
 	protected	$option 		= 'com_phocadownload';
 	
@@ -31,23 +37,23 @@ class PhocaDownloadCpControllerPhocaDownloadFiles extends JControllerAdmin
 	function approve()
 	{
 		// Check for request forgeries
-		JSession::checkToken() or die(JText::_('JINVALID_TOKEN'));
+		Session::checkToken() or die(Text::_('JINVALID_TOKEN'));
 
 		// Get items to publish from the request.
-		$cid	= JFactory::getApplication()->input->get('cid', array(), '', 'array');
+		$cid	= Factory::getApplication()->input->get('cid', array(), '', 'array');
 		$data	= array('approve' => 1, 'disapprove' => 0);
 		$task 	= $this->getTask();
-		$value	= \Joomla\Utilities\ArrayHelper::getValue($data, $task, 0, 'int');
+		$value	= ArrayHelper::getValue($data, $task, 0, 'int');
 
 		if (empty($cid)) {
-			throw new Exception(JText::_($this->text_prefix.'_NO_ITEM_SELECTED'), 500);
+			throw new Exception(Text::_($this->text_prefix.'_NO_ITEM_SELECTED'), 500);
 			return false;
 		} else {
 			// Get the model.
 			$model = $this->getModel();
 
 			// Make sure the item ids are integers
-			\Joomla\Utilities\ArrayHelper::toInteger($cid);
+			ArrayHelper::toInteger($cid);
 
 			// Publish the items.
 			
@@ -60,23 +66,23 @@ class PhocaDownloadCpControllerPhocaDownloadFiles extends JControllerAdmin
 				} else if ($value == 0) {
 					$ntext = $this->text_prefix.'_N_ITEMS_DISAPPROVED';
 				} 
-				$this->setMessage(JText::plural($ntext, count($cid)));
+				$this->setMessage(Text::plural($ntext, count($cid)));
 			}
 		}
 
-		$this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list, false));
+		$this->setRedirect(Route::_('index.php?option='.$this->option.'&view='.$this->view_list, false));
 	}
 	
 	public function saveOrderAjax() {
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 		$pks = $this->input->post->get('cid', array(), 'array');
 		$order = $this->input->post->get('order', array(), 'array');
-		\Joomla\Utilities\ArrayHelper::toInteger($pks);
-		\Joomla\Utilities\ArrayHelper::toInteger($order);
+		ArrayHelper::toInteger($pks);
+		ArrayHelper::toInteger($order);
 		$model = $this->getModel();
 		$return = $model->saveorder($pks, $order);
 		if ($return) { echo "1";}
-		JFactory::getApplication()->close();
+		Factory::getApplication()->close();
 	}
 	
 }

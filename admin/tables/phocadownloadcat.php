@@ -9,9 +9,12 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
  */
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 jimport('joomla.filter.input');
 
-class TablePhocaDownloadCat extends JTable
+class TablePhocaDownloadCat extends Table
 {
 	
 	function __construct(& $db) {
@@ -21,12 +24,12 @@ class TablePhocaDownloadCat extends JTable
 	function check()
 	{
 		
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		// check for valid name
 		if (trim( $this->title ) == '') {
 			
 			
-			$app->enqueueMessage(JText::_( 'CATEGORY MUST HAVE A TITLE') , 'error');
+			$app->enqueueMessage(Text::_( 'CATEGORY MUST HAVE A TITLE') , 'error');
 			return false;
 		}
 

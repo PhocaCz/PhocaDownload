@@ -7,6 +7,7 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\Language\Text;
 
 class PhocaDownloadCpControllerPhocaDownloadUploads extends PhocaDownloadCpController
 {
@@ -19,9 +20,9 @@ class PhocaDownloadCpControllerPhocaDownloadUploads extends PhocaDownloadCpContr
 
 		$model = $this->getModel('phocadownloadupload');
 		if(!$model->approveall()) {
-			$msg = JText::_( 'COM_PHOCADOWNLOAD_ERROR_APPROVE_ALL' );
+			$msg = Text::_( 'COM_PHOCADOWNLOAD_ERROR_APPROVE_ALL' );
 		} else {
-			$msg = JText::_( 'COM_PHOCADOWNLOAD_ALL_APPROVED' );
+			$msg = Text::_( 'COM_PHOCADOWNLOAD_ALL_APPROVED' );
 		}
 
 		$this->setRedirect( 'index.php?option=com_phocadownload&view=phocadownloaduploads' , $msg);

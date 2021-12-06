@@ -11,22 +11,25 @@
 
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\MVC\Controller\BaseController;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
 
 jimport('joomla.application.component.controller');
 
 
-class PhocaDownloadController extends JControllerLegacy
+class PhocaDownloadController extends BaseController
 {
 	public function display($cachable = false, $urlparams = false)
 	{
-		$paramsC 	= JComponentHelper::getParams('com_phocadownload');
+		$paramsC 	= ComponentHelper::getParams('com_phocadownload');
 		$cache 		= $paramsC->get( 'enable_cache', 0 );
 		$cachable 	= false;
 		if ($cache == 1) {
 			$cachable 	= true;
 		}
 		
-		$document 	= JFactory::getDocument();
+		$document 	= Factory::getDocument();
 
 		$safeurlparams = array('catid'=>'INT','id'=>'INT','cid'=>'ARRAY','year'=>'INT','month'=>'INT','limit'=>'INT','limitstart'=>'INT',
 			'showall'=>'INT','return'=>'BASE64','filter'=>'STRING','filter_order'=>'CMD','filter_order_Dir'=>'CMD','filter-search'=>'STRING','print'=>'BOOLEAN','lang'=>'CMD');

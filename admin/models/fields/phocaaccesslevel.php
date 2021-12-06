@@ -8,6 +8,13 @@
  */
 
 defined('JPATH_BASE') or die;
+use Joomla\CMS\Form\Field\ListField;
+use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\Form\Form;
+use Joomla\CMS\Form\FormField;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');
@@ -21,7 +28,7 @@ JFormHelper::loadFieldClass('list');
  * @subpackage	Form
  * @since		1.6
  */
-class JFormFieldPhocaAccessLevel extends JFormFieldList
+class JFormFieldPhocaAccessLevel extends ListField
 {
 	/**
 	 * The form field type.
@@ -55,13 +62,16 @@ class JFormFieldPhocaAccessLevel extends JFormFieldList
 		$options = $this->getOptions();
 
 
-		return $this->_level( $this->name, $this->value, $attr, $options, $this->id);
+		//return $this->_level( $this->name, $this->value, $attr, $options, $this->id);
+        $data = $this->getLayoutData();
+		$data['options'] = (array) $this->_level( $this->name, $this->value, $attr, $options, $this->id);
+		return $this->getRenderer($this->layout)->render($data);
 	}
 
 
 	public static function _level($name, $selected, $attribs = '', $params = true, $id = false) {
 
-		$db		= JFactory::getDbo();
+		$db		= Factory::getDbo();
 		$query	= $db->getQuery(true);
 
 		$query->select('a.id AS value, a.title AS text');
@@ -96,15 +106,17 @@ class JFormFieldPhocaAccessLevel extends JFormFieldList
 		}
 		// If all levels is allowed, push it into the array.
 		elseif ($params) {
-			array_unshift($options, Joomla\CMS\HTML\HTMLHelper::_('select.option', '', JText::_('JOPTION_ACCESS_SHOW_ALL_LEVELS')));
+			array_unshift($options, HTMLHelper::_('select.option', '', Text::_('JOPTION_ACCESS_SHOW_ALL_LEVELS')));
 		}
 
-		return Joomla\CMS\HTML\HTMLHelper::_('select.genericlist', $options, $name,
+		return $options;
+		/*
+		return HTMLHelper::_('select.genericlist', $options, $name,
 			array(
 				'list.attr' => $attribs,
 				'list.select' => $selected,
 				'id' => $id
 			)
-		);
+		);*/
 	}
 }

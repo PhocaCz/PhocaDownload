@@ -7,8 +7,12 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
  defined('_JEXEC') or die();
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\MVC\Controller\BaseController;
 jimport('joomla.application.component.controller');
-$app		= JFactory::getApplication();
+$app		= Factory::getApplication();
 $option 	= $app->input->get('option');
 
 $l['cp']		= array('COM_PHOCADOWNLOAD_CONTROL_PANEL', '');
@@ -20,7 +24,7 @@ $l['d']			= array('COM_PHOCADOWNLOAD_DOWNLOADS', 'phocadownloaddownloads');
 $l['u']			= array('COM_PHOCADOWNLOAD_UPLOADS', 'phocadownloaduploads');
 $l['fr']		= array('COM_PHOCADOWNLOAD_FILE_RATING', 'phocadownloadrafile');
 $l['t']			= array('COM_PHOCADOWNLOAD_TAGS', 'phocadownloadtags');
-$l['ly']		= array('COM_PHOCADOWNLOAD_LAYOUT', 'phocadownloadlayouts');
+//$l['ly']		= array('COM_PHOCADOWNLOAD_LAYOUT', 'phocadownloadlayouts');
 $l['sty']		= array('COM_PHOCADOWNLOAD_STYLES', 'phocadownloadstyles');
 $l['log']		= array('COM_PHOCADOWNLOAD_LOGGING', 'phocadownloadlogs');
 $l['in']		= array('COM_PHOCADOWNLOAD_INFO', 'phocadownloadinfo');
@@ -28,8 +32,8 @@ $l['in']		= array('COM_PHOCADOWNLOAD_INFO', 'phocadownloadinfo');
 // Submenu view
 //$view	= JFactory::getApplication()->input->get( 'view', '', '', 'string', J R EQUEST_ALLOWRAW );
 //$layout	= JFactory::getApplication()->input->get( 'layout', '', '', 'string', J R EQUEST_ALLOWRAW );
-$view	= JFactory::getApplication()->input->get('view');
-$layout	= JFactory::getApplication()->input->get('layout');
+$view	= Factory::getApplication()->input->get('view');
+$layout	= Factory::getApplication()->input->get('layout');
 
 if ($layout == 'edit') {
 } else {
@@ -42,14 +46,14 @@ if ($layout == 'edit') {
 		}
 
 		if ($view == $v[1]) {
-			JHtmlSidebar::addEntry(JText::_($v[0]), $link.$v[1], true );
+			JHtmlSidebar::addEntry(Text::_($v[0]), $link.$v[1], true );
 		} else {
-			JHtmlSidebar::addEntry(JText::_($v[0]), $link.$v[1]);
+			JHtmlSidebar::addEntry(Text::_($v[0]), $link.$v[1]);
 		}
 	}
 }
 
-class PhocadownloadCpController extends JControllerLegacy {
+class PhocadownloadCpController extends BaseController {
 	function display($cachable = false, $urlparams = array()) {
 		parent::display($cachable , $urlparams);
 	}

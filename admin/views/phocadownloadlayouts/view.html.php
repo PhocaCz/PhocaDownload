@@ -7,10 +7,13 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Router\Route;
 jimport( 'joomla.html.pane' );
 jimport( 'joomla.application.component.view' );
 
-class PhocaDownloadCpViewPhocaDownloadLayouts extends JViewLegacy
+class PhocaDownloadCpViewPhocaDownloadLayouts extends HtmlView
 {
 	protected $items;
 	
@@ -18,8 +21,8 @@ class PhocaDownloadCpViewPhocaDownloadLayouts extends JViewLegacy
 		
 		require_once JPATH_COMPONENT.'/helpers/phocadownloadlayouts.php';
 		$idString 	= PhocaDownloadLayoutsHelper::getTableId();
-		$app		= JFactory::getApplication();
-		$app->redirect(JRoute::_('index.php?option=com_phocadownload&view=phocadownloadlayout&task=phocadownloadlayout.edit'.$idString, false));
+		$app		= Factory::getApplication();
+		$app->redirect(Route::_('index.php?option=com_phocadownload&view=phocadownloadlayout&task=phocadownloadlayout.edit'.$idString, false));
 		return;
 	}
 }

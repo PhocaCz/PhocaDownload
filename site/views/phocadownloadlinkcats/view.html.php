@@ -9,29 +9,33 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\HTML\HTMLHelper;
 jimport( 'joomla.application.component.view' );
 phocadownloadimport('phocadownload.render.renderadminviews');
 
-class phocaDownloadViewphocaDownloadLinkCats extends JViewLegacy
+class phocaDownloadViewphocaDownloadLinkCats extends HtmlView
 {
 
 	protected $t;
 
 	function display($tpl = null) {
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		$this->r = new PhocaDownloadRenderAdminViews();
 		$this->t = PhocaDownloadUtils::setVars('linkcats');
 
 		//Frontend Changes
 		$tUri = '';
 		if (!$app->isClient('administrator')) {
-			$tUri = JURI::base();
+			$tUri = Uri::base();
 
 		}
 
-		$document	= JFactory::getDocument();
-		$uri		= \Joomla\CMS\Uri\Uri::getInstance();
-		JHTML::stylesheet( 'media/com_phocadownload/css/administrator/phocadownload.css' );
+		$document	= Factory::getDocument();
+		$uri		= Uri::getInstance();
+		HTMLHelper::stylesheet( 'media/com_phocadownload/css/administrator/phocadownload.css' );
 
 		$eName				= $app->input->get('e_name');
 		$this->t['ename']		= preg_replace( '#[^A-Z0-9\-\_\[\]]#i', '', $eName );
@@ -39,7 +43,7 @@ class phocaDownloadViewphocaDownloadLinkCats extends JViewLegacy
 
 
 	/*	// Category Tree
-		$db = JFactory::getDBO();
+		$db = Factory::getDBO();
 		$query = 'SELECT a.title AS text, a.id AS value, a.parent_id as parentid'
 		. ' FROM #__phocadownload_categories AS a'
 	//	. ' WHERE a.published = 1' You can hide not published and not authorized categories too
@@ -58,12 +62,12 @@ class phocaDownloadViewphocaDownloadLinkCats extends JViewLegacy
 		$attribs	= ' ';
 		$attribs	.= ' size="5"';
 		//$attribs	.= 'class="'.$v.'"';
-		$attribs	.= ' class="inputbox"';
+		$attribs	.= ' class="form-control"';
 		$attribs	.= ' multiple="multiple"';
 		$ctrl		.= '';
 		//$value		= implode( '|', )
 
-		$categoriesOutput = Joomla\CMS\HTML\HTMLHelper::_('select.genericlist', $tree, $ctrl, $attribs, 'value', 'text', 0, 'hidecategories' );
+		$categoriesOutput = HTMLHelper::_('select.genericlist', $tree, $ctrl, $attribs, 'value', 'text', 0, 'hidecategories' );
 
 		//$this->assignRef('categoriesoutput',	$categoriesOutput);
 		//$this->assignRef('tmpl',	$this->t);*/

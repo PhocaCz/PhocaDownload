@@ -7,12 +7,14 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Object\CMSObject;
 
 class PhocaDownloadLayoutsHelper
 {
 	public static function getActions($t, $id = 0) {
-		$user		= JFactory::getUser();
-		$result		= new JObject;
+		$user		= Factory::getUser();
+		$result		= new CMSObject;
 
 		if (empty($id)) {
 			$assetName = $t['o'];
@@ -30,7 +32,7 @@ class PhocaDownloadLayoutsHelper
 	public static function getTableId() {
 
 		$idString 	= '';
-		$db 		= JFactory::getDBO();
+		$db 		= Factory::getDBO();
 		$query 		= ' SELECT a.id'
 					.' FROM #__phocadownload_layout AS a';
 		$db->setQuery($query, 0,1);

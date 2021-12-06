@@ -7,12 +7,14 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
 class PhocaDownloadAccess
 {
 	public static function getCategoryAccess($id) {
 
 		$output = array();
-		$db 	= JFactory::getDBO();
+		$db 	= Factory::getDBO();
 		$query 	= 'SELECT c.access, c.uploaduserid, c.deleteuserid' .
 				' FROM #__phocadownload_categories AS c' .
 				' WHERE c.id = '. (int) $id .
@@ -25,7 +27,7 @@ class PhocaDownloadAccess
 	public static function getCategoryAccessByFileId($id) {
 
 		$output = array();
-		$db 	= JFactory::getDBO();
+		$db 	= Factory::getDBO();
 		$query 	= 'SELECT c.access, c.uploaduserid, c.deleteuserid' .
 				' FROM #__phocadownload_categories AS c' .
 				' LEFT JOIN #__phocadownload as a ON a.catid = c.id' .
@@ -61,7 +63,7 @@ class PhocaDownloadAccess
 
 	 public static function getUserRight($rightType = 'accessuserid', $rightUsers = array(), $rightGroup = 0, $userAID = array(), $userId = 0 , $additionalParam = 0 ) {
 
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 		// we can get the variables here, not before function call
 		$userAID = $user->getAuthorisedViewLevels();
 		$userId = $user->get('id', 0);
@@ -142,7 +144,7 @@ class PhocaDownloadAccess
 	 */
 	public static function getNeededAccessLevels() {
 
-		$paramsC 				= JComponentHelper::getParams('com_phocadownload');
+		$paramsC 				= ComponentHelper::getParams('com_phocadownload');
 		$registeredAccessLevel 	= $paramsC->get( 'registered_access_level', array(2,3,4) );
 		return $registeredAccessLevel;
 	}

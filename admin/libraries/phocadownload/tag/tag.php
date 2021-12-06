@@ -7,12 +7,14 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die;
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
 
 class PhocaDownloadTag
 {
 	public static function getTags($fileId, $select = 0) {
 
-		$db = JFactory::getDBO();
+		$db = Factory::getDBO();
 
 		if ($select == 1) {
 			$query = 'SELECT r.tagid';
@@ -43,7 +45,7 @@ class PhocaDownloadTag
 
 
 		if ((int)$fileId > 0) {
-			$db = JFactory::getDBO();
+			$db = Factory::getDBO();
 			$query = ' DELETE '
 					.' FROM #__phocadownload_tags_ref'
 					. ' WHERE fileid = '. (int)$fileId;
@@ -63,7 +65,7 @@ class PhocaDownloadTag
 				}
 
 				if (!empty($values)) {
-					$valuesString = implode($values, ',');
+					$valuesString = implode(',', $values);
 
 					$query = ' INSERT INTO #__phocadownload_tags_ref (fileid, tagid)'
 								.' VALUES '.(string)$valuesString;
@@ -82,7 +84,7 @@ class PhocaDownloadTag
 
 	public static function getAllTagsSelectBox($name, $id, $activeArray, $javascript = NULL, $order = 'id' ) {
 
-		$db = JFactory::getDBO();
+		$db = Factory::getDBO();
 		$query = 'SELECT a.id AS value, a.title AS text'
 				.' FROM #__phocadownload_tags AS a'
 				. ' ORDER BY '. $order;
@@ -96,7 +98,7 @@ class PhocaDownloadTag
 
 		$tags = $db->loadObjectList();
 
-		$tagsO = Joomla\CMS\HTML\HTMLHelper::_('select.genericlist', $tags, $name, 'class="inputbox" size="4" multiple="multiple"'. $javascript, 'value', 'text', $activeArray, $id);
+		$tagsO = HTMLHelper::_('select.genericlist', $tags, $name, 'class="form-select" size="4" multiple="multiple"'. $javascript, 'value', 'text', $activeArray, $id);
 
 		return $tagsO;
 	}

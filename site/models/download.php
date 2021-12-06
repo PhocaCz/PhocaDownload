@@ -7,10 +7,13 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Plugin\PluginHelper;
 jimport('joomla.application.component.model');
 
 
-class PhocaDownloadModelDownload extends JModelLegacy
+class PhocaDownloadModelDownload extends BaseDatabaseModel
 {
 	var $_file 				= null;
 	var $_category 			= null;
@@ -18,7 +21,7 @@ class PhocaDownloadModelDownload extends JModelLegacy
 	var $_directlink		= 0;
 
 	function __construct() {
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		parent::__construct();
 		$this->setState('filter.language',$app->getLanguageFilter());
 	}
@@ -40,9 +43,9 @@ class PhocaDownloadModelDownload extends JModelLegacy
 	
 	function _getFileQuery( $downloadToken ) {
 		
-		$app		= JFactory::getApplication();
+		$app		= Factory::getApplication();
 		$params 	= $app->getParams();
-		$user 		= JFactory::getUser();
+		$user 		= Factory::getUser();
 		
 		$pQ			= $params->get( 'enable_plugin_query', 0 );
 		
@@ -52,7 +55,7 @@ class PhocaDownloadModelDownload extends JModelLegacy
 		
 		
 		// Active
-		$jnow		= JFactory::getDate();
+		$jnow		= Factory::getDate();
 		$now		= $jnow->toSql();
 		$nullDate	= $this->_db->getNullDate();
 		$wheres[] = ' ( c.publish_up = '.$this->_db->Quote($nullDate).' OR c.publish_up <= '.$this->_db->Quote($now).' )';
@@ -60,10 +63,10 @@ class PhocaDownloadModelDownload extends JModelLegacy
 		
 		if ($pQ == 1) {
 			// GWE MOD - to allow for access restrictions
-			JPluginHelper::importPlugin("phoca");
+			PluginHelper::importPlugin("phoca");
 			//$dispatcher = JEventDispatcher::getInstance();
 			$joins = array();
-			$results = \JFactory::getApplication()->triggerEvent('onGetFile', array (&$wheres, &$joins, $fileId,  $params));		
+			$results = Factory::getApplication()->triggerEvent('onGetFile', array (&$wheres, &$joins, $fileId,  $params));		
 			// END GWE MOD
 		}
 		

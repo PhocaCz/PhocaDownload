@@ -7,6 +7,12 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Filesystem\Path;
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Component\ComponentHelper;
 jimport( 'joomla.filesystem.folder' );
 jimport( 'joomla.filesystem.file' );
 
@@ -37,7 +43,7 @@ class PhocaDownloadFile
 	}
 
 	public static function getMimeTypeIcon($filename, $size = 16, $outcome = 0) {
-		$ext = JFile::getExt($filename);
+		$ext = File::getExt($filename);
 		switch(strtolower($ext)) {
 
 
@@ -156,9 +162,9 @@ class PhocaDownloadFile
 		}
 
 		if ($outcome == 1) {
-			return 'style="background: url(\''.JURI::root(). 'media/com_phocadownload/images/mime/'.(int)$size.'/icon-'. htmlspecialchars($icon).'.png\') 0 center no-repeat;"';
+			return 'style="background: url(\''.Uri::root(). 'media/com_phocadownload/images/mime/'.(int)$size.'/icon-'. htmlspecialchars($icon).'.png\') 0 center no-repeat;"';
 		} else {
-			return '<img src="'.JURI::root(). 'media/com_phocadownload/images/mime/'.(int)$size.'/icon-'. htmlspecialchars($icon). '.png'.'" alt="" />';
+			return '<img src="'.Uri::root(). 'media/com_phocadownload/images/mime/'.(int)$size.'/icon-'. htmlspecialchars($icon). '.png'.'" alt="" />';
 		}
 
 		return $mime;
@@ -182,16 +188,16 @@ class PhocaDownloadFile
 			}
 		} else {
 			if ($type == 1) {
-				return JPath::clean($paths->media_css_abs . 'main/');
+				return Path::clean($paths->media_css_abs . 'main/');
 			} else {
-				return	JPath::clean($paths->media_css_abs . 'custom/');
+				return	Path::clean($paths->media_css_abs . 'custom/');
 			}
 		}
 	}
 
 	public static function getCSSFile($id = 0, $fullPath = 0) {
 		if ((int)$id > 0) {
-			$db = JFactory::getDBO();
+			$db = Factory::getDBO();
 			$query = 'SELECT a.filename as filename, a.type as type'
 				.' FROM #__phocadownload_styles AS a'
 			    .' WHERE a.id = '.(int) $id
@@ -214,7 +220,7 @@ class PhocaDownloadFile
 	public static function getFileSize($filename, $readable = 1) {
 
 		$path			= PhocaDownloadPath::getPathSet();
-		$fileNameAbs	= JPath::clean($path['orig_abs'] . '/' . $filename);
+		$fileNameAbs	= Path::clean($path['orig_abs'] . '/' . $filename);
 
 		if ($readable == 1) {
 			return self::getFileSizeReadable(filesize($fileNameAbs));
@@ -229,8 +235,8 @@ class PhocaDownloadFile
 
 		//$format = JText::_($format);
 		$path			= PhocaDownloadPath::getPathSet();
-		$fileNameAbs	= JPath::clean($path['orig_abs'] . '/' . $filename);
-		if (JFile::exists($fileNameAbs)) {
+		$fileNameAbs	= Path::clean($path['orig_abs'] . '/' . $filename);
+		if (File::exists($fileNameAbs)) {
 			switch($function) {
 				case 2:
 					$fileTime = filectime($fileNameAbs);
@@ -244,7 +250,7 @@ class PhocaDownloadFile
 				break;
 			}
 
-			$fileTime = JHTML::Date($fileTime, $format);
+			$fileTime = HTMLHelper::Date($fileTime, $format);
 		} else {
 			$fileTime = '';
 		}
@@ -368,14 +374,14 @@ class PhocaDownloadFile
 	public static function canPlay( $fileName ) {
 		$fileExt 	= PhocaDownloadFile::getExtension($fileName);
 
-		$paramsC	= JComponentHelper::getParams('com_phocadownload');
-		$html5		= $paramsC->get( 'html5_play', 1 );
+		$paramsC	= ComponentHelper::getParams('com_phocadownload');
+		$html5		= 1;//$paramsC->get( 'html5_play', 1 );
 
 		if ($html5 == 1) {
 			switch($fileExt) {
 				case 'mp3':
 				case 'mp4':
-				case 'flv':
+				//case 'flv':
 				case 'ogg':
 				case 'ogv':
 					return true;

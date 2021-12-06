@@ -7,26 +7,31 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\Registry\Registry;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 
 class PhocaDownloadUser
 {
 	public static function getUserLang( $formName = 'language') {
-		$user 		= JFactory::getUser();
-		$paramsC 	= JComponentHelper::getParams('com_phocadownload') ;
+		$user 		= Factory::getUser();
+		$paramsC 	= ComponentHelper::getParams('com_phocadownload') ;
 		$userLang	= $paramsC->get( 'user_ucp_lang', 1 );
 
 		$o = array();
 
 		switch ($userLang){
 			case 2:
-				$registry = new JRegistry;
+				$registry = new Registry;
 				$registry->loadString($user->params);
 				$o['lang'] 		= $registry->get('language','*');
 				$o['langinput'] = '<input type="hidden" name="'.$formName.'" value="'.$o['lang'].'" />';
 			break;
 
 			case 3:
-				$o['lang'] 		= JFactory::getLanguage()->getTag();
+				$o['lang'] 		= Factory::getLanguage()->getTag();
 				$o['langinput'] = '<input type="hidden" name="'.$formName.'" value="'.$o['lang'].'" />';
 			break;
 
@@ -41,7 +46,7 @@ class PhocaDownloadUser
 
 	public static function getUserFileInfo($file, $userId) {
 
-		$db 				= JFactory::getDBO();
+		$db 				= Factory::getDBO();
 		$allFile['size']	= 0;
 		$allFile['count']	= 0;
 		$query = 'SELECT SUM(a.filesize) AS sumfiles, COUNT(a.id) AS countfiles'
@@ -73,14 +78,14 @@ class PhocaDownloadUser
 	 * @return array of id
 	 */
 
-	public static function usersList( $name, $id, $active, $nouser = 0, $javascript = NULL, $order = 'name', $reg = 1 ) {
+	public static function usersList( $name, $id, $active, $nouser = 0, $javascript = NULL, $order = 'name', $reg = 1, $returnArray = 0) {
 
 		$activeArray = $active;
 		if ($active != '') {
 			$activeArray = explode(',',$active);
 		}
 
-		$db		= JFactory::getDBO();
+		$db		= Factory::getDBO();
 		$and 	= '';
 		if ($reg) {
 			// does not include registered users in the list
@@ -105,28 +110,32 @@ class PhocaDownloadUser
 			switch ($name) {
 				case 'jform[accessuserid][]':
 					$idInput1 	= -1;
-					$idText1	= JText::_( 'COM_PHOCADOWNLOAD_ALL_REGISTERED_USERS' );
+					$idText1	= Text::_( 'COM_PHOCADOWNLOAD_ALL_REGISTERED_USERS' );
 					$idInput2 	= -2;
-					$idText2	= JText::_( 'COM_PHOCADOWNLOAD_NOBODY' );
+					$idText2	= Text::_( 'COM_PHOCADOWNLOAD_NOBODY' );
 				break;
 
 				Default:
 					$idInput1 	= -2;
-					$idText1	= JText::_( 'COM_PHOCADOWNLOAD_NOBODY' );
+					$idText1	= Text::_( 'COM_PHOCADOWNLOAD_NOBODY' );
 					$idInput2 	= -1;
-					$idText2	= JText::_( 'COM_PHOCADOWNLOAD_ALL_REGISTERED_USERS' );
+					$idText2	= Text::_( 'COM_PHOCADOWNLOAD_ALL_REGISTERED_USERS' );
 				break;
 			}
 
-			$users[] = Joomla\CMS\HTML\HTMLHelper::_('select.option',  $idInput1, '- '. $idText1 .' -' );
-			$users[] = Joomla\CMS\HTML\HTMLHelper::_('select.option',  $idInput2, '- '. $idText2 .' -' );
+			$users[] = HTMLHelper::_('select.option',  $idInput1, '- '. $idText1 .' -' );
+			$users[] = HTMLHelper::_('select.option',  $idInput2, '- '. $idText2 .' -' );
 
 			$users = array_merge( $users, $db->loadObjectList() );
 		} else {
 			$users = $db->loadObjectList();
 		}
 
-		$users = Joomla\CMS\HTML\HTMLHelper::_('select.genericlist', $users, $name, 'class="inputbox" size="4" multiple="multiple"'. $javascript, 'value', 'text', $activeArray, $id );
+		if ($returnArray == 1) {
+			return $users;
+		}
+
+		$users = HTMLHelper::_('select.genericlist', $users, $name, 'class="form-select" size="4" multiple="multiple"'. $javascript, 'value', 'text', $activeArray, $id );
 
 		return $users;
 	}

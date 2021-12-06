@@ -7,10 +7,9 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
  defined('_JEXEC') or die;
-Joomla\CMS\HTML\HTMLHelper::_('behavior.tooltip');
-Joomla\CMS\HTML\HTMLHelper::_('behavior.formvalidation');
-Joomla\CMS\HTML\HTMLHelper::_('behavior.keepalive');
-Joomla\CMS\HTML\HTMLHelper::_('formbehavior.chosen', 'select');
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+
 
 $extlink 	= 0;
 if (isset($this->item->extid) && $this->item->extid != '') {
@@ -23,13 +22,13 @@ $r = $this->r;
 <script type="text/javascript">
 Joomla.submitbutton = function(task) {
 	if (task == '<?php echo $this->t['task'] ?>.cancel' || document.formvalidator.isValid(document.getElementById('adminForm'))) {
-		<?php echo $this->form->getField('categories')->save(); ?>
+		<?php /*echo $this->form->getField('categories')->save(); ?>
 		<?php echo $this->form->getField('category')->save(); ?>
-		<?php echo $this->form->getField('file')->save(); ?>
+		<?php echo $this->form->getField('file')->save(); */ ?>
 		Joomla.submitform(task, document.getElementById('adminForm'));
 	}
 	else {
-		Joomla.renderMessages({"error": ["<?php echo JText::_('JGLOBAL_VALIDATION_FORM_FAILED', true);?>"]});
+		Joomla.renderMessages({"error": ["<?php echo Text::_('JGLOBAL_VALIDATION_FORM_FAILED', true);?>"]});
 		<?php /* alert('<?php echo JText::_('JGLOBAL_VALIDATION_FORM_FAILED', true);?>'); */ ?>
 	}
 }
@@ -38,7 +37,7 @@ echo $r->startForm($this->t['o'], $this->t['task'], $this->item->id, 'adminForm'
 // First Column
 echo '<div class="span8 form-horizontal">';
 $tabs = array (
-'general' 		=> JText::_($this->t['l'].'_GENERAL_OPTIONS')
+'general' 		=> Text::_($this->t['l'].'_GENERAL_OPTIONS')
 );
 echo $r->navigation($tabs);
 
@@ -56,17 +55,17 @@ echo '</div>';//end span10
 // Second Column
 echo '<div class="span4">';
 
-echo '<div class="alert alert-error">' . JText::_('COM_PHOCADOWNLOAD_LAYOUT_WARNING').'</div>';
+echo '<div class="alert alert-danger">' . Text::_('COM_PHOCADOWNLOAD_LAYOUT_WARNING').'</div>';
 
-echo '<div class="alert alert-info"><h4>' . JText::_('COM_PHOCADOWNLOAD_CATEGORIES_VIEW').'</h4>';
+echo '<div class="alert alert-info"><h4>' . Text::_('COM_PHOCADOWNLOAD_CATEGORIES_VIEW').'</h4>';
 $lP = PhocaDownloadSettings::getLayoutParams('categories');
-echo '<div><h3>' . JText::_('COM_PHOCADOWNLOAD_PARAMETERS').'</h3></div>';
+echo '<div><h3>' . Text::_('COM_PHOCADOWNLOAD_PARAMETERS').'</h3></div>';
 if (isset($lP['search'])) {
 	foreach ($lP['search'] as $k => $v) {
 		echo $v . ' ';
 	}
 }
-echo '<div><h3>' . JText::_('COM_PHOCADOWNLOAD_STYLES').'</h3></div>';
+echo '<div><h3>' . Text::_('COM_PHOCADOWNLOAD_STYLES').'</h3></div>';
 if (isset($lP['style'])) {
 	foreach ($lP['style'] as $k => $v) {
 		echo $v . ' ';
@@ -74,15 +73,15 @@ if (isset($lP['style'])) {
 }
 echo '</div>';
 
-echo '<div class="alert alert-info"><h4>' . JText::_('COM_PHOCADOWNLOAD_CATEGORY_VIEW').'</h4>';
+echo '<div class="alert alert-info"><h4>' . Text::_('COM_PHOCADOWNLOAD_CATEGORY_VIEW').'</h4>';
 $lP = PhocaDownloadSettings::getLayoutParams('category');
-echo '<div><h3>' . JText::_('COM_PHOCADOWNLOAD_PARAMETERS').'</h3></div>';
+echo '<div><h3>' . Text::_('COM_PHOCADOWNLOAD_PARAMETERS').'</h3></div>';
 if (isset($lP['search'])) {
 	foreach ($lP['search'] as $k => $v) {
 		echo $v . ' ';
 	}
 }
-echo '<div><h3>' . JText::_('COM_PHOCADOWNLOAD_STYLES').'</h3></div>';
+echo '<div><h3>' . Text::_('COM_PHOCADOWNLOAD_STYLES').'</h3></div>';
 if (isset($lP['style'])) {
 	foreach ($lP['style'] as $k => $v) {
 		echo $v . ' ';
@@ -90,15 +89,15 @@ if (isset($lP['style'])) {
 }
 echo '</div>';
 
-echo '<div class="alert alert-info"><h4>' . JText::_('COM_PHOCADOWNLOAD_FILE_VIEW').'</h4>';
+echo '<div class="alert alert-info"><h4>' . Text::_('COM_PHOCADOWNLOAD_FILE_VIEW').'</h4>';
 $lP = PhocaDownloadSettings::getLayoutParams('file');
-echo '<div><h3>' . JText::_('COM_PHOCADOWNLOAD_PARAMETERS').'</h3></div>';
+echo '<div><h3>' . Text::_('COM_PHOCADOWNLOAD_PARAMETERS').'</h3></div>';
 if (isset($lP['search'])) {
 	foreach ($lP['search'] as $k => $v) {
 		echo $v . ' ';
 	}
 }
-echo '<div><h3>' . JText::_('COM_PHOCADOWNLOAD_STYLES').'</h3></div>';
+echo '<div><h3>' . Text::_('COM_PHOCADOWNLOAD_STYLES').'</h3></div>';
 if (isset($lP['style'])) {
 	foreach ($lP['style'] as $k => $v) {
 		echo $v . ' ';

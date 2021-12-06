@@ -11,9 +11,14 @@
 
 
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\Controller\FormController;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Router\Route;
 jimport('joomla.application.component.controllerform');
 
-class PhocaDownloadCpControllerPhocaDownloadFile extends JControllerForm
+class PhocaDownloadCpControllerPhocaDownloadFile extends FormController
 {
 	protected	$option 		= 'com_phocadownload';
 	
@@ -21,15 +26,15 @@ class PhocaDownloadCpControllerPhocaDownloadFile extends JControllerForm
 		
 		parent::__construct($config);
 		
-		$task = JFactory::getApplication()->input->get('task');
+		$task = Factory::getApplication()->input->get('task');
 		if ((string)$task == 'addtext') {
-			JFactory::getApplication()->input->set('task','add');
-			JFactory::getApplication()->input->set('layout','edit_text');
+			Factory::getApplication()->input->set('task','add');
+			Factory::getApplication()->input->set('layout','edit_text');
 		}
 	}
 	
 	protected function allowAdd($data = array()) {
-		$user		= JFactory::getUser();
+		$user		= Factory::getUser();
 		$allow		= null;
 		$allow	= $user->authorise('core.create', 'com_phocadownload');
 		if ($allow === null) {
@@ -40,7 +45,7 @@ class PhocaDownloadCpControllerPhocaDownloadFile extends JControllerForm
 	}
 
 	protected function allowEdit($data = array(), $key = 'id') {
-		$user		= JFactory::getUser();
+		$user		= Factory::getUser();
 		$allow		= null;
 		$allow	= $user->authorise('core.edit', 'com_phocadownload');
 		if ($allow === null) {
@@ -51,25 +56,25 @@ class PhocaDownloadCpControllerPhocaDownloadFile extends JControllerForm
 	}
 	
 	public function batch($model =  null) {
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 
 		// Set the model
 		$model	= $this->getModel('phocadownloadfile', '', array());
 
 		// Preset the redirect
-		$this->setRedirect(JRoute::_('index.php?option=com_phocadownload&view=phocadownloadfiles'.$this->getRedirectToListAppend(), false));
+		$this->setRedirect(Route::_('index.php?option=com_phocadownload&view=phocadownloadfiles'.$this->getRedirectToListAppend(), false));
 
 		return parent::batch($model);
 	}
 	
 	/*
 	function copyquick() {
-		$cid	= JFactory::getApplication()->input->get( 'cid', array(0), 'post', 'array' );
+		$cid	= Factory::getApplication()->input->get( 'cid', array(0), 'post', 'array' );
 		$model	= $this->getModel( 'phocadownloadfile' );
 		if ($model->copyQuick($cid)) {
-			$msg = JText::_( 'COM_PHOCADOWNLOAD_SUCCESS_COPY_FILE' );
+			$msg = Text::_( 'COM_PHOCADOWNLOAD_SUCCESS_COPY_FILE' );
 		} else {
-			$msg = JText::_( 'COM_PHOCADOWNLOAD_ERROR_COPY_FILE' );
+			$msg = Text::_( 'COM_PHOCADOWNLOAD_ERROR_COPY_FILE' );
 		}
 		$link = 'index.php?option=com_phocadownload&view=phocadownloadfiles';
 		$this->setRedirect($link, $msg);

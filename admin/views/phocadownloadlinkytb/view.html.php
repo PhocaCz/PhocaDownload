@@ -9,28 +9,31 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
 jimport( 'joomla.application.component.view' );
 
-class phocaDownloadCpViewphocaDownloadLinkYtb extends JViewLegacy
+class phocaDownloadCpViewphocaDownloadLinkYtb extends HtmlView
 {
 	protected $t;
 	protected $r;
 
 	function display($tpl = null) {
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		$this->r = new PhocaDownloadRenderAdminViews();
 		$this->t = PhocaDownloadUtils::setVars('linkytb');
-		$document	= JFactory::getDocument();
-		$uri		= \Joomla\CMS\Uri\Uri::getInstance();
+		$document	= Factory::getDocument();
+		$uri		= Uri::getInstance();
 		//Frontend Changes
 		$tUri = '';
 		if (!$app->isClient('administrator')) {
-			$tUri = JURI::base();
+			$tUri = Uri::base();
 
 		}
 		
 
-		$eName				= JFactory::getApplication()->input->get('e_name');
+		$eName				= Factory::getApplication()->input->get('e_name');
 		$this->t['ename']		= preg_replace( '#[^A-Z0-9\-\_\[\]]#i', '', $eName );
 		$this->t['backlink']	= $tUri.'index.php?option=com_phocadownload&amp;view=phocadownloadlinks&amp;tmpl=component&amp;e_name='.$this->t['ename'];
 

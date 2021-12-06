@@ -7,13 +7,45 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Language\Text;
 
 class PhocaDownloadRenderFront
 {
+
+    public static function renderMainJs() {
+
+        $app    = Factory::getApplication();
+        $doc    = $app->getDocument();
+
+        $oVars   = array();
+        $oLang   = array();
+        $oParams = array();
+       /* $oLang   = array(
+            'COM_PHOCAGALLERY_MAX_LIMIT_CHARS_REACHED' => Text::_('COM_PHOCAGALLERY_MAX_LIMIT_CHARS_REACHED'),
+            'COM_PHOCAGALLERY_ENTER_TITLE' => Text::_('COM_PHOCAGALLERY_ENTER_TITLE'),
+            'COM_PHOCAGALLERY_ENTER_COMMENT' => Text::_('COM_PHOCAGALLERY_ENTER_COMMENT')
+
+        );*/
+
+       /// $doc->addScriptOptions('phLangPG', $oLang);
+        //$doc->addScriptOptions('phVarsPG', $oVars);
+        //$doc->addScriptOptions('phParamsPG', $oParams);
+
+
+        HTMLHelper::_('script', 'media/com_phocadownload/js/main.js', array('version' => 'auto'));
+        Factory::getApplication()
+			->getDocument()
+			->getWebAssetManager()
+			->useScript('bootstrap.modal');
+    }
+
 	public static function renderAllCSS($noBootStrap = 0) {
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		$itemid	= $app->input->get('Itemid', 0, 'int');
-		$db 	= JFactory::getDBO();
+		$db 	= Factory::getDBO();
 		$query = 'SELECT a.filename as filename, a.type as type, a.menulink as menulink'
 				.' FROM #__phocadownload_styles AS a'
 				.' WHERE a.published = 1'
@@ -30,10 +62,10 @@ class PhocaDownloadRenderFront
 					$menuLinks 	= explode(',', $fv->menulink);
 					$isIncluded	= in_array((int)$itemid, $menuLinks);
 					if ($isIncluded) {
-						JHtml::stylesheet($path . $fv->filename );
+						HTMLHelper::stylesheet($path . $fv->filename );
 					}
 				} else {
-					JHtml::stylesheet($path . $fv->filename );
+					HTMLHelper::stylesheet($path . $fv->filename );
 				}
 			}
 		}
@@ -41,7 +73,7 @@ class PhocaDownloadRenderFront
 
 	public static function displayMirrorLinks($view = 1, $link = '', $title = '', $target = '') {
 
-		$paramsC							= JComponentHelper::getParams( 'com_phocadownload' );
+		$paramsC							= ComponentHelper::getParams( 'com_phocadownload' );
 		$param['display_mirror_links']		= $paramsC->get( 'display_mirror_links', 0 );
 		$o = '';
 
@@ -78,7 +110,7 @@ class PhocaDownloadRenderFront
 
 	public static function displayReportLink($view = 1, $title = '') {
 
-		$paramsC								= JComponentHelper::getParams( 'com_phocadownload' );
+		$paramsC								= ComponentHelper::getParams( 'com_phocadownload' );
 		$param['display_report_link']			= $paramsC->get( 'display_report_link', 0 );
 		$param['report_link_guestbook_id']		= $paramsC->get( 'report_link_guestbook_id', 0 );
 		$o = '';
@@ -106,7 +138,7 @@ class PhocaDownloadRenderFront
 			//$href	= JRoute::_('index.php?option=com_phocaguestbook&view=guestbook&id='.(int)$param['report_link_guestbook_id'].'&reporttitle='.strip_tags($title).'&tmpl=component');
 
 
-			$o .= '<a href="'.$href.'#pgbTabForm" onclick="'.$onclick.'">'.JText::_('COM_PHOCADOWNLOAD_REPORT').'</a>';
+			$o .= '<a href="'.$href.'#pgbTabForm" onclick="'.$onclick.'">'.Text::_('COM_PHOCADOWNLOAD_REPORT').'</a>';
 
 		}
 
@@ -126,8 +158,8 @@ class PhocaDownloadRenderFront
 
 
 		if ($dateExists < $dateNew) {
-			//return '&nbsp;'. Joomla\CMS\HTML\HTMLHelper::_('image', 'media/com_phocadownload/images/icon-new.png', JText::_('COM_PHOCADOWNLOAD_NEW'));
-			return '&nbsp;<span class="label label-warning badge badge-warning">'.JText::_('COM_PHOCADOWNLOAD_NEW').'</span>';
+			//return '&nbsp;'. JHtml::_('image', 'media/com_phocadownload/images/icon-new.png', JText::_('COM_PHOCADOWNLOAD_NEW'));
+			return '&nbsp;<span class="label label-warning badge bg-warning">'.Text::_('COM_PHOCADOWNLOAD_LABEL_TXT_NEW').'</span>';
 		} else {
 			return '';
 		}
@@ -141,8 +173,8 @@ class PhocaDownloadRenderFront
 		}
 
 		if ($requiredHits <= $hits) {
-			//return '&nbsp;'. Joomla\CMS\HTML\HTMLHelper::_('image', 'media/com_phocadownload/images/icon-hot.png', JText::_('COM_PHOCADOWNLOAD_HOT'));
-			return '&nbsp;<span class="label label-important label-danger badge badge-danger">'.JText::_('COM_PHOCADOWNLOAD_HOT').'</span>';
+			//return '&nbsp;'. JHtml::_('image', 'media/com_phocadownload/images/icon-hot.png', JText::_('COM_PHOCADOWNLOAD_HOT'));
+			return '&nbsp;<span class="label label-important label-danger badge bg-danger">'.Text::_('COM_PHOCADOWNLOAD_LABEL_TXT_HOT').'</span>';
 		} else {
 			return '';
 		}
@@ -153,7 +185,7 @@ class PhocaDownloadRenderFront
 		$tag = "<script type=\"text/javascript\"> \n"
 		. "function OnUploadSubmitFile() { \n"
 		. "if ( document.getElementById('catid').value < 1 ) { \n"
-	    . "alert('".JText::_('COM_PHOCADOWNLOAD_PLEASE_SELECT_CATEGORY')."'); \n"
+	    . "alert('".Text::_('COM_PHOCADOWNLOAD_PLEASE_SELECT_CATEGORY')."'); \n"
 		. "return false; \n"
 		. "} \n"
 		. "document.getElementById('loading-label-file').style.display='block'; \n"
@@ -174,7 +206,7 @@ class PhocaDownloadRenderFront
 		."var charLeft	= maxCount - charIn;" . "\n"
 		."" . "\n"
 		."if (charLeft < 0) {" . "\n"
-		."   alert('".JText::_('COM_PHOCADOWNLOAD_MAX_LIMIT_CHARS_REACHED')."');" . "\n"
+		."   alert('".Text::_('COM_PHOCADOWNLOAD_MAX_LIMIT_CHARS_REACHED')."');" . "\n"
 		."   pdu.phocadownloaduploaddescription.value = pdu.phocadownloaduploaddescription.value.substring(0, maxCount);" . "\n"
 		."	charIn	 = maxCount;" . "\n"
 		."  charLeft = 0;" . "\n"
@@ -236,8 +268,9 @@ class PhocaDownloadRenderFront
 	}
 
 	public static function renderBootstrapModalJs($item = '.btn') {
-		$document	= JFactory::getDocument();
-		Joomla\CMS\HTML\HTMLHelper::_('jquery.framework', false);
+
+		$document	= Factory::getDocument();
+		HTMLHelper::_('jquery.framework', false);
 		$s = '
 		jQuery(document).ready(function(){
 			
@@ -272,12 +305,16 @@ class PhocaDownloadRenderFront
 					$heightD = $heightD -40;
 					jQuery($body).html(\'<object type="application/pdf" data="\' + $href + \'" width="\' + $widthD + \'" height="\' + $heightD + \'" ></object>\');
 				} else {
-					jQuery($body).load($href, function (response, status, xhr) {
+				    
+					/*jQuery($body).load($href, function (response, status, xhr) {
 						if (status == "success") {
-							/*jQuery($target).modal({ show: true });*/
+						
+
+							//jQuery($target).modal({ show: true });
 						}
-					});
+					});*/
 				}
+				
 			});
 		});';
 		$document->addScriptDeclaration($s);
@@ -289,13 +326,13 @@ class PhocaDownloadRenderFront
 
 	public static function bootstrapModalHtml($item = 'phModal', $title = '') {
 
-		$close = JText::_('COM_PHOCADOWNLAD_CLOSE');
+		$close = Text::_('COM_PHOCADOWNLAD_CLOSE');
 		$o = '<div id="'.$item.'" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="'.$item.'Label">
 		  <div class="modal-dialog" role="document" id="'.$item.'Dialog">
 			<div class="modal-content">
 			  <div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="'.$close.'"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title" id="'.$item.'Label">'.$title.'</h4>
+				<h3 class="modal-title" id="'.$item.'Label">'.$title.'</h3>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="'.$close.'"></button>
 			  </div>
 			  <div class="modal-body" id="'.$item.'Body" ></div>
 			  <div class="modal-footer"></div>
@@ -316,15 +353,15 @@ class PhocaDownloadRenderFront
 
 	public static function renderIcon($type, $img, $alt, $class = '', $attributes = '') {
 
-        //return Joomla\CMS\HTML\HTMLHelper::_('image', $img, $alt);
+        //return JHtml::_('image', $img, $alt);
 
-        $paramsC         = JComponentHelper::getParams('com_phocadownload');
+        $paramsC         = ComponentHelper::getParams('com_phocadownload');
 
         // possible FR
         $icons = 0;//$paramsC->get('icons', 0);
 
         if ($icons == 0) {
-            return Joomla\CMS\HTML\HTMLHelper::_('image', $img, $alt, $attributes);
+            return HTMLHelper::_('image', $img, $alt, $attributes);
         }
 
         $i = '';
@@ -381,7 +418,7 @@ class PhocaDownloadRenderFront
 
             } else {
                 if ($img != '') {
-                    return Joomla\CMS\HTML\HTMLHelper::_('image', $img, $alt, $attributes);
+                    return HTMLHelper::_('image', $img, $alt, $attributes);
                 }
             }
 
@@ -444,7 +481,7 @@ class PhocaDownloadRenderFront
 
             } else {
                 if ($img != '') {
-                    return Joomla\CMS\HTML\HTMLHelper::_('image', $img, $alt, $attributes);
+                    return HTMLHelper::_('image', $img, $alt, $attributes);
                 }
             }
         }
@@ -453,7 +490,7 @@ class PhocaDownloadRenderFront
     public static function renderHeader($headers = array(), $tag = '', $imageMeta = '')
     {
 
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         //$menus		= $app->getMenu();
         //$menu 		= $menus->getActive();
         $p = $app->getParams();
@@ -513,7 +550,7 @@ class PhocaDownloadRenderFront
     public static function renderSubHeader($headers = array(), $tag = '', $class = '', $imageMeta = '')
     {
 
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         //$menus		= $app->getMenu();
         //$menu 		= $menus->getActive();
         $p = $app->getParams();

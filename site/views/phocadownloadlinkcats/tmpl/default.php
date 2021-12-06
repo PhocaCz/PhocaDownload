@@ -7,7 +7,9 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die('Restricted access');
-Joomla\CMS\HTML\HTMLHelper::_('behavior.tooltip');
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+JHtml::_('behavior.tooltip');
 ?>
 
 <script type="text/javascript">
@@ -31,13 +33,13 @@ function insertLink() {
 </script>
 <div id="phocadownload-links">
 <fieldset class="adminform">
-<legend><?php echo JText::_( 'COM_PHOCADOWNLOAD_CATEGORIES' ); ?></legend>
+<legend><?php echo Text::_( 'COM_PHOCADOWNLOAD_CATEGORIES' ); ?></legend>
 <form name="adminFormLink" id="adminFormLink">
 <table class="admintable" width="100%">
 	<tr>
 		<td class="key" align="right" width="20%">
 			<label for="title">
-				<?php echo JText::_( 'COM_PHOCADOWNLOAD_TITLE' ); ?>
+				<?php echo Text::_( 'COM_PHOCADOWNLOAD_TITLE' ); ?>
 			</label>
 		</td>
 		<td width="80%">
@@ -47,26 +49,26 @@ function insertLink() {
 	<tr >
 		<td class="key" align="right">
 			<label for="target">
-				<?php echo JText::_( 'COM_PHOCADOWNLOAD_TARGET' ); ?>
+				<?php echo Text::_( 'COM_PHOCADOWNLOAD_TARGET' ); ?>
 			</label>
 		</td>
 		<td>
 			<select name="target" id="target">
-			<option value="s" selected="selected"><?php echo JText::_( 'COM_PHOCADOWNLOAD_TARGET_SELF' ); ?></option>
-			<option value="b"><?php echo JText::_( 'COM_PHOCADOWNLOAD_TARGET_BLANK' ); ?></option>
-			<option value="t"><?php echo JText::_( 'COM_PHOCADOWNLOAD_TARGET_TOP' ); ?></option>
-			<option value="p"><?php echo JText::_( 'COM_PHOCADOWNLOAD_TARGET_PARENT' ); ?></option>
+			<option value="s" selected="selected"><?php echo Text::_( 'COM_PHOCADOWNLOAD_TARGET_SELF' ); ?></option>
+			<option value="b"><?php echo Text::_( 'COM_PHOCADOWNLOAD_TARGET_BLANK' ); ?></option>
+			<option value="t"><?php echo Text::_( 'COM_PHOCADOWNLOAD_TARGET_TOP' ); ?></option>
+			<option value="p"><?php echo Text::_( 'COM_PHOCADOWNLOAD_TARGET_PARENT' ); ?></option>
 			</select>
 		</td>
 	</tr>
 
 	<tr>
 		<td>&nbsp;</td>
-		<td align="right"><button class="btn btn-primary plg-button-insert " onclick="insertLink();"><span class="icon-ok"></span> <?php echo JText::_( 'COM_PHOCADOWNLOAD_INSERT_CODE' ); ?></button></td>
+		<td align="right"><button class="btn btn-primary plg-button-insert " onclick="insertLink();"><span class="icon-ok"></span> <?php echo Text::_( 'COM_PHOCADOWNLOAD_INSERT_CODE' ); ?></button></td>
 	</tr>
 </table>
 </form>
 
 </fieldset>
-<div style="text-align:left;"><span class="icon-16-edb-back"><a style="text-decoration:underline" href="<?php echo $this->t['backlink'];?>"><?php echo JText::_('COM_PHOCADOWNLOAD_BACK')?></a></span></div>
+<div style="text-align:left;"><span class="icon-16-edb-back"><a style="text-decoration:underline" href="<?php echo $this->t['backlink'];?>"><?php echo Text::_('COM_PHOCADOWNLOAD_BACK')?></a></span></div>
 </div>

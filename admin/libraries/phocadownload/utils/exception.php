@@ -9,16 +9,17 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Language\Text;
 
 class PhocaDownloadException
 {
-	
+
 	public static function renderErrorInfo ($msg, $jText = false){
-	
+
 		if ($jText) {
-			return '<div class="alert alert-error pg-error-info">'.JText::_($msg).'</div>';
+			return '<div class="alert alert-danger pg-error-info">'.Text::_($msg).'</div>';
 		} else {
-			return '<div class="alert alert-error pg-error-info">'.$msg.'</div>';
+			return '<div class="alert alert-danger pg-error-info">'.$msg.'</div>';
 		}
 	}
 }

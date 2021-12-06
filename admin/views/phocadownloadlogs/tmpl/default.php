@@ -8,8 +8,13 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Layout\LayoutHelper;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Router\Route;
 $r = $this->r;
-$user		= JFactory::getUser();
+$user		= Factory::getUser();
 $userId		= $user->get('id');
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
@@ -38,7 +43,7 @@ echo $r->startForm($this->t['o'], $this->t['tasks'], 'adminForm');
 echo $r->startMainContainer();
 
 if ($this->t['p']->get('enable_logging', 0) == 0) {
-	echo '<div class="alert"><a class="close" data-dismiss="alert" href="#">&times;</a>'. JText::_('COM_PHOCADOWNLOAD_LOGGING_NOT_ENABLED').'</div>';
+	echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">'. Text::_('COM_PHOCADOWNLOAD_LOGGING_NOT_ENABLED').'<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="'.Text::_('COM_PHOCADOWNLOAD_CLOSE').'"></button></div>';
 }
 /*
 echo $r->startFilterBar();
@@ -50,12 +55,12 @@ echo $r->selectFilterDirection('JFIELD_ORDERING_DESC', 'JGLOBAL_ORDER_ASCENDING'
 echo $r->selectFilterSortBy('JGLOBAL_SORT_BY', $sortFields, $listOrder);
 
 echo $r->startFilterBar(2);
-echo $r->selectFilterType($this->t['l'].'_SELECT_TYPE', $this->state->get('filter.type'), array(1 => JText::_($this->t['l'].'_DOWNLOADS'), 2 =>JText::_($this->t['l'].'_UPLOADS')));
+echo $r->selectFilterType($this->t['l'].'_SELECT_TYPE', $this->state->get('filter.type'), array(1 => Text::_($this->t['l'].'_DOWNLOADS'), 2 =>Text::_($this->t['l'].'_UPLOADS')));
 echo $r->endFilterBar();
 
 
 echo $r->endFilterBar();*/
-echo JLayoutHelper::render('joomla.searchtools.default', array('view' => $this));
+echo LayoutHelper::render('joomla.searchtools.default', array('view' => $this));
 
 echo $r->startTable('categoryList');
 
@@ -66,14 +71,14 @@ echo $r->secondColumnHeader($listDirn, $listOrder);
 
 //echo '<th></th>';//$r->thOrderingXML('JGRID_HEADING_ORDERING', 0,0);
 //echo $r->thCheck('JGLOBAL_CHECK_ALL');
-echo '<th class="ph-date">'.Joomla\CMS\HTML\HTMLHelper::_('searchtools.sort', $this->t['l'].'_DATE', 'a.date', $listDirn, $listOrder ).'</th>'."\n";
-echo '<th class="ph-uploaduser">'.Joomla\CMS\HTML\HTMLHelper::_('searchtools.sort', $this->t['l'].'_USER', 'username', $listDirn, $listOrder ).'</th>'."\n";
-echo '<th class="ph-ip">'.Joomla\CMS\HTML\HTMLHelper::_('searchtools.sort', $this->t['l'].'_IP', 'a.ip', $listDirn, $listOrder ).'</th>'."\n";
-echo '<th class="ph-file-short">'.Joomla\CMS\HTML\HTMLHelper::_('searchtools.sort',  	$this->t['l'].'_FILE', 'filename', $listDirn, $listOrder ).'</th>'."\n";
-echo '<th class="ph-catid">'.Joomla\CMS\HTML\HTMLHelper::_('searchtools.sort',  	$this->t['l'].'_CATEGORY', 'category_id', $listDirn, $listOrder ).'</th>'."\n";
-echo '<th class="ph-page">'.Joomla\CMS\HTML\HTMLHelper::_('searchtools.sort', $this->t['l'].'_PAGE', 'a.page', $listDirn, $listOrder ).'</th>'."\n";
-echo '<th class="ph-type">'.Joomla\CMS\HTML\HTMLHelper::_('searchtools.sort', $this->t['l'].'_TYPE', 'a.type', $listDirn, $listOrder ).'</th>'."\n";
-echo '<th class="ph-id">'.Joomla\CMS\HTML\HTMLHelper::_('searchtools.sort', $this->t['l'].'_ID', 'a.id', $listDirn, $listOrder ).'</th>'."\n";
+echo '<th class="ph-date">'.HTMLHelper::_('searchtools.sort', $this->t['l'].'_DATE', 'a.date', $listDirn, $listOrder ).'</th>'."\n";
+echo '<th class="ph-uploaduser">'.HTMLHelper::_('searchtools.sort', $this->t['l'].'_USER', 'username', $listDirn, $listOrder ).'</th>'."\n";
+echo '<th class="ph-ip">'.HTMLHelper::_('searchtools.sort', $this->t['l'].'_IP', 'a.ip', $listDirn, $listOrder ).'</th>'."\n";
+echo '<th class="ph-file-short">'.HTMLHelper::_('searchtools.sort',  	$this->t['l'].'_FILE', 'filename', $listDirn, $listOrder ).'</th>'."\n";
+echo '<th class="ph-catid">'.HTMLHelper::_('searchtools.sort',  	$this->t['l'].'_CATEGORY', 'category_id', $listDirn, $listOrder ).'</th>'."\n";
+echo '<th class="ph-page">'.HTMLHelper::_('searchtools.sort', $this->t['l'].'_PAGE', 'a.page', $listDirn, $listOrder ).'</th>'."\n";
+echo '<th class="ph-type">'.HTMLHelper::_('searchtools.sort', $this->t['l'].'_TYPE', 'a.type', $listDirn, $listOrder ).'</th>'."\n";
+echo '<th class="ph-id">'.HTMLHelper::_('searchtools.sort', $this->t['l'].'_ID', 'a.id', $listDirn, $listOrder ).'</th>'."\n";
 
 echo $r->endTblHeader();
 
@@ -96,9 +101,9 @@ $canCreate		= $user->authorise('core.create', $this->t['o']);
 $canEdit		= $user->authorise('core.edit', $this->t['o']);
 $canCheckin		= $user->authorise('core.manage', 'com_checkin') || $item->checked_out==$user->get('id') || $item->checked_out==0;
 $canChange		= $user->authorise('core.edit.state', $this->t['o']) && $canCheckin;
-$linkEdit 		= JRoute::_( $urlEdit. $item->id );
+$linkEdit 		= Route::_( $urlEdit. $item->id );
 
-$linkCat	= JRoute::_( 'index.php?option='.$this->t['o'].'&task='.$this->t['c'].'cat.edit&id='.(int) $item->category_id );
+$linkCat	= Route::_( 'index.php?option='.$this->t['o'].'&task='.$this->t['c'].'cat.edit&id='.(int) $item->category_id );
 $canEditCat	= $user->authorise('core.edit', $this->t['o']);*/
 $canChange = 0;
 $orderkey = 0;
@@ -114,7 +119,7 @@ echo $r->td($this->escape($item->date));
 $usrO = $item->usernameno;
 if ($item->username) {$usrO = $usrO . ' ('.$item->username.')';}
 if (!$usrO) {
-	$usrO = JText::_('COM_PHOCADOWNLOAD_GUEST');
+	$usrO = Text::_('COM_PHOCADOWNLOAD_GUEST');
 }
 echo $r->td($usrO, "small hidden-phone");
 
@@ -124,13 +129,13 @@ echo $r->td($this->escape($item->ip));
 echo $r->td($this->escape($item->file_title) . ' ('.$this->escape($item->filename) . ')');
 
 echo $r->td($this->escape($item->category_id));
-echo $r->td('<span class="editlinktip hasTip" title="'. JText::_( $this->t['l'].'_PAGE' ).'::'. $this->escape($item->page).'">'
-			.'<a href="'.$this->escape($item->page).'" target="_blank" >'. JText::_( $this->t['l'].'_PAGE' ).'</a></span>');
+echo $r->td('<span class="editlinktip hasTip" title="'. Text::_( $this->t['l'].'_PAGE' ).'::'. $this->escape($item->page).'">'
+			.'<a href="'.$this->escape($item->page).'" target="_blank" >'. Text::_( $this->t['l'].'_PAGE' ).'</a></span>');
 
 if ($item->type == 2) {
-	echo $r->td('<span class="label label-warning badge badge-warning">'.JText::_($this->t['l'].'_UPLOAD').'</span>', "small hidden-phone");
+	echo $r->td('<span class="label label-warning badge bg-warning">'.Text::_($this->t['l'].'_UPLOAD').'</span>', "small hidden-phone");
 } else {
-	echo $r->td('<span class="label label-success badge badge-success">'.JText::_($this->t['l'].'_DOWNLOAD').'</span>', "small hidden-phone");
+	echo $r->td('<span class="label label-success badge bg-success">'.Text::_($this->t['l'].'_DOWNLOAD').'</span>', "small hidden-phone");
 }
 
 echo $r->td($item->id, "small hidden-phone");

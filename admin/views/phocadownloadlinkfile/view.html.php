@@ -9,10 +9,15 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\HTML\HTMLHelper;
 jimport( 'joomla.application.component.view' );
 use Joomla\String\StringHelper;
 
-class PhocaDownloadCpViewPhocaDownloadLinkFile extends JViewLegacy
+class PhocaDownloadCpViewPhocaDownloadLinkFile extends HtmlView
 {
 	public $_context 	= 'com_phocadownload.phocadownloadlinkfile';
 	
@@ -20,22 +25,22 @@ class PhocaDownloadCpViewPhocaDownloadLinkFile extends JViewLegacy
 	protected $r;
 
 	function display($tpl = null) {
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$this->r = new PhocaDownloadRenderAdminViews();
 		$this->t = PhocaDownloadUtils::setVars('linkfile');
 
-		$uri		= \Joomla\CMS\Uri\Uri::getInstance();
-		$document	= JFactory::getDocument();
-		$db		    = JFactory::getDBO();
+		$uri		= Uri::getInstance();
+		$document	= Factory::getDocument();
+		$db		    = Factory::getDBO();
 
 		//Frontend Changes
 		$tUri = '';
 		if (!$app->isClient('administrator')) {
-			$tUri = JURI::base();
+			$tUri = Uri::base();
 
 		}
 
-		//JHTML::stylesheet( 'media/com_phocadownload/css/administrator/phocadownload.css' );
+		//JHtml::stylesheet( 'media/com_phocadownload/css/administrator/phocadownload.css' );
 
 		$eName				= $app->input->get('e_name');
 		$this->t['ename']		= preg_replace( '#[^A-Z0-9\-\_\[\]]#i', '', $eName );
@@ -43,13 +48,13 @@ class PhocaDownloadCpViewPhocaDownloadLinkFile extends JViewLegacy
 		$this->t['backlink']	= $tUri.'index.php?option=com_phocadownload&amp;view=phocadownloadlinks&amp;tmpl=component&amp;e_name='.$this->t['ename'];
 
 
-		$params = JComponentHelper::getParams('com_phocadownload') ;
+		$params = ComponentHelper::getParams('com_phocadownload') ;
 
 		//Filter
 		$context			= 'com_phocadownload.phocadownload.list.';
 		//$sectionid			= JFactory::getApplication()->input->get( 'sectionid', -1, '', 'int' );
 		//$redirect			= $sectionid;
-		$option				= JFactory::getApplication()->input->getCmd( 'option' );
+		$option				= Factory::getApplication()->input->getCmd( 'option' );
 
 		$filter_published		= $app->getUserStateFromRequest( $this->_context.'.filter_published',	'filter_published', '',	'word' );
 		$filter_catid		= $app->getUserStateFromRequest( $this->_context.'.filter_catid',	'filter_catid', 0,	'int' );
@@ -69,7 +74,7 @@ class PhocaDownloadCpViewPhocaDownloadLinkFile extends JViewLegacy
 		// build list of categories
 
 		if ($this->t['type'] != 4) {
-			$javascript = 'class="inputbox" size="1" onchange="submitform( );"';
+			$javascript = 'class="form-control" size="1" onchange="submitform( );"';
 		} else {
 			$javascript	= '';
 		}
@@ -107,7 +112,7 @@ class PhocaDownloadCpViewPhocaDownloadLinkFile extends JViewLegacy
 		$lists['sectionid'] = PhocaDownloadCategory::filterSection($query, $filter_sectionid);*/
 
 		// state filter
-		$lists['state']	= Joomla\CMS\HTML\HTMLHelper::_('grid.state',  $filter_published );
+		$lists['state']	= HTMLHelper::_('grid.state',  $filter_published );
 
 		// table ordering
 		$lists['order_Dir'] = $filter_order_Dir;
@@ -117,7 +122,7 @@ class PhocaDownloadCpViewPhocaDownloadLinkFile extends JViewLegacy
 		$lists['search']= $search;
 
 
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 		$uriS = $uri->toString();
 		//$this->assignRef('user',		$user);
 		//$this->assignRef('lists',		$lists);

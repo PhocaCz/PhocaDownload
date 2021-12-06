@@ -7,6 +7,7 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
  defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
 
 $group 	= PhocaDownloadSettings::getManagerGroup($this->manager);
 
@@ -14,7 +15,7 @@ $link = 'index.php?option='.$this->t['o'].'&amp;view='. PhocaDownloadUtils::filt
 echo '<tr><td>&nbsp;</td>'
 .'<td class="ph-img-table">'
 .'<a href="'.$link.'" >'
-. Joomla\CMS\HTML\HTMLHelper::_( 'image', $this->t['i'].'icon-16-up.png', '').'</a>'
+. HTMLHelper::_( 'image', $this->t['i'].'icon-16-up.png', '').'</a>'
 .'</td>'
 .'<td><a href="'.$link.'" >..</a></td>'
 .'</tr>';

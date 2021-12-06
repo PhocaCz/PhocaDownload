@@ -9,10 +9,13 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Pagination\Pagination;
 jimport('joomla.application.component.model');
 use Joomla\String\StringHelper;
 
-class PhocaDownloadCpModelPhocaDownloadLinkFile extends JModelLegacy
+class PhocaDownloadCpModelPhocaDownloadLinkFile extends BaseDatabaseModel
 {
 	var $_data 			= null;
 	var $_total 		= null;
@@ -21,7 +24,7 @@ class PhocaDownloadCpModelPhocaDownloadLinkFile extends JModelLegacy
 
 	function __construct() {
 		parent::__construct();
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		// Get the pagination request variables
 		$limit	= $app->getUserStateFromRequest( $this->_context.'.list.limit', 'limit', $app->get('list_limit'), 'int' );
 		$limitstart	= $app->getUserStateFromRequest( $this->_context.'.limitstart', 'limitstart',	0, 'int' );
@@ -51,7 +54,7 @@ class PhocaDownloadCpModelPhocaDownloadLinkFile extends JModelLegacy
 	function getPagination() {
 		if (empty($this->_pagination)) {
 			jimport('joomla.html.pagination');
-			$this->_pagination = new JPagination( $this->getTotal(), $this->getState('limitstart'), $this->getState('limit') );
+			$this->_pagination = new Pagination( $this->getTotal(), $this->getState('limitstart'), $this->getState('limit') );
 		}
 		return $this->_pagination;
 	}
@@ -74,7 +77,7 @@ class PhocaDownloadCpModelPhocaDownloadLinkFile extends JModelLegacy
 	}
 
 	function _buildContentOrderBy() {
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$filter_order		= $app->getUserStateFromRequest( $this->_context.'.filter_order',	'filter_order',	'a.ordering','cmd' );
 		$filter_order_Dir	= $app->getUserStateFromRequest( $this->_context.'.filter_order_Dir',	'filter_order_Dir',	'',				'word' );
 
@@ -87,7 +90,7 @@ class PhocaDownloadCpModelPhocaDownloadLinkFile extends JModelLegacy
 	}
 
 	function _buildContentWhere() {
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$filter_published		= $app->getUserStateFromRequest( $this->_context.'.filter_published',	'filter_published',	'',	'word' );
 		$filter_catid		= $app->getUserStateFromRequest( $this->_context.'.catid','catid',0,	'int' );
 		//$filter_sectionid	= $app->getUserStateFromRequest( $this->_context.'.filter_sectionid',	'filter_sectionid',	0,	'int' );

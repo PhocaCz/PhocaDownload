@@ -7,8 +7,14 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Layout\LayoutHelper;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
 $r = $this->r;
-$user		= JFactory::getUser();
+$user		= Factory::getUser();
 $userId		= $user->get('id');
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
@@ -41,7 +47,7 @@ echo $r->inputFilterSearchLimit('JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC', $this->pag
 echo $r->selectFilterDirection('JFIELD_ORDERING_DESC', 'JGLOBAL_ORDER_ASCENDING', 'JGLOBAL_ORDER_DESCENDING', $listDirn);
 echo $r->selectFilterSortBy('JGLOBAL_SORT_BY', $sortFields, $listOrder);
 echo $r->endFilterBar();*/
-echo JLayoutHelper::render('joomla.searchtools.default', array('view' => $this));
+echo LayoutHelper::render('joomla.searchtools.default', array('view' => $this));
 
 echo $r->startTable('categoryList');
 
@@ -53,9 +59,9 @@ echo $r->secondColumnHeader($listDirn, $listOrder, 'a', true);
 //echo '<th class="nowrap center hidden-phone ph-ordering"></th>';
 //echo $r->thCheck('JGLOBAL_CHECK_ALL');
 //echo '<th class=""></th>'."\n";
-echo '<th class="ph-title">'.Joomla\CMS\HTML\HTMLHelper::_('searchtools.sort',  	$this->t['l'].'_TITLE', 'a.title', $listDirn, $listOrder ).'</th>'."\n";
-echo '<th class="ph-filename-long">'.Joomla\CMS\HTML\HTMLHelper::_('searchtools.sort',  	$this->t['l'].'_FILENAME', 'a.filename', $listDirn, $listOrder ).'</th>'."\n";
-echo '<th class="ph-hits">'.Joomla\CMS\HTML\HTMLHelper::_('searchtools.sort',  		$this->t['l'].'_DOWNLOADS', 'a.hits', $listDirn, $listOrder ).'</th>'."\n";
+echo '<th class="ph-title">'.HTMLHelper::_('searchtools.sort',  	$this->t['l'].'_TITLE', 'a.title', $listDirn, $listOrder ).'</th>'."\n";
+echo '<th class="ph-filename-long">'.HTMLHelper::_('searchtools.sort',  	$this->t['l'].'_FILENAME', 'a.filename', $listDirn, $listOrder ).'</th>'."\n";
+echo '<th class="ph-hits">'.HTMLHelper::_('searchtools.sort',  		$this->t['l'].'_DOWNLOADS', 'a.hits', $listDirn, $listOrder ).'</th>'."\n";
 
 echo $r->endTblHeader();
 
@@ -87,7 +93,7 @@ $canCreate		= $user->authorise('core.create', $this->t['o']);
 $canEdit		= $user->authorise('core.edit', $this->t['o']);
 $canCheckin		= $user->authorise('core.manage', 'com_checkin') || $item->checked_out==$user->get('id') || $item->checked_out==0;
 $canChange		= $user->authorise('core.edit.state', $this->t['o']) && $canCheckin;
-$linkEdit 		= JRoute::_( $urlEdit. $item->id );
+$linkEdit 		= Route::_( $urlEdit. $item->id );
 
 
 echo $r->startTr($i, isset($item->catid) ? (int)$item->catid : 0);
@@ -95,14 +101,14 @@ echo $r->firstColumn($i, $item->id, $canChange, $saveOrder, $orderkey, $item->or
 echo $r->secondColumn($i, $item->id, $canChange, $saveOrder, $orderkey, $item->ordering);
 $checkO = '';
 /*if ($item->checked_out) {
-	$checkO .= Joomla\CMS\HTML\HTMLHelper::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, $this->t['tasks'].'.', $canCheckin);
+	$checkO .= HTMLHelper::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, $this->t['tasks'].'.', $canCheckin);
 }
 if ($canCreate || $canEdit) {
-	$checkO .= '<a href="'. JRoute::_($linkEdit).'">'. $this->escape($item->title).'</a>';
+	$checkO .= '<a href="'. Route::_($linkEdit).'">'. $this->escape($item->title).'</a>';
 } else {*/
 	$checkO .= $this->escape($item->title);
 //}
-$checkO .= '<br /><span class="smallsub">(<span>'.JText::_($this->t['l'].'_FIELD_ALIAS_LABEL').':</span>'. $this->escape($item->alias).')</span>';
+$checkO .= '<br /><span class="smallsub">(<span>'.Text::_($this->t['l'].'_FIELD_ALIAS_LABEL').':</span>'. $this->escape($item->alias).')</span>';
 echo $r->td($checkO, "small hidden-phone ph-wrap-12");
 
 echo $r->td($item->filename, 'ph-wrap-12');
@@ -117,7 +123,7 @@ if ((int)$this->maxandsum->maxhit == 0) {
 }
 
 echo '<td>';
-echo '<div style="background:'.$colors[$color].' url(\''. JURI::root(true).'/media/com_phocadownload/images/white-space.png'.'\') '.$per.'px 0px no-repeat;width:500px;padding:5px 0px;margin:5px 0px;border:1px solid #ccc;">';
+echo '<div style="background:'.$colors[$color].' url(\''. Uri::root(true).'/media/com_phocadownload/images/white-space.png'.'\') '.$per.'px 0px no-repeat;width:500px;padding:5px 0px;margin:5px 0px;border:1px solid #ccc;">';
 //	echo '<small style="color:#666666">['. $row->id .']</small>';
 echo '<div> &nbsp;'.$item->hits.' ('.$perOutput .' %) &nbsp;</div>';
 echo '</div>';

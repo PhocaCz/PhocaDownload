@@ -10,6 +10,8 @@
  */
 
 defined('_JEXEC') or die();
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 
 class PhocaDownloadCpControllerPhocaDownloadset extends PhocaDownloadCpController
 {
@@ -20,21 +22,21 @@ class PhocaDownloadCpControllerPhocaDownloadset extends PhocaDownloadCpControlle
 	}
 
 	function save() {
-		$post					= JFactory::getApplication()->input->get('post');
-		$phocaSet				= JFactory::getApplication()->input->get( 'phocaset', array(0), 'post', 'array' );
+		$post					= Factory::getApplication()->input->get('post');
+		$phocaSet				= Factory::getApplication()->input->get( 'phocaset', array(0), 'post', 'array' );
 
 		$model = $this->getModel( 'phocadownloadset' );
 		$errorMsg = '';
-		switch ( JFactory::getApplication()->input->getCmd('task') ) {
+		switch ( Factory::getApplication()->input->getCmd('task') ) {
 			case 'apply':
 				
 				if ($model->store($phocaSet, $errorMsg)) {
-					$msg = JText::_( 'Changes to Phoca Download Settings Saved' );
+					$msg = Text::_( 'Changes to Phoca Download Settings Saved' );
 					if ($errorMsg != '') {
-						$msg .= '<br />'.JText::_($errorMsg);
+						$msg .= '<br />'.Text::_($errorMsg);
 					}
 				} else {
-					$msg = JText::_( 'Error Saving Phoca Download Settings' );
+					$msg = Text::_( 'Error Saving Phoca Download Settings' );
 				}
 				$this->setRedirect( 'index.php?option=com_phocadownload&view=phocadownloadset', $msg );
 				break;
@@ -42,12 +44,12 @@ class PhocaDownloadCpControllerPhocaDownloadset extends PhocaDownloadCpControlle
 			case 'save':
 			default:
 				if ($model->store($phocaSet, $errorMsg)) {
-					$msg = JText::_( 'Phoca Download Settings Saved' );
+					$msg = Text::_( 'Phoca Download Settings Saved' );
 					if ($errorMsg != '') {
-						$msg .= '<br />'.JText::_($errorMsg);
+						$msg .= '<br />'.Text::_($errorMsg);
 					}
 				} else {
-					$msg = JText::_( 'Error Saving Phoca Download Settings' );
+					$msg = Text::_( 'Error Saving Phoca Download Settings' );
 				}
 				$this->setRedirect( 'index.php?option=com_phocadownload', $msg );
 				break;

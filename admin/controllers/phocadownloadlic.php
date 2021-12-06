@@ -9,9 +9,11 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\Controller\FormController;
+use Joomla\CMS\Factory;
 jimport('joomla.application.component.controllerform');
 
-class PhocaDownloadCpControllerPhocaDownloadLic extends JControllerForm
+class PhocaDownloadCpControllerPhocaDownloadLic extends FormController
 {
 	protected	$option 		= 'com_phocadownload';
 	
@@ -20,7 +22,7 @@ class PhocaDownloadCpControllerPhocaDownloadLic extends JControllerForm
 	}
 	
 	protected function allowAdd($data = array()) {
-		$user		= JFactory::getUser();
+		$user		= Factory::getUser();
 		$allow		= null;
 		$allow	= $user->authorise('core.create', 'com_phocadownload');
 		if ($allow === null) {
@@ -31,7 +33,7 @@ class PhocaDownloadCpControllerPhocaDownloadLic extends JControllerForm
 	}
 
 	protected function allowEdit($data = array(), $key = 'id') {
-		$user		= JFactory::getUser();
+		$user		= Factory::getUser();
 		$allow		= null;
 		$allow	= $user->authorise('core.edit', 'com_phocadownload');
 		if ($allow === null) {

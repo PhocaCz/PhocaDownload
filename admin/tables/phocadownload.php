@@ -9,9 +9,12 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
  */
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Language\Text;
+use Joomla\Utilities\ArrayHelper;
 jimport('joomla.filter.input');
 
-class TablePhocaDownload extends JTable
+class TablePhocaDownload extends Table
 {
 
 	function __construct(& $db) {
@@ -26,7 +29,7 @@ class TablePhocaDownload extends JTable
 		} else {
 			if (trim( $this->filename ) == '') {
 
-				throw new Exception(JText::_( 'FILE MUST HAVE A FILENAME'), 500);
+				throw new Exception(Text::_( 'FILE MUST HAVE A FILENAME'), 500);
 				return false;
 			}
 		}
@@ -49,7 +52,7 @@ class TablePhocaDownload extends JTable
 		$k = $this->_tbl_key;
 
 		// Sanitize input.
-		\Joomla\Utilities\ArrayHelper::toInteger($pks);
+		ArrayHelper::toInteger($pks);
 		$userId = (int) $userId;
 		$state  = (int) $state;
 
@@ -62,7 +65,7 @@ class TablePhocaDownload extends JTable
 			// Nothing to set publishing state on, return false.
 			else {
 
-				throw new Exception(JText::_('JLIB_DATABASE_ERROR_NO_ROWS_SELECTED'), 500);
+				throw new Exception(Text::_('JLIB_DATABASE_ERROR_NO_ROWS_SELECTED'), 500);
 				return false;
 			}
 		}

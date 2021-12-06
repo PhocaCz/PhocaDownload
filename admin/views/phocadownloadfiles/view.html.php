@@ -7,9 +7,15 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined( '_JEXEC' ) or die();
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Toolbar\Toolbar;
+use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 jimport( 'joomla.application.component.view' );
 
-class PhocaDownloadCpViewPhocaDownloadFiles extends JViewLegacy
+class PhocaDownloadCpViewPhocaDownloadFiles extends HtmlView
 {
 
 	protected $items;
@@ -48,17 +54,17 @@ class PhocaDownloadCpViewPhocaDownloadFiles extends JViewLegacy
 		$state	= $this->get('State');
 		$class	= ucfirst($this->t['tasks']).'Helper';
 		$canDo	= $class::getActions($this->t, $state->get('filter.file_id'));
-		$user  = JFactory::getUser();
-		$bar = JToolbar::getInstance('toolbar');
+		$user  = Factory::getUser();
+		$bar = Toolbar::getInstance('toolbar');
 
-		JToolbarHelper::title( JText::_($this->t['l'].'_FILES'), 'file.png' );
+		ToolbarHelper::title( Text::_($this->t['l'].'_FILES'), 'file.png' );
 		if ($canDo->get('core.create')) {
-			JToolbarHelper::addNew( $this->t['task'].'.add','JTOOLBAR_NEW');
-			JToolbarHelper::addNew( $this->t['task'].'.addtext', $this->t['l'].'_ADD_TEXT');
-			JToolbarHelper::custom( $this->t['c'].'m.edit', 'multiple.png', '', $this->t['l'].'_MULTIPLE_ADD' , false);
+			ToolbarHelper::addNew( $this->t['task'].'.add','JTOOLBAR_NEW');
+			ToolbarHelper::addNew( $this->t['task'].'.addtext', $this->t['l'].'_ADD_TEXT');
+			ToolbarHelper::custom( $this->t['c'].'m.edit', 'multiple.png', '', $this->t['l'].'_MULTIPLE_ADD' , false);
 		}
 		if ($canDo->get('core.edit')) {
-			JToolbarHelper::editList($this->t['task'].'.edit','JTOOLBAR_EDIT');
+			ToolbarHelper::editList($this->t['task'].'.edit','JTOOLBAR_EDIT');
 		}
 
 		if ($canDo->get('core.create')) {
@@ -69,46 +75,63 @@ class PhocaDownloadCpViewPhocaDownloadFiles extends JViewLegacy
 
 		if ($canDo->get('core.edit.state')) {
 
-			JToolbarHelper::divider();
-			JToolbarHelper::custom($this->t['tasks'].'.publish', 'publish.png', 'publish_f2.png','JTOOLBAR_PUBLISH', true);
-			JToolbarHelper::custom($this->t['tasks'].'.unpublish', 'unpublish.png', 'unpublish_f2.png', 'JTOOLBAR_UNPUBLISH', true);
-			JToolbarHelper::custom( $this->t['tasks'].'.approve', 'approve.png', '',  $this->t['l'].'_APPROVE' , true);
-			JToolbarHelper::custom( $this->t['tasks'].'.disapprove', 'disapprove.png', '',  $this->t['l'].'_NOT_APPROVE' , true);
+			ToolbarHelper::divider();
+			ToolbarHelper::custom($this->t['tasks'].'.publish', 'publish.png', 'publish_f2.png','JTOOLBAR_PUBLISH', true);
+			ToolbarHelper::custom($this->t['tasks'].'.unpublish', 'unpublish.png', 'unpublish_f2.png', 'JTOOLBAR_UNPUBLISH', true);
+			ToolbarHelper::custom( $this->t['tasks'].'.approve', 'approve.png', '',  $this->t['l'].'_APPROVE' , true);
+			ToolbarHelper::custom( $this->t['tasks'].'.disapprove', 'disapprove.png', '',  $this->t['l'].'_NOT_APPROVE' , true);
 		}
 
 		if ($canDo->get('core.delete')) {
-			JToolbarHelper::deleteList( JText::_( $this->t['l'].'_WARNING_DELETE_ITEMS' ), $this->t['tasks'].'.delete', $this->t['l'].'_DELETE');
+			ToolbarHelper::deleteList( Text::_( $this->t['l'].'_WARNING_DELETE_ITEMS' ), $this->t['tasks'].'.delete', $this->t['l'].'_DELETE');
 		}
 
 		// Add a batch button
 		if ($user->authorise('core.edit'))
 		{
-			Joomla\CMS\HTML\HTMLHelper::_('bootstrap.renderModal', 'collapseModal');
-			$title = JText::_('JTOOLBAR_BATCH');
-			$dhtml = "<button data-toggle=\"modal\" data-target=\"#collapseModal\" class=\"btn btn-small\">
+
+			/*$title = Text::_('JTOOLBAR_BATCH');
+
+			$dhtml = '<joomla-toolbar-button id="toolbar-batch" list-selection>';
+			$dhtml .= "<button data-bs-toggle=\"modal\" data-bs-target=\"#collapseModal\" class=\"btn btn-small\">
 						<i class=\"icon-checkbox-partial\" title=\"$title\"></i>
 						$title</button>";
-			$bar->appendButton('Custom', $dhtml, 'batch');
+			$dhtml .= '</joomla-toolbar-button>';
+
+			$bar->appendButton('Custom', $dhtml, 'batch');*/
+
+
+			$bar->popupButton('batch')
+				->text('JTOOLBAR_BATCH')
+				->selector('collapseModal')
+				->listCheck(true);
+
+			/*HTMLHelper::_('bootstrap.renderModal', 'collapseModal');
+			$title = \JText::_('JTOOLBAR_BATCHx');
+			$layout = new \JLayoutFile('joomla.toolbar.batch');
+			$dhtml = $layout->render(array('title' => $title));
+			\JToolbar::getInstance('toolbar')->appendButton('Custom', $dhtml, 'batch');*/
+
 		}
 
-		JToolbarHelper::divider();
-		JToolbarHelper::help( 'screen.'.$this->t['c'], true );
+		ToolbarHelper::divider();
+		ToolbarHelper::help( 'screen.'.$this->t['c'], true );
 	}
 
 	protected function getSortFields() {
 		return array(
-			'a.ordering'	=> JText::_('JGRID_HEADING_ORDERING'),
-			'a.title' 		=> JText::_($this->t['l'] . '_TITLE'),
-			'a.filename' 	=> JText::_($this->t['l'] . '_FILENAME'),
-			'a.date' 		=> JText::_($this->t['l'] . '_DATE'),
-			'a.hits' 		=> JText::_($this->t['l'] . '_DOWNLOADS'),
-			'a.owner_id'	=> JText::_($this->t['l'] . '_OWNER'),
-			'uploadusername'=> JText::_($this->t['l'] . '_UPLOADED_BY'),
-			'a.published' 	=> JText::_($this->t['l'] . '_PUBLISHED'),
-			'a.approved' 	=> JText::_($this->t['l'] . '_APPROVED'),
-			'category_id' 	=> JText::_($this->t['l'] . '_CATEGORY'),
-			'language' 		=> JText::_('JGRID_HEADING_LANGUAGE'),
-			'a.id' 			=> JText::_('JGRID_HEADING_ID')
+			'a.ordering'	=> Text::_('JGRID_HEADING_ORDERING'),
+			'a.title' 		=> Text::_($this->t['l'] . '_TITLE'),
+			'a.filename' 	=> Text::_($this->t['l'] . '_FILENAME'),
+			'a.date' 		=> Text::_($this->t['l'] . '_DATE'),
+			'a.hits' 		=> Text::_($this->t['l'] . '_DOWNLOADS'),
+			'a.owner_id'	=> Text::_($this->t['l'] . '_OWNER'),
+			'uploadusername'=> Text::_($this->t['l'] . '_UPLOADED_BY'),
+			'a.published' 	=> Text::_($this->t['l'] . '_PUBLISHED'),
+			'a.approved' 	=> Text::_($this->t['l'] . '_APPROVED'),
+			'category_id' 	=> Text::_($this->t['l'] . '_CATEGORY'),
+			'language' 		=> Text::_('JGRID_HEADING_LANGUAGE'),
+			'a.id' 			=> Text::_('JGRID_HEADING_ID')
 		);
 	}
 }

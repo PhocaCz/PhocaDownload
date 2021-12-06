@@ -9,12 +9,22 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Pagination\Pagination;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Client\ClientHelper;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Filesystem\Path;
+use Joomla\CMS\Filesystem\Folder;
 jimport('joomla.application.component.model');
 jimport( 'joomla.filesystem.folder' );
 jimport( 'joomla.filesystem.file' );
 use Joomla\String\StringHelper;
 
-class PhocaDownloadModelUser extends JModelLegacy
+class PhocaDownloadModelUser extends BaseDatabaseModel
 {
 	var $_data_files 			= null;
 	var $_total_files	 		= null;
@@ -25,7 +35,7 @@ class PhocaDownloadModelUser extends JModelLegacy
 	function __construct() {
 		parent::__construct();
 
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		// SubCategory
 		$limit_files		= $app->getUserStateFromRequest( $this->_context_files.'.list.limit', 'limit', 20, 'int' );
 		$limitstart_files 	= $app->input->get('limitstart', 0, 'int');
@@ -55,7 +65,7 @@ class PhocaDownloadModelUser extends JModelLegacy
 	function getPaginationFiles($userId) {
 		if (empty($this->_pagination_files)) {
 			jimport('joomla.html.pagination');
-			$this->_pagination_files = new JPagination( $this->getTotalFiles($userId),  $this->getState($this->_context_files.'.list.limitstart'), $this->getState($this->_context_files.'.list.limit') );
+			$this->_pagination_files = new Pagination( $this->getTotalFiles($userId),  $this->getState($this->_context_files.'.list.limitstart'), $this->getState($this->_context_files.'.list.limit') );
 		}
 		return $this->_pagination_files;
 	}
@@ -77,7 +87,7 @@ class PhocaDownloadModelUser extends JModelLegacy
 
 
 	function _buildContentOrderByFiles() {
-		$app				= JFactory::getApplication();
+		$app				= Factory::getApplication();
 		$filter_order		= $app->getUserStateFromRequest( $this->_context_files.'.filter_order',	'filter_order',	'a.ordering', 'cmd' );
 		$filter_order_Dir	= $app->getUserStateFromRequest( $this->_context_files.'.filter_order_Dir',	'filter_order_Dir',	'',	'word' );
 
@@ -90,7 +100,7 @@ class PhocaDownloadModelUser extends JModelLegacy
 	}
 
 	function _buildContentWhereFiles($userId) {
-		$app				= JFactory::getApplication();
+		$app				= Factory::getApplication();
 		$filter_published		= $app->getUserStateFromRequest( $this->_context_files.'.filter_published','filter_published','',	'word' );
 		$filter_catid		= $app->getUserStateFromRequest( $this->_context_files.'.catid','catid',0,'int' );
 		//$filter_sectionid	= $app->getUserStateFromRequest( $this->_context_files.'.filter_sectionid',	'filter_sectionid',	0,	'int' );
@@ -217,18 +227,18 @@ class PhocaDownloadModelUser extends JModelLegacy
 
 	function singleFileUpload(&$errUploadMsg, $file, $post) {
 
-		$app		= JFactory::getApplication();;
-		JSession::checkToken( 'request' ) or jexit( 'Invalid Token' );
+		$app		= Factory::getApplication();;
+		Session::checkToken( 'request' ) or jexit( 'Invalid Token' );
 		jimport('joomla.client.helper');
-		$user 				= JFactory::getUser();
-		$ftp 		= JClientHelper::setCredentialsFromRequest('ftp');
+		$user 				= Factory::getUser();
+		$ftp 		= ClientHelper::setCredentialsFromRequest('ftp');
 		$path		= PhocaDownloadPath::getPathSet();
 		$folder		= $app->input->get( 'folder', '', '', 'path' );
 		$format		= $app->input->get( 'format', 'html', '', 'cmd');
 		$return		= $app->input->get( 'return-url', null, 'post', 'base64' );
 		$viewBack	= $app->input->get( 'viewback', '', 'post', 'string' );
 		//$catid 		= $app->input->get( 'catid', '', '', 'int'  );
-		$paramsC 	= JComponentHelper::getParams('com_phocadownload') ;
+		$paramsC 	= ComponentHelper::getParams('com_phocadownload') ;
 
 		$overwriteExistingFiles 	= $paramsC->get( 'overwrite_existing_files', 0 );
 
@@ -244,7 +254,7 @@ class PhocaDownloadModelUser extends JModelLegacy
 
 		/*$post['sectionid'] = $this->getSection((int)$post['catidfiles']);
 		if(!$post['sectionid']) {
-			$errUploadMsg = JText::_('COM_PHOCADOWNLOAD_WRONG_SECTION');
+			$errUploadMsg = Text::_('COM_PHOCADOWNLOAD_WRONG_SECTION');
 			return false;
 		}*/
 
@@ -255,48 +265,48 @@ class PhocaDownloadModelUser extends JModelLegacy
 
 			// Make the filename safe
 			if (isset($file['name'])) {
-				$file['name']	= JFile::makeSafe($file['name']);
+				$file['name']	= File::makeSafe($file['name']);
 			}
 
 			if($file['tmp_name'] == '') {
-				$errUploadMsg = JText::_("COM_PHOCADOWNLOAD_ERROR_SERVER_NOT_ABLE_TO_STORE_FILE_TEMP_FOLDER");
+				$errUploadMsg = Text::_("COM_PHOCADOWNLOAD_ERROR_SERVER_NOT_ABLE_TO_STORE_FILE_TEMP_FOLDER");
 				return false;
 			}
 
 			if (isset($file['name'])) {
-				$filepath 				= JPath::clean($path['orig_abs_user_upload']. '/'. $userFolder . '/'.$file['name']);
-				$filepathUserFolder 	= JPath::clean($path['orig_abs_user_upload']. '/'. $userFolder);
+				$filepath 				= Path::clean($path['orig_abs_user_upload']. '/'. $userFolder . '/'.$file['name']);
+				$filepathUserFolder 	= Path::clean($path['orig_abs_user_upload']. '/'. $userFolder);
 				if (!PhocaDownloadFileUpload::canUpload( $file, $errUploadMsg, 'file', 2 )) {
 
 					if ($errUploadMsg == 'COM_PHOCADOWNLOAD_WARNUSERFILESTOOLARGE') {
-						$errUploadMsg 	= JText::_($errUploadMsg) . ' ('.PhocaDownloadFile::getFileSizeReadable($file['size']).')';
+						$errUploadMsg 	= Text::_($errUploadMsg) . ' ('.PhocaDownloadFile::getFileSizeReadable($file['size']).')';
 					} else {
-						$errUploadMsg 	= JText::_($errUploadMsg);
+						$errUploadMsg 	= Text::_($errUploadMsg);
 					}
 
 					return false;
 				}
 
-				if (JFile::exists($filepath) && $overwriteExistingFiles == 0) {
-					$errUploadMsg = JText::_("COM_PHOCADOWNLOAD_FILE_ALREADY_EXISTS");
+				if (File::exists($filepath) && $overwriteExistingFiles == 0) {
+					$errUploadMsg = Text::_("COM_PHOCADOWNLOAD_FILE_ALREADY_EXISTS");
 					return false;
 				}
 
 				// Overwrite file and add no new item to database
 				$fileExists = 0;
-				if (JFile::exists($filepath) && $overwriteExistingFiles == 1) {
+				if (File::exists($filepath) && $overwriteExistingFiles == 1) {
 					$fileExists = 1;
 				}
 
-				if (!JFile::upload($file['tmp_name'], $filepath, false, true)) {
-					$errUploadMsg = JText::_("COM_PHOCADOWNLOAD_UNABLE_TO_UPLOAD_FILE");
+				if (!File::upload($file['tmp_name'], $filepath, false, true)) {
+					$errUploadMsg = Text::_("COM_PHOCADOWNLOAD_UNABLE_TO_UPLOAD_FILE");
 					return false;
 				} else {
 
 					// Saving file name into database with relative path
-					if (!JFile::exists($filepathUserFolder . '/' ."index.html")) {
+					if (!File::exists($filepathUserFolder . '/' ."index.html")) {
 						$data = "<html>\n<body bgcolor=\"#FFFFFF\">\n</body>\n</html>";
-						JFile::write($filepathUserFolder . '/' ."index.html", $data);
+						File::write($filepathUserFolder . '/' ."index.html", $data);
 					}
 					$file['namepap']	= $file['name'];
 					$file['name']		=  'userupload/'.$userFolder.'/' . $file['name'];
@@ -308,13 +318,13 @@ class PhocaDownloadModelUser extends JModelLegacy
 					if ($papCopy == 1 || $papCopy == 3) {
 						$canPlay	= PhocaDownloadFile::canPlay($file['namepap']);
 						$canPreview = PhocaDownloadFile::canPreview($file['namepap']);
-						$filepathPAP 			= JPath::clean($path['orig_abs_user_upload_pap']. '/'. $userFolder . '/'.$file['namepap']);
-						$filepathUserFolderPAP 	= JPath::clean($path['orig_abs_user_upload_pap']. '/'. $userFolder);
+						$filepathPAP 			= Path::clean($path['orig_abs_user_upload_pap']. '/'. $userFolder . '/'.$file['namepap']);
+						$filepathUserFolderPAP 	= Path::clean($path['orig_abs_user_upload_pap']. '/'. $userFolder);
 
 						if ($canPlay || $canPreview) {
 
 							$uploadPAP = 1;// upload file for preview and play
-							if (JFile::exists($filepathPAP) && $overwriteExistingFiles == 0) {
+							if (File::exists($filepathPAP) && $overwriteExistingFiles == 0) {
 								//$errUploadMsg = JText::_("COM_PHOCADOWNLOAD_FILE_ALREADY_EXISTS");
 								//return false;
 								$uploadPAP = 0; // don't upload if it exists, it is not main file, don't do false and exit
@@ -322,17 +332,17 @@ class PhocaDownloadModelUser extends JModelLegacy
 
 							// Overwrite file and add no new item to database
 							$fileExistsPAP = 0;
-							if (JFile::exists($filepathPAP) && $overwriteExistingFiles == 1) {
+							if (File::exists($filepathPAP) && $overwriteExistingFiles == 1) {
 								$fileExistsPAP = 1;
 							}
 
 							if ($uploadPAP == 0) {
 
 							} else {
-								if (!JFolder::exists($filepathUserFolderPAP)) {
-									if (JFolder::create($filepathUserFolderPAP)) {
+								if (!Folder::exists($filepathUserFolderPAP)) {
+									if (Folder::create($filepathUserFolderPAP)) {
 										$data = "<html>\n<body bgcolor=\"#FFFFFF\">\n</body>\n</html>";
-										JFile::write($filepathUserFolderPAP . '/' ."index.html", $data);
+										File::write($filepathUserFolderPAP . '/' ."index.html", $data);
 									}
 									// else {
 										//$errUploadMsg = JText::_("COM_PHOCADOWNLOAD_UNABLE_TO_CREATE_FOLDER");
@@ -340,15 +350,15 @@ class PhocaDownloadModelUser extends JModelLegacy
 									//}
 								}
 
-								if (!JFile::copy($filepath, $filepathPAP)) {
+								if (!File::copy($filepath, $filepathPAP)) {
 
 									//$errUploadMsg = JText::_("COM_PHOCADOWNLOAD_UNABLE_TO_UPLOAD_FILE");
 									//return false;
 								} else {
 									// Saving file name into database with relative path
-									if (!JFile::exists($filepathUserFolderPAP . '/' ."index.html")) {
+									if (!File::exists($filepathUserFolderPAP . '/' ."index.html")) {
 										$data = "<html>\n<body bgcolor=\"#FFFFFF\">\n</body>\n</html>";
-										JFile::write($filepathUserFolderPAP . '/' ."index.html", $data);
+										File::write($filepathUserFolderPAP . '/' ."index.html", $data);
 									}
 
 									if ($canPlay == 1) {
@@ -370,12 +380,12 @@ class PhocaDownloadModelUser extends JModelLegacy
 					}
 				}
 			} else {
-				$errUploadMsg = JText::_("COM_PHOCADOWNLOAD_WARNFILETYPE");
+				$errUploadMsg = Text::_("COM_PHOCADOWNLOAD_WARNFILETYPE");
 				$redirectUrl = $return;
 				return false;
 			}
 		} else {
-			$errUploadMsg = JText::_("COM_PHOCADOWNLOAD_NOT_AUTHORISED_TO_UPLOAD");
+			$errUploadMsg = Text::_("COM_PHOCADOWNLOAD_NOT_AUTHORISED_TO_UPLOAD");
 
 			return false;
 		}
@@ -386,16 +396,16 @@ class PhocaDownloadModelUser extends JModelLegacy
 
 	function _save($data, $filename, &$errSaveMsg, $fileExists = 0) {
 
-		$user 	= JFactory::getUser();
+		$user 	= Factory::getUser();
 
-		$paramsC 					= JComponentHelper::getParams('com_phocadownload') ;
+		$paramsC 					= ComponentHelper::getParams('com_phocadownload') ;
 		$default_access 			= $paramsC->get( 'default_access', 1 );
 		$fileId = false;
 		if ($fileExists == 1) {
 			// We not only owerwrite the file but we must update it
 			if (isset($filename) && $filename != '') {
 
-				$db = JFactory::getDBO();
+				$db = Factory::getDBO();
 
 				$query = 'SELECT a.id AS id'
 				.' FROM #__phocadownload AS a'
@@ -430,7 +440,7 @@ class PhocaDownloadModelUser extends JModelLegacy
 
 		// Bind the form fields to the Phoca gallery table
 		if (!$row->bind($data)) {
-			throw new Exception($this->_db->getErrorMsg(), 500);
+			throw new Exception($this->_db->getError());
 			return false;
 		}
 
@@ -469,13 +479,13 @@ class PhocaDownloadModelUser extends JModelLegacy
 
 		// Make sure the Phoca gallery table is valid
 		if (!$row->check()) {
-			throw new Exception($this->_db->getErrorMsg(), 500);
+			throw new Exception($this->_db->getError());
 			return false;
 		}
 
 		// Store the Phoca gallery table to the database
 		if (!$row->store()) {
-			throw new Exception($this->_db->getErrorMsg(), 500);
+			throw new Exception($this->_db->getError());
 			return false;
 		}
 
@@ -525,7 +535,7 @@ class PhocaDownloadModelUser extends JModelLegacy
 			//. ' AND cc.owner_id = '.(int) $user->get('id');
 
 		$this->_db->setQuery( $query );
-		if (!$this->_db->query()) {
+		if (!$this->_db->execute()) {
 
 			throw new Exception('Database Error Publishing', 500);
 			return false;
@@ -535,7 +545,7 @@ class PhocaDownloadModelUser extends JModelLegacy
 
 	function delete($id = 0) {
 
-		$paramsC 		= JComponentHelper::getParams('com_phocadownload');
+		$paramsC 		= ComponentHelper::getParams('com_phocadownload');
 		$deleteExistingFiles 	= $paramsC->get( 'delete_existing_files', 0 );
 
 		// - - - - - - - - - - - - -
@@ -549,7 +559,7 @@ class PhocaDownloadModelUser extends JModelLegacy
 			. ' WHERE id ='.(int)$id;
 
 		$this->_db->setQuery( $query );
-		if(!$this->_db->query()) {
+		if(!$this->_db->execute()) {
 			throw new Exception('Database Error - Delete Files', 500);
 			return false;
 		}
@@ -557,7 +567,7 @@ class PhocaDownloadModelUser extends JModelLegacy
 		 //Delete record from statistics table
 		$query = 'DELETE FROM #__phocadownload_user_stat WHERE fileid='.(int)$id;
 		$this->_db->setQuery( $query );
-		if(!$this->_db->query()) {
+		if(!$this->_db->execute()) {
 			throw new Exception('Database Error - Delete User Stats (Files)', 500);
 			return false;
 		}
@@ -567,7 +577,7 @@ class PhocaDownloadModelUser extends JModelLegacy
 			. ' WHERE fileid ='.(int)$id;
 
 		$this->_db->setQuery( $query );
-		if(!$this->_db->query()) {
+		if(!$this->_db->execute()) {
 
 			throw new Exception('Database Error - Delete Tags (Files)', 500);
 			return false;
@@ -584,7 +594,7 @@ class PhocaDownloadModelUser extends JModelLegacy
 				$sameFileObject = $this->_db->loadObject();
 				// same file in other category doesn't exist - we can delete it
 				if (!$sameFileObject) {
-					JFile::delete(JPath::clean($path['orig_abs_ds'].$value->filename));
+					File::delete(Path::clean($path['orig_abs_ds'].$value->filename));
 				}
 			}
 		}

@@ -7,11 +7,13 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Object\CMSObject;
 class PhocaDownloadCpHelper
 {
 	public static function getActions($c = 'phocadownload') {
-		$user		= JFactory::getUser();
-		$result		= new JObject;
+		$user		= Factory::getUser();
+		$result		= new CMSObject;
 		$assetName 	= 'com_'.$c;
 		$actions 	= array('core.admin', 'core.manage', 'core.create', 'core.edit', 'core.edit.state', 'core.delete');
 

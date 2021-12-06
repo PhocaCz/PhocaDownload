@@ -7,11 +7,12 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
  defined('_JEXEC') or die();
-if (! class_exists('JHtmlGrid')) {
+use Joomla\CMS\HTML\HTMLHelper;
+if (! class_exists('HTMLHelperGrid')) {
 	require_once( JPATH_SITE.'/libraries/joomla/html/html/grid.php' );
 }
 //jimport('joomla.html.html.jgrid'); 
-class PhocaDownloadGrid extends JHtmlJGrid
+class PhocaDownloadGrid extends HTMLHelperJGrid
 {
 	
 	public static function approved($value, $i, $prefix = '', $enabled = true, $checkbox='cb')

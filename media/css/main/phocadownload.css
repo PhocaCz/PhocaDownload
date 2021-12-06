@@ -71,7 +71,8 @@
 }
 
 
-/* Category, File, Overlib */
+/* Category, File */
+
 #phoca-dl-category-box .pd-filesize-txt,
 #phoca-dl-file-box  .pd-filesize-txt,
 #phoca-dl-category-box .pd-version-txt,
@@ -103,7 +104,7 @@
 	font-weight: bold;
 	clear:left;
 }
-
+/*
 #overDiv .pd-filesize-txt,
 #overDiv .pd-version-txt,
 #overDiv .pd-license-txt,
@@ -118,14 +119,14 @@
 	width: 80px;
 }
 
-#overDiv .pd-title,
+#overDiv .pd-title,*/
 #phoca-dl-category-box .pd-title,
 #phoca-dl-file-box .pd-title,
 #phoca-dl-download-box .pd-title {
 	font-weight: bold;
-} 
+}
 
-#overDiv .pd-image,
+/*#overDiv .pd-image,*/
 #phoca-dl-category-box .pd-image,
 #phoca-dl-file-box .pd-image,
 #phoca-dl-download-box .pd-image {
@@ -134,8 +135,8 @@
 	margin:10px;
 }
 
-#overDiv .pd-textonly,
-#overDiv .pd-cdesc,
+/*#overDiv .pd-textonly,
+#overDiv .pd-cdesc,*/
 #phoca-dl-category-box .pd-textonly,
 #phoca-dl-category-box .pd-cdesc,
 #phoca-dl-file-box .pd-cdesc,
@@ -144,7 +145,7 @@
 	padding: 5px 0px;
 	clear:both;
 }
-#overDiv  .pd-fdesc,
+/*#overDiv  .pd-fdesc,*/
 #phoca-dl-category-box .pd-fdesc,
 #phoca-dl-file-box .pd-fdesc,
 #phoca-dl-download-box .pd-fdesc {
@@ -173,6 +174,35 @@
 }
 
 
+.ph-top {
+	margin: 0.5em 0;
+}
+
+/* Tooltip */
+.pd-tooltip-box {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.pd-tooltip-box .pd-fl-m {
+	float:none;
+	margin: auto;
+}
+
+.pd-tooltip-box .pd-col1 {
+	font-weight: bold;
+	width: 50%;
+	text-align: left;
+}
+.pd-tooltip-box .pd-col2 {
+	width: 50%;
+	text-align: left;
+}
+.pd-tooltip-box .pd-colfull {
+	width: 100%;
+}
+
+
 
 #phoca-dl-download-box .pd-downloadbox-direct {
 	margin: 0 auto;
@@ -194,7 +224,7 @@
 #phoca-dl-download-box .pd-filebox,
 #phoca-dl-file-box .pd-filebox {
 	padding: 5px;
-}	
+}
 
 #phoca-dl-category-box .pd-title,
 #phoca-dl-file-box .pd-title,
@@ -235,7 +265,7 @@
 }
 #phoca-dl-download-box .pd-file,
 #phoca-dl-file-box .pd-file {
-	
+
 	margin:5px 0;
 }
 
@@ -262,15 +292,16 @@
 	font-size: 120%;
 	margin: 5px 0px 8px 0px;
 }
-
+/*
 #phoca-dl-category-box .pagination,
 #phoca-dl-category-box .pagination div ul {
 	text-align:		center;
 	margin: 		auto;
 	margin:			5px;
 	border: 		none;
-	
+
 }
+*/
 
 #phoca-dl-category-box .pd-subcategory,
 #phoca-dl-file-box .pd-file {
@@ -303,6 +334,18 @@
 #phoca-dl-file-box a img,
 #phoca-dl-download-box a img {
 	border: none;
+}
+
+/* Pagination */
+.com_phocadownload .form-select {
+    width: auto;
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+}
+
+.com_phocadownload .pagination {
+    align-items: center;
+    justify-content:flex-end;
 }
 
 /* Icons - icon next to file*/
@@ -357,12 +400,12 @@
 	text-align:		left;
 	padding-top:	4px;
 	padding-bottom:	4px;
-	
+
 }
 
 /* Module */
 .phoca-dl-categories-box-module .pd-categories {
-	color:			#BF6070;	
+	color:			#BF6070;
 }
 
 .phocadownload-navigation {
@@ -423,7 +466,7 @@ dl.tabs {
 	float: left;
 	margin: 10px 0 -1px 2px;
 	z-index: 50;
-	
+
 }
 
 dl.tabs dt {
@@ -435,7 +478,7 @@ dl.tabs dt {
 	margin-left: 3px;
 	background: #f0f0f0;
 	color: #666;
-	
+
 }
 
 dl.tabs dt.open {
@@ -443,7 +486,7 @@ dl.tabs dt.open {
 	border-bottom: 1px solid #ffffff;
 	z-index: 100;
 	color: #000;
-	
+
 }
 
 dl.tabs a {
@@ -459,7 +502,7 @@ div.current {
 	border: 1px solid #ccc;
 	padding: 10px 10px;
 	background: #ffffff;
-	
+
 }
 
 div.current dd {
@@ -487,7 +530,7 @@ div.current dd {
 }
 
 #phocadownload-upload  table.adminlist td,
-#phocadownload-upload  table.adminlist th { 
+#phocadownload-upload  table.adminlist th {
 	padding: 			4px;
 }
 
@@ -531,6 +574,7 @@ div.current dd {
 }
 
 /* not conflict with beez */
+/*
 #phocadownload-upload table,
 #phocadownload-upload table tr,
 #phocadownload-upload table tr td,
@@ -550,7 +594,7 @@ div.current dd {
 #overDiv table tr td{
 	border: none;
 	padding:5px;
-	
+
 }
 
 #phoca-dl-category-box .pagination.pd-pagination {
@@ -563,7 +607,7 @@ div.current dd {
 #phocadownload-pane #pane {
 	width: 100%;
 }
-*/
+*//*
 #phoca-dl-category-box .pdtop a:hover,
 #phoca-dl-category-box .pdtop a:active,
 #phoca-dl-category-box .pdtop a:focus,
@@ -579,7 +623,7 @@ div.current dd {
 	background: transparent;
 }
 
-/* overlib */
+/* overlib *//*
 #overDiv table,
 #overDiv table tr,
 #overDiv table tr td {
@@ -633,13 +677,13 @@ div.current dd {
 	margin-top:		10px;
 	margin-bottom:	10px;
 }
-
+*/
 /*
  * If Beez template is not used, the following code
  * can be removed
  * Because of using !important methods in Beez
  */
-
+/*
 #phocadownload table,
 #phocadownload-pane table,
 #phocadownload-pane table tr,
@@ -688,7 +732,7 @@ div.current dd {
 .ph-cb {
 	clear:both
 }
-
+*/
 
 /* Bootstrap */
 #phoca-dl-category-box .pd-rating {
@@ -767,9 +811,7 @@ margin-left: 5px;
 	cursor: inherit;
 	display: block;
 }
-.pd-input-small {
-	width: 15em !important;
-}
+
 .pd-comment-input {
 	width: 100%;
 }
@@ -813,7 +855,150 @@ margin-left: 5px;
 .pd-j-3x {background-color: #bc8b02;}
 .pd-j-35 {background-color: #bc8b02;}
 
+.phc-red {color: #a60000;}
+.phc-grey {color: #555555}
+.phc-green {color: #559d22;}
+
 #phoca-dl-license pre {
 	border: 0px;
 	border-radius:0px;
 }
+
+
+/* Modals */
+#pdCategoryModal .modal-dialog {
+	height: 90%;
+    max-width: 70%;
+}
+
+#pdCategoryModal.detail .modal-dialog {
+   	height: 70%;
+    max-width: 70%;
+}
+#pdCategoryModal.play-thin .modal-dialog {
+   	height: 40%;
+    max-width: 70%;
+}
+
+#pdCategoryModal .modal-content {
+    height: 100%;
+}
+
+#pdCategoryModal.detail .modal-content {
+    height: 70%;
+}
+
+#pdCategoryModal.play-thin .modal-content {
+    height: 40%;
+}
+
+#pdCategoryModalLabel::first-letter {
+    text-transform: uppercase;
+}
+/*
+#pdCategoryModal .modal-header {
+	padding: initial;
+}
+*/
+#phoca-dl-file-box {
+	padding: 0.5em;
+}
+
+/* Pagination */
+.com_phocadownload .form-select {
+    width: auto;
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+	display: inline;
+}
+
+.com_phocadownload .pagination {
+    align-items: center;
+    justify-content:flex-end;
+}
+
+
+
+.test {
+	background: red;
+	border: 1px solid green;
+}
+
+
+/* Loading */
+.ph-lds-ellipsis {
+    display: inline-block;
+    position: relative;
+    width: 80px;
+    height: 0px;
+  }
+
+
+.ph-loading-text {
+    text-align: center;
+}
+.ph-loading-text .ph-lds-ellipsis {
+    height: 50px;
+}
+.ph-loading-hidden {
+    display: none;
+}
+
+.ph-lds-ellipsis div {
+position: absolute;
+top: 33px;
+width: 13px;
+height: 13px;
+border-radius: 50%;
+background: #129ED9;
+animation-timing-function: cubic-bezier(0, 1, 1, 0);
+}
+.ph-lds-ellipsis div:nth-child(1) {
+left: 8px;
+animation: ph-lds-ellipsis1 0.6s infinite;
+}
+.ph-lds-ellipsis div:nth-child(2) {
+left: 8px;
+animation: ph-lds-ellipsis2 0.6s infinite;
+}
+.ph-lds-ellipsis div:nth-child(3) {
+left: 32px;
+animation: ph-lds-ellipsis2 0.6s infinite;
+}
+.ph-lds-ellipsis div:nth-child(4) {
+left: 56px;
+animation: ph-lds-ellipsis3 0.6s infinite;
+}
+@keyframes ph-lds-ellipsis1 {
+0% {
+    transform: scale(0);
+}
+100% {
+    transform: scale(1);
+}
+}
+@keyframes ph-lds-ellipsis3 {
+0% {
+    transform: scale(1);
+}
+100% {
+    transform: scale(0);
+}
+}
+@keyframes ph-lds-ellipsis2 {
+0% {
+    transform: translate(0, 0);
+}
+100% {
+    transform: translate(24px, 0);
+}
+}
+
+/* Possible option to have all images in cards of categories view the same height */
+/*
+.card-img-top {
+    width: 100%;
+    height: 15vw;
+    object-fit: cover;
+}
+*/

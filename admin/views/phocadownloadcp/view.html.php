@@ -7,16 +7,20 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Toolbar\Toolbar;
 jimport( 'joomla.application.component.view' );
 jimport( 'joomla.html.pane' );
 
-class PhocaDownloadCpViewPhocaDownloadCp extends JViewLegacy
+class PhocaDownloadCpViewPhocaDownloadCp extends HtmlView
 {
 	protected $t;
 	protected $r;
 	protected $views;
 
-	function display($tpl = null) {
+	public function display($tpl = null) {
 
 		$this->t	= PhocaDownloadUtils::setVars('cp');
 		$this->r	= new PhocaDownloadRenderAdminview();
@@ -32,7 +36,7 @@ class PhocaDownloadCpViewPhocaDownloadCp extends JViewLegacy
 		'uploads'	=> array($this->t['l'] . '_UPLOADS', $i.'box-add', '#ff9326'),
 		'rafile'	=> array($this->t['l'] . '_FILE_RATING', $i.'featured', '#FFC93C'),
 		'tags'		=> array($this->t['l'] . '_TAGS', $d.$i.'tag-double', '#CC0033'),
-		'layouts'	=> array($this->t['l'] . '_LAYOUT', $d.$i.'modules', '#cd76cc'),
+		//'layouts'	=> array($this->t['l'] . '_LAYOUT', $d.$i.'modules', '#cd76cc'),
 		'styles'	=> array($this->t['l'] . '_STYLES', $i.'styles', '#9900CC'),
 		'logs'		=> array($this->t['l'] . '_LOGGING', $d.$i.'logs', '#c0c0c0'),
 		'info'		=> array($this->t['l'] . '_INFO', $d.$i.'info-circle', '#3378cc')
@@ -48,18 +52,18 @@ class PhocaDownloadCpViewPhocaDownloadCp extends JViewLegacy
 		require_once JPATH_COMPONENT.'/helpers/phocadownloadcp.php';
 
 		$canDo	= PhocaDownloadCpHelper::getActions($this->t['c']);
-		JToolbarHelper::title( JText::_( $this->t['l'].'_PD_CONTROL_PANEL' ), 'home-2 cpanel' );
+		ToolbarHelper::title( Text::_( $this->t['l'].'_PD_CONTROL_PANEL' ), 'home-2 cpanel' );
 
 		// This button is unnecessary but it is displayed because Joomla! design bug
-		$bar = JToolbar::getInstance( 'toolbar' );
-		$dhtml = '<a href="index.php?option=com_phocadownload" class="btn btn-small"><i class="icon-home-2" title="'.JText::_($this->t['l'].'_CONTROL_PANEL').'"></i> '.JText::_($this->t['l'].'_CONTROL_PANEL').'</a>';
+		$bar = Toolbar::getInstance( 'toolbar' );
+		$dhtml = '<a href="index.php?option=com_phocadownload" class="btn btn-small"><i class="icon-home-2" title="'.Text::_($this->t['l'].'_CONTROL_PANEL').'"></i> '.Text::_($this->t['l'].'_CONTROL_PANEL').'</a>';
 		$bar->appendButton('Custom', $dhtml);
 
 		if ($canDo->get('core.admin')) {
-			JToolbarHelper::preferences('com_phocadownload');
-			JToolbarHelper::divider();
+			ToolbarHelper::preferences('com_phocadownload');
+			ToolbarHelper::divider();
 		}
-		JToolbarHelper::help( 'screen.phocadownload', true );
+		ToolbarHelper::help( 'screen.phocadownload', true );
 	}
 }
 ?>

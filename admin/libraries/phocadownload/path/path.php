@@ -7,6 +7,9 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Filesystem\Path;
+use Joomla\CMS\Uri\Uri;
 
 class PhocaDownloadPath
 {
@@ -15,7 +18,7 @@ class PhocaDownloadPath
 		$group = PhocaDownloadSettings::getManagerGroup($manager);
 
 		// Params
-		$paramsC			= JComponentHelper::getParams( 'com_phocadownload' );
+		$paramsC			= ComponentHelper::getParams( 'com_phocadownload' );
 		// Folder where to stored files for download
 		$downloadFolder		= $paramsC->get( 'download_folder', 'phocadownload' );
 		$downloadFolderPap	= $paramsC->get( 'download_folder_pap', 'phocadownloadpap' );
@@ -23,7 +26,7 @@ class PhocaDownloadPath
 		$absolutePath		= $paramsC->get( 'absolute_path', '' );
 
 		// Path of preview and play
-		$downloadFolderPap 			= JPath::clean($downloadFolderPap);
+		$downloadFolderPap 			= Path::clean($downloadFolderPap);
 		$path['orig_abs_pap'] 		= JPATH_ROOT .  '/' . $downloadFolderPap;
 		$path['orig_abs_pap_ds'] 	= $path['orig_abs_pap'] . '/' ;
 
@@ -40,26 +43,26 @@ class PhocaDownloadPath
 			$path['orig_abs_ds'] 			= $path['orig_abs_pap_ds'];
 			$path['orig_abs_user_upload'] 	= $path['orig_abs'] . '/' . 'userupload' ;
 			$path['orig_abs_user_upload_pap']= $path['orig_abs_pap'] . '/' . 'userupload' ;
-			$path['orig_rel_ds'] 			= '../'.str_replace('\\', '/', JPath::clean($downloadFolderPap)).'/';
+			$path['orig_rel_ds'] 			= '../'.str_replace('\\', '/', Path::clean($downloadFolderPap)).'/';
 		} else {
 			// Standard Path
 			if ($absolutePath != '') {
-				$downloadFolder 				= str_replace('\\', '/', JPath::clean($absolutePath));
-				$path['orig_abs'] 				= str_replace('\\', '/', JPath::clean($absolutePath));
-				$path['orig_abs_ds'] 			= JPath::clean($path['orig_abs'] . '/') ;
-				$path['orig_abs_user_upload'] 	= JPath::clean($path['orig_abs'] . '/' . 'userupload') ;
-				$path['orig_abs_user_upload_pap']= JPath::clean($path['orig_abs_pap'] . '/' . 'userupload') ;
+				$downloadFolder 				= str_replace('\\', '/', Path::clean($absolutePath));
+				$path['orig_abs'] 				= str_replace('\\', '/', Path::clean($absolutePath));
+				$path['orig_abs_ds'] 			= Path::clean($path['orig_abs'] . '/') ;
+				$path['orig_abs_user_upload'] 	= Path::clean($path['orig_abs'] . '/' . 'userupload') ;
+				$path['orig_abs_user_upload_pap']= Path::clean($path['orig_abs_pap'] . '/' . 'userupload') ;
 				//$downloadFolderRel 	= str_replace('\\', '/', JPath::clean($downloadFolder));
 				$path['orig_rel_ds'] 			= '';
 
 			} else {
-				$downloadFolder 				= str_replace('\\', '/', JPath::clean($downloadFolder));
+				$downloadFolder 				= str_replace('\\', '/', Path::clean($downloadFolder));
 				$path['orig_abs'] 				= JPATH_ROOT . '/' . $downloadFolder ;
 				$path['orig_abs_ds'] 			= JPATH_ROOT . '/' . $downloadFolder . '/' ;
 				$path['orig_abs_user_upload'] 	= $path['orig_abs'] . '/' . 'userupload' ;
 				$path['orig_abs_user_upload_pap']= $path['orig_abs_pap'] . '/' . 'userupload' ;
 
-				$downloadFolderRel 				= str_replace('\\', '/', JPath::clean($downloadFolder));
+				$downloadFolderRel 				= str_replace('\\', '/', Path::clean($downloadFolder));
 				$path['orig_rel_ds'] 			= '../' . $downloadFolderRel .'/';
 			}
 		}
@@ -70,7 +73,7 @@ class PhocaDownloadPath
 
 		$option 						= 'com_phocadownload';
 		$instance 						= new StdClass();
-		$baseFront						= JURI::root(true);
+		$baseFront						= Uri::root(true);
 		$instance->media_css_abs		= JPATH_ROOT . '/' . 'media'. '/' . $option . '/' . 'css' . '/';
 		$instance->media_img_abs		= JPATH_ROOT . '/' . 'media'. '/' . $option . '/' . 'images' . '/';
 		$instance->media_js_abs			= JPATH_ROOT . '/' . 'media'. '/' . $option . '/' . 'js' . '/';

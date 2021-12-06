@@ -7,10 +7,14 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Toolbar\Toolbar;
 jimport( 'joomla.application.component.view' );
 
 jimport( 'joomla.filesystem.file' );
-class PhocaDownloadCpViewPhocaDownloadUploads extends JViewLegacy
+class PhocaDownloadCpViewPhocaDownloadUploads extends HtmlView
 {
 
 	protected $items;
@@ -52,21 +56,21 @@ class PhocaDownloadCpViewPhocaDownloadUploads extends JViewLegacy
 		$class	= ucfirst($this->t['tasks']).'Helper';
 		$canDo	= $class::getActions($this->t);
 
-		JToolbarHelper::title( JText::_( $this->t['l'].'_UPLOADS' ), 'upload' );
+		ToolbarHelper::title( Text::_( $this->t['l'].'_UPLOADS' ), 'upload' );
 
 		if ($canDo->get('core.admin')) {
 
-			$bar = JToolbar::getInstance('toolbar');
+			$bar = Toolbar::getInstance('toolbar');
 
-			$dhtml = '<button class="btn btn-small" onclick="javascript:if(confirm(\''.addslashes(JText::_('COM_PHOCADOWNLOAD_WARNING_AUTHORIZE_ALL')).'\')){submitbutton(\'phocadownloaduploads.approveall\');}" ><i class="icon-approve" title="'.JText::_('COM_PHOCADOWNLOAD_APPROVE_ALL').'"></i> '.JText::_('COM_PHOCADOWNLOAD_APPROVE_ALL').'</button>';
+			$dhtml = '<button class="btn btn-small" onclick="javascript:if(confirm(\''.addslashes(Text::_('COM_PHOCADOWNLOAD_WARNING_AUTHORIZE_ALL')).'\')){submitbutton(\'phocadownloaduploads.approveall\');}" ><i class="icon-approve" title="'.Text::_('COM_PHOCADOWNLOAD_APPROVE_ALL').'"></i> '.Text::_('COM_PHOCADOWNLOAD_APPROVE_ALL').'</button>';
 			$bar->appendButton('Custom', $dhtml);
 
 
-			JToolbarHelper::divider();
+			ToolbarHelper::divider();
 		}
 
 
-		JToolbarHelper::help( 'screen.'.$this->t['c'], true );
+		ToolbarHelper::help( 'screen.'.$this->t['c'], true );
 	}
 
 	protected function getSortFields() {
@@ -75,7 +79,7 @@ class PhocaDownloadCpViewPhocaDownloadUploads extends JViewLegacy
 			//'d.title' 		=> JText::_($this->t['l'] . '_TITLE'),
 			//'d.filename' 	=> JText::_($this->t['l'] . '_FILENAME'),
 			//'usernameno'	=> JText::_($this->t['l'] . '_USER'),
-			'username'		=> JText::_($this->t['l'] . '_USERNAME')
+			'username'		=> Text::_($this->t['l'] . '_USERNAME')
 			//'a.count'	 	=> JText::_($this->t['l'] . '_COUNT')
 
 		);

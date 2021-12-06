@@ -10,9 +10,14 @@
  */
 
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Plugin\PluginHelper;
 jimport('joomla.application.component.model');
 
-class PhocaDownloadModelPlay extends JModelLegacy
+class PhocaDownloadModelPlay extends BaseDatabaseModel
 {
 	var $_file 				= null;
 	var $_category 			= null;
@@ -21,7 +26,7 @@ class PhocaDownloadModelPlay extends JModelLegacy
 
 	function __construct() {
 		
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		parent::__construct();
 		$this->setState('filter.language',$app->getLanguageFilter());
 		
@@ -41,7 +46,7 @@ class PhocaDownloadModelPlay extends JModelLegacy
 			if (isset($this->_file[0]->access)) {
 				if ($aid !== null) {
 					if ($this->_file[0]->access > (int) $aid) {
-							$app->redirect(JRoute::_('index.php?option=com_users&view=login', false), JText::_("Please login to download the file"));
+							$app->redirect(Route::_('index.php?option=com_users&view=login', false), Text::_("Please login to download the file"));
 							exit;
 					}
 				} else {
@@ -57,7 +62,7 @@ class PhocaDownloadModelPlay extends JModelLegacy
 	
 	function _getFileQuery( $fileId ) {
 		
-		$app			= JFactory::getApplication();
+		$app			= Factory::getApplication();
 		$params 		= $app->getParams();
 		$categoryId		= 0;
 		$category		= $this->getCategory($fileId);
@@ -91,7 +96,7 @@ class PhocaDownloadModelPlay extends JModelLegacy
 		}
 		
 		// Active
-		$jnow		= JFactory::getDate();
+		$jnow		= Factory::getDate();
 		$now		= $jnow->toSql();
 		$nullDate	= $this->_db->getNullDate();
 		$wheres[] = ' ( c.publish_up = '.$this->_db->Quote($nullDate).' OR c.publish_up <= '.$this->_db->Quote($now).' )';
@@ -101,10 +106,10 @@ class PhocaDownloadModelPlay extends JModelLegacy
 		
 		if ($pQ == 1) {
 			// GWE MOD - to allow for access restrictions
-			JPluginHelper::importPlugin("phoca");
+			PluginHelper::importPlugin("phoca");
 			//$dispatcher = JEventDispatcher::getInstance();
 			$joins = array();
-			$results = \JFactory::getApplication()->triggerEvent('onGetFile', array (&$wheres, &$joins, $fileId,  $params));	
+			$results = Factory::getApplication()->triggerEvent('onGetFile', array (&$wheres, &$joins, $fileId,  $params));	
 			// END GWE MOD
 		}
 		
@@ -131,9 +136,9 @@ class PhocaDownloadModelPlay extends JModelLegacy
 	function _getCategoryQuery( $fileId ) {
 		
 		$wheres		= array();
-		$app		= JFactory::getApplication();
+		$app		= Factory::getApplication();
 		$params 	= $app->getParams();
-		$user 		= JFactory::getUser();
+		$user 		= Factory::getUser();
 		$userLevels	= implode (',', $user->getAuthorisedViewLevels());
 		
 		$pQ			= $params->get( 'enable_plugin_query', 0 );
@@ -149,10 +154,10 @@ class PhocaDownloadModelPlay extends JModelLegacy
 
 		if ($pQ == 1) {
 			// GWE MOD - to allow for access restrictions
-			JPluginHelper::importPlugin("phoca");
+			PluginHelper::importPlugin("phoca");
 			//$dispatcher = JEventDispatcher::getInstance();
 			$joins = array();
-			$results = \JFactory::getApplication()->triggerEvent('onGetCategory',  array (&$wheres, &$joins,$categoryId,  $params));		
+			$results = Factory::getApplication()->triggerEvent('onGetCategory',  array (&$wheres, &$joins,$categoryId,  $params));		
 			// END GWE MOD
 		}
 		

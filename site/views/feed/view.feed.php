@@ -9,27 +9,35 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Factory;
+use Joomla\Registry\Registry;
+use Joomla\CMS\Language\Text;
+use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\Document\Feed\FeedItem;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\HTML\HTMLHelper;
 
 jimport( 'joomla.application.component.view');
 
-class PhocaDownloadViewFeed extends JViewLegacy
+class PhocaDownloadViewFeed extends HtmlView
 {
 
 	function display($tpl = null)
 	{
-		$app		= JFactory::getApplication();
-		$user 		= JFactory::getUser();
+		$app		= Factory::getApplication();
+		$user 		= Factory::getUser();
 		$userLevels	= implode (',', $user->getAuthorisedViewLevels());
 		//$db 		= JFactory::getDBO();
 		//$menu		= $app->getMenu();
-		$document	= JFactory::getDocument();
+		$document	= Factory::getDocument();
 		//$params 	= $app->getParams();
 		$moduleId	= $app->input->get('id', 0, 'int');
 		//$table 		= JTable::getInstance('module');
 
 
 		if ((int)$moduleId > 0) {
-			$db = JFactory::getDBO();
+			$db = Factory::getDBO();
 			$query = 'SELECT a.params'
 					. ' FROM #__modules AS a'
 					. ' WHERE a.published = 1'
@@ -44,7 +52,7 @@ class PhocaDownloadViewFeed extends JViewLegacy
 			$module = $db->loadObject();
 			if (isset($module->params) && $module->params != '') {
 				jimport( 'joomla.html.parameter' );
-				$paramsM = new JRegistry;
+				$paramsM = new Registry;
 				$paramsM->loadString($module->params);
 				//$paramsM->loadJSON($module->params);
 
@@ -52,14 +60,14 @@ class PhocaDownloadViewFeed extends JViewLegacy
 				$categories 		= $paramsM->get( 'category_ids', '' );
 				$ordering			= $paramsM->get( 'file_ordering', 6 );
 				$fileCount			= $paramsM->get( 'file_count', 5 );
-				$feedTitle			= $paramsM->get( 'feed_title', JText::_('COM_PHOCADOWNLOAD_DOWNLOAD') );
+				$feedTitle			= $paramsM->get( 'feed_title', Text::_('COM_PHOCADOWNLOAD_DOWNLOAD') );
 				$displayDateType	= $paramsM->get( 'display_date_type', 1 );
 
 				$document->setTitle($this->escape( html_entity_decode($feedTitle)));
 
 				$wheres = array();
 				if (is_array($categories) && count($categories) > 0) {
-					\Joomla\Utilities\ArrayHelper::toInteger($categories);
+					ArrayHelper::toInteger($categories);
 					$categoriesString	= implode(',', $categories);
 					$wheres[]	= ' c.catid IN ( '.$categoriesString.' ) ';
 				} else if ((int)$categories > 0) {
@@ -74,7 +82,7 @@ class PhocaDownloadViewFeed extends JViewLegacy
 				$wheres[] = ' cc.published = 1';
 				$wheres[] = ' c.textonly = 0';
 				// Active
-				$jnow		= JFactory::getDate();
+				$jnow		= Factory::getDate();
 				$now		= $jnow->toSql();
 				$nullDate	= $db->getNullDate();
 				$wheres[] = ' ( c.publish_up = '.$db->Quote($nullDate).' OR c.publish_up <= '.$db->Quote($now).' )';
@@ -104,14 +112,14 @@ class PhocaDownloadViewFeed extends JViewLegacy
 					if ($rightDisplay == 1) {
 
 
-						$item = new JFeedItem();
+						$item = new FeedItem();
 
 						$title 				= $this->escape( $valueDoc->title . ' ('.PhocaDownloadFile::getTitleFromFilenameWithExt( $valueDoc->filename ).')' );
 						$title 				= html_entity_decode( $title );
 						$item->title 		= $title;
 
 						$link 				= PhocaDownloadRoute::getCategoryRoute($valueDoc->categoryid, $valueDoc->categoryalias);
-						$item->link 		= JRoute::_($link);
+						$item->link 		= Route::_($link);
 
 
 						// FILEDATE
@@ -121,7 +129,7 @@ class PhocaDownloadViewFeed extends JViewLegacy
 								$fileDate = PhocaDownloadFile::getFileTime($valueDoc->filename, $displayDateType, "Y-m-d H:M:S");
 							}
 						} else {
-							$fileDate = JHTML::Date($valueDoc->date, "Y-m-d H:i:s");
+							$fileDate = HTMLHelper::Date($valueDoc->date, "Y-m-d H:i:s");
 						}
 
 						if ($fileDate != '') {

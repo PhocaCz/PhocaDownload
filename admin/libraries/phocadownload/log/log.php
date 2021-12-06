@@ -7,13 +7,17 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Table\Table;
 
 class PhocaDownloadLog
 {
 
 	public static function log($fileid, $type = 1) {
 
-		$paramsC 	= JComponentHelper::getParams('com_phocadownload');
+		$paramsC 	= ComponentHelper::getParams('com_phocadownload');
 		$logging	= $paramsC->get('enable_logging', 0);
 		// No Logging
 		if ($logging == 0) {
@@ -31,11 +35,11 @@ class PhocaDownloadLog
 		}
 
 
-		$user 	= JFactory::getUser();
-		$uri 	= \Joomla\CMS\Uri\Uri::getInstance();
-		$db 	= JFactory::getDBO();
+		$user 	= Factory::getUser();
+		$uri 	= Uri::getInstance();
+		$db 	= Factory::getDBO();
 
-		$row 	= JTable::getInstance('PhocaDownloadLogging', 'Table');
+		$row 	= Table::getInstance('PhocaDownloadLogging', 'Table');
 		$data					= array();
 		$data['type']			= (int)$type;
 		$data['fileid']			= (int)$fileid;
@@ -46,20 +50,20 @@ class PhocaDownloadLog
 
 
 		if (!$row->bind($data)) {
-			throw new Exception($db->getErrorMsg(), 500);
+			throw new Exception($row->getError());
 			return false;
 		}
 
-		$jnow		= JFactory::getDate();
+		$jnow		= Factory::getDate();
 		$row->date	= $jnow->toSql();
 
 		if (!$row->check()) {
-			throw new Exception($db->getErrorMsg(), 500);
+			throw new Exception($row->getError());
 			return false;
 		}
 
 		if (!$row->store()) {
-			throw new Exception($db->getErrorMsg(), 500);
+			throw new Exception($row->getError());
 			return false;
 		}
 		return true;

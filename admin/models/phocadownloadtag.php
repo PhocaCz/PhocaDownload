@@ -9,10 +9,14 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
  */
 defined( '_JEXEC' ) or die();
+use Joomla\CMS\MVC\Model\AdminModel;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Application\ApplicationHelper;
 jimport('joomla.application.component.modeladmin');
 
 
-class PhocaDownloadCpModelPhocaDownloadTag extends JModelAdmin
+class PhocaDownloadCpModelPhocaDownloadTag extends AdminModel
 {
 	protected	$option 		= 'com_phocadownload';
 	protected 	$text_prefix	= 'com_phocadownload';
@@ -32,12 +36,12 @@ class PhocaDownloadCpModelPhocaDownloadTag extends JModelAdmin
 	
 	public function getTable($type = 'PhocaDownloadTag', $prefix = 'Table', $config = array())
 	{
-		return JTable::getInstance($type, $prefix, $config);
+		return Table::getInstance($type, $prefix, $config);
 	}
 	
 	public function getForm($data = array(), $loadData = true) {
 		
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		$form 	= $this->loadForm('com_phocadownload.phocadownloadtag', 'phocadownloadtag', array('control' => 'jform', 'load_data' => $loadData));
 		if (empty($form)) {
 			return false;
@@ -48,7 +52,7 @@ class PhocaDownloadCpModelPhocaDownloadTag extends JModelAdmin
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_phocadownload.edit.phocadownloadtag.data', array());
+		$data = Factory::getApplication()->getUserState('com_phocadownload.edit.phocadownloadtag.data', array());
 
 		if (empty($data)) {
 			$data = $this->getItem();
@@ -60,16 +64,16 @@ class PhocaDownloadCpModelPhocaDownloadTag extends JModelAdmin
 	protected function prepareTable($table)
 	{
 		jimport('joomla.filter.output');
-		$date = JFactory::getDate();
-		$user = JFactory::getUser();
+		$date = Factory::getDate();
+		$user = Factory::getUser();
 
 		$table->title		= htmlspecialchars_decode($table->title, ENT_QUOTES);
-		$table->alias		= JApplicationHelper::stringURLSafe($table->alias);
+		$table->alias		= ApplicationHelper::stringURLSafe($table->alias);
 		
 		$table->link_cat	= PhocaDownloadUtils::getIntFromString($table->link_cat);
 
 		if (empty($table->alias)) {
-			$table->alias = JApplicationHelper::stringURLSafe($table->title);
+			$table->alias = ApplicationHelper::stringURLSafe($table->title);
 		}
 
 		if (empty($table->id)) {
@@ -78,7 +82,7 @@ class PhocaDownloadCpModelPhocaDownloadTag extends JModelAdmin
 
 			// Set ordering to the last item if not set
 			if (empty($table->ordering)) {
-				$db = JFactory::getDbo();
+				$db = Factory::getDbo();
 				$db->setQuery('SELECT MAX(ordering) FROM #__phocadownload_tags');
 				$max = $db->loadResult();
 

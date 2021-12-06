@@ -7,9 +7,10 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 jimport('joomla.application.component.model');
 
-class PhocaDownloadCpModelPhocaDownloadLog extends JModelLegacy
+class PhocaDownloadCpModelPhocaDownloadLog extends BaseDatabaseModel
 {
 	function __construct() {
 		parent::__construct();
@@ -18,8 +19,8 @@ class PhocaDownloadCpModelPhocaDownloadLog extends JModelLegacy
 		//$user 	= JFactory::getUser();
 		$query = 'TRUNCATE #__phocadownload_logging';
 		$this->_db->setQuery( $query );
-		if (!$this->_db->query()) {
-			throw new Exception($this->_db->getErrorMsg(), 500);
+		if (!$this->_db->execute()) {
+			throw new Exception($this->_db->getError());
 			return false;
 		}
 		return true;

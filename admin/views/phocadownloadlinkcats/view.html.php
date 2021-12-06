@@ -9,27 +9,31 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\HTML\HTMLHelper;
 jimport( 'joomla.application.component.view' );
 
-class phocaDownloadCpViewphocaDownloadLinkCats extends JViewLegacy
+class phocaDownloadCpViewphocaDownloadLinkCats extends HtmlView
 {
 	protected $t;
 	protected $r;
 
 	function display($tpl = null) {
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		$this->r = new PhocaDownloadRenderAdminViews();
 		$this->t = PhocaDownloadUtils::setVars('linkcats');
 
 		//Frontend Changes
 		$tUri = '';
 		if (!$app->isClient('administrator')) {
-			$tUri = JURI::base();
+			$tUri = Uri::base();
 
 		}
 
-		$document	= JFactory::getDocument();
-		$uri		= \Joomla\CMS\Uri\Uri::getInstance();
+		$document	= Factory::getDocument();
+		$uri		= Uri::getInstance();
 
 		$eName				= $app->input->get('e_name');
 		$this->t['ename']		= preg_replace( '#[^A-Z0-9\-\_\[\]]#i', '', $eName );
@@ -56,12 +60,12 @@ class phocaDownloadCpViewphocaDownloadLinkCats extends JViewLegacy
 		$attribs	= ' ';
 		$attribs	.= ' size="5"';
 		//$attribs	.= 'class="'.$v.'"';
-		$attribs	.= ' class="inputbox"';
+		$attribs	.= ' class="form-control"';
 		$attribs	.= ' multiple="multiple"';
 		$ctrl		.= '';
 		//$value		= implode( '|', )
 
-		$categoriesOutput = Joomla\CMS\HTML\HTMLHelper::_('select.genericlist', $tree, $ctrl, $attribs, 'value', 'text', 0, 'hidecategories' );
+		$categoriesOutput = HTMLHelper::_('select.genericlist', $tree, $ctrl, $attribs, 'value', 'text', 0, 'hidecategories' );
 
 		$this->assignRef('categoriesoutput',	$categoriesOutput);*/
 

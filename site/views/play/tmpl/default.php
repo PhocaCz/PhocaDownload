@@ -8,6 +8,8 @@
  */
 // no direct access
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 // USER RIGHT - Access of categories (if file is included in some not accessed category) - - - - -
 // ACCESS is handled in SQL query, ACCESS USER ID is handled here (specific users)
 $rightDisplay	= 0;
@@ -22,27 +24,27 @@ if ($rightDisplay == 1) {
 		if ($this->t['filetype'] == 'mp3') {
 			echo '<audio width="'.$this->t['playerwidth'].'" height="'.$this->t['playerheight'].'" style="margin-top: 10px;" controls>';
 			echo '<source src="'.$this->t['playfilewithpath'].'" type="video/mp4">';
-			echo JText::_('COM_PHOCADOWNLOAD_BROWSER_DOES_NOT_SUPPORT_AUDIO_VIDEO_TAG');
+			echo Text::_('COM_PHOCADOWNLOAD_BROWSER_DOES_NOT_SUPPORT_AUDIO_VIDEO_TAG');
 			echo '</audio>'. "\n";
 		} else if ($this->t['filetype'] == 'mp4') {
 			echo '<video width="'.$this->t['playerwidth'].'" height="'.$this->t['playerheight'].'" style="margin-top: 10px;" controls>';
 			echo '<source src="'.$this->t['playfilewithpath'].'" type="video/mp4">';
-			echo JText::_('COM_PHOCADOWNLOAD_BROWSER_DOES_NOT_SUPPORT_AUDIO_VIDEO_TAG');
+			echo Text::_('COM_PHOCADOWNLOAD_BROWSER_DOES_NOT_SUPPORT_AUDIO_VIDEO_TAG');
 			echo '</video>'. "\n";
 		} else if ($this->t['filetype'] == 'ogg') {
 			echo '<audio width="'.$this->t['playerwidth'].'" height="'.$this->t['playerheight'].'" style="margin-top: 10px;" controls>';
 			echo '<source src="'.$this->t['playfilewithpath'].'" type="audio/ogg">';
-			echo JText::_('COM_PHOCADOWNLOAD_BROWSER_DOES_NOT_SUPPORT_AUDIO_VIDEO_TAG');
+			echo Text::_('COM_PHOCADOWNLOAD_BROWSER_DOES_NOT_SUPPORT_AUDIO_VIDEO_TAG');
 			echo '</audio>'. "\n";
 		} else if ($this->t['filetype'] == 'ogv') {
 			echo '<video width="'.$this->t['playerwidth'].'" height="'.$this->t['playerheight'].'" style="margin-top: 10px;" controls>';
 			echo '<source src="'.$this->t['playfilewithpath'].'" type="video/ogg">';
-			echo JText::_('COM_PHOCADOWNLOAD_BROWSER_DOES_NOT_SUPPORT_AUDIO_VIDEO_TAG');
+			echo Text::_('COM_PHOCADOWNLOAD_BROWSER_DOES_NOT_SUPPORT_AUDIO_VIDEO_TAG');
 			echo '</video>'. "\n";
-		} /* else if ($this->t['filetype'] == 'flv') {
+		}  /*else if ($this->t['filetype'] == 'flv') {
             echo '<video width="'.$this->t['playerwidth'].'" height="'.$this->t['playerheight'].'" style="margin-top: 10px;" controls>';
             echo '<source src="'.$this->t['playfilewithpath'].'" type="video/x-flv">';
-            echo JText::_('COM_PHOCADOWNLOAD_BROWSER_DOES_NOT_SUPPORT_AUDIO_VIDEO_TAG');
+            echo Text::_('COM_PHOCADOWNLOAD_BROWSER_DOES_NOT_SUPPORT_AUDIO_VIDEO_TAG');
             echo '</video>'. "\n";
         }*/
 
@@ -52,8 +54,8 @@ if ($rightDisplay == 1) {
 	//Flow Player
 	$versionFLP 	= '3.2.2';
 	$versionFLPJS 	= '3.2.2';
-	$document = JFactory::getDocument();
-	$document->addScript($this->t['playerpath'].'flowplayer-'.$versionFLPJS.'.min.js');
+	$document = Factory::getDocument();
+	//$document->addScript($this->t['playerpath'].'flowplayer-'.$versionFLPJS.'.min.js');
 
 	?>
 	<div style="text-align:center;">
@@ -80,7 +82,7 @@ if ($rightDisplay == 1) {
 	?></div></div><?php
 	}
 } else {
-	echo JText::_('COM_PHOCADOWNLOAD_NO_RIGHTS_ACCESS_CATEGORY');
+	echo Text::_('COM_PHOCADOWNLOAD_NO_RIGHTS_ACCESS_CATEGORY');
 }
 
 

@@ -10,9 +10,12 @@
  */
 
 defined( '_JEXEC' ) or die();
+use Joomla\CMS\MVC\Model\ListModel;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
 jimport('joomla.application.component.modellist');
 
-class PhocaDownloadCpModelPhocaDownloadTags extends JModelList
+class PhocaDownloadCpModelPhocaDownloadTags extends ListModel
 {
 	protected	$option 		= 'com_phocadownload';
 
@@ -40,7 +43,7 @@ class PhocaDownloadCpModelPhocaDownloadTags extends JModelList
 	protected function populateState($ordering = 'a.title', $direction = 'ASC')
 	{
 		// Initialise variables.
-		$app = JFactory::getApplication('administrator');
+		$app = Factory::getApplication('administrator');
 
 		// Load the filter state.
 		$search = $app->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
@@ -58,7 +61,7 @@ class PhocaDownloadCpModelPhocaDownloadTags extends JModelList
 		//$this->setState('filter.language', $language);
 
 		// Load the parameters.
-		$params = JComponentHelper::getParams('com_phocadownload');
+		$params = ComponentHelper::getParams('com_phocadownload');
 		$this->setState('params', $params);
 
 		// List state information.

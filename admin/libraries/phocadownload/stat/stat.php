@@ -11,13 +11,14 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
+use Joomla\CMS\Factory;
 jimport('joomla.application.component.model');
 
 class PhocaDownloadStat
 {
 	public static function createUserStatEntry($downloadId) {
-		$db 		= JFactory::getDBO();
-		$user		= JFactory::getUser();
+		$db 		= Factory::getDBO();
+		$user		= Factory::getUser();
 
 
 		$query =  ' SELECT * FROM '.$db->quoteName('#__phocadownload_user_stat')
@@ -60,8 +61,8 @@ class PhocaDownloadStat
 	}
 
 	public static function getCountFilePerUser($downloadId) {
-		$db 		= JFactory::getDBO();
-		$user		= JFactory::getUser();
+		$db 		= Factory::getDBO();
+		$user		= Factory::getUser();
 
 		$query =  ' SELECT count FROM '.$db->quoteName('#__phocadownload_user_stat')
 				 .' WHERE '. $db->quoteName('userid')

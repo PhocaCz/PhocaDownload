@@ -7,27 +7,35 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined( '_JEXEC' ) or die();
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Object\CMSObject;
+use Joomla\CMS\Mail\MailHelper;
 jimport( 'joomla.client.helper' );
 jimport( 'joomla.application.component.view' );
 jimport( 'joomla.html.pane' );
 use Joomla\String\StringHelper;
 
-class PhocaDownloadViewUser extends JViewLegacy
+class PhocaDownloadViewUser extends HtmlView
 {
 	protected $_context_files			= 'com_phocadownload.phocadownloaduserfiles';
 	protected $r;
 
 	function display($tpl = null) {
 
-		$app				= JFactory::getApplication();
-		$document			= JFactory::getDocument();
-		$uri 				= \Joomla\CMS\Uri\Uri::getInstance();
+		$app				= Factory::getApplication();
+		$document			= Factory::getDocument();
+		$uri 				= Uri::getInstance();
 		$menus				= $app->getMenu();
 		$menu				= $menus->getActive();
 		$this->t['p']		= $app->getParams();
-		$user 				= JFactory::getUser();
-		$db					=  JFactory::getDBO();
-		$user 				= JFactory::getUser();
+		$user 				= Factory::getUser();
+		$db					=  Factory::getDBO();
+		$user 				= Factory::getUser();
 		$userLevels			= implode (',', $user->getAuthorisedViewLevels());
 
 		$this->t['pi']		= 'media/com_phocadownload/images/';
@@ -38,19 +46,21 @@ class PhocaDownloadViewUser extends JViewLegacy
 		$access				= PhocaDownloadAccess::isAccess($user->getAuthorisedViewLevels(), $neededAccessLevels);
 
 		if (!$access) {
-			$app->redirect(JRoute::_($this->t['pl'], false), JText::_("COM_PHOCADOWNLOAD_NOT_AUTHORISED_ACTION"));
+			$app->enqueueMessage(Text::_("COM_PHOCADOWNLOAD_NOT_AUTHORISED_ACTION"), 'error');
+			$app->redirect(Route::_($this->t['pl'], false));
 			return;
 		}
 
+		PhocaDownloadRenderFront::renderMainJs();
 		PhocaDownloadRenderFront::renderAllCSS();
 
-		Joomla\CMS\HTML\HTMLHelper::_('jquery.framework', false);
-		$document	= JFactory::getDocument();
+		HTMLHelper::_('jquery.framework', false);
+		$document	= Factory::getDocument();
 		$document->addScriptDeclaration(
 		'jQuery(document).ready(function(){
 			jQuery(\'.phfileuploadcheckcat\').click(function(){
 			if( !jQuery(\'#catid\').val() || jQuery(\'#catid\').val() == 0) { 
-				alert(\''.JText::_('COM_PHOCADOWNLOAD_PLEASE_SELECT_CATEGORY').'\'); return false;
+				alert(\''.Text::_('COM_PHOCADOWNLOAD_PLEASE_SELECT_CATEGORY').'\'); return false;
 			} else {
 				return true;
 			}
@@ -66,7 +76,8 @@ class PhocaDownloadViewUser extends JViewLegacy
 		// - - - - - - - - - -
 		// UCP is disabled (security reasons)
 		if ((int)$this->t['p']->get( 'enable_user_cp', 0 ) == 0) {
-			$app->redirect(JURI::base(false), JText::_("COM_PHOCADOWNLOAD_USER_UPLOAD_DISABLED"));
+			$app->enqueueMessage(Text::_("COM_PHOCADOWNLOAD_USER_UPLOAD_DISABLED"), 'error');
+			$app->redirect(Uri::base(false));
 			exit;
 		}
 
@@ -83,7 +94,7 @@ class PhocaDownloadViewUser extends JViewLegacy
 		//Subcateogry
 		//$this->t['parentid']			= $app->input->get('parentcategoryid', 0, 'int');
 
-		//$document->addScript(JURI::base(true).'/components/com_phocadownload/assets/js/comments.js');
+		//$document->addScript(JUri::base(true).'/components/com_phocadownload/assets/js/comments.js');
 		$document->addCustomTag(PhocaDownloadRenderFront::renderOnUploadJS());
 		$document->addCustomTag(PhocaDownloadRenderFront::renderDescriptionUploadJS((int)$this->t['maxuploadchar']));
 		$document->addCustomTag(PhocaDownloadRenderFront::userTabOrdering());
@@ -91,7 +102,7 @@ class PhocaDownloadViewUser extends JViewLegacy
 
 		// Upload Form - - - - - - - - - - - - - - -
 		$ftp = !JClientHelper::hasCredentials('ftp');// Set FTP form
-		$session = JFactory::getSession();
+		$session = Factory::getSession();
 		$this->t['session'] = $session;
 		// END Upload Form - - - - - - - - - - - - -
 
@@ -105,7 +116,7 @@ class PhocaDownloadViewUser extends JViewLegacy
 		// No Controller because of returning back the values in case some form field is not OK
 
 		// Set default for returning back
-		$formData = new JObject();
+		$formData = new CMSObject();
 		$formData->set('title', '');
 		$formData->set('description','');
 		$formData->set('author','');
@@ -150,16 +161,16 @@ class PhocaDownloadViewUser extends JViewLegacy
 			//catid
 			$returnForm = 0;
 			if ($post['catidfiles'] < 1) {
-				$this->t['errorcatid'] = JText::_('COM_PHOCADOWNLOAD_PLEASE_SELECT_CATEGORY');
+				$this->t['errorcatid'] = Text::_('COM_PHOCADOWNLOAD_PLEASE_SELECT_CATEGORY');
 				$returnForm = 1;
 			}
 			jimport('joomla.mail.helper');
-			if ($post['email'] != '' && !JMailHelper::isEmailAddress($post['email']) ) {
-				$this->t['erroremail'] = JText::_('COM_PHOCADOWNLOAD_PLEASE_ENTER_VALID_EMAIL_ADDRESS');
+			if ($post['email'] != '' && !MailHelper::isEmailAddress($post['email']) ) {
+				$this->t['erroremail'] = Text::_('COM_PHOCADOWNLOAD_PLEASE_ENTER_VALID_EMAIL_ADDRESS');
 				$returnForm = 1;
 			}
 			if ($post['website'] != '' && !PhocaDownloadUtils::isURLAddress($post['website']) ) {
-				$this->t['errorwebsite'] = JText::_('COM_PHOCADOWNLOAD_PLEASE_ENTER_VALID_WEBSITE');
+				$this->t['errorwebsite'] = Text::_('COM_PHOCADOWNLOAD_PLEASE_ENTER_VALID_WEBSITE');
 				$returnForm = 1;
 			}
 
@@ -167,21 +178,21 @@ class PhocaDownloadViewUser extends JViewLegacy
 			$errUploadMsg	= '';
 			$redirectUrl 	= '';
 
-			$fileArray 		= JFactory::getApplication()->input->files->get( 'Filedata', null, 'raw');
+			$fileArray 		= Factory::getApplication()->input->files->get( 'Filedata', null, 'raw');
 
 			if(empty($fileArray)) {
 
-				$this->t['errorfile'] = JText::_('COM_PHOCADOWNLOAD_PLEASE_ADD_FILE_OR_IF_ADDED_CHECK_IF_IT_HAS_RIGHT_FORMAT_AND_SIZE');
+				$this->t['errorfile'] = Text::_('COM_PHOCADOWNLOAD_PLEASE_ADD_FILE_OR_IF_ADDED_CHECK_IF_IT_HAS_RIGHT_FORMAT_AND_SIZE');
 				$returnForm = 1;
 
 			} else if (isset($fileArray[0]) && $fileArray[0] == ''){
-				$this->t['errorfile'] = JText::_('COM_PHOCADOWNLOAD_PLEASE_ADD_FILE_OR_IF_ADDED_CHECK_IF_IT_HAS_RIGHT_FORMAT_AND_SIZE');
+				$this->t['errorfile'] = Text::_('COM_PHOCADOWNLOAD_PLEASE_ADD_FILE_OR_IF_ADDED_CHECK_IF_IT_HAS_RIGHT_FORMAT_AND_SIZE');
 				$returnForm = 1;
 				$fileArray['name'] = '';
 
 			} else if (isset($fileArray['name']) && $fileArray['name'] == '') {
 
-				$this->t['errorfile'] = JText::_('COM_PHOCADOWNLOAD_PLEASE_ADD_FILE_OR_IF_ADDED_CHECK_IF_IT_HAS_RIGHT_FORMAT_AND_SIZE');
+				$this->t['errorfile'] = Text::_('COM_PHOCADOWNLOAD_PLEASE_ADD_FILE_OR_IF_ADDED_CHECK_IF_IT_HAS_RIGHT_FORMAT_AND_SIZE');
 				$returnForm = 1;
 			}
 
@@ -207,10 +218,11 @@ class PhocaDownloadViewUser extends JViewLegacy
 						$limitStartUrl	= '';
 					}
 					$link = 'index.php?option=com_phocadownload&view=user&Itemid='. $Itemid . $limitStartUrl;
-					$app->redirect(JRoute::_($link, false), JText::_("COM_PHOCADOWNLOAD_SUCCESS_FILE_UPLOADED"));
+					$app->enqueueMessage(Text::_("COM_PHOCADOWNLOAD_SUCCESS_FILE_UPLOADED"), 'success');
+					$app->redirect(Route::_($link, false));
 					exit;
 				} else {
-					$this->t['errorfile'] = JText::_('COM_PHOCADOWNLOAD_ERROR_FILE_UPLOADED');
+					$this->t['errorfile'] = Text::_('COM_PHOCADOWNLOAD_ERROR_FILE_UPLOADED');
 					if ($errorUploadMsg != '') {
 						$this->t['errorfile'] .= '<br />' . $errorUploadMsg;
 					}
@@ -237,7 +249,7 @@ class PhocaDownloadViewUser extends JViewLegacy
 		$search_files			= StringHelper::strtolower( $search_files );
 
 		// build list of categories
-		$javascript 	= 'class="inputbox" size="1" onchange="document.phocadownloadfilesform.submit();"';
+		$javascript 	= 'class="form-control" size="1" onchange="document.phocadownloadfilesform.submit();"';
 
 		// get list of categories for dropdown filter
 		$whereC		= array();
@@ -274,15 +286,15 @@ class PhocaDownloadViewUser extends JViewLegacy
 
 
 		// state filter
-	/*	$state_files[] 		= Joomla\CMS\HTML\HTMLHelper::_('select.option',  '', '- '. JText::_( 'Select State' ) .' -' );
-		$state_files[] 		= Joomla\CMS\HTML\HTMLHelper::_('select.option',  'P', JText::_( 'Published' ) );
-		$state_files[] 		= Joomla\CMS\HTML\HTMLHelper::_('select.option',  'U', JText::_( 'Unpublished') );
-		$lists_image['state']	= Joomla\CMS\HTML\HTMLHelper::_('select.genericlist',   $state_files, 'filter_published', 'class="inputbox" size="1" onchange="document.phocadownloadfilesform.submit();"', 'value', 'text', $filter_published );*/
+	/*	$state_files[] 		= JHtml::_('select.option',  '', '- '. JText::_( 'Select State' ) .' -' );
+		$state_files[] 		= HTMLHelper::_('select.option',  'P', Text::_( 'Published' ) );
+		$state_files[] 		= HTMLHelper::_('select.option',  'U', Text::_( 'Unpublished') );
+		$lists_image['state']	= JHtml::_('select.genericlist',   $state_files, 'filter_published', 'class="form-control" size="1" onchange="document.phocadownloadfilesform.submit();"', 'value', 'text', $filter_published );*/
 
 		//$lists_files['sectionid'] = PhocaDownloadCategory::filterSection($query, $filter_sectionid_files, TRUE);
 
 		// state filter
-		$lists_files['state']	= Joomla\CMS\HTML\HTMLHelper::_('grid.state',  $filter_published_files );
+		$lists_files['state']	= HTMLHelper::_('grid.state',  $filter_published_files );
 
 		// table ordering
 		$lists_files['order_Dir'] = $filter_order_Dir_files;
@@ -338,28 +350,30 @@ class PhocaDownloadViewUser extends JViewLegacy
 		//$this->assignRef('session', $session);
 
 		// Bootstrap 3 Layout
-		$this->t['display_bootstrap3_layout']	= $this->t['p']->get( 'display_bootstrap3_layout', 0 );
+		/*$this->t['display_bootstrap3_layout']	= $this->t['p']->get( 'display_bootstrap3_layout', 0 );
 		if ($this->t['display_bootstrap3_layout'] > 0) {
 
-			Joomla\CMS\HTML\HTMLHelper::_('jquery.framework', false);
+			HTMLHelper::_('jquery.framework', false);
 			if ((int)$this->t['display_bootstrap3_layout'] == 2) {
-				JHTML::stylesheet('media/com_phocadownload/bootstrap/css/bootstrap.min.css' );
-				JHTML::stylesheet('media/com_phocadownload/bootstrap/css/bootstrap.extended.css' );
+				HTMLHelper::stylesheet('media/com_phocadownload/bootstrap/css/bootstrap.min.css' );
+				HTMLHelper::stylesheet('media/com_phocadownload/bootstrap/css/bootstrap.extended.css' );
 			}
 			// Loaded by jquery.framework;
-			//$document->addScript(JURI::root(true).'/media/com_phocadownload/bootstrap/js/bootstrap.min.js');
-			$document->addScript(JURI::root(true).'/media/com_phocadownload/js/jquery.equalheights.min.js');
+			//$document->addScript(JUri::root(true).'/media/com_phocadownload/bootstrap/js/bootstrap.min.js');
+		/*	$document->addScript(Uri::root(true).'/media/com_phocadownload/js/jquery.equalheights.min.js');
 			$document->addScriptDeclaration(
 			'jQuery(window).load(function(){
 				jQuery(\'.ph-thumbnail\').equalHeights();
-			});');
+			});');*//*
 		}
 
 		if ($this->t['display_bootstrap3_layout'] > 0) {
 			parent::display('bootstrap');
 		} else {
 			parent::display($tpl);
-		}
+		}*/
+
+		parent::display($tpl);
 	}
 }
 ?>

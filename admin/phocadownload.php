@@ -7,19 +7,22 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\Controller\BaseController;
 
 
-if (!JFactory::getUser()->authorise('core.manage', 'com_phocadownload')) {
-	throw new Exception(JText::_('COM_PHOCADOWNLOAD_ERROR_ALERTNOAUTHOR'), 404);
+if (!Factory::getUser()->authorise('core.manage', 'com_phocadownload')) {
+	throw new Exception(Text::_('COM_PHOCADOWNLOAD_ERROR_ALERTNOAUTHOR'), 404);
 	return false;
 }
 
 if (! class_exists('PhocaDownloadLoader')) {
     require_once( JPATH_ADMINISTRATOR.'/components/com_phocadownload/libraries/loader.php');
 }
-
+require_once JPATH_ADMINISTRATOR . '/components/com_phocadownload/libraries/autoloadPhoca.php';
 require_once( JPATH_COMPONENT.'/controller.php' );
-jimport( 'joomla.filesystem.folder' ); 
+jimport( 'joomla.filesystem.folder' );
 jimport( 'joomla.filesystem.file' );
 phocadownloadimport('phocadownload.path.path');
 phocadownloadimport('phocadownload.utils.utils');
@@ -40,7 +43,7 @@ phocadownloadimport('phocadownload.tag.tag');
 phocadownloadimport('phocadownload.rate.rate');
 
 jimport('joomla.application.component.controller');
-$controller	= JControllerLegacy::getInstance('PhocaDownloadCp');
-$controller->execute(JFactory::getApplication()->input->get('task'));
+$controller	= BaseController::getInstance('PhocaDownloadCp');
+$controller->execute(Factory::getApplication()->input->get('task'));
 $controller->redirect();
 ?>

@@ -83,24 +83,18 @@
 				"title": "COM_PHOCADOWNLOAD_TAGS"
 			},
 			"9": {
-				"image": "icon-16-pdl-menu-layout.png",
-				"view": "phocadownloadlayouts",
-				"link": "option=com_phocadownload&amp;view=phocadownloadlayouts",
-				"title": "COM_PHOCADOWNLOAD_LAYOUT"
-			},
-			"10": {
 				"image": "icon-16-pdl-menu-style.png",
 				"view": "phocadownloadstyles",
 				"link": "option=com_phocadownload&amp;view=phocadownloadstyles",
 				"title": "COM_PHOCADOWNLOAD_STYLES"
 			},
-			"11": {
+			"10": {
 				"image": "icon-16-pdl-menu-logs.png",
 				"view": "phocadownloadlogs",
 				"link": "option=com_phocadownload&amp;view=phocadownloadlogs",
 				"title": "COM_PHOCADOWNLOAD_LOGGING"
 			},
-			"12": {
+			"11": {
 				"image": "icon-16-pdl-menu-info.png",
 				"view": "phocadownloadinfo",
 				"link": "option=com_phocadownload&amp;view=phocadownloadinfo",

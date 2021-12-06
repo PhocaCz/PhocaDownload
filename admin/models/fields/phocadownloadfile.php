@@ -9,14 +9,18 @@
 * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
 */
 defined('_JEXEC') or die();
+use Joomla\CMS\Form\FormField;
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 
-class JFormFieldPhocaDownloadFile extends JFormField
+class JFormFieldPhocaDownloadFile extends FormField
 {
    protected $type = 'PhocaDownloadFile';
 
    protected function getInput() {
 
-      $db = JFactory::getDBO();
+      $db = Factory::getDBO();
 
        //build the list of files
       $query = 'SELECT a.title , a.id , a.catid'
@@ -31,16 +35,16 @@ class JFormFieldPhocaDownloadFile extends JFormField
       {
          foreach($messages as $message)
          {
-            $options[] = Joomla\CMS\HTML\HTMLHelper::_('select.option', $message->id, $message->title);
+            $options[] = HTMLHelper::_('select.option', $message->id, $message->title);
          }
       }
 
 	  $attr = '';
 		$attr .= $this->required ? ' required aria-required="true"' : '';
-		$attr .= ' class="inputbox"';
+		$attr .= ' class="form-control"';
 
-      array_unshift($options, Joomla\CMS\HTML\HTMLHelper::_('select.option', '', '- '.JText::_('COM_PHOCADOWNLOAD_SELECT_FILE').' -', 'value', 'text'));
-      return Joomla\CMS\HTML\HTMLHelper::_('select.genericlist',  $options,  $this->name, trim($attr), 'value', 'text', $this->value, $this->id );
+      array_unshift($options, HTMLHelper::_('select.option', '', '- '.Text::_('COM_PHOCADOWNLOAD_SELECT_FILE').' -', 'value', 'text'));
+      return HTMLHelper::_('select.genericlist',  $options,  $this->name, trim($attr), 'value', 'text', $this->value, $this->id );
 
    }
 }

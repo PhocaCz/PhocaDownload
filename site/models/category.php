@@ -9,9 +9,12 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Plugin\PluginHelper;
 jimport('joomla.application.component.model');
 
-class PhocaDownloadModelCategory extends JModelLegacy
+class PhocaDownloadModelCategory extends BaseDatabaseModel
 {
 	var $_document 			= null;
 	var $_category 			= null;
@@ -28,11 +31,11 @@ class PhocaDownloadModelCategory extends JModelLegacy
 
 	function __construct() {
 		
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		
 		parent::__construct();
 		
-		$config = JFactory::getConfig();		
+		$config = Factory::getConfig();		
 		
 		//$paramsC 			= JComponentHelper::getParams('com_phocadownload') ;
 		$paramsC = $app->getParams();
@@ -53,8 +56,8 @@ class PhocaDownloadModelCategory extends JModelLegacy
 		$this->setState('fileordering', $app->getUserStateFromRequest($context .'fileordering', 'fileordering', $file_ordering, 'int'));
 
 		// Get the filter request variables
-		$this->setState('filter_order', JFactory::getApplication()->input->getCmd('filter_order', 'ordering'));
-		$this->setState('filter_order_dir', JFactory::getApplication()->input->getCmd('filter_order_Dir', 'ASC'));
+		$this->setState('filter_order', Factory::getApplication()->input->getCmd('filter_order', 'ordering'));
+		$this->setState('filter_order_dir', Factory::getApplication()->input->getCmd('filter_order_Dir', 'ASC'));
 		
 	}
 	
@@ -101,9 +104,9 @@ class PhocaDownloadModelCategory extends JModelLegacy
 	function _getFileListQuery( $categoryId, $tagId = 0, $count = 0 ) {
 	
 		$wheres		= array();
-		$app		= JFactory::getApplication();
+		$app		= Factory::getApplication();
 		$params 	= $app->getParams();
-		$user 		= JFactory::getUser();
+		$user 		= Factory::getUser();
 		$userLevels	= implode (',', $user->getAuthorisedViewLevels());
 	
 		
@@ -128,7 +131,7 @@ class PhocaDownloadModelCategory extends JModelLegacy
 		}
 		
 		// Active
-		$jnow		= JFactory::getDate();
+		$jnow		= Factory::getDate();
 		$now		= $jnow->toSql();
 		$nullDate	= $this->_db->getNullDate();
 		$wheres[] = ' ( c.publish_up = '.$this->_db->Quote($nullDate).' OR c.publish_up <= '.$this->_db->Quote($now).' )';
@@ -136,10 +139,10 @@ class PhocaDownloadModelCategory extends JModelLegacy
 		
 		if ($pQ == 1) {
 			// GWE MOD - to allow for access restrictions
-			JPluginHelper::importPlugin("phoca");
+			PluginHelper::importPlugin("phoca");
 			//$dispatcher = JEventDispatcher::getInstance();
 			$joins = array();
-			$results = \JFactory::getApplication()->triggerEvent('onGetFileList', array (&$wheres, &$joins,$categoryId , $params));	
+			$results = Factory::getApplication()->triggerEvent('onGetFileList', array (&$wheres, &$joins,$categoryId , $params));	
 			// END GWE MOD
 		}
 		
@@ -185,9 +188,9 @@ class PhocaDownloadModelCategory extends JModelLegacy
 	function _getCategoriesQuery( $categoryId, $subcategories = FALSE ) {
 		
 		$wheres		= array();
-		$app		= JFactory::getApplication();
+		$app		= Factory::getApplication();
 		$params 	= $app->getParams();
-		$user 		= JFactory::getUser();
+		$user 		= Factory::getUser();
 		$userLevels	= implode (',', $user->getAuthorisedViewLevels());
 		
 		$pQ			= $params->get( 'enable_plugin_query', 0 );
@@ -211,10 +214,10 @@ class PhocaDownloadModelCategory extends JModelLegacy
 		
 		if ($pQ == 1) {
 			// GWE MOD - to allow for access restrictions
-			JPluginHelper::importPlugin("phoca");
+			PluginHelper::importPlugin("phoca");
 			//$dispatcher = JEventDispatcher::getInstance();
 			$joins = array();
-			$results = \JFactory::getApplication()->triggerEvent('onGetCategory', array (&$wheres, &$joins,$categoryId , $params));	
+			$results = Factory::getApplication()->triggerEvent('onGetCategory', array (&$wheres, &$joins,$categoryId , $params));	
 			// END GWE MOD
 		}
 		
@@ -262,7 +265,7 @@ class PhocaDownloadModelCategory extends JModelLegacy
 		if (empty($this->_category_ordering)) {
 	
 			
-			$app						= JFactory::getApplication();
+			$app						= Factory::getApplication();
 			$params						= $app->getParams();
 			$ordering					= $params->get( 'category_ordering', 1 );
 			$this->_category_ordering 	= PhocaDownloadOrdering::getOrderingText($ordering, 2);

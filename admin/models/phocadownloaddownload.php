@@ -9,9 +9,15 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\Model\AdminModel;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Table\Table;
+use Joomla\Registry\Registry;
+use Joomla\CMS\Application\ApplicationHelper;
+use Joomla\Utilities\ArrayHelper;
 jimport('joomla.application.component.modeladmin');
 
-class PhocaDownloadCpModelPhocaDownloadDownload extends JModelAdmin
+class PhocaDownloadCpModelPhocaDownloadDownload extends AdminModel
 {
 	protected	$option 		= 'com_phocadownload';
 	protected 	$text_prefix	= 'com_phocadownload';
@@ -20,7 +26,7 @@ class PhocaDownloadCpModelPhocaDownloadDownload extends JModelAdmin
 	protected function canDelete($record)
 	{
 
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 
 		if (!empty($record->catid)) {
 			return $user->authorise('core.delete', 'com_phocadownload.phocadownloaddownload.'.(int) $record->catid);
@@ -33,12 +39,12 @@ class PhocaDownloadCpModelPhocaDownloadDownload extends JModelAdmin
 
 	public function getTable($type = 'PhocaDownloadDownload', $prefix = 'Table', $config = array())
 	{
-		return JTable::getInstance($type, $prefix, $config);
+		return Table::getInstance($type, $prefix, $config);
 	}
 
 	public function getForm($data = array(), $loadData = true) {
 
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		$form 	= $this->loadForm('com_phocadownload.phocadownloaddownload', 'phocadownloaddownload', array('control' => 'jform', 'load_data' => $loadData));
 
 		if (empty($form)) {
@@ -50,7 +56,7 @@ class PhocaDownloadCpModelPhocaDownloadDownload extends JModelAdmin
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_phocadownload.edit.phocadownload.data', array());
+		$data = Factory::getApplication()->getUserState('com_phocadownload.edit.phocadownload.data', array());
 
 		if (empty($data)) {
 			$data = $this->getItem();
@@ -64,7 +70,7 @@ class PhocaDownloadCpModelPhocaDownloadDownload extends JModelAdmin
 		if ($item = parent::getItem($pk)) {
 			// Convert the params field to an array.
 			if (isset($item->metadata)) {
-				$registry = new JRegistry;
+				$registry = new Registry;
 				$registry->loadString($item->metadata);
 				$item->metadata = $registry->toArray();
 			}
@@ -77,11 +83,11 @@ class PhocaDownloadCpModelPhocaDownloadDownload extends JModelAdmin
 	protected function prepareTable($table)
 	{
 		jimport('joomla.filter.output');
-		$date = JFactory::getDate();
-		$user = JFactory::getUser();
+		$date = Factory::getDate();
+		$user = Factory::getUser();
 
 		$table->title		= htmlspecialchars_decode($table->title, ENT_QUOTES);
-		$table->alias		= JApplicationHelper::stringURLSafe($table->alias);
+		$table->alias		= ApplicationHelper::stringURLSafe($table->alias);
 
 
 		$table->confirm_license	= PhocaDownloadUtils::getIntFromString($table->confirm_license);
@@ -89,7 +95,7 @@ class PhocaDownloadCpModelPhocaDownloadDownload extends JModelAdmin
 		$table->tokenhits		= PhocaDownloadUtils::getIntFromString($table->tokenhits);
 
 		if (empty($table->alias)) {
-			$table->alias = JApplicationHelper::stringURLSafe($table->title);
+			$table->alias = ApplicationHelper::stringURLSafe($table->title);
 		}
 
 		if (empty($table->id)) {
@@ -98,7 +104,7 @@ class PhocaDownloadCpModelPhocaDownloadDownload extends JModelAdmin
 
 			// Set ordering to the last item if not set
 			if (empty($table->ordering)) {
-				$db = JFactory::getDbo();
+				$db = Factory::getDbo();
 				//$db->setQuery('SELECT MAX(ordering) FROM #__phocadownload');
 				$db->setQuery('SELECT MAX(ordering) FROM #__phocadownload WHERE catid = '.(int)$table->catid);
 				$max = $db->loadResult();
@@ -120,7 +126,7 @@ function delete(&$cid = array()) {
 		$result 			= false;
 
 		if (count( $cid )) {
-			\Joomla\Utilities\ArrayHelper::toInteger($cid);
+			ArrayHelper::toInteger($cid);
 			$cids = implode( ',', $cid );
 
 
@@ -129,7 +135,7 @@ function delete(&$cid = array()) {
 				. ' WHERE id IN ( '.$cids.' )';
 			$this->_db->setQuery( $query );
 			if(!$this->_db->execute()) {
-				throw new Exception($this->_db->getErrorMsg(), 500);
+				throw new Exception($this->_db->getError());
 				return false;
 			}
 

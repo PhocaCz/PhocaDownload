@@ -7,11 +7,14 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die;
-Joomla\CMS\HTML\HTMLHelper::_('behavior.tooltip');
-Joomla\CMS\HTML\HTMLHelper::_('behavior.formvalidation');
-Joomla\CMS\HTML\HTMLHelper::_('behavior.keepalive');
-Joomla\CMS\HTML\HTMLHelper::_('formbehavior.chosen', 'select');
-
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+/*
+JHtml::_('behavior.tooltip');
+JHtml::_('behavior.formvalidation');
+JHtml::_('behavior.keepalive');
+JHtml::_('formbehavior.chosen', 'select');
+*/
 $class		= $this->t['n'] . 'RenderAdminView';
 $r = $this->r;
 
@@ -23,18 +26,21 @@ $r = $this->r;
 			Joomla.submitform(task, document.getElementById('adminForm'));
 		}
 		else {
-			Joomla.renderMessages({"error": ["<?php echo JText::_('JGLOBAL_VALIDATION_FORM_FAILED', true);?>"]});
+			Joomla.renderMessages({"error": ["<?php echo Text::_('JGLOBAL_VALIDATION_FORM_FAILED', true);?>"]});
 		<?php /* alert('<?php echo JText::_('JGLOBAL_VALIDATION_FORM_FAILED', true);?>'); */ ?>
 		}
 	}
 </script><?php
 echo $r->startForm($this->t['o'], $this->t['task'], $this->item->id, 'adminForm', 'adminForm');
 // First Column
-echo '<div class="span10 form-horizontal">';
+echo '<div class="span12 form-horizontal">';
 $tabs = array (
-'general' 		=> JText::_($this->t['l'].'_GENERAL_OPTIONS'),
-'publishing' 	=> JText::_($this->t['l'].'_PUBLISHING_OPTIONS'));
+'general' 		=> Text::_($this->t['l'].'_GENERAL_OPTIONS'),
+'publishing' 	=> Text::_($this->t['l'].'_PUBLISHING_OPTIONS'));
 echo $r->navigation($tabs);
+
+$formArray = array ('title');
+echo $r->groupHeader($this->form, $formArray);
 
 echo $r->startTabs();
 
@@ -45,14 +51,14 @@ if ($this->ftp) { echo $this->loadTemplate('ftp');}
 //$formArray = array ('title', 'type', 'filename', 'ordering');
 //echo $r->group($this->form, $formArray);
 
-echo '<div class="control-group">';
-echo $r->item($this->form, 'title');
+//echo '<div class="control-group">';
+//echo $r->item($this->form, 'title');
 echo $this->form->getInput('type');
 echo $r->item($this->form, 'typeoutput');
 echo $r->item($this->form, 'filename', $this->t['ssuffixtype']);
 echo $r->item($this->form, 'ordering');
 
-echo '</div>';
+//echo '</div>';
 
 echo '<div class="clr"></div>';
 echo $this->form->getLabel('source');
@@ -61,9 +67,9 @@ echo '<div class="editor-border" id="ph-editor">';
 echo $this->form->getInput('source');
 echo '</div>';
 
-echo '</div>'. "\n";
+echo $r->endTab();
 
-echo '<div class="tab-pane" id="publishing">'."\n";
+echo $r->startTab('publishing', $tabs['publishing']);
 foreach($this->form->getFieldset('publish') as $field) {
 	echo '<div class="control-group">';
 	if (!$field->hidden) {
@@ -73,10 +79,10 @@ foreach($this->form->getFieldset('publish') as $field) {
 	echo $field->input;
 	echo '</div></div>';
 }
-echo '</div>';
+echo $r->endTab();
 
 // Second Column
-echo '<div class="span2"></div>';//end span2
+//echo '<div class="span2"></div>';//end span2
 echo $r->formInputs($this->t['task']);
 echo $r->endForm();
 ?>

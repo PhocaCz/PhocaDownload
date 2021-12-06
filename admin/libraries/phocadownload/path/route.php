@@ -14,7 +14,8 @@
 
 // no direct access
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Factory;
+use Joomla\CMS\Session\Session;
 // Component Helper
 jimport('joomla.application.component.helper');
 
@@ -31,7 +32,7 @@ class PhocaDownloadRoute
 
 	public static function getCategoriesRoute() {
 		// TEST SOLUTION
-		$app 		= JFactory::getApplication();
+		$app 		= Factory::getApplication();
 		$menu 		= $app->getMenu();
 		$active 	= $menu->getActive();
 
@@ -79,7 +80,7 @@ class PhocaDownloadRoute
 	public static function getCategoryRoute($catid, $catidAlias = '') {
 
 		// TEST SOLUTION
-		$app 		= JFactory::getApplication();
+		$app 		= Factory::getApplication();
 		$menu 		= $app->getMenu();
 		$active 	= $menu->getActive();
 		$option		= $app->input->get( 'option', '', 'string' );
@@ -127,7 +128,7 @@ class PhocaDownloadRoute
 			'categories' => ''
 		);
 
-		$db = JFactory::getDBO();
+		$db = Factory::getDBO();
 
 		$query = 'SELECT a.id, a.title, a.link_ext, a.link_cat'
 		.' FROM #__phocadownload_tags AS a'
@@ -164,12 +165,13 @@ class PhocaDownloadRoute
 	public static function getFileRoute($id, $catid = 0, $idAlias = '', $catidAlias = '', $sectionid = 0, $type = 'file', $suffix = '')
 	{
 		// TEST SOLUTION
-		$app 		= JFactory::getApplication();
+		$app 		= Factory::getApplication();
 		$menu 		= $app->getMenu();
 		$active 	= $menu->getActive();
 		$option		= $app->input->get( 'option', '', 'string' );
 
 		$activeId 	= 0;
+		$notCheckId	= 0;
 		if (isset($active->id)){
 			$activeId    = $active->id;
 		}
@@ -181,13 +183,17 @@ class PhocaDownloadRoute
 				'category' => (int) $catid,
 				'categories' => (int)$activeId
 			);
+			$notCheckId	= 1;
 		} else {
 			$needles = array(
 				'file'  => (int) $id,
 				'category' => (int) $catid,
 				'categories' => ''
 			);
+			$notCheckId	= 0;
 		}
+
+
 
 		if ($idAlias != '') {
 			$id = $id . ':' . $idAlias;
@@ -203,22 +209,22 @@ class PhocaDownloadRoute
 
 
 			case 'play':
-				$link = 'index.php?option=com_phocadownload&view=play&id='. $id.'&tmpl=component';
+				$link = 'index.php?option=com_phocadownload&view=play&catid='.$catid.'&id='. $id.'&tmpl=component';
 			break;
 			case 'detail':
-				$link = 'index.php?option=com_phocadownload&view=file&id='. $id.'&tmpl=component';
+				$link = 'index.php?option=com_phocadownload&view=file&catid='.$catid.'&id='. $id.'&tmpl=component';
 			break;
 			case 'download':
 				$link = 'index.php?option=com_phocadownload&view=category&download='. $id . '&id='. $catid;
 			break;
 			default:
-				$link = 'index.php?option=com_phocadownload&view=file&id='. $id;
+				$link = 'index.php?option=com_phocadownload&view=file&catid='.$catid.'&id='. $id;
 			break;
 
 		}
 
-		if ($item = self::_findItem($needles)) {
-			if (isset($item->id)) {
+		if ($item = PhocaDownloadRoute::_findItem($needles, $notCheckId)) {
+			if (isset($item->id) && ((int)$item->id > 0)) {
 				$link .= '&Itemid='.$item->id;
 			}
 		}
@@ -226,6 +232,7 @@ class PhocaDownloadRoute
 		if ($suffix != '') {
 			$link .= '&'.$suffix;
 		}
+
 
 		return $link;
 
@@ -241,7 +248,7 @@ class PhocaDownloadRoute
 			'file'  => (int) $id
 		);
 		if ($directDownload == 1) {
-			$link = 'index.php?option=com_phocadownload&view=download&id='. $token.'&download=1&' . JSession::getFormToken() . '=1';
+			$link = 'index.php?option=com_phocadownload&view=download&id='. $token.'&download=1&' . Session::getFormToken() . '=1';
 		} else {
 			$link = 'index.php?option=com_phocadownload&view=download&id='. $token;
 		}
@@ -351,9 +358,12 @@ class PhocaDownloadRoute
 	protected static function _findItem($needles, $notCheckId = 0, $component = 'com_phocadownload')
 	{
 
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		$menus	= $app->getMenu('site', array());
 		$items	= $menus->getItems('component', $component);
+
+		// Don't check ID for specific views
+		$notCheckIdArray =  array('categories');
 
 		if(!$items) {
 			return $app->input->get('Itemid', 0, '', 'int');
@@ -368,7 +378,7 @@ class PhocaDownloadRoute
 
 			if ($notCheckId == 0) {
 				foreach($items as $item) {
-					if ((@$item->query['view'] == $needle) && (@$item->query['id'] == $id)) {
+					if ((@$item->query['view'] == $needle) && (in_array($needle, $notCheckIdArray) || @$item->query['id'] == $id)) {
 						$match = $item;
 						break;
 					}

@@ -9,13 +9,15 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
  */
 defined('_JEXEC') or die;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Object\CMSObject;
 
 class PhocaDownloadRaFileHelper
 {
 	public static function getActions($categoryId = 0)
 	{
-		$user	= JFactory::getUser();
-		$result	= new JObject;
+		$user	= Factory::getUser();
+		$result	= new CMSObject;
 
 		if (empty($categoryId)) {
 			$assetName = 'com_phocadownload';

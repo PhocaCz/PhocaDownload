@@ -7,9 +7,14 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die;
+use Joomla\CMS\MVC\Controller\AdminController;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Session\Session;
+use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\Factory;
 jimport('joomla.application.component.controlleradmin');
 
-class PhocaDownloadCpControllerPhocaDownloadLics extends JControllerAdmin
+class PhocaDownloadCpControllerPhocaDownloadLics extends AdminController
 {
 	protected	$option 		= 'com_phocadownload';
 	
@@ -22,15 +27,15 @@ class PhocaDownloadCpControllerPhocaDownloadLics extends JControllerAdmin
 	}
 	
 	public function saveOrderAjax() {
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 		$pks = $this->input->post->get('cid', array(), 'array');
 		$order = $this->input->post->get('order', array(), 'array');
-		\Joomla\Utilities\ArrayHelper::toInteger($pks);
-		\Joomla\Utilities\ArrayHelper::toInteger($order);
+		ArrayHelper::toInteger($pks);
+		ArrayHelper::toInteger($order);
 		$model = $this->getModel();
 		$return = $model->saveorder($pks, $order);
 		if ($return) { echo "1";}
-		JFactory::getApplication()->close();
+		Factory::getApplication()->close();
 	}
 }
 ?>

@@ -7,6 +7,8 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
  defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 
 jimport( 'joomla.filesystem.file' );
 
@@ -15,7 +17,7 @@ $group 	= PhocaDownloadSettings::getManagerGroup($this->manager);
 
 
 if ($this->manager == 'filemultiple') {
-	$checked 	= Joomla\CMS\HTML\HTMLHelper::_('grid.id', $this->filei + count($this->folders), $this->files[$this->filei]->path_with_name_relative_no );
+	$checked 	= HTMLHelper::_('grid.id', $this->filei + count($this->folders), $this->files[$this->filei]->path_with_name_relative_no );
 
 	$icon		= PhocaDownloadFile::getMimeTypeIcon($this->_tmp_file->name);
 	echo '<tr>'
@@ -33,7 +35,7 @@ if ($this->manager == 'filemultiple') {
 		.'<td></td>'
 		.'<td>'
 		.'<a href="#" onclick="if (window.parent) window.parent.'. $this->fce.'(\'' .$this->_tmp_file->path_with_name_relative_no.'\')">'
-		. Joomla\CMS\HTML\HTMLHelper::_( 'image', str_replace( '../', '', $this->_tmp_file->path_without_name_relative), JText::_('COM_PHOCADOWNLOAD_INSERT'), array('title' => JText::_('COM_PHOCADOWNLOAD_INSERT_ICON')))
+		. HTMLHelper::_( 'image', str_replace( '../', '', $this->_tmp_file->path_without_name_relative), Text::_('COM_PHOCADOWNLOAD_INSERT'), array('title' => Text::_('COM_PHOCADOWNLOAD_INSERT_ICON'), 'class' => 'pd-file-image'))
 		.'</a>'
 		.' <td>'
 		.'<a href="#" onclick="if (window.parent) window.parent.'. $this->fce.'(\'' . $this->_tmp_file->path_with_name_relative_no.'\')">'
@@ -48,7 +50,7 @@ if ($this->manager == 'filemultiple') {
 		.'<td></td>'
 		.'<td>'
 		.'<a href="#" onclick="if (window.parent) window.parent.'. $this->fce.'(\'' .$this->_tmp_file->path_with_name_relative_no.'\')">'
-		. Joomla\CMS\HTML\HTMLHelper::_( 'image', $this->t['i'].'icon-file.png', '', JText::_('COM_PHOCADOWNLOAD_INSERT_FILENAME'))
+		. HTMLHelper::_( 'image', $this->t['i'].'icon-file.png', '', Text::_('COM_PHOCADOWNLOAD_INSERT_FILENAME'))
 		.'</a>'
 		.' <td>'
 		.'<a href="#" onclick="if (window.parent) window.parent.'. $this->fce.'(\'' .$this->_tmp_file->path_with_name_relative_no.'\')">'

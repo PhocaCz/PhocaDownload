@@ -7,11 +7,14 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\Model\ListModel;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
 jimport('joomla.application.component.modellist');
 jimport( 'joomla.filesystem.folder' );
 jimport( 'joomla.filesystem.file' );
 
-class PhocaDownloadCpModelPhocaDownloadLogs extends JModelList
+class PhocaDownloadCpModelPhocaDownloadLogs extends ListModel
 {
 
 	protected	$option 		= 'com_phocadownload';
@@ -41,7 +44,7 @@ class PhocaDownloadCpModelPhocaDownloadLogs extends JModelList
 	protected function populateState($ordering = 'a.date', $direction = 'ASC')
 	{
 		// Initialise variables.
-		$app = JFactory::getApplication('administrator');
+		$app = Factory::getApplication('administrator');
 
 		// Load the filter state.
 		$search = $app->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
@@ -63,7 +66,7 @@ class PhocaDownloadCpModelPhocaDownloadLogs extends JModelList
 		$type = $app->getUserStateFromRequest($this->context.'.filter.type', 'filter_type', '', 'string');
 		$this->setState('filter.type', $type);
 		// Load the parameters.
-		$params = JComponentHelper::getParams('com_phocadownload');
+		$params = ComponentHelper::getParams('com_phocadownload');
 		$this->setState('params', $params);
 
 		// List state information.

@@ -22,11 +22,11 @@
 	<option value="0">COM_PHOCADOWNLOAD_NONE</option>
 	<option value="1">COM_PHOCADOWNLOAD_TOP</option>
 	<option value="2">COM_PHOCADOWNLOAD_BOTTOM</option>
-	<option value="3">COM_PHOCADOWNLOAD_OVERLIB</option>
-	<option value="4">COM_PHOCADOWNLOAD_TOP_AND_OVERLIB</option>
-	<option value="5">COM_PHOCADOWNLOAD_BOTTOM_AND_OVERLIB</option>
-	<option value="6">COM_PHOCADOWNLOAD_TOP_WITH_DETAIL_AND_OVERLIB</option>
-	<option value="7">COM_PHOCADOWNLOAD_BOTTOM_WITH_DETAIL_AND_OVERLIB</option>
+	<option value="3">COM_PHOCADOWNLOAD_TOOLTIP</option>
+	<option value="4">COM_PHOCADOWNLOAD_TOP_AND_TOOLTIP</option>
+	<option value="5">COM_PHOCADOWNLOAD_BOTTOM_AND_TOOLTIP</option>
+	<option value="6">COM_PHOCADOWNLOAD_TOP_WITH_DETAIL_AND_TOOLTIP</option>
+	<option value="7">COM_PHOCADOWNLOAD_BOTTOM_WITH_DETAIL_AND_TOOLTIP</option>
 	<option value="8">COM_PHOCADOWNLOAD_OVERLIB_WIDTH_DETAIL</option>
 </field>
 
@@ -35,8 +35,13 @@
 	<option value="1">COM_PHOCADOWNLOAD_YES</option>
 </field>
 
+<field name="display_main_cat_subcategories" type="list" default="1" label="COM_PHOCADOWNLOAD_FIELD_DISPLAY_MAIN_CAT_SUBCATEGORIES_LABEL" description="COM_PHOCADOWNLOAD_FIELD_DISPLAY_MAIN_CAT_SUBCATEGORIES_DESC">
+	<option value="0">COM_PHOCADOWNLOAD_NO</option>
+	<option value="1">COM_PHOCADOWNLOAD_YES</option>
+</field>
+
 <field name="display_detail" type="list" default="1" label="COM_PHOCADOWNLOAD_FIELD_DISPLAY_DETAIL_BUTTON_LABEL" description="COM_PHOCADOWNLOAD_FIELD_DISPLAY_DETAIL_BUTTON_DESC">
-	<option value="1">COM_PHOCADOWNLOAD_YES_OVERLIB</option>
+	<option value="1">COM_PHOCADOWNLOAD_YES_TOOLTIP</option>
 	<option value="2">COM_PHOCADOWNLOAD_YES_MODAL</option>
 	<option value="3">COM_PHOCADOWNLOAD_YES_STANDARD_POPUP_WINDOW</option>
 	<option value="0">COM_PHOCADOWNLOAD_NO</option>
@@ -198,7 +203,7 @@
                 <option value="p">p</option>
                 <option value="-1">COM_PHOCADOWNLOAD_HIDE_HEADER</option>
             </field>
-			
+
 			<field name="display_subheader_type" type="list" default="h3" label="COM_PHOCADOWNLOAD_FIELD_DISPLAY_SUBHEADER_TYPE_LABEL" description="COM_PHOCADOWNLOAD_FIELD_DISPLAY_SUBHEADER_TYPE_DESC">
                 <option value="h1">h1</option>
                 <option value="h2">h2</option>
@@ -210,13 +215,13 @@
                 <option value="p">p</option>
                 <option value="-1">COM_PHOCADOWNLOAD_HIDE_HEADER</option>
             </field>
-
+<!--
 <field name="phocahead2" type="phocahead"  default="COM_PHOCADOWNLOAD_CONFIG_COMMENTS_SETTINGS_LABEL" label="" description=""/>
 
 <field name="display_category_comments" type="list" default="0" label="COM_PHOCADOWNLOAD_FIELD_DISPLAY_CATEGORY_COMMENTS_LABEL" description="COM_PHOCADOWNLOAD_FIELD_DISPLAY_CATEGORY_COMMENTS_DESC">
 <option value="0">COM_PHOCADOWNLOAD_NO</option>
 <option value="1">COM_PHOCADOWNLOAD_JCOMMENTS</option>
-<option value="2">COM_PHOCADOWNLOAD_FACEBOOK</option>
+<option value="2">COM_PHOCADOWNLOAD_FACEBOOK</option>-
 </field>
 <field name="display_file_comments" type="list" default="0" label="COM_PHOCADOWNLOAD_FIELD_DISPLAY_FILE_COMMENTS_LABEL" description="COM_PHOCADOWNLOAD_FIELD_DISPLAY_FILE_COMMENTS_DESC">
 <option value="0">COM_PHOCADOWNLOAD_NO</option>
@@ -228,7 +233,7 @@
 
 <field name="fb_comment_width" default="550" size="6" type="text" label="COM_PHOCADOWNLOAD_FACEBOOK_COMMENTS_WIDTH_LABEL" description="COM_PHOCADOWNLOAD_FACEBOOK_COMMENTS_WIDTH_DESC" />
 <field name="fb_comment_lang" type="text" size="30" default="en_US" label="COM_PHOCADOWNLOAD_FACEBOOK_FIELD_COMMENT_LANG_LABEL" description="COM_PHOCADOWNLOAD_FACEBOOK_FIELD_COMMENT_LANG_DESC" />
-<field name="fb_comment_count" type="text" size="6" default="" label="COM_PHOCADOWNLOAD_FACEBOOK_FIELD_COMMENT_COUNT_LABEL" description="COM_PHOCADOWNLOAD_FACEBOOK_FIELD_COMMENT_COUNT_DESC" />
+<field name="fb_comment_count" type="text" size="6" default="" label="COM_PHOCADOWNLOAD_FACEBOOK_FIELD_COMMENT_COUNT_LABEL" description="COM_PHOCADOWNLOAD_FACEBOOK_FIELD_COMMENT_COUNT_DESC" />-->
 
 <field name="phocahead7" type="phocahead"  default="COM_PHOCADOWNLOAD_CONFIG_RATING_SETTINGS_LABEL" label="" description=""/>
 
@@ -262,7 +267,7 @@
 
 
 
-
+<!--
 <field name="display_specific_layout" type="list" default="0" label="COM_PHOCADOWNLOAD_DISPLAY_SPEC_LAYOUT_LABEL" description="COM_PHOCADOWNLOAD_DISPLAY_SPEC_LAYOUT_DESC">
 		<option value="0">COM_PHOCADOWNLOAD_NO</option>
 		<option value="1">COM_PHOCADOWNLOAD_YES</option>
@@ -273,7 +278,7 @@
 		<option value="1">COM_PHOCADOWNLOAD_YES</option>
 		<option value="2">COM_PHOCADOWNLOAD_YES_LOAD_BOOTSTRAP_LIBRARY</option>
 	</field>
-
+-->
 
 
 
@@ -292,10 +297,10 @@
 	<option value="0">COM_PHOCADOWNLOAD_MODAL_BOX</option>
 </field>
 
-<field name="html5_play" type="list" default="1" label="COM_PHOCADOWNLOAD_FIELD_HTML5_AUDIO_VIDEO_LABEL" description="COM_PHOCADOWNLOAD_FIELD_HTML5_AUDIO_VIDEO_DESC">
+<!--<field name="html5_play" type="list" default="1" label="COM_PHOCADOWNLOAD_FIELD_HTML5_AUDIO_VIDEO_LABEL" description="COM_PHOCADOWNLOAD_FIELD_HTML5_AUDIO_VIDEO_DESC">
 	<option value="1">COM_PHOCADOWNLOAD_YES</option>
 	<option value="0">COM_PHOCADOWNLOAD_NO</option>
-</field>
+</field>-->
 
 
 <field name="phocahead6" type="phocahead"  default="COM_PHOCADOWNLOAD_PREVIEW_SETTINGS_LABEL" label="" description=""/>
@@ -536,7 +541,7 @@
 	<option value="6">COM_PHOCADOWNLOAD_HTML4_UPLOADER</option>
 </field>
 
-<field name="default_access" default="1" type="accesslevel" label="COM_PHOCADOWNLOAD_FIELD_DEFAULT_ACCESS_LABEL" description="COM_PHOCADOWNLOAD_FIELD_DEFAULT_ACCESS_DESC" class="inputbox" size="1" />
+<field name="default_access" default="1" type="accesslevel" label="COM_PHOCADOWNLOAD_FIELD_DEFAULT_ACCESS_LABEL" description="COM_PHOCADOWNLOAD_FIELD_DEFAULT_ACCESS_DESC" class="form-control" size="1" />
 
 <field name="enable_xss_check" type="list" default="1" label="COM_PHOCADOWNLOAD_FIELD_ENABLE_XSS_CHECK_LABEL" description="COM_PHOCADOWNLOAD_FIELD_ENABLE_XSS_CHECK_DESC">
 	<option value="1">COM_PHOCADOWNLOAD_YES_FRONTEND</option>
@@ -569,10 +574,10 @@
 	<option value="0">COM_PHOCADOWNLOAD_NO</option>
 </field>
 
-<field name="description" default="" type="editor" class="inputbox" label="COM_PHOCADOWNLOAD_FIELD_DESCRIPTION_LABEL" description="COM_PHOCADOWNLOAD_FIELD_DESCRIPTION_DESC" filter="JComponentHelper::filterText" />
+<field name="description" default="" type="editor" class="form-control" label="COM_PHOCADOWNLOAD_FIELD_DESCRIPTION_LABEL" description="COM_PHOCADOWNLOAD_FIELD_DESCRIPTION_DESC" filter="JComponentHelper::filterText" />
 
 
-<field name="registered_access_level" type="phocaaccesslevel" label="COM_PHOCADOWNLOAD_FIELD_REGISTERED_ACCESS_LEVEL_LABEL" description="COM_PHOCADOWNLOAD_FIELD_REGISTERED_ACCESS_LEVEL_DESC" multiple="true" size="10" >
+<field name="registered_access_level" type="phocaaccesslevel" label="COM_PHOCADOWNLOAD_FIELD_REGISTERED_ACCESS_LEVEL_LABEL" description="COM_PHOCADOWNLOAD_FIELD_REGISTERED_ACCESS_LEVEL_DESC" multiple="true" size="10" layout="joomla.form.field.list-fancy-select" >
 
 </field>
 

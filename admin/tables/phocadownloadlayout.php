@@ -9,9 +9,10 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
  */
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Table\Table;
 jimport('joomla.filter.input');
 
-class TablePhocaDownloadLayout extends JTable
+class TablePhocaDownloadLayout extends Table
 {
 	function __construct(& $db) {
 		parent::__construct('#__phocadownload_layout', 'id', $db);

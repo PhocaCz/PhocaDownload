@@ -10,12 +10,16 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Uri\Uri;
 
 class PhocaDownloadRate
 {
 	public static function updateVoteStatisticsFile( $fileid ) {
 
-		$db = JFactory::getDBO();
+		$db = Factory::getDBO();
 
 		// Get AVG and COUNT
 		$query = 'SELECT COUNT(vs.id) AS count, AVG(vs.rating) AS average'
@@ -79,7 +83,7 @@ class PhocaDownloadRate
 
 	public static function getVotesStatisticsFile($id) {
 
-		$db = JFactory::getDBO();
+		$db = Factory::getDBO();
 		$query = 'SELECT vs.count AS count, vs.average AS average'
 				.' FROM #__phocadownload_file_votes_statistics AS vs'
 			    .' WHERE vs.fileid = '.(int) $id
@@ -92,7 +96,7 @@ class PhocaDownloadRate
 
 	public static function checkUserVoteFile($fileid, $userid) {
 
-		$db = JFactory::getDBO();
+		$db = Factory::getDBO();
 		$query = 'SELECT v.id AS id'
 			    .' FROM #__phocadownload_file_votes AS v'
 			    .' WHERE v.fileid = '. (int)$fileid
@@ -109,7 +113,7 @@ class PhocaDownloadRate
 
 	public static function renderRateFile($id, $displayRating, $small = 1, $refresh = false) {
 
-		$user					= JFactory::getUser();
+		$user					= Factory::getUser();
 		$neededAccessLevels		= PhocaDownloadAccess::getNeededAccessLevels();
 		$access					= PhocaDownloadAccess::isAccess($user->getAuthorisedViewLevels(), $neededAccessLevels);
 
@@ -160,7 +164,7 @@ class PhocaDownloadRate
 
 			// Leave message for already voted images
 			//$vote = JFactory::getApplication()->input->get('vote', 0, '', 'int');
-			$voteMsg = JText::_('COM_PHOCADOWNLOAD_RATING_ALREADY_RATED_FILE');
+			$voteMsg = Text::_('COM_PHOCADOWNLOAD_RATING_ALREADY_RATED_FILE');
 			//if ($vote == 1) {
 			//	$voteMsg = JText::_('COM_PHOCADOWNLOAD_ALREADY_RATED_FILE_THANKS');
 			//}
@@ -170,9 +174,10 @@ class PhocaDownloadRate
 				$rating['votestextimg'] = 'VOTES';
 			}
 
+
 			$o .= '<div style="float:left;"><strong>'
-					. JText::_('COM_PHOCADOWNLOAD_RATING'). '</strong>: ' . $rating['votesaveragefile'] .' / '
-					.$rating['votescountfile'] . ' ' . JText::_('COM_PHOCADOWNLOAD_'.$rating['votestextimg']). '&nbsp;&nbsp;</div>';
+					. Text::_('COM_PHOCADOWNLOAD_RATING'). '</strong>: ' . $rating['votesaveragefile'] .' / '
+					.$rating['votescountfile'] . ' ' . Text::_('COM_PHOCADOWNLOAD_'.$rating['votestextimg']). '&nbsp;&nbsp;</div>';
 
 			if ($rating['alreadyratedfile']) {
 				$o .= '<div style="float:left;"><ul class="star-rating'.$smallO.'">'
@@ -184,7 +189,7 @@ class PhocaDownloadRate
 				}
 				$o .= '</ul></div>';
 
-				$or ='<div class="pd-result" id="pdresult'.(int)$id.'" style="float:left;margin-left:5px">'.JText::_('COM_PHOCADOWNLOAD_RATING_ALREADY_RATED_FILE').'</div>';
+				$or ='<div class="pd-result" id="pdresult'.(int)$id.'" style="float:left;margin-left:5px">'.Text::_('COM_PHOCADOWNLOAD_RATING_ALREADY_RATED_FILE').'</div>';
 
 			} else if ($rating['notregisteredfile']) {
 
@@ -197,16 +202,16 @@ class PhocaDownloadRate
 				}
 				$o .= '</ul></div>';
 
-				$or ='<div class="pd-result" id="pdresult'.(int)$id.'" style="float:left;margin-left:5px">'.JText::_('COM_PHOCADOWNLOAD_ONLY_REGISTERED_LOGGED_RATE_FILE').'</div>';
+				$or ='<div class="pd-result" id="pdresult'.(int)$id.'" style="float:left;margin-left:5px">'.Text::_('COM_PHOCADOWNLOAD_ONLY_REGISTERED_LOGGED_RATE_FILE').'</div>';
 
 			} else {
 
 				$o .= '<div style="float:left;"><ul class="star-rating'.$smallO.'">'
 						.'<li class="current-rating" style="width:'.$rating['voteswidthfile'].'px"></li>'
-						.'<li><a href="'.$href.'" onclick="pdRating('.(int)$id.', 1)" title="1 '. JText::_('COM_PHOCADOWNLOAD_STAR_OUT_OF').' 5" class="star1">1</a></li>';
+						.'<li><a href="'.$href.'" onclick="pdRating('.(int)$id.', 1)" title="1 '. Text::_('COM_PHOCADOWNLOAD_STAR_OUT_OF').' 5" class="star1">1</a></li>';
 
 				for ($i = 2;$i < 6;$i++) {
-					$o .= '<li><a href="'.$href.'" onclick="pdRating('.(int)$id.', '.$i.')" title="'.$i.' '. JText::_('COM_PHOCADOWNLOAD_STARS_OUT_OF').' 5" class="stars'.$i.'">'.$i.'</a></li>';
+					$o .= '<li><a href="'.$href.'" onclick="pdRating('.(int)$id.', '.$i.')" title="'.$i.' '. Text::_('COM_PHOCADOWNLOAD_STARS_OUT_OF').' 5" class="stars'.$i.'">'.$i.'</a></li>';
 				}
 				$o .= '</ul></div>';
 
@@ -228,10 +233,10 @@ class PhocaDownloadRate
 
 	public static function renderRateFileJS($small = 1) {
 
-		$document	 = JFactory::getDocument();
-		$url		  = 'index.php?option=com_phocadownload&view=ratingfilea&task=rate&format=json&'.JSession::getFormToken().'=1';
-		$urlRefresh		= 'index.php?option=com_phocadownload&view=ratingfilea&task=refreshrate&small='.$small.'&format=json&'.JSession::getFormToken().'=1';
-		$imgLoadingUrl = JURI::base(). 'media/com_phocadownload/images/icon-loading2.gif';
+		$document	 = Factory::getDocument();
+		$url		  = 'index.php?option=com_phocadownload&view=ratingfilea&task=rate&format=json&'.Session::getFormToken().'=1';
+		$urlRefresh		= 'index.php?option=com_phocadownload&view=ratingfilea&task=refreshrate&small='.$small.'&format=json&'.Session::getFormToken().'=1';
+		$imgLoadingUrl = Uri::base(). 'media/com_phocadownload/images/icon-loading2.gif';
 		$imgLoadingHTML = '<img src="'.$imgLoadingUrl.'" alt="" />';
 		$js  = '<script type="text/javascript">' . "\n" . '<!--' . "\n";
 		//$js .= 'window.addEvent("domready",function() {
@@ -268,7 +273,7 @@ class PhocaDownloadRate
 								}
 							},
 							error:function(data2){
-								jQuery(resultvoting).html("'.JText::_('COM_PHOCADOWNLOAD_ERROR_REQUESTING_RATING').'");
+								jQuery(resultvoting).html("'.Text::_('COM_PHOCADOWNLOAD_ERROR_REQUESTING_RATING').'");
 							}
 						});	
 					} else {
@@ -276,7 +281,7 @@ class PhocaDownloadRate
 					}
 				},
 				error:function(data1){
-					jQuery(result).html("'.JText::_('COM_PHOCADOWNLOAD_ERROR_REQUESTING_RATING').'");
+					jQuery(result).html("'.Text::_('COM_PHOCADOWNLOAD_ERROR_REQUESTING_RATING').'");
 				}
 			})
 		}';

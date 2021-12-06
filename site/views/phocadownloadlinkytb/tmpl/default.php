@@ -7,7 +7,9 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die('Restricted access');
-Joomla\CMS\HTML\HTMLHelper::_('behavior.tooltip');
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+JHtml::_('behavior.tooltip');
 ?>
 <script type="text/javascript">
 function insertLink() {
@@ -25,14 +27,14 @@ function insertLink() {
 		window.parent.SqueezeBox.close();
 		return false;
 	} else {
-		alert("<?php echo JText::_( 'COM_PHOCADOWNLOAD_WARNING_SET_YOUTUBE_URL', true ); ?>");
+		alert("<?php echo Text::_( 'COM_PHOCADOWNLOAD_WARNING_SET_YOUTUBE_URL', true ); ?>");
 		return false;
 	}
 }
 </script>
 <div id="phocadownload-links">
 <fieldset class="adminform">
-<legend><?php echo JText::_( 'COM_PHOCADOWNLOAD_YOUTUBE_VIDEO' ); ?></legend>
+<legend><?php echo Text::_( 'COM_PHOCADOWNLOAD_YOUTUBE_VIDEO' ); ?></legend>
 <form name="adminFormLink" id="adminFormLink">
 <table class="admintable" width="100%">
 
@@ -40,7 +42,7 @@ function insertLink() {
 	<tr >
 		<td class="key" align="right" >
 			<label for="url">
-				<?php echo JText::_( 'COM_PHOCADOWNLOAD_YOUTUBE_URL' ); ?>
+				<?php echo Text::_( 'COM_PHOCADOWNLOAD_YOUTUBE_URL' ); ?>
 			</label>
 		</td>
 		<td>
@@ -51,13 +53,13 @@ function insertLink() {
 
 	<tr>
 		<td>&nbsp;</td>
-		<td align="right"><button class="btn btn-primary plg-button-insert " onclick="insertLink();return false;"><span class="icon-ok"></span> <?php echo JText::_( 'COM_PHOCADOWNLOAD_INSERT_CODE' ); ?></button></td>
+		<td align="right"><button class="btn btn-primary plg-button-insert " onclick="insertLink();return false;"><span class="icon-ok"></span> <?php echo Text::_( 'COM_PHOCADOWNLOAD_INSERT_CODE' ); ?></button></td>
 	</tr>
 </table>
 </form>
 
 </fieldset>
-<div style="text-align:left;"><span class="icon-16-edb-back"><a style="text-decoration:underline" href="<?php echo $this->t['backlink'];?>"><?php echo JText::_('COM_PHOCADOWNLOAD_BACK')?></a></span></div>
+<div style="text-align:left;"><span class="icon-16-edb-back"><a style="text-decoration:underline" href="<?php echo $this->t['backlink'];?>"><?php echo Text::_('COM_PHOCADOWNLOAD_BACK')?></a></span></div>
 
 
 </div>

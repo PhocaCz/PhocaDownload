@@ -7,18 +7,22 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\Form\FormField;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 
 if (! class_exists('PhocaDownloadCategory')) {
     require_once( JPATH_ADMINISTRATOR.'/components/com_phocadownload/libraries/phocadownload/category/category.php');
 }
 
-class JFormFieldPhocaDownloadCategory extends JFormField
+class JFormFieldPhocaDownloadCategory extends FormField
 {
 	protected $type 		= 'PhocaDownloadCategory';
 
 	protected function getInput() {
 
-		$db = JFactory::getDBO();
+		$db = Factory::getDBO();
 
        //build the list of categories
 		$query = 'SELECT a.title AS text, a.id AS value, a.parent_id as parentid'
@@ -29,7 +33,7 @@ class JFormFieldPhocaDownloadCategory extends JFormField
 		$data = $db->loadObjectList();
 
 
-		$view 	= JFactory::getApplication()->input->get( 'view' );
+		$view 	= Factory::getApplication()->input->get( 'view' );
 		$catId	= -1;
 		if ($view == 'phocadownloadcat') {
 			$id 	= $this->form->getValue('id'); // id of current category
@@ -50,7 +54,7 @@ class JFormFieldPhocaDownloadCategory extends JFormField
 		$attr = '';
 																									$attr .= $this->element['onchange'] ? ' onchange="'.(string) $this->element['onchange'].'"' : '';
 		$attr .= $this->required ? ' required aria-required="true"' : '';
-		$attr .= ' class="inputbox"';
+		$attr .= ' class="form-select"';
 
 		$tree = array();
 		$text = '';
@@ -60,9 +64,9 @@ class JFormFieldPhocaDownloadCategory extends JFormField
 
 		//} else {
 
-			array_unshift($tree, Joomla\CMS\HTML\HTMLHelper::_('select.option', '', '- '.JText::_('COM_PHOCADOWNLOAD_SELECT_CATEGORY').' -', 'value', 'text'));
+			array_unshift($tree, HTMLHelper::_('select.option', '', '- '.Text::_('COM_PHOCADOWNLOAD_SELECT_CATEGORY').' -', 'value', 'text'));
 		//}
-		return Joomla\CMS\HTML\HTMLHelper::_('select.genericlist',  $tree,  $this->name, trim($attr), 'value', 'text', $this->value, $this->id );
+		return HTMLHelper::_('select.genericlist',  $tree,  $this->name, trim($attr), 'value', 'text', $this->value, $this->id );
 	}
 }
 ?>

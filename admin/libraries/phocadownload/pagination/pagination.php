@@ -7,13 +7,18 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Pagination\Pagination;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 jimport('joomla.html.pagination');
-class PhocaDownloadPagination extends JPagination
+class PhocaDownloadPagination extends Pagination
 {
 	function getLimitBox() {
 
-		$app				= JFactory::getApplication();
-		$paramsC 			= JComponentHelper::getParams('com_phocadownload') ;
+		$app				= Factory::getApplication();
+		$paramsC 			= ComponentHelper::getParams('com_phocadownload') ;
 		$pagination 		= $paramsC->get( 'pagination', '5,10,15,20,50,100' );
 		$paginationArray	= explode( ',', $pagination );
 
@@ -21,17 +26,17 @@ class PhocaDownloadPagination extends JPagination
 		$limits = array ();
 
 		foreach ($paginationArray as $paginationValue) {
-			$limits[] = Joomla\CMS\HTML\HTMLHelper::_('select.option', $paginationValue);
+			$limits[] = HTMLHelper::_('select.option', $paginationValue);
 		}
-		$limits[] = Joomla\CMS\HTML\HTMLHelper::_('select.option', '0', JText::_('COM_PHOCADOWNLOAD_ALL'));
+		$limits[] = HTMLHelper::_('select.option', '0', Text::_('COM_PHOCADOWNLOAD_ALL'));
 
 		$selected = $this->viewall ? 0 : $this->limit;
 
 		// Build the select list
 		if ($app->isClient('administrator')) {
-			$html = Joomla\CMS\HTML\HTMLHelper::_('select.genericlist',  $limits, 'limit', 'class="inputbox" size="1" onchange="submitform();"', 'value', 'text', $selected);
+			$html = HTMLHelper::_('select.genericlist',  $limits, 'limit', 'class="form-select" size="1" onchange="submitform();"', 'value', 'text', $selected);
 		} else {
-			$html = Joomla\CMS\HTML\HTMLHelper::_('select.genericlist',  $limits, 'limit', 'class="inputbox input-mini" size="1" onchange="this.form.submit()"', 'value', 'text', $selected);
+			$html = HTMLHelper::_('select.genericlist',  $limits, 'limit', 'class="form-select input-mini" size="1" onchange="this.form.submit()"', 'value', 'text', $selected);
 		}
 		return $html;
 	}

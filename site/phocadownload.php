@@ -7,11 +7,14 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Factory;
 
 
 if (! class_exists('PhocaDownloadLoader')) {
     require_once( JPATH_ADMINISTRATOR.'/components/com_phocadownload/libraries/loader.php');
 }
+
+require_once JPATH_ADMINISTRATOR . '/components/com_phocadownload/libraries/autoloadPhoca.php';
 // Require the base controller
 require_once( JPATH_COMPONENT.'/controller.php' );
 
@@ -37,12 +40,12 @@ phocadownloadimport('phocadownload.user.user');
 phocadownloadimport('phocadownload.log.log');
 phocadownloadimport('phocadownload.utils.utils');
 
-jimport( 'joomla.filesystem.folder' ); 
+jimport( 'joomla.filesystem.folder' );
 jimport( 'joomla.filesystem.file' );
 
 
 // Require specific controller if requested
-if($controller = JFactory::getApplication()->input->get('controller')) {
+if($controller = Factory::getApplication()->input->get('controller')) {
     $path = JPATH_COMPONENT.'/controllers/'.$controller.'.php';
     if (file_exists($path)) {
         require_once $path;
@@ -53,6 +56,6 @@ if($controller = JFactory::getApplication()->input->get('controller')) {
 
 $classname    = 'PhocaDownloadController'.ucfirst($controller);
 $controller   = new $classname( );
-$controller->execute( JFactory::getApplication()->input->get('task') );
+$controller->execute( Factory::getApplication()->input->get('task') );
 $controller->redirect();
 ?>

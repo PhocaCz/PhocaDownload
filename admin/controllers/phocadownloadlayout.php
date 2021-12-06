@@ -9,11 +9,16 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die;
+use Joomla\CMS\MVC\Controller\FormController;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Router\Route;
 
 jimport('joomla.application.component.controllerform');
 
 
-class PhocaDownloadCpControllerPhocaDownloadLayout extends JControllerForm
+class PhocaDownloadCpControllerPhocaDownloadLayout extends FormController
 {
 	protected	$option 		= 'com_phocadownload';
 
@@ -27,13 +32,13 @@ class PhocaDownloadCpControllerPhocaDownloadLayout extends JControllerForm
 		parent::execute($task);
 		// Clear the component's cache
 		if ($task != 'display') {
-			$cache = JFactory::getCache('com_phocadownload');
+			$cache = Factory::getCache('com_phocadownload');
 			$cache->clean();
 		}
 	}
 	
 	protected function allowAdd($data = array()) {
-		$user		= JFactory::getUser();
+		$user		= Factory::getUser();
 		$allow		= null;
 		$allow	= $user->authorise('core.create', 'com_phocadownload');
 		if ($allow === null) {
@@ -44,7 +49,7 @@ class PhocaDownloadCpControllerPhocaDownloadLayout extends JControllerForm
 	}
 
 	protected function allowEdit($data = array(), $key = 'id') {
-		$user		= JFactory::getUser();
+		$user		= Factory::getUser();
 		$allow		= null;
 		$allow	= $user->authorise('core.edit', 'com_phocadownload');
 		if ($allow === null) {
@@ -55,10 +60,10 @@ class PhocaDownloadCpControllerPhocaDownloadLayout extends JControllerForm
 	}
 	
 	public function back($key = null) {	
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 
 		// Initialise variables.
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$model = $this->getModel();
 		$table = $model->getTable();
 		$checkin = property_exists($table, 'checked_out');
@@ -69,7 +74,7 @@ class PhocaDownloadCpControllerPhocaDownloadLayout extends JControllerForm
 			$key = $table->getKeyName();
 		}
 
-		$recordId = JFactory::getApplication()->input->getInt($key);
+		$recordId = Factory::getApplication()->input->getInt($key);
 
 
 		// Attempt to check-in the current record.
@@ -81,8 +86,8 @@ class PhocaDownloadCpControllerPhocaDownloadLayout extends JControllerForm
 				// Somehow the person just went to the form - we don't allow that.
 				
 				$this->setMessage($this->getError(), 'error');
-				$app->enqueueMessage(JText::sprintf('JLIB_APPLICATION_ERROR_UNHELD_ID', $recordId), 'error');
-				$this->setRedirect(JRoute::_('index.php?option=' . $this->option, false));
+				$app->enqueueMessage(Text::sprintf('JLIB_APPLICATION_ERROR_UNHELD_ID', $recordId), 'error');
+				$this->setRedirect(Route::_('index.php?option=' . $this->option, false));
 
 				return false;
 			}
@@ -94,8 +99,8 @@ class PhocaDownloadCpControllerPhocaDownloadLayout extends JControllerForm
 					// Check-in failed, go back to the record and display a notice.
 					
 					$this->setMessage($this->getError(), 'error');
-					$app->enqueueMessage(JText::sprintf('JLIB_APPLICATION_ERROR_CHECKIN_FAILED', $model->getError()), 'error');
-					$this->setRedirect(JRoute::_('index.php?option=' . $this->option, false));
+					$app->enqueueMessage(Text::sprintf('JLIB_APPLICATION_ERROR_CHECKIN_FAILED', $model->getError()), 'error');
+					$this->setRedirect(Route::_('index.php?option=' . $this->option, false));
 
 					return false;
 				}
@@ -105,7 +110,7 @@ class PhocaDownloadCpControllerPhocaDownloadLayout extends JControllerForm
 		// Clean the session data and redirect.
 		$this->releaseEditId($context, $recordId);
 		$app->setUserState($context . '.data', null);
-		$this->setRedirect(JRoute::_('index.php?option=' . $this->option, false));
+		$this->setRedirect(Route::_('index.php?option=' . $this->option, false));
 
 		return true;
 	}

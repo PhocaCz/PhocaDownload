@@ -9,27 +9,31 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\HTML\HTMLHelper;
 jimport( 'joomla.application.component.view' );
 phocadownloadimport('phocadownload.render.renderadminviews');
 
-class phocaDownloadViewphocaDownloadLinkYtb extends JViewLegacy
+class phocaDownloadViewphocaDownloadLinkYtb extends HtmlView
 {
 
 	protected $t;
 
 	function display($tpl = null) {
-		$app	= JFactory::getApplication();
-		$document	= JFactory::getDocument();
-		$uri		= \Joomla\CMS\Uri\Uri::getInstance();
+		$app	= Factory::getApplication();
+		$document	= Factory::getDocument();
+		$uri		= Uri::getInstance();
 		$this->r = new PhocaDownloadRenderAdminViews();
 		$this->t = PhocaDownloadUtils::setVars('linkytb');
 		//Frontend Changes
 		$tUri = '';
 		if (!$app->isClient('administrator')) {
-			$tUri = JURI::base();
+			$tUri = Uri::base();
 
 		}
-		JHTML::stylesheet( 'media/com_phocadownload/css/administrator/phocadownload.css' );
+		HTMLHelper::stylesheet( 'media/com_phocadownload/css/administrator/phocadownload.css' );
 
 		$eName				= $app->input->get('e_name');
 		$this->t['ename']		= preg_replace( '#[^A-Z0-9\-\_\[\]]#i', '', $eName );

@@ -7,29 +7,34 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
  defined('_JEXEC') or die();
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 jimport('joomla.application.component.view');
 phocadownloadimport('phocadownload.render.renderadminviews');
-class phocaDownloadViewphocaDownloadLinkCat extends JViewLegacy
+class phocaDownloadViewphocaDownloadLinkCat extends HtmlView
 {
 
 	protected $t;
 	protected $r;
 
 	function display($tpl = null) {
-		$app	= JFactory::getApplication();
-		$db		= JFactory::getDBO();
+		$app	= Factory::getApplication();
+		$db		= Factory::getDBO();
 		$this->r = new PhocaDownloadRenderAdminViews();
 		$this->t = PhocaDownloadUtils::setVars('linkcat');
 		//Frontend Changes
 		$tUri = '';
 		if (!$app->isClient('administrator')) {
-			$tUri = JURI::base();
+			$tUri = Uri::base();
 
 		}
 
-		$document	= JFactory::getDocument();
-		$uri		= \Joomla\CMS\Uri\Uri::getInstance();
-		JHTML::stylesheet( 'media/com_phocadownload/css/administrator/phocadownload.css' );
+		$document	= Factory::getDocument();
+		$uri		= Uri::getInstance();
+		HTMLHelper::stylesheet( 'media/com_phocadownload/css/administrator/phocadownload.css' );
 
 		$eName				= $app->input->get('e_name');
 		$this->t['ename']		= preg_replace( '#[^A-Z0-9\-\_\[\]]#i', '', $eName );
@@ -38,8 +43,8 @@ class phocaDownloadViewphocaDownloadLinkCat extends JViewLegacy
 		$model 			= $this->getModel();
 
 		// build list of categories
-		//$javascript 	= 'class="inputbox" size="1" onchange="submitform( );"';
-		$javascript 	= 'class="inputbox" size="1"';
+		//$javascript 	= 'class="form-control" size="1" onchange="submitform( );"';
+		$javascript 	= 'class="form-control" size="1"';
 		$filter_catid	= '';
 
 		$query = 'SELECT a.title AS text, a.id AS value, a.parent_id as parentid'
@@ -53,8 +58,8 @@ class phocaDownloadViewphocaDownloadLinkCat extends JViewLegacy
 		$tree = array();
 		$text = '';
 		$tree = PhocaDownloadCategory::CategoryTreeOption($phocadownloads, $tree, 0, $text, -1);
-		array_unshift($tree, Joomla\CMS\HTML\HTMLHelper::_('select.option', '0', '- '.JText::_('COM_PHOCADOWNLOAD_SELECT_CATEGORY').' -', 'value', 'text'));
-		$lists['catid'] = Joomla\CMS\HTML\HTMLHelper::_( 'select.genericlist', $tree, 'catid',  $javascript , 'value', 'text', $filter_catid );
+		array_unshift($tree, HTMLHelper::_('select.option', '0', '- '.Text::_('COM_PHOCADOWNLOAD_SELECT_CATEGORY').' -', 'value', 'text'));
+		$lists['catid'] = HTMLHelper::_( 'select.genericlist', $tree, 'catid',  $javascript , 'value', 'text', $filter_catid );
 		//-----------------------------------------------------------------------
 
 		//$this->assignRef('lists',	$lists);
