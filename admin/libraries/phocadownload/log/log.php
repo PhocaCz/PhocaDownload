@@ -47,7 +47,7 @@ class PhocaDownloadLog
 		$data['userid']			= (int)$user->id;
 		$data['ip']	=			$_SERVER["REMOTE_ADDR"];
 		$data['page']			= $uri->toString();
-
+		$data['params']			= '';
 
 		if (!$row->bind($data)) {
 			throw new Exception($row->getError());

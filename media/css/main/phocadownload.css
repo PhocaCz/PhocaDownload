@@ -994,6 +994,12 @@ animation: ph-lds-ellipsis3 0.6s infinite;
 }
 }
 
+.ph-media-iframe-box {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
 /* Possible option to have all images in cards of categories view the same height */
 /*
 .card-img-top {

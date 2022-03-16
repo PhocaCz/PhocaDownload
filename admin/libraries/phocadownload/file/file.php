@@ -146,6 +146,7 @@ class PhocaDownloadFile
 			case 'mp4':
 			case 'mpeg':
 			case 'ogv':
+			case 'webm':
 				$icon = 'video';
 			break;
 
@@ -384,6 +385,7 @@ class PhocaDownloadFile
 				//case 'flv':
 				case 'ogg':
 				case 'ogv':
+				case 'webm':
 					return true;
 				break;
 

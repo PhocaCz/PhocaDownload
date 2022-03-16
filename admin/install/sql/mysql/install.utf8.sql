@@ -217,7 +217,7 @@ CREATE TABLE IF NOT EXISTS `#__phocadownload_logging` (
   `fileid` int(11) NOT NULL default '0',
   `catid` int(11) NOT NULL default '0',
   `userid` int(11) NOT NULL default '0',
-  `ip` varchar(20) NOT NULL default '',
+  `ip` varchar(50) NOT NULL default '',
   `page` varchar(255) NOT NULL,
   `date` datetime NOT NULL default '0000-00-00 00:00:00',
   `type` tinyint(1) NOT NULL DEFAULT '0',

@@ -21,6 +21,9 @@ if (!empty($this->t['file'][0])) {
 if ($rightDisplay == 1) {
 
 	if ($this->t['html5_play'] == 1 && $this->t['filetype'] != 'flv') {
+
+        // style because of iframe
+        echo '<div style="display: flex;align-items: center;justify-content: center;"class="ph-media-iframe-box">';
 		if ($this->t['filetype'] == 'mp3') {
 			echo '<audio width="'.$this->t['playerwidth'].'" height="'.$this->t['playerheight'].'" style="margin-top: 10px;" controls>';
 			echo '<source src="'.$this->t['playfilewithpath'].'" type="video/mp4">';
@@ -41,13 +44,18 @@ if ($rightDisplay == 1) {
 			echo '<source src="'.$this->t['playfilewithpath'].'" type="video/ogg">';
 			echo Text::_('COM_PHOCADOWNLOAD_BROWSER_DOES_NOT_SUPPORT_AUDIO_VIDEO_TAG');
 			echo '</video>'. "\n";
+		} else if ($this->t['filetype'] == 'webm') {
+			echo '<video width="'.$this->t['playerwidth'].'" height="'.$this->t['playerheight'].'" style="margin-top: 10px;" controls>';
+			echo '<source src="'.$this->t['playfilewithpath'].'" type="video/webm">';
+			echo Text::_('COM_PHOCADOWNLOAD_BROWSER_DOES_NOT_SUPPORT_AUDIO_VIDEO_TAG');
+			echo '</video>'. "\n";
 		}  /*else if ($this->t['filetype'] == 'flv') {
             echo '<video width="'.$this->t['playerwidth'].'" height="'.$this->t['playerheight'].'" style="margin-top: 10px;" controls>';
             echo '<source src="'.$this->t['playfilewithpath'].'" type="video/x-flv">';
             echo Text::_('COM_PHOCADOWNLOAD_BROWSER_DOES_NOT_SUPPORT_AUDIO_VIDEO_TAG');
             echo '</video>'. "\n";
         }*/
-
+        echo '</div>';
 
 	} else {
 
