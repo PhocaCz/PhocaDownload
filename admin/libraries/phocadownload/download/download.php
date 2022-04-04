@@ -54,6 +54,8 @@ class PhocaDownloadDownload
 			$aft = $params->get( 'allowed_file_types_download', PhocaDownloadSettings::getDefaultAllowedMimeTypesDownload() );
 			$dft = $params->get( 'disallowed_file_types_download', '' );
 
+			$check_http_range = $params->get( 'check_http_range', 1 );
+
 			// Get Mime from params ( ext --> mime)
 			$allowedMimeType 	= PhocaDownloadFile::getMimeType($extension, $aft);
 			$disallowedMimeType = PhocaDownloadFile::getMimeType($extension, $dft);
@@ -212,7 +214,7 @@ class PhocaDownloadDownload
 					// We support requests for a single range only.
 					// So we check if we have a range field. If yes ensure that it is a valid one.
 					// If it is not valid we ignore it and sending the whole file.
-					if(isset($_SERVER['HTTP_RANGE']) && preg_match('%^bytes=\d*\-\d*$%', $_SERVER['HTTP_RANGE'])) {
+					if((int)$check_http_range == 1 && isset($_SERVER['HTTP_RANGE']) && preg_match('%^bytes=\d*\-\d*$%', $_SERVER['HTTP_RANGE'])) {
 						// Let's take the right side
 						list($a, $httpRange) = explode('=', $_SERVER['HTTP_RANGE']);
 						// and get the two values (as strings!)

@@ -438,7 +438,7 @@ class PhocaDownloadRenderAdminViews extends AdminViews
 
 	public function firstColumnHeader($listDirn, $listOrder, $prefix = 'a', $empty = false) {
 		if ($this->compatible) {
-			// todo empty
+			// to do empty
 			return '<th class="w-1 text-center ph-check">'. HTMLHelper::_('grid.checkall').'</td>';
 		} else {
 			return $this->thOrderingXML('JGRID_HEADING_ORDERING', $listDirn, $listOrder, $prefix, $empty);
@@ -449,7 +449,7 @@ class PhocaDownloadRenderAdminViews extends AdminViews
 		if ($this->compatible) {
 			return $this->thOrderingXML('JGRID_HEADING_ORDERING', $listDirn, $listOrder, $prefix, $empty);
 		} else {
-			// todo empty
+			// to do empty
 			return $this->thCheck('JGLOBAL_CHECK_ALL');
 		}
 	}

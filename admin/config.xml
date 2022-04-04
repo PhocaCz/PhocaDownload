@@ -601,6 +601,11 @@
 
 <field name="bt_cat_col_left" default="" size="40" type="text" label="COM_PHOCADOWNLOAD_FIELD_COLUMN_SIZE_CATEGORY_VIEW_LABEL" description="COM_PHOCADOWNLOAD_FIELD_COLUMN_SIZE_CATEGORY_VIEW_DESC" />
 
+<field name="check_http_range" type="list" default="1" label="COM_PHOCADOWNLOAD_FIELD_CHECK_HTTP_RANGE_LABEL" description="COM_PHOCADOWNLOAD_FIELD_CHECK_HTTP_RANGE_DESC">
+	<option value="0">COM_PHOCADOWNLOAD_NO</option>
+	<option value="1">COM_PHOCADOWNLOAD_YES</option>
+</field>
+
 </fieldset>
 
 

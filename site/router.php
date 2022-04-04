@@ -62,7 +62,7 @@ class PhocadownloadRouter extends RouterView
 		$file = new RouterViewConfiguration('file');
 		$file->setKey('id')->setParent($category, 'catid');//->setNestable();
 		$this->registerView($file);
-		
+
 		//$play = new RouterViewConfiguration('play');
 		//$play->setKey('id')->setParent($category, 'catid');//->setNestable();
 		//$this->registerView($play);
@@ -178,7 +178,7 @@ class PhocadownloadRouter extends RouterView
 
 		return array((int) $id => $id);
 	}
-	
+
 	public function getPlaySegment($id, $query)
 	{
 
@@ -243,7 +243,7 @@ class PhocadownloadRouter extends RouterView
 		    if ((int)$query['id'] > 0) {
                 $category = PhocaDownloadCategory::getCategoryById($query['id']);
             } else if ((int)$segment > 0) {
-		        // todo noids alias
+		        // to do noids alias
 		        $category = PhocaDownloadCategory::getCategoryById((int)$segment);
                 if (isset($category->id) && (int)$category->id > 0 && $category->parent_id == 0) {
                     // We don't have root category with 0 so we need to start with segment one
