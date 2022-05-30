@@ -21,6 +21,9 @@ use Joomla\CMS\Filesystem\Path;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\Filter\OutputFilter;
+
+
 jimport('joomla.application.component.modeladmin');
 
 class PhocaDownloadCpModelPhocaDownloadFile extends AdminModel
@@ -187,6 +190,13 @@ class PhocaDownloadCpModelPhocaDownloadFile extends AdminModel
 
 	function save($data) {
 
+		$app		= Factory::getApplication();
+		$input  	= Factory::getApplication()->input;
+		//$dispatcher = J Dispatcher::getInstance();
+		$table		= $this->getTable();
+		$pk			= (!empty($data['id'])) ? $data['id'] : (int)$this->getState($this->getName().'.id');
+		$isNew		= true;
+
 		//$data['filesize'] 	= PhocaDownloadUtils::getFileSize($data['filename'], 0);
 
 		if ($data['alias'] == '') {
@@ -194,6 +204,33 @@ class PhocaDownloadCpModelPhocaDownloadFile extends AdminModel
 		}
 
 		//$data['alias'] = PhocaDownloadText::get AliasName($data['alias']);
+
+
+		// ALIAS
+		if (in_array($input->get('task'), array('apply', 'save', 'save2new')) && (!isset($data['id']) || (int) $data['id'] == 0)) {
+			if ($data['alias'] == null) {
+				if (Factory::getConfig()->get('unicodeslugs') == 1) {
+					$data['alias'] = OutputFilter::stringURLUnicodeSlug($data['title']);
+				} else {
+					$data['alias'] = OutputFilter::stringURLSafe($data['title']);
+				}
+
+
+				if ($table->load(array('alias' => $data['alias']))){
+					$msg = Text::_('COM_PHOCADOWNLOAD_SAVE_WARNING');
+				}
+
+				list($title, $alias) = $this->generateNewTitle(0, $data['alias'], $data['title']);
+				$data['alias'] = $alias;
+
+				if (isset($msg)) {
+					Factory::getApplication()->enqueueMessage($msg, 'warning');
+				}
+			}
+		} else if ($table->load(array('alias' => $data['alias'])) && ($table->id != $data['id'] || $data['id'] == 0)) {
+			$this->setError(Text::_('COM_PHOCADOWNLOAD_ERROR_ITEM_UNIQUE_ALIAS'));
+			return false;
+		}
 
 
 		// Initialise variables;

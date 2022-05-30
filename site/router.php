@@ -15,13 +15,8 @@ use Joomla\CMS\Component\Router\Rules\MenuRules;
 use Joomla\CMS\Component\Router\Rules\StandardRules;
 use Joomla\CMS\Component\Router\Rules\NomenuRules;
 use Joomla\CMS\Factory;
+use Joomla\Database\ParameterType;
 
-
-/**
- * Routing class of com_phocadownload
- *
- * @since  3.3
- */
 
 if (! class_exists('PhocaDownloadLoader')) {
     require_once( JPATH_ADMINISTRATOR.'/components/com_phocadownload/libraries/loader.php');
@@ -31,12 +26,7 @@ class PhocadownloadRouter extends RouterView
 {
 	protected $noIDs = false;
 
-	/**
-	 * Content Component router constructor
-	 *
-	 * @param   JApplicationCms  $app   The application object
-	 * @param   JMenu            $menu  The menu object to work with
-	 */
+
 	public function __construct($app = null, $menu = null)
 	{
 
@@ -90,14 +80,6 @@ class PhocadownloadRouter extends RouterView
 
 	}
 
-	/**
-	 * Method to get the segment(s) for a category
-	 *
-	 * @param   string  $id     ID of the category to retrieve the segments for
-	 * @param   array   $query  The request that is built right now
-	 *
-	 * @return  array|string  The segments of this item
-	 */
 	public function getCategorySegment($id, $query)
 	{
 
@@ -131,28 +113,12 @@ class PhocadownloadRouter extends RouterView
 		return array();
 	}
 
-	/**
-	 * Method to get the segment(s) for a category
-	 *
-	 * @param   string  $id     ID of the category to retrieve the segments for
-	 * @param   array   $query  The request that is built right now
-	 *
-	 * @return  array|string  The segments of this item
-	 */
 	public function getCategoriesSegment($id, $query)
 	{
 
 		return $this->getCategorySegment($id, $query);
 	}
 
-	/**
-	 * Method to get the segment(s) for an article
-	 *
-	 * @param   string  $id     ID of the article to retrieve the segments for
-	 * @param   array   $query  The request that is built right now
-	 *
-	 * @return  array|string  The segments of this item
-	 */
 	public function getFileSegment($id, $query)
 	{
 
@@ -235,11 +201,32 @@ class PhocadownloadRouter extends RouterView
 	{
 
 
+         if (!isset($query['id']) && isset($query['view']) && $query['view'] == 'categories') {
+            $query['id'] = 0;
+        }
 
+
+	    if ($this->noIDs)  {
+	        $db = Factory::getDbo();
+			$dbquery = $db->getQuery(true);
+			$dbquery->select($db->quoteName('id'))
+				->from($db->quoteName('#__phocadownload_categories'))
+				->where(
+					[
+						$db->quoteName('alias') . ' = :alias',
+						$db->quoteName('parent_id') . ' = :parent_id',
+					]
+				)
+				->bind(':alias', $segment)
+				->bind(':parent_id', $query['id'], ParameterType::INTEGER);
+			$db->setQuery($dbquery);
+
+			return (int) $db->loadResult();
+		}
+
+        $category = false;
 	    if (isset($query['id']))
 		{
-
-		    $category = false;
 		    if ((int)$query['id'] > 0) {
                 $category = PhocaDownloadCategory::getCategoryById($query['id']);
             } else if ((int)$segment > 0) {
@@ -265,41 +252,39 @@ class PhocadownloadRouter extends RouterView
                             }
                         } else {
 
-                            if ($child->id == (int)$segment) {
-
+                            // We need to check full alias because ID can be same for Category and Item
+                            $fullAlias = (int)$child->id . '-'.$child->alias;
+                            if ($fullAlias == $segment) {
                                 return $child->id;
                             }
                         }
                     }
                 }
 			}
-		}
+		} else {
+
+            // --- under test
+            // We don't have query ID because of e.g. language
+            // Should not happen because of modifications in build function here: administrator/components/com_phocacart/libraries/phocacart/path/routerrules.php
+            /*if ((int)$segment > 0) {
+		        $category = PhocaCartCategory::getCategoryById((int)$segment);
+                if (isset($category->id) && (int)$category->id > 0 && $category->parent_id == 0) {
+                    // We don't have root category with 0 so we need to start with segment one
+                    return (int)$category->id;
+                }
+            }*/
+            // under test
+        }
 
 		return false;
 	}
 
-	/**
-	 * Method to get the segment(s) for a category
-	 *
-	 * @param   string  $segment  Segment to retrieve the ID for
-	 * @param   array   $query    The request that is parsed right now
-	 *
-	 * @return  mixed   The id of this item or false
-	 */
 	public function getCategoriesId($segment, $query)
 	{
 
 		return $this->getCategoryId($segment, $query);
 	}
 
-	/**
-	 * Method to get the segment(s) for an article
-	 *
-	 * @param   string  $segment  Segment of the article to retrieve the ID for
-	 * @param   array   $query    The request that is parsed right now
-	 *
-	 * @return  mixed   The id of this item or false
-	 */
 	public function getFileId($segment, $query)
 	{
 
@@ -317,6 +302,16 @@ class PhocadownloadRouter extends RouterView
 		}
 
 		return (int) $segment;
+	}
+
+    public function parse(&$segments){
+
+		return parent::parse($segments);
+	}
+
+    public function build(&$query) {
+
+		return parent::build($query);
 	}
 }
 

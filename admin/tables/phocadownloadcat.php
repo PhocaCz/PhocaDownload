@@ -16,19 +16,19 @@ jimport('joomla.filter.input');
 
 class TablePhocaDownloadCat extends Table
 {
-	
+
 	function __construct(& $db) {
 		parent::__construct('#__phocadownload_categories', 'id', $db);
 	}
-	
+
 	function check()
 	{
-		
+
 		$app = Factory::getApplication();
 		// check for valid name
 		if (trim( $this->title ) == '') {
-			
-			
+
+
 			$app->enqueueMessage(Text::_( 'CATEGORY MUST HAVE A TITLE') , 'error');
 			return false;
 		}
