@@ -27,9 +27,9 @@
      units="px"
      inkscape:showpageshadow="2"
      inkscape:deskcolor="#d1d1d1"
-     inkscape:zoom="5.3942856"
-     inkscape:cx="75.913667"
-     inkscape:cy="432.30933"
+     inkscape:zoom="3.8143359"
+     inkscape:cx="66.590884"
+     inkscape:cy="450.93039"
      inkscape:window-width="1920"
      inkscape:window-height="1015"
      inkscape:window-x="0"
@@ -179,14 +179,14 @@
        r="25" />
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:13.3333px;line-height:1.25;font-family:sans-serif;fill:#339933;fill-opacity:1;stroke:none"
-       x="51.148453"
-       y="457.65256"
+       style="font-style:normal;font-weight:normal;font-size:10.6667px;line-height:1.25;font-family:sans-serif;fill:#339933;fill-opacity:1;stroke:none"
+       x="57.955833"
+       y="456.62378"
        id="text396"><tspan
          sodipodi:role="line"
          id="tspan394"
-         x="51.148453"
-         y="457.65256"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.3333px;font-family:Rubik;-inkscape-font-specification:Rubik;text-align:center;text-anchor:middle;fill:#339933;fill-opacity:1">Phoca Download</tspan></text>
+         x="57.955833"
+         y="456.62378"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.6667px;font-family:Rubik;-inkscape-font-specification:Rubik;text-align:center;text-anchor:middle;fill:#339933;fill-opacity:1">Phoca Download</tspan></text>
   </g>
 </svg>
