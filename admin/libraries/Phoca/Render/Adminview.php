@@ -75,19 +75,29 @@ class Adminview
 
 	public function startCp() {
 
+		// CSS based on user groups
+		$user = Factory::getUser();
+		$groupClass = '';
+		if (!empty($user->groups)) {
+			foreach ($user->groups as $k => $v) {
+				$groupClass .= ' group-'. $v;
+			}
+		}
+
+
 		$o = array();
 		if ($this->compatible) {
 
 			if ($this->sidebar) {
-
+				$o[] = '<div class="ph-group-class '.$groupClass.'">';
 			} else {
-				$o[] = '<div class="row">';
-				$o[] = '<div id="j-main-container" class="col-md-2">'. \JHtmlSidebar::render().'</div>';
+				$o[] = '<div class="row '.$groupClass.'">';
+				$o[] = '<div id="j-main-container" class="col-md-2">'. JHtmlSidebar::render().'</div>';
 				$o[] = '<div id="j-main-container" class="col-md-10">';
 			}
 
 		} else {
-			$o[] = '<div id="j-sidebar-container" class="span2">' . \JHtmlSidebar::render() . '</div>'."\n";
+			$o[] = '<div id="j-sidebar-container" class="span2">' . JHtmlSidebar::render() . '</div>'."\n";
 			$o[] = '<div id="j-main-container" class="span10">'."\n";
 		}
 
@@ -99,7 +109,7 @@ class Adminview
 		$o = array();
 		if ($this->compatible) {
 			if ($this->sidebar) {
-
+				$o[] = '</div>';// end groupClass
 			} else {
 
 				$o[] = '</div></div>';
@@ -129,7 +139,16 @@ class Adminview
 			$containerClass = '';
 		}
 
-		return '<div id="'.$view.'"><form action="'.Route::_('index.php?option='.$option . $viewP . $layout . '&id='.(int) $itemId . $tmpl).'" method="post" name="'.$name.'" id="'.$id.'" class="form-validate '.$class.'" role="form">'."\n"
+		// CSS based on user groups
+		$user = Factory::getUser();
+		$groupClass = '';
+		if (!empty($user->groups)) {
+			foreach ($user->groups as $k => $v) {
+				$groupClass .= ' group-'. $v;
+			}
+		}
+
+		return '<div id="'.$view.'" class="'.$groupClass.'"><form action="'.Route::_('index.php?option='.$option . $viewP . $layout . '&id='.(int) $itemId . $tmpl).'" method="post" name="'.$name.'" id="'.$id.'" class="form-validate '.$class.'" role="form">'."\n"
 		.'<div id="phAdminEdit" class="'.$containerClass.'"><div class="row">'."\n";
 	}
 
@@ -138,8 +157,18 @@ class Adminview
 	}
 
 	public function startFormRoute($view, $route, $id = 'adminForm', $name = 'adminForm') {
-		return '<div id="'.$view.'"><form action="'.Route::_($route).'" method="post" name="'.$name.'" id="'.$id.'" class="form-validate">'."\n"
-		.'<div id="phAdminEdit" class="row-fluid">'."\n";
+
+		// CSS based on user groups
+		$user = Factory::getUser();
+		$groupClass = '';
+		if (!empty($user->groups)) {
+			foreach ($user->groups as $k => $v) {
+				$groupClass .= ' group-'. $v;
+			}
+		}
+
+		return '<div id="'.$view.'" class="'.$groupClass.'"><form action="'.Route::_($route).'" method="post" name="'.$name.'" id="'.$id.'" class="form-validate">'."\n"
+		.'<div id="phAdminEdit" class="row">'."\n";
 	}
 
 	public function ajaxTopHtml($text = '') {
@@ -162,7 +191,7 @@ class Adminview
 		return $o;
 	}
 
-	public function groupHeader($form, $formArray , $image = '') {
+	public function groupHeader($form, $formArray , $image = '', $formArraySuffix = array(), $realSuffix = 0) {
 
 		$md 	= 6;
 		$columns = 12;
@@ -183,14 +212,27 @@ class Adminview
 
 		if (!empty($formArray)) {
 
-			foreach ($formArray as $value) {
+			foreach ($formArray as $k => $v) {
+
+
+				// Suffix below input
+				if (isset($formArraySuffix[$k]) &&  $formArraySuffix[$k] != '' && $formArraySuffix[$k] != '<small>()</small>') {
+					if ($realSuffix) {
+						$value = $form->getInput($v) .' '. $formArraySuffix[$k];
+					} else {
+						$value = $formArraySuffix[$k];
+					}
+				} else {
+					$value = $form->getInput($v);
+				}
+
 
 				$o .= '<div class="col-12 col-md-'.(int)$md.'">';
 
-				$o .= '<div class="control-group">'."\n"
-				. '<div class="control-label">'. $form->getLabel($value) . '</div>'."\n"
+				$o .= '<div class="control-group ph-par-'.$v.'">'."\n"
+				. '<div class="control-label">'. $form->getLabel($v) . '</div>'."\n"
 				. '<div class="clearfix"></div>'. "\n"
-				. '<div>' . $form->getInput($value). '</div>'."\n"
+				. '<div>' . $value. '</div>'."\n"
 				. '<div class="clearfix"></div>' . "\n"
 				. '</div>'. "\n";
 
@@ -217,25 +259,41 @@ class Adminview
 	}
 
 	public function group($form, $formArray, $clear = 0) {
+
+
 		$o = '';
 		if (!empty($formArray)) {
 			if ($clear == 1) {
 				foreach ($formArray as $value) {
+
+					$description = Text::_($form->getFieldAttribute($value, 'description'));
+					$descriptionOutput = '';
+					if ($description != '') {
+						$descriptionOutput = '<div role="tooltip">'.$description.'</div>';
+					}
+
 					$o .=
 
-					//	'<div class="control-group">'."\n"
-					 '<div class="control-label">'. $form->getLabel($value) . '</div>'."\n"
+						'<div class="control-group-clear ph-par-'.$value.'">'."\n"
+					 .'<div class="control-label">'. $form->getLabel($value) . $descriptionOutput . '</div>'."\n"
 					//. '<div class="clearfix"></div>'. "\n"
 					. '<div>' . $form->getInput($value). '</div>'."\n"
-					. '<div class="clearfix"></div>' . "\n";
-					//. '</div>'. "\n";
+					. '<div class="clearfix"></div>' . "\n"
+					. '</div>'. "\n";
 
 				}
 			} else {
 				foreach ($formArray as $value) {
 
-					$o .= '<div class="control-group">'."\n"
-					. '<div class="control-label">'. $form->getLabel($value) . '</div>'."\n"
+					$description = Text::_($form->getFieldAttribute($value, 'description'));
+					$descriptionOutput = '';
+					if ($description != '') {
+						$descriptionOutput = '<div role="tooltip">'.$description.'</div>';
+					}
+
+					//$o .= $form->renderField($value) ;
+					$o .= '<div class="control-group ph-par-'.$value.'">'."\n"
+					. '<div class="control-label">'. $form->getLabel($value)  . $descriptionOutput . '</div>'
 					. '<div class="controls">' . $form->getInput($value). '</div>'."\n"
 					. '</div>' . "\n";
 				}
@@ -256,26 +314,45 @@ class Adminview
 			$value = $form->getInput($item);
 
 		}
-		$o .= '<div class="control-group">'."\n";
-		$o .= '<div class="control-label">'. $form->getLabel($item) . '</div>'."\n"
+
+
+		$description = Text::_($form->getFieldAttribute($item, 'description'));
+		$descriptionOutput = '';
+		if ($description != '') {
+			$descriptionOutput = '<div role="tooltip">'.$description.'</div>';
+		}
+
+
+		$o .= '<div class="control-group ph-par-'.$item.'">'."\n";
+		$o .= '<div class="control-label">'. $form->getLabel($item) . $descriptionOutput . '</div>'."\n"
 		. '<div class="controls">' . $value.'</div>'."\n"
 		. '</div>' . "\n";
 		return $o;
 	}
 
-	public function itemLabel($item, $label) {
+	public function itemLabel($item, $label, $description = '', $name = '') {
+
+
+		$description = Text::_($description);
+		$descriptionOutput = '';
+		if ($description != '') {
+			$descriptionOutput = '<div role="tooltip">'.$description.'</div>';
+		}
+
 		$o = '';
-		$o .= '<div class="control-group">'."\n";
-		$o .= '<div class="control-label">'. $label . '</div>'."\n"
+		$o .= '<div class="control-group ph-par-'.$name.'">'."\n";
+		$o .= '<div class="control-label"><label>'. $label .'</label>'. $descriptionOutput . '</div>'."\n"
 		. '<div class="controls">' . $item.'</div>'."\n"
 		. '</div>' . "\n";
 		return $o;
 	}
 
-	public function itemText($item, $label, $class = '') {
+	public function itemText($item, $label, $class = '', $name = '') {
+
+
 		$o = '';
-		$o .= '<div class="control-group ph-control-group-text">'."\n";
-		$o .= '<div class="control-label">'. $label . '</div>'."\n"
+		$o .= '<div class="control-group ph-par-ph-text-'.$name.' ph-control-group-text">'."\n";
+		$o .= '<div class="control-label"><label>'. $label . '</label></div>'."\n"
 		. '<div class="controls '.$class.'">' . $item.'</div>'."\n"
 		. '</div>' . "\n";
 		return $o;
@@ -448,7 +525,7 @@ class Adminview
 					$cA = 'class="active"';
 				}
 			}
-			$o .= '<li '.$cA.'><a href="#'.$k.'" data-toggle="tab">'. $v.'</a></li>'."\n";
+			$o .= '<li '.$cA.'><a href="#'.$k.'" data-bs-toggle="tab">'. $v.'</a></li>'."\n";
 			$i++;
 		}
 		$o .= '</ul>';
@@ -486,6 +563,36 @@ class Adminview
 		} else {
 			return '</div>';
 		}
+	}
+
+	public function itemCalc($id, $name, $value, $form = 'pform', $size = 1, $class = '') {
+
+		switch ($size){
+			case 3: $class = 'form-control input-xxlarge'. ' ' . $class;
+			break;
+			case 2: $class = 'form-control input-xlarge'. ' ' . $class;
+			break;
+			case 0: $class = 'form-control input-mini'. ' ' . $class;
+			break;
+			default: $class= 'form-control input-small'. ' ' . $class;
+			break;
+		}
+		$o = '';
+		$o .= '<input type="text" name="'.$form.'['.(int)$id.']['.htmlspecialchars($name, ENT_QUOTES, 'UTF-8').']" id="'.$form.'_'.(int)$id.'_'.htmlspecialchars($name, ENT_QUOTES, 'UTF-8').'" value="'.htmlspecialchars($value, ENT_QUOTES, 'UTF-8').'" class="'.htmlspecialchars($class, ENT_QUOTES, 'UTF-8').'" />';
+
+		return $o;
+	}
+
+	public function itemCalcCheckbox($id, $name, $value, $form = 'pform' ) {
+
+		$checked = '';
+		if ($value == 1) {
+			$checked = 'checked="checked"';
+		}
+		$o = '';
+		$o .= '<input type="checkbox" name="'.$form.'['.(int)$id.']['.htmlspecialchars($name, ENT_QUOTES, 'UTF-8').']" id="'.$form.'_'.(int)$id.'_'.htmlspecialchars($name, ENT_QUOTES, 'UTF-8').'"  '.$checked.' />';
+
+		return $o;
 	}
 }
 ?>

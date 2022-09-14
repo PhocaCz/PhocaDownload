@@ -118,13 +118,13 @@ class Adminviews
                 $o[] = '<div id="j-main-container" class="col-md-12">';
             } else {
 
-                $o[] = '<div id="j-sidebar-container" class="col-md-2">' . \JHtmlSidebar::render() . '</div>';
+                $o[] = '<div id="j-sidebar-container" class="col-md-2">' . JHtmlSidebar::render() . '</div>';
                 $o[] = '<div id="j-main-container" class="col-md-10">';
             }
 
 
         } else {
-            $o[] = '<div id="j-sidebar-container" class="span2">' . \JHtmlSidebar::render() . '</div>';
+            $o[] = '<div id="j-sidebar-container" class="span2">' . JHtmlSidebar::render() . '</div>';
             $o[] = '<div id="j-main-container" class="span10">';
         }
 
@@ -158,12 +158,31 @@ class Adminviews
     }
 
     public function startForm($option, $view, $id = 'adminForm', $name = 'adminForm') {
-        return '<div id="' . $view . '"><form action="' . Route::_('index.php?option=' . $option . '&view=' . $view) . '" method="post" name="' . $name . '" id="' . $id . '">' . "\n" . '';
+
+        // CSS based on user groups
+		$user = Factory::getUser();
+		$groupClass = '';
+		if (!empty($user->groups)) {
+			foreach ($user->groups as $k => $v) {
+				$groupClass .= ' group-'. $v;
+			}
+		}
+
+        return '<div id="' . $view . '" class="'.$groupClass.'"><form action="' . Route::_('index.php?option=' . $option . '&view=' . $view) . '" method="post" name="' . $name . '" id="' . $id . '">' . "\n" . '';
     }
 
     public function startFormModal($option, $view, $id = 'adminForm', $name = 'adminForm', $function = '') {
 
-        return '<div id="' . $view . '"><form action="' . Route::_('index.php?option=' . $option . '&view=' . $view . '&layout=modal&tmpl=component&function=' . $function . '&' . Session::getFormToken() . '=1') . '" method="post" name="' . $name . '" id="' . $id . '">' . "\n" . '';
+         // CSS based on user groups
+		$user = Factory::getUser();
+		$groupClass = '';
+		if (!empty($user->groups)) {
+			foreach ($user->groups as $k => $v) {
+				$groupClass .= ' group-'. $v;
+			}
+		}
+
+        return '<div id="' . $view . '" class="'.$groupClass.'"><form action="' . Route::_('index.php?option=' . $option . '&view=' . $view . '&layout=modal&tmpl=component&function=' . $function . '&' . Session::getFormToken() . '=1') . '" method="post" name="' . $name . '" id="' . $id . '">' . "\n" . '';
     }
 
     public function endForm() {
@@ -201,8 +220,8 @@ class Adminviews
         Factory::getDocument()->addScriptDeclaration(implode("\n", $s));
     }
 
-    public function startTable($id) {
-        return '<table class="table table-striped" id="' . $id . '">' . "\n";
+    public function startTable($id, $class = '') {
+        return '<table class="table table-striped '.$class.'" id="' . $id . '">' . "\n";
     }
 
     public function endTable() {
@@ -320,11 +339,13 @@ class Adminviews
             . '<input type="hidden" name="original_order_values" value="' . implode(',', $originalOrders) . '" />' . "\n";
     }
 
-    public function td($value, $class = '') {
+    public function td($value, $class = '', $tag = 'td') {
+
+        // th for columns which cannot be hidden (Joomla feature);
         if ($class != '') {
-            return '<td class="' . $class . '">' . $value . '</td>' . "\n";
+            return '<'.$tag.' class="' . $class . '">' . $value . '</'.$tag.'>' . "\n";
         } else {
-            return '<td>' . $value . '</td>' . "\n";
+            return '<'.$tag.'>' . $value . '</'.$tag.'>' . "\n";
         }
     }
 
@@ -379,9 +400,20 @@ class Adminviews
     }
 
 
-    public function saveOrder($t, $listDirn) {
+    public function saveOrder($t, $listDirn, $catid = 0) {
+
+
 
         $saveOrderingUrl = 'index.php?option=' . $t['o'] . '&task=' . $t['tasks'] . '.saveOrderAjax&tmpl=component&' . Session::getFormToken() . '=1';
+
+        // Joomla BUG: https://github.com/joomla/joomla-cms/issues/36346 $this->t['catid']
+        // Add catid to the URL instead of sending in POST
+        // administrator/components/com_phocacart/views/phocacartitems/tmpl/default.php 37
+        if ((int)$catid > 0) {
+            $saveOrderingUrl .= '&catid='.(int)$catid;
+        }
+        // ---
+
         if ($this->compatible) {
             HTMLHelper::_('draggablelist.draggable');
         } else {
@@ -430,7 +462,7 @@ class Adminviews
         return '</tbody>' . "\n";
     }
 
-    public function startTr($i, $catid = 0, $id = 0) {
+    public function startTr($i, $catid = 0, $id = 0, $level = -1, $parentsString = '', $class = '') {
         $i2 = $i % 2;
 
         $dataItemId  = '';
@@ -446,12 +478,19 @@ class Adminviews
         }
 
         $dataParents = '';
-        if ($catid > 0) {
+        if ($parentsString != '') {
+            $dataParents = ' data-parents="'.$parentsString.'"';
+        } else if ($catid > 0) {
             $dataParents = ' data-parents="'.(int)$catid.'"';
         }
 
+        $dataLevel = '';
+        if ($level > -1) {
+            $dataLevel = ' data-parents="'.(int)$level.'"';
+        }
 
-        return '<tr class="row' . $i2 . '"'.$dataItemId.$dataItemCatid.$dataParents.' data-transitions>' . "\n";
+
+        return '<tr for="cb'.$i.'" class="'.$class.'row' . $i2  . '"'.$dataItemId.$dataItemCatid.$dataParents.$dataLevel.' data-transitions>' . "\n";
 
     }
 
@@ -468,15 +507,15 @@ class Adminviews
         return "";
     }
 
-    public function firstColumn($i, $itemId, $canChange, $saveOrder, $orderkey, $ordering, $catOrderingEnabled = true) {
+    public function firstColumn($i, $itemId, $canChange, $saveOrder, $orderkey, $ordering, $saveOrderCatSelected = true) {
         if ($this->compatible) {
-            return $this->td(HTMLHelper::_('grid.id', $i, $itemId), 'text-center');
+            return $this->td(HTMLHelper::_('grid.id', $i, $itemId), 'text-center ph-select-row');
         } else {
-            return $this->tdOrder($canChange, $saveOrder, $orderkey, $ordering, $catOrderingEnabled);
+            return $this->tdOrder($canChange, $saveOrder, $orderkey, $ordering, $saveOrderCatSelected);
         }
     }
 
-    public function secondColumn($i, $itemId, $canChange, $saveOrder, $orderkey, $ordering, $catOrderingEnabled = true) {
+    public function secondColumn($i, $itemId, $canChange, $saveOrder, $orderkey, $ordering, $saveOrderCatSelected = true, $catid = 0) {
 
         if ($this->compatible) {
 
@@ -486,16 +525,17 @@ class Adminviews
             $iconClass = '';
             if (!$canChange) {
                 $iconClass = ' inactive';
+            } else if (!$saveOrderCatSelected) {
+                $iconClass = ' inactive" title="' . Text::_($this->optionLang . '_SELECT_CATEGORY_TO_ORDER_ITEMS');
             } else if (!$saveOrder) {
                 $iconClass = ' inactive" title="' . Text::_('JORDERINGDISABLED');
-            } else if (!$catOrderingEnabled) {
-                $iconClass = ' inactive" title="' . Text::_($this->optionLang . '_SELECT_CATEGORY_TO_ORDER_ITEMS');
             }
 
             $o[] = '<span class="sortable-handler' . $iconClass . '"><span class="fas fa-ellipsis-v" aria-hidden="true"></span></span>';
 
             if ($canChange && $saveOrder) {
                 $o[] = '<input type="text" name="order[]" size="5" value="' . $ordering . '" class="width-20 text-area-order hidden">';
+
             }
 
             $o[] = '</td>';

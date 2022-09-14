@@ -44,6 +44,15 @@ class PhocaDownloadRenderAdminViews extends AdminViews
 
 	public function __construct(){
 
+        $version = new Version();
+        $is42    = $version->isCompatible('4.2.0-beta');
+
+        if ($is42) {
+            $this->document = Factory::getDocument();
+            $wa             = $this->document->getWebAssetManager();
+            $wa->useScript('table.columns')->useScript('multiselect');
+        }
+
 		parent::__construct();
 	}
 

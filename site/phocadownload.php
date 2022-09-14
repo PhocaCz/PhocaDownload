@@ -54,7 +54,7 @@ if($controller = Factory::getApplication()->input->get('controller')) {
     }
 }
 
-$classname    = 'PhocaDownloadController'.ucfirst($controller);
+$classname    = 'PhocaDownloadController'.ucfirst((string)$controller);
 $controller   = new $classname( );
 $controller->execute( Factory::getApplication()->input->get('task') );
 $controller->redirect();

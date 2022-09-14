@@ -6,12 +6,13 @@
  * @copyright Copyright (C) Jan Pavelka www.phoca.cz
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
+
 defined( '_JEXEC' ) or die();
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Toolbar\ToolbarHelper;
-use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 jimport( 'joomla.application.component.view' );
 
@@ -63,6 +64,7 @@ class PhocaDownloadCpViewPhocaDownloadFiles extends HtmlView
 			ToolbarHelper::addNew( $this->t['task'].'.addtext', $this->t['l'].'_ADD_TEXT');
 			ToolbarHelper::custom( $this->t['c'].'m.edit', 'multiple.png', '', $this->t['l'].'_MULTIPLE_ADD' , false);
 		}
+
 		if ($canDo->get('core.edit')) {
 			ToolbarHelper::editList($this->t['task'].'.edit','JTOOLBAR_EDIT');
 		}
@@ -73,17 +75,25 @@ class PhocaDownloadCpViewPhocaDownloadFiles extends HtmlView
 			//JToolbarHelper::custom( $this->t['task'].'.copy','copy.png', '', $this->t['l'].'_COPY', true);
 		}
 
+		$dropdown = $bar->dropdownButton('status-group')->text('JTOOLBAR_CHANGE_STATUS')->toggleSplit(false)->icon('icon-ellipsis-h')->buttonClass('btn btn-action')->listCheck(true);
+		$childBar = $dropdown->getChildToolbar();
+
 		if ($canDo->get('core.edit.state')) {
 
-			ToolbarHelper::divider();
-			ToolbarHelper::custom($this->t['tasks'].'.publish', 'publish.png', 'publish_f2.png','JTOOLBAR_PUBLISH', true);
-			ToolbarHelper::custom($this->t['tasks'].'.unpublish', 'unpublish.png', 'unpublish_f2.png', 'JTOOLBAR_UNPUBLISH', true);
-			ToolbarHelper::custom( $this->t['tasks'].'.approve', 'approve.png', '',  $this->t['l'].'_APPROVE' , true);
-			ToolbarHelper::custom( $this->t['tasks'].'.disapprove', 'disapprove.png', '',  $this->t['l'].'_NOT_APPROVE' , true);
+			//ToolbarHelper::divider();
+			$childBar->publish($this->t['tasks'].'.publish')->listCheck(true);
+			$childBar->unpublish($this->t['tasks'].'.unpublish')->listCheck(true);
+			$childBar->standardButton('approve')->text($this->t['l'].'_APPROVE')->task($this->t['tasks'].'.approve')->listCheck(true);
+			$childBar->standardButton('disapprove')->text($this->t['l'].'_NOT_APPROVE')->task($this->t['tasks'].'.disapprove')->listCheck(true);
+			//ToolbarHelper::custom($this->t['tasks'].'.publish', 'publish.png', 'publish_f2.png','JTOOLBAR_PUBLISH', true);
+			//ToolbarHelper::custom($this->t['tasks'].'.unpublish', 'unpublish.png', 'unpublish_f2.png', 'JTOOLBAR_UNPUBLISH', true);
+			//ToolbarHelper::custom( $this->t['tasks'].'.approve', 'approve.png', '',  $this->t['l'].'_APPROVE' , true);
+			//ToolbarHelper::custom( $this->t['tasks'].'.disapprove', 'disapprove.png', '',  $this->t['l'].'_NOT_APPROVE' , true);
 		}
 
 		if ($canDo->get('core.delete')) {
-			ToolbarHelper::deleteList( Text::_( $this->t['l'].'_WARNING_DELETE_ITEMS' ), $this->t['tasks'].'.delete', $this->t['l'].'_DELETE');
+			$childBar->delete($this->t['tasks'].'.delete')->text($this->t['l'].'_DELETE')->message( $this->t['l'].'_WARNING_DELETE_ITEMS')->icon('icon-trash')->listCheck(true);
+			//ToolbarHelper::deleteList( Text::_( $this->t['l'].'_WARNING_DELETE_ITEMS' ), $this->t['tasks'].'.delete', $this->t['l'].'_DELETE');
 		}
 
 		// Add a batch button
@@ -101,10 +111,12 @@ class PhocaDownloadCpViewPhocaDownloadFiles extends HtmlView
 			$bar->appendButton('Custom', $dhtml, 'batch');*/
 
 
-			$bar->popupButton('batch')
+			/*$bar->popupButton('batch')
 				->text('JTOOLBAR_BATCH')
 				->selector('collapseModal')
-				->listCheck(true);
+				->listCheck(true);*/
+			$childBar->popupButton('batch')->text('JTOOLBAR_BATCH')->selector('collapseModal')->listCheck(true);
+
 
 			/*HTMLHelper::_('bootstrap.renderModal', 'collapseModal');
 			$title = \JText::_('JTOOLBAR_BATCHx');

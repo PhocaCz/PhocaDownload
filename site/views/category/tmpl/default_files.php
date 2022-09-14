@@ -386,7 +386,7 @@ if (!empty($this->files)) {
 
 
 
-				/*$pdButtonDetails .= '<button type="button" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-html="true" title="<div class=\'test\'><em>Tooltip</em> <u>with</u> <b>HTML</b></div><div><em>Tooltip</em> <u>with</u> <b>HTML</b></div><div><em>Tooltip</em> <u>with</u> <b>HTML</b></div>">
+				/*$pdButtonDetails .= '<button type="button" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-html="true" title="<div class=\'te-st\'><em>Tooltip</em> <u>with</u> <b>HTML</b></div><div><em>Tooltip</em> <u>with</u> <b>HTML</b></div><div><em>Tooltip</em> <u>with</u> <b>HTML</b></div>">
   Tooltip with HTML
 </button>';*/
 

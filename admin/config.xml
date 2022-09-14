@@ -610,8 +610,8 @@
 
 
 <fieldset name="permissions" description="JCONFIG_PERMISSIONS_DESC" label="JCONFIG_PERMISSIONS_LABEL">
-	<field name="rules" type="rules" component="com_phocadownload" filter="rules" label="COM_PHOCADOWNLOAD_FIELD_JCONFIG_PERMISSIONS_LABEL" section="component" description="COM_PHOCADOWNLOAD_FIELD_JCONFIG_PERMISSIONS_DESC"/>
-</fieldset>
+            <field name="rules" type="rules" component="com_phocacart" filter="rules" validate="rules" label="COM_PHOCADOWNLOAD_FIELD_JCONFIG_PERMISSIONS_LABEL" section="component"/>
+        </fieldset>
 
 	</fields>
 </config>

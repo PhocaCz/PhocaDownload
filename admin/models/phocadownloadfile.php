@@ -153,6 +153,7 @@ class PhocaDownloadCpModelPhocaDownloadFile extends AdminModel
 		$user		= Factory::getUser();
 		$table		= $this->getTable('phocadownload');
 		$pks		= (array) $pks;
+		$app		= Factory::getApplication();
 
 		// Include the content plugins for the change of state event.
 		PluginHelper::importPlugin('content');
@@ -184,6 +185,12 @@ class PhocaDownloadCpModelPhocaDownloadFile extends AdminModel
 			throw new Exception($table->getError(), 500);
 			return false;
 		} */
+		//PluginHelper::importPlugin($this->events_map['state']);
+		$result = $app->triggerEvent($this->event_change_state, array($context, $pks, $value));
+		if (\in_array(false, $result, true)) {
+			$this->setError($table->getError());
+			return false;
+		}
 
 		return true;
 	}
@@ -423,6 +430,12 @@ class PhocaDownloadCpModelPhocaDownloadFile extends AdminModel
 			throw new Exception($table->getError(), 500);
 			return false;
 		} */
+		PluginHelper::importPlugin($this->events_map['save']);
+		$result = $app->triggerEvent($this->event_before_save, array($this->option.'.'.$this->name, $table, $isNew, $data));
+		if (\in_array(false, $result, true)) {
+			$this->setError($table->getError());
+			return false;
+		}
 
 		// Store the data.
 		if (!$table->store()) {
@@ -444,6 +457,12 @@ class PhocaDownloadCpModelPhocaDownloadFile extends AdminModel
 
 		// Trigger the onContentAfterSave event.
 		//$dispatcher->trigger($this->event_after_save, array($this->option.'.'.$this->name, $table, $isNew));
+		PluginHelper::importPlugin($this->events_map['save']);
+		$result = $app->triggerEvent($this->event_after_save, array($this->option.'.'.$this->name, $table, $isNew, $data));
+		if (\in_array(false, $result, true)) {
+			$this->setError($table->getError());
+			return false;
+		}
 
 		$pkName = $table->getKeyName();
 		if (isset($table->$pkName)) {
