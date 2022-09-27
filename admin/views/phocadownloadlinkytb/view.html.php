@@ -9,6 +9,8 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die();
+
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\MVC\View\HtmlView;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
@@ -16,6 +18,7 @@ jimport( 'joomla.application.component.view' );
 
 class phocaDownloadCpViewphocaDownloadLinkYtb extends HtmlView
 {
+
 	protected $t;
 	protected $r;
 
@@ -31,13 +34,22 @@ class phocaDownloadCpViewphocaDownloadLinkYtb extends HtmlView
 			$tUri = Uri::base();
 
 		}
-		
 
-		$eName				= Factory::getApplication()->input->get('e_name');
+		$editor    = $app->input->getCmd('editor', '');
+		if (!empty($editor)) {
+			$this->document->addScriptOptions('xtd-phocadownload', array('editor' => $editor));
+		}
+
+
+		HTMLHelper::stylesheet( 'media/com_phocadownload/css/administrator/phocadownload.css' );
+		HTMLHelper::stylesheet( 'media/plg_editors-xtd_phocadownload/css/phocadownload.css' );
+
+
+		$eName				= Factory::getApplication()->input->get('editor');
 		$this->t['ename']		= preg_replace( '#[^A-Z0-9\-\_\[\]]#i', '', $eName );
-		$this->t['backlink']	= $tUri.'index.php?option=com_phocadownload&amp;view=phocadownloadlinks&amp;tmpl=component&amp;e_name='.$this->t['ename'];
+		$this->t['backlink']	= $tUri.'index.php?option=com_phocadownload&amp;view=phocadownloadlinks&amp;tmpl=component&amp;editor='.$this->t['ename'];
 
-		//$this->assignRef('tmpl',	$this->t);
+
 		parent::display($tpl);
 	}
 }

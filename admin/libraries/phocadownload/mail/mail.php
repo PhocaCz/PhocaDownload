@@ -67,7 +67,7 @@ class PhocaDownloadMail
 		$message = $title . "\n\n"
 		. Text::_( 'COM_PHOCADOWNLOAD_WEBSITE' ) . ': '. $sitename . "\n"
 		. Text::_( 'COM_PHOCADOWNLOAD_DATE' ) . ': '. $date . "\n"
-		. 'IP: ' . $_SERVER["REMOTE_ADDR"]. "\n\n"
+		. 'IP: ' . PhocaDownloadUtils::getIp(). "\n\n"
 		. Text::_( 'COM_PHOCADOWNLOAD_MESSAGE' ) . ': '."\n"
 		. "\n\n"
 		. $messageText

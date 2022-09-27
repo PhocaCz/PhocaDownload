@@ -20,7 +20,7 @@ use Joomla\String\StringHelper;
 class PhocaDownloadCpViewPhocaDownloadLinkFile extends HtmlView
 {
 	public $_context 	= 'com_phocadownload.phocadownloadlinkfile';
-	
+
 	protected $t;
 	protected $r;
 
@@ -40,12 +40,20 @@ class PhocaDownloadCpViewPhocaDownloadLinkFile extends HtmlView
 
 		}
 
+		$editor    = $app->input->getCmd('editor', '');
+		if (!empty($editor)) {
+			$this->document->addScriptOptions('xtd-phocadownload', array('editor' => $editor));
+		}
+
+		HTMLHelper::stylesheet( 'media/com_phocadownload/css/administrator/phocadownload.css' );
+		HTMLHelper::stylesheet( 'media/plg_editors-xtd_phocadownload/css/phocadownload.css' );
+
 		//JHtml::stylesheet( 'media/com_phocadownload/css/administrator/phocadownload.css' );
 
-		$eName				= $app->input->get('e_name');
+		$eName				= $app->input->get('editor');
 		$this->t['ename']		= preg_replace( '#[^A-Z0-9\-\_\[\]]#i', '', $eName );
 		$this->t['type']		= $app->input->get( 'type', 1, '', 'int' );
-		$this->t['backlink']	= $tUri.'index.php?option=com_phocadownload&amp;view=phocadownloadlinks&amp;tmpl=component&amp;e_name='.$this->t['ename'];
+		$this->t['backlink']	= $tUri.'index.php?option=com_phocadownload&amp;view=phocadownloadlinks&amp;tmpl=component&amp;editor='.$this->t['ename'];
 
 
 		$params = ComponentHelper::getParams('com_phocadownload') ;
@@ -63,7 +71,6 @@ class PhocaDownloadCpViewPhocaDownloadLinkFile extends HtmlView
 		$filter_order		= $app->getUserStateFromRequest( $this->_context.'.filter_order',	'filter_order',		'a.ordering', 'cmd' );
 		$filter_order_Dir	= $app->getUserStateFromRequest( $this->_context.'.filter_order_Dir',	'filter_order_Dir',	'', 'word' );
 		$search				= $app->getUserStateFromRequest( $this->_context.'.search','search', '', 'string' );
-		//$search				= J String::strtolower( $search );
 		$search				= StringHelper::strtolower( $search );
 
 		// Get data from the model

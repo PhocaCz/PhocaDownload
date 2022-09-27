@@ -12,8 +12,8 @@ defined('_JEXEC') or die();
 use Joomla\CMS\MVC\View\HtmlView;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
-use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\HTML\HTMLHelper;
 jimport( 'joomla.application.component.view' );
 phocadownloadimport('phocadownload.render.renderadminviews');
 use Joomla\String\StringHelper;
@@ -22,14 +22,16 @@ class PhocaDownloadViewPhocaDownloadLinkFile extends HtmlView
 {
 	public $_context 	= 'com_phocadownload.phocadownloadlinkfile';
 	protected $t;
+	protected $r;
 
 	function display($tpl = null) {
 		$app = Factory::getApplication();
+		$this->r = new PhocaDownloadRenderAdminViews();
+		$this->t = PhocaDownloadUtils::setVars('linkfile');
+
 		$uri		= Uri::getInstance();
 		$document	= Factory::getDocument();
 		$db		    = Factory::getDBO();
-		$this->r = new PhocaDownloadRenderAdminViews();
-		$this->t = PhocaDownloadUtils::setVars('linkfile');
 
 		//Frontend Changes
 		$tUri = '';
@@ -38,12 +40,20 @@ class PhocaDownloadViewPhocaDownloadLinkFile extends HtmlView
 
 		}
 
-		HTMLHelper::stylesheet( 'media/com_phocadownload/css/administrator/phocadownload.css' );
+		$editor    = $app->input->getCmd('editor', '');
+		if (!empty($editor)) {
+			$this->document->addScriptOptions('xtd-phocadownload', array('editor' => $editor));
+		}
 
-		$eName				= $app->input->get('e_name');
+		HTMLHelper::stylesheet( 'media/com_phocadownload/css/administrator/phocadownload.css' );
+		HTMLHelper::stylesheet( 'media/plg_editors-xtd_phocadownload/css/phocadownload.css' );
+
+		//JHtml::stylesheet( 'media/com_phocadownload/css/administrator/phocadownload.css' );
+
+		$eName				= $app->input->get('editor');
 		$this->t['ename']		= preg_replace( '#[^A-Z0-9\-\_\[\]]#i', '', $eName );
 		$this->t['type']		= $app->input->get( 'type', 1, '', 'int' );
-		$this->t['backlink']	= $tUri.'index.php?option=com_phocadownload&amp;view=phocadownloadlinks&amp;tmpl=component&amp;e_name='.$this->t['ename'];
+		$this->t['backlink']	= $tUri.'index.php?option=com_phocadownload&amp;view=phocadownloadlinks&amp;tmpl=component&amp;editor='.$this->t['ename'];
 
 
 		$params = ComponentHelper::getParams('com_phocadownload') ;

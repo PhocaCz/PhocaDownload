@@ -45,7 +45,7 @@ class PhocaDownloadLog
 		$data['fileid']			= (int)$fileid;
 		$data['catid']			= 0;// Don't stored catid, bind the catid while displaying log
 		$data['userid']			= (int)$user->id;
-		$data['ip']	=			$_SERVER["REMOTE_ADDR"];
+		$data['ip']	=			PhocaDownloadUtils::getIp();
 		$data['page']			= $uri->toString();
 		$data['params']			= '';
 

@@ -20,6 +20,7 @@ class phocaDownloadViewphocaDownloadLinkCats extends HtmlView
 {
 
 	protected $t;
+	protected $r;
 
 	function display($tpl = null) {
 		$app	= Factory::getApplication();
@@ -33,13 +34,20 @@ class phocaDownloadViewphocaDownloadLinkCats extends HtmlView
 
 		}
 
+		$editor    = $app->input->getCmd('editor', '');
+		if (!empty($editor)) {
+			$this->document->addScriptOptions('xtd-phocadownload', array('editor' => $editor));
+		}
+
+		HTMLHelper::stylesheet( 'media/com_phocadownload/css/administrator/phocadownload.css' );
+		HTMLHelper::stylesheet( 'media/plg_editors-xtd_phocadownload/css/phocadownload.css' );
+
 		$document	= Factory::getDocument();
 		$uri		= Uri::getInstance();
-		HTMLHelper::stylesheet( 'media/com_phocadownload/css/administrator/phocadownload.css' );
 
-		$eName				= $app->input->get('e_name');
+		$eName				= $app->input->get('editor');
 		$this->t['ename']		= preg_replace( '#[^A-Z0-9\-\_\[\]]#i', '', $eName );
-		$this->t['backlink']	= $tUri.'index.php?option=com_phocadownload&amp;view=phocadownloadlinks&amp;tmpl=component&amp;e_name='.$this->t['ename'];
+		$this->t['backlink']	= $tUri.'index.php?option=com_phocadownload&amp;view=phocadownloadlinks&amp;tmpl=component&amp;editor='.$this->t['ename'];
 
 
 	/*	// Category Tree

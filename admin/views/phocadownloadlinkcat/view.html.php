@@ -33,19 +33,25 @@ class phocaDownloadCpViewphocaDownloadLinkCat extends HtmlView
 
 		}
 
+		$editor    = $app->input->getCmd('editor', '');
+		if (!empty($editor)) {
+			$this->document->addScriptOptions('xtd-phocadownload', array('editor' => $editor));
+		}
+
 		$document	= Factory::getDocument();
 		$uri		= Uri::getInstance();
 		HTMLHelper::stylesheet( 'media/com_phocadownload/css/administrator/phocadownload.css' );
+		HTMLHelper::stylesheet( 'media/plg_editors-xtd_phocadownload/css/phocadownload.css' );
 
-		$eName				= Factory::getApplication()->input->get('e_name');
+		$eName				= Factory::getApplication()->input->get('editor');
 		$this->t['ename']		= preg_replace( '#[^A-Z0-9\-\_\[\]]#i', '', $eName );
-		$this->t['backlink']	= $tUri.'index.php?option=com_phocadownload&amp;view=phocadownloadlinks&amp;tmpl=component&amp;e_name='.$this->t['ename'];
+		$this->t['backlink']	= $tUri.'index.php?option=com_phocadownload&amp;view=phocadownloadlinks&amp;tmpl=component&amp;editor='.$this->t['ename'];
 
 		$model 			= $this->getModel();
 
 		// build list of categories
 		//$javascript 	= 'class="form-control" size="1" onchange="submitform( );"';
-		$javascript 	= 'class="form-control" size="1"';
+		$attr 	= 'class="form-select" size="1"';
 		$filter_catid	= '';
 
 		$query = 'SELECT a.title AS text, a.id AS value, a.parent_id as parentid'
@@ -60,7 +66,7 @@ class phocaDownloadCpViewphocaDownloadLinkCat extends HtmlView
 		$text = '';
 		$tree = PhocaDownloadCategory::CategoryTreeOption($phocadownloads, $tree, 0, $text, -1);
 		array_unshift($tree, HTMLHelper::_('select.option', '0', '- '.Text::_('COM_PHOCADOWNLOAD_SELECT_CATEGORY').' -', 'value', 'text'));
-		$lists['catid'] = HTMLHelper::_( 'select.genericlist', $tree, 'catid',  $javascript , 'value', 'text', $filter_catid );
+		$lists['catid'] = HTMLHelper::_( 'select.genericlist', $tree, 'catid',  $attr , 'value', 'text', $filter_catid );
 		//-----------------------------------------------------------------------
 
 		//$this->assignRef('lists',	$lists);

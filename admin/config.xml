@@ -568,6 +568,11 @@
 	<option value="3">COM_PHOCADOWNLOAD_YES_UPLOADS_DOWNLOADS</option>
 </field>
 
+	<field name="store_ip" type="list" class="btn-group btn-group-yesno" default="0" label="COM_PHOCADOWNLOAD_FIELD_STORE_IP_ADDRESS_LABEL" description="COM_PHOCADOWNLOAD_FIELD_STORE_IP_ADDRESS_DESC">
+                <option value="0">COM_PHOCADOWNLOAD_NO</option>
+                <option value="1">COM_PHOCADOWNLOAD_YES</option>
+            </field>
+
 
 <field name="delete_existing_files" default="0" type="list" label="COM_PHOCADOWNLOAD_FIELD_DELETE_EXISTING_FILES_LABEL" description="COM_PHOCADOWNLOAD_FIELD_DELETE_EXISTING_FILES_DESC" >
 	<option value="1">COM_PHOCADOWNLOAD_YES</option>
@@ -610,7 +615,7 @@
 
 
 <fieldset name="permissions" description="JCONFIG_PERMISSIONS_DESC" label="JCONFIG_PERMISSIONS_LABEL">
-            <field name="rules" type="rules" component="com_phocacart" filter="rules" validate="rules" label="COM_PHOCADOWNLOAD_FIELD_JCONFIG_PERMISSIONS_LABEL" section="component"/>
+            <field name="rules" type="rules" component="com_phocadownload" filter="rules" validate="rules" label="COM_PHOCADOWNLOAD_FIELD_JCONFIG_PERMISSIONS_LABEL" section="component"/>
         </fieldset>
 
 	</fields>
