@@ -20,7 +20,8 @@ class PhocaDownloadModelRatingFileA extends BaseDatabaseModel
 		$row = $this->getTable('phocadownloadfilevotes');
 
 		if (!$row->bind($data)) {
-			throw new Exception($this->_db->getError());
+			//throw new Exception($this->_db->getError());
+			$this->setError($row->getError());
 			return false;
 		}
 
@@ -34,12 +35,14 @@ class PhocaDownloadModelRatingFileA extends BaseDatabaseModel
 		}
 
 		if (!$row->check()) {
-			throw new Exception($this->_db->getError());
+			//throw new Exception($this->_db->getError());
+			$this->setError($row->getError());
 			return false;
 		}
 
 		if (!$row->store()) {
-			throw new Exception($this->_db->getError());
+			//throw new Exception($this->_db->getError());
+			$this->setError($row->getError());
 			return false;
 		}
 

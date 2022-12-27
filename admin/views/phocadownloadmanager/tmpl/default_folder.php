@@ -19,7 +19,7 @@ if ($this->manager == 'filemultiple') {
 		 .'&amp;manager='.htmlspecialchars($this->manager)
 		 .$group['c']
 		 .'&amp;folder='.htmlspecialchars($this->_tmp_folder->path_with_name_relative_no)
-		 .'&amp;field='. htmlspecialchars($this->field);
+		 .'&amp;field='. htmlspecialchars((string)$this->field);
 
 	echo '<tr>'
 	.' <td>'. $checked .'</td>'

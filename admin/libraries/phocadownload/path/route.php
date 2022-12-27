@@ -31,26 +31,6 @@ class PhocaDownloadRoute
 {
 
 	public static function getCategoriesRoute() {
-		// TEST SOLUTION
-		$app 		= Factory::getApplication();
-		$menu 		= $app->getMenu();
-		$active 	= $menu->getActive();
-
-		$activeId 	= 0;
-		if (isset($active->id)){
-			$activeId    = $active->id;
-		}
-
-		$itemId 		= 0;
-		$option			= $app->input->get( 'option', '', 'string' );
-		$view			= $app->input->get( 'view', '', 'string' );
-		if ($option == 'com_phocadownload' && $view == 'category') {
-			if ((int)$activeId > 0) {
-				// 2) if there are two menu links, try to select the one active
-				$itemId = $activeId;
-			}
-		}
-
 
 		$needles = array(
 			'categories' => ''
@@ -62,44 +42,19 @@ class PhocaDownloadRoute
 			if(isset($item->query['layout'])) {
 				$link .= '&layout='.$item->query['layout'];
 			}
-
-			// 1) get standard item id if exists
-			if ((int)$itemId > 0) {
-				$link .= '&Itemid='.(int)$itemId;
-			} else if (isset($item->id)) {
+			if (isset($item->id)) {
 				$link .= '&Itemid='.(int)$item->id;;
 			}
-
-			/*if (isset($item->id)) {
-				$link .= '&Itemid='.$item->id;
-			}*/
 		}
 		return $link;
 	}
 
 	public static function getCategoryRoute($catid, $catidAlias = '') {
 
-		// TEST SOLUTION
-		$app 		= Factory::getApplication();
-		$menu 		= $app->getMenu();
-		$active 	= $menu->getActive();
-		$option		= $app->input->get( 'option', '', 'string' );
-
-		$activeId 	= 0;
-		if (isset($active->id)){
-			$activeId    = $active->id;
-		}
-		if ((int)$activeId > 0 && $option == 'com_phocadownload') {
-			$needles 	= array(
-				'category' => (int)$catid,
-				'categories' => (int)$activeId
-			);
-		} else {
-			$needles = array(
-				'category' => (int)$catid,
-				'categories' => ''
-			);
-		}
+		$needles = array(
+			'category' => (int)$catid,
+			'categories' => ''
+		);
 
 		if ($catidAlias != '') {
 			$catid = $catid . ':' . $catidAlias;
@@ -144,9 +99,9 @@ class PhocaDownloadRoute
 
 		//Create the link
 		if (isset($tag->id)) {
-			$link = 'index.php?option=com_phocadownload&view=category&id=tag&tagid='.(int)$tag->id;
+			$link = 'index.php?option=com_phocadownload&view=category&id=0:category&tagid='.(int)$tag->id;
 		} else {
-			$link = 'index.php?option=com_phocadownload&view=category&id=tag&tagid=0';
+			$link = 'index.php?option=com_phocadownload&view=category&id=0:category&tagid=0';
 		}
 
 		if($item = self::_findItem($needles)) {
@@ -164,36 +119,12 @@ class PhocaDownloadRoute
 
 	public static function getFileRoute($id, $catid = 0, $idAlias = '', $catidAlias = '', $sectionid = 0, $type = 'file', $suffix = '')
 	{
-		// TEST SOLUTION
-		$app 		= Factory::getApplication();
-		$menu 		= $app->getMenu();
-		$active 	= $menu->getActive();
-		$option		= $app->input->get( 'option', '', 'string' );
 
-		$activeId 	= 0;
-		$notCheckId	= 0;
-		if (isset($active->id)){
-			$activeId    = $active->id;
-		}
-
-		if ((int)$activeId > 0 && $option == 'com_phocadownload') {
-
-			$needles = array(
-				'file'  => (int) $id,
-				'category' => (int) $catid,
-				'categories' => (int)$activeId
-			);
-			$notCheckId	= 1;
-		} else {
-			$needles = array(
-				'file'  => (int) $id,
-				'category' => (int) $catid,
-				'categories' => ''
-			);
-			$notCheckId	= 0;
-		}
-
-
+		$needles = array(
+			'file'  => (int) $id,
+			'category' => (int) $catid,
+			'categories' => ''
+		);
 
 		if ($idAlias != '') {
 			$id = $id . ':' . $idAlias;
@@ -203,7 +134,6 @@ class PhocaDownloadRoute
 		}
 
 		//Create the link
-
 		switch ($type)
 		{
 
@@ -223,7 +153,7 @@ class PhocaDownloadRoute
 
 		}
 
-		if ($item = PhocaDownloadRoute::_findItem($needles, $notCheckId)) {
+		if ($item = self::_findItem($needles)) {
 			if (isset($item->id) && ((int)$item->id > 0)) {
 				$link .= '&Itemid='.$item->id;
 			}
@@ -243,10 +173,11 @@ class PhocaDownloadRoute
 	{
 		$needles = array(
 			'download' => '',
-			'categories' => '',
+			'file'  => (int) $id,
 			'category' => (int) $catid,
-			'file'  => (int) $id
+			'categories' => ''
 		);
+
 		if ($directDownload == 1) {
 			$link = 'index.php?option=com_phocadownload&view=download&id='. $token.'&download=1&' . Session::getFormToken() . '=1';
 		} else {
@@ -255,6 +186,12 @@ class PhocaDownloadRoute
 
 		if($item = self::_findItem($needles)) {
 			if (isset($item->id)) {
+				$link .= '&Itemid='.$item->id;
+			}
+		}
+
+		if ($item = PhocaDownloadRoute::_findItem($needles, 0)) {
+			if (isset($item->id) && ((int)$item->id > 0)) {
 				$link .= '&Itemid='.$item->id;
 			}
 		}
@@ -270,14 +207,6 @@ class PhocaDownloadRoute
 			'category' => (int) $catid,
 			'file'  => (int) $id
 		);
-
-	/*
-		if ($idAlias != '') {
-			$id = $id . ':' . $idAlias;
-		}
-		if ($catidAlias != '') {
-			$catid = $catid . ':' . $catidAlias;
-		}*/
 
 		//Create the link
 		$link = 'index.php?option=com_phocadownload&view=feed&id='.$id.'&format=feed&type='.$type;
@@ -305,9 +234,6 @@ class PhocaDownloadRoute
 		}
 		return $link;
 	}
-
-
-
 
 	/*
 	function getSectionRoute($sectionid, $sectionidAlias = '')
@@ -358,37 +284,54 @@ class PhocaDownloadRoute
 	protected static function _findItem($needles, $notCheckId = 0, $component = 'com_phocadownload')
 	{
 
-		$app	= Factory::getApplication();
-		$menus	= $app->getMenu('site', array());
-		$items	= $menus->getItems('component', $component);
+		$app		= Factory::getApplication();
+		$menus		= $app->getMenu('site', array());
+		$items		= $menus->getItems('component', $component);
+		$menu 		= $app->getMenu();
+		$active 	= $menu->getActive();
+		$option		= $app->input->get( 'option', '', 'string' );
 
-		// Don't check ID for specific views
+		// Don't check ID for specific views. e.g. categories view does not have ID
 		$notCheckIdArray =  array('categories');
 
 		if(!$items) {
-			return $app->input->get('Itemid', 0, '', 'int');
-			//return null;
+			$itemId =  $app->input->get('Itemid', 0, 'int');
+			if ($itemId > 0) {
+				$item = new stdClass();
+				$item->id = $itemId;
+				return $item;
+			}
+			return null;
 		}
 
 		$match = null;
+		// FIRST - test active menu link
+		foreach($needles as $needle => $id) {
+			if (isset($active->query['option']) && $active->query['option'] == $component
+				&& isset($active->query['view']) && $active->query['view'] == $needle
+				&& (in_array($needle, $notCheckIdArray) || (isset($active->query['id']) && $active->query['id'] == $id ))
+			) {
+				$match = $active;
+			}
+		}
 
+		if(isset($match)) {
+			return $match;
+		}
 
-		foreach($needles as $needle => $id)
-		{
+		// SECOND - if not find in active, try to run other items
+		//          ordered by function which calls this function - e.g. file, category, categories
+		//          as last the categories view should be checked, it has no ID so we skip the checking
+		//          of ID for categories view with OR: in_array($needle, $notCheckIdArray) ||
+		foreach($needles as $needle => $id) {
 
-			if ($notCheckId == 0) {
-				foreach($items as $item) {
-					if ((@$item->query['view'] == $needle) && (in_array($needle, $notCheckIdArray) || @$item->query['id'] == $id)) {
-						$match = $item;
-						break;
-					}
-				}
-			} else {
-				foreach($items as $item) {
-					if (@$item->query['view'] == $needle) {
-						$match = $item;
-						break;
-					}
+			foreach($items as $item) {
+
+				if (isset($item->query['option']) && $item->query['option'] == $component
+					&& isset($item->query['view']) && $item->query['view'] == $needle
+					&& (in_array($needle, $notCheckIdArray) || (isset($item->query['id']) && $item->query['id'] == $id ))
+				) {
+					$match = $item;
 				}
 			}
 

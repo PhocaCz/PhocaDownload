@@ -161,7 +161,7 @@ class PhocaDownloadModelFile extends BaseDatabaseModel
 			// END GWE MOD
 		}
 
-		$query = " SELECT cc.id, cc.title, cc.alias, cc.description, cc.access as cataccess, cc.accessuserid as cataccessuserid"
+		$query = " SELECT cc.id, cc.title, cc.alias, cc.description, cc.access as cataccess, cc.accessuserid as cataccessuserid, cc.parent_id as parent_id"
 				. " FROM #__phocadownload_categories AS cc"
 				. " LEFT JOIN #__phocadownload AS c ON c.catid = cc.id"
 				. ($pQ == 1 ? ((count($joins)>0?( " LEFT JOIN " .implode( " LEFT JOIN ", $joins )):"")):"") // GWE MOD

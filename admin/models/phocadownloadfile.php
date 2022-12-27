@@ -73,12 +73,31 @@ class PhocaDownloadCpModelPhocaDownloadFile extends AdminModel
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
+		$app = Factory::getApplication('administrator');
 		$data = Factory::getApplication()->getUserState('com_phocadownload.edit.phocadownload.data', array());
 
 		if (empty($data)) {
 			$data = $this->getItem();
 		}
 
+		// Try to preselect category when we add new file
+		// Take the value from filter select box in image list
+		// Or take it from GET - if someone wants to add new file and wants to have preselected category
+		if (empty($data) || (!empty($data) && (int)$data->id < 1)) {
+
+
+			$filter = (array) $app->getUserState('com_phocadownload.phocadownloadfiles.filter.category_id');
+
+			if (isset($filter[0]) && (int)$filter[0] > 0) {
+				$data->set('catid', (int)$filter[0]);
+			} else {
+				// UNDER TEST
+				$catid = $app->input->get('catid');
+				if ((int)$catid > 0) {
+					$data->set('catid', (int)$catid);
+				}
+			}
+		}
 		return $data;
 	}
 
@@ -262,6 +281,104 @@ class PhocaDownloadCpModelPhocaDownloadFile extends AdminModel
 		$overwriteExistingFiles = $paramsC->get( 'overwrite_existing_files', 0 );
 		$path		= PhocaDownloadPath::getPathSet();
 
+		if ($papCopy == 2 || $papCopy == 3) {
+			$canPlay			= PhocaDownloadFile::canPlay($data['filename']);
+			$canPreview 		= PhocaDownloadFile::canPreview($data['filename']);
+			$filepath			= Path::clean($path['orig_abs_ds'] . '/'.$data['filename']);
+			$filepathPAP 		= Path::clean($path['orig_abs_pap_ds'] . '/'.$data['filename']);
+			$filepathPAPFolder	= Path::clean($path['orig_abs_pap_ds'] . '/'. PhocaDownloadFile::getFolderFromTheFile($data['filename']));
+
+			if ($canPlay || $canPreview) {
+
+				// 1. UPLOAD - this is real upload to folder
+				// 2. STORE - this is storing info to database (e.g. download and play/preview files are identical, then there will be no copy of the file but only storing DB info
+				$uploadPAP = 1;// upload file for preview and play
+				$storePAP = 0;
+
+
+				// 1. Care about upload
+				if (File::exists($filepathPAP) && $overwriteExistingFiles == 0) {
+					//$errUploadMsg = JText::_("COM_PHOCADOWNLOAD_FILE_ALREADY_EXISTS");
+					//return false;
+					$uploadPAP = 0; // don't upload if it exists, it is not main file, don't do false and exit
+				}
+
+				// Overwrite file and add no new item to database
+				$fileExistsPAP = 0;
+				if (File::exists($filepathPAP) && $overwriteExistingFiles == 1) {
+					$fileExistsPAP = 1;
+
+					if ($canPlay == 1) {
+						// set new file only no other is set or it is the same like currect - to overwrite updated version of the same file
+						if ($data['filename_play'] == '' || $data['filename_play'] == $data['filename']) {
+							$data['filename_play']		=  $data['filename'];
+						} else {
+							$uploadPAP = 0;
+						}
+					} else if ($canPreview == 1) {
+						// set new file only no other is set or it is the same like currect - to overwrite updated version of the same file
+						if ($data['filename_preview'] == '' || $data['filename_preview'] == $data['filename']) {
+							$data['filename_preview']	=  $data['filename'];
+						} else {
+							$uploadPAP = 0;
+						}
+					}
+				}
+
+				if ($uploadPAP == 0) {
+
+				} else {
+					if (!Folder::exists($filepathPAPFolder)) {
+						if (Folder::create($filepathPAPFolder)) {
+							$dataFile = "<html>\n<body bgcolor=\"#FFFFFF\">\n</body>\n</html>";
+							File::write($filepathPAPFolder . '/' ."index.html", $dataFile);
+						}
+						// else {
+							//$errUploadMsg = JText::_("COM_PHOCADOWNLOAD_UNABLE_TO_CREATE_FOLDER");
+							//return false;
+						//}
+					}
+
+					if ($filepath === $filepathPAP) {
+						// Don't try to copy the same file to the same file (including path) because you get error
+						$storePAP = 1;
+					} else if (!File::copy($filepath, $filepathPAP)) {
+
+						//$errUploadMsg = JText::_("COM_PHOCADOWNLOAD_UNABLE_TO_UPLOAD_FILE");
+						//return false;
+					} else {
+						$storePAP = 1;
+					}
+				}
+
+				// 2. Care about store
+				if ($filepath === $filepathPAP) {
+
+					// SPECIFIC CASE - administrator set the download folder the same like preview/play folder
+					//               - in such case, there will be no copy because both files including path are identical
+					//               - but we still write the info about play/preview into database
+					//               - so no set uploadPAP to 0
+					$storePAP = 1;
+				}
+
+				if ($storePAP == 1) {
+					if ($canPlay == 1) {
+						$data['filename_play']		=  $data['filename'];
+					} else if ($canPreview == 1) {
+						$data['filename_preview']	=  $data['filename'];
+					}
+				}
+			}
+		}
+		// ==============================================
+
+	/*	// =================================================
+		// Make a copy for play and preview
+		$paramsC 	= ComponentHelper::getParams('com_phocadownload') ;
+		$papCopy 	= $paramsC->get( 'pap_copy', 0 );
+		$overwriteExistingFiles = $paramsC->get( 'overwrite_existing_files', 0 );
+		$path		= PhocaDownloadPath::getPathSet();
+
 
 		if ($papCopy == 2 || $papCopy == 3) {
 			$canPlay			= PhocaDownloadFile::canPlay($data['filename']);
@@ -348,7 +465,7 @@ class PhocaDownloadCpModelPhocaDownloadFile extends AdminModel
 			}
 		}
 		// ==============================================
-
+*/
 
 		// Bind the data.
 		if (!$table->bind($data)) {
@@ -390,7 +507,7 @@ class PhocaDownloadCpModelPhocaDownloadFile extends AdminModel
 		}
 
 		// Handle never unpublish date
-		if (trim($table->publish_down) == Text::_('Never') || trim( $table->publish_down ) == '') {
+		if (trim((string)$table->publish_down) == Text::_('Never') || trim( (string)$table->publish_down ) == '') {
 			$table->publish_down = $nullDate;
 		} else {
 			if (strlen(trim( $table->publish_down )) <= 10) {
@@ -425,11 +542,18 @@ class PhocaDownloadCpModelPhocaDownloadFile extends AdminModel
 		}
 
 		// Trigger the onContentBeforeSave event.
-		/* $result = $dispatcher->trigger($this->event_before_save, array($this->option.'.'.$this->name, $table, $isNew));
+		/*$result = $dispatcher->trigger($this->event_before_save, array($this->option.'.'.$this->name, $table, $isNew));
 		if (in_array(false, $result, true)) {
 			throw new Exception($table->getError(), 500);
 			return false;
-		} */
+		}*/
+
+		/*$result = Factory::getApplication()->triggerEvent($this->event_before_save, array($this->option.'.'.$this->name, $table, $isNew, $data));
+		if (in_array(false, $result, true)) {
+			$this->setError($table->getError());
+			return false;
+		}*/
+
 		PluginHelper::importPlugin($this->events_map['save']);
 		$result = $app->triggerEvent($this->event_before_save, array($this->option.'.'.$this->name, $table, $isNew, $data));
 		if (\in_array(false, $result, true)) {

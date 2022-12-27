@@ -22,7 +22,6 @@ use Joomla\CMS\Language\Text;
 
         var _Joomla$getOptions = Joomla.getOptions('xtd-phocadownload'), editor = _Joomla$getOptions.editor;
 
-
         var title = document.getElementById("title").value;
         if (title != '') {
             title = "|text=" + title;
@@ -80,7 +79,7 @@ use Joomla\CMS\Language\Text;
             </div>
 
             <div class="btn-box-submit">
-                    <button class="btn btn-primary plg-button-insert " onclick="insertLink();"><span class="icon-ok"></span> <?php echo Text::_('COM_PHOCADOWNLOAD_INSERT_CODE'); ?></button>
+                    <button class="btn btn-primary plg-button-insert " onclick="insertLink();return false;"><span class="icon-ok"></span> <?php echo Text::_('COM_PHOCADOWNLOAD_INSERT_CODE'); ?></button>
                 </div>
         </form>
 

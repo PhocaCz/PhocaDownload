@@ -50,7 +50,7 @@ class phocaDownloadCpViewphocaDownloadLinkCats extends HtmlView
 
 		// Category Tree
 	/*	$db = JFactory::getDBO();
-		$query = 'SELECT a.title AS text, a.id AS value, a.parent_id as parentid'
+		$query = 'SELECT a.title AS text, a.id AS value, a.parent_id as parent_id'
 		. ' FROM #__phocadownload_categories AS a'
 	//	. ' WHERE a.published = 1' You can hide not published and not authorized categories too
 	//	. ' AND a.approved = 1'

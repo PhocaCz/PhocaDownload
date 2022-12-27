@@ -26,7 +26,7 @@ abstract class PhocaDownloadBatch
 		$db		= Factory::getDbo();
 
        //build the list of categories
-		$query = 'SELECT a.title AS text, a.id AS value, a.parent_id as parentid'
+		$query = 'SELECT a.title AS text, a.id AS value, a.parent_id as parent_id'
 		. ' FROM #__phocadownload_categories AS a'
 		// TO DO. ' WHERE a.published = '.(int)$published
 		. ' ORDER BY a.ordering';

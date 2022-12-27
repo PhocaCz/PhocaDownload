@@ -231,6 +231,13 @@ class PhocaDownloadViewCategory extends HtmlView
 			$this->_prepareDocument($this->category[0]);
 		}
 
+		// Breadcrumb display:
+		// 0 - only menu link
+		// 1 - menu link - category name
+		// 2 - only category name
+
+		$this->_addBreadCrumbs( isset($menu->query['id']) ? $menu->query['id'] : 0, 1);
+
 		parent::display($tpl);
 
 		// Bootstrap 3 Layout
@@ -346,11 +353,11 @@ class PhocaDownloadViewCategory extends HtmlView
 
 		// Breadcrumbs TO DO (Add the whole tree)
 		/*$pathway 		= $app->getPathway();
-		if (isset($this->category[0]->parentid)) {
-			if ($this->category[0]->parentid == 0) {
+		if (isset($this->category[0]->parent_id)) {
+			if ($this->category[0]->parent_id == 0) {
 				// $pathway->addItem( JText::_('COM_PHOCADOWNLOAD_CATEGORIES'), JRoute::_(PhocaDownloadRoute::getCategoriesRoute()));
-			} else if ($this->category[0]->parentid > 0) {
-				$pathway->addItem($this->category[0]->parenttitle, Route::_(PhocaDownloadRoute::getCategoryRoute($this->category[0]->parentid, $this->category[0]->parentalias)));
+			} else if ($this->category[0]->parent_id > 0) {
+				$pathway->addItem($this->category[0]->parenttitle, Route::_(PhocaDownloadRoute::getCategoryRoute($this->category[0]->parent_id, $this->category[0]->parentalias)));
 			}
 		}
 
@@ -358,22 +365,22 @@ class PhocaDownloadViewCategory extends HtmlView
 			$pathway->addItem($this->category[0]->title);
 		}*/
 
-		// Breadcrumbs TO DO (Add the whole tree)
+
 
 
 		// Start comment if problem with duplicated pathway
-		if ($this->t['disable_breadcrumbs_category_view'] == 1) {
-			if (isset($this->category[0]->parentid)) {
-				if ($this->category[0]->parentid == 0) {
+		/*if ($this->t['disable_breadcrumbs_category_view'] == 1) {
+			if (isset($this->category[0]->parent_id)) {
+				if ($this->category[0]->parent_id == 0) {
 					// $pathway->addItem( JText::_('COM_PHOCADOWNLOAD_CATEGORIES'), JRoute::_(PhocaDownloadRoute::getCategoriesRoute()));
 
-				} else if ($this->category[0]->parentid > 0) {
+				} else if ($this->category[0]->parent_id > 0) {
 					$curpath = $pathway->getPathwayNames();
 
 					if(isset($this->category[0]->parenttitle) && isset($curpath[count($curpath)-1]) && $this->category[0]->parenttitle != $curpath[count($curpath)-1]){
 
 
-					 	$pathway->addItem($this->category[0]->parenttitle, Route::_(PhocaDownloadRoute::getCategoryRoute($this->category[0]->parentid, $this->category[0]->parentalias)));
+					 	$pathway->addItem($this->category[0]->parenttitle, Route::_(PhocaDownloadRoute::getCategoryRoute($this->category[0]->parent_id, $this->category[0]->parentalias)));
 					}
 				}
 			}
@@ -385,10 +392,86 @@ class PhocaDownloadViewCategory extends HtmlView
 			if(isset($this->category[0]->title) && isset($curpath[count($curpath)-1]) && $this->category[0]->title != $curpath[count($curpath)-1]){
 				$pathway->addItem($this->category[0]->title);
 			}
-		}
+		}*/
 
 
 
+	}
+
+	/**
+	 * Method to add Breadcrubms in Phoca Download
+	 * @param array $this->category Object array of Category
+	 * @param int $rootId Id of Root Category
+	 * @param int $displayStyle Displaying of Breadcrubm - Nothing, Category Name, Menu link with Name
+	 * @return string Breadcrumbs
+	 */
+	function _addBreadCrumbs($rootId, $displayStyle)
+	{
+	    $app = Factory::getApplication();
+		$i = 0;
+		$category = $this->category[0];
+
+	    while (isset($category->id))
+	    {
+
+			$crumbList[$i++] = $category;
+			if ($category->id == $rootId)
+			{
+				break;
+			}
+
+	        $db = Factory::getDBO();
+	        $query = 'SELECT *' .
+	            ' FROM #__phocadownload_categories AS c' .
+	            ' WHERE c.id = '.(int) $category->parent_id. // $category->parent_id
+	            ' AND c.published = 1';
+	        $db->setQuery($query);
+	        $rows = $db->loadObjectList('id');
+
+			if (!empty($rows))
+			{
+				$category = $rows[$category->parent_id];
+			}
+			else
+			{
+				$category = '';
+			}
+		//	$category = $rows[$category->parent_id];
+	    }
+
+	    $pathway 		= $app->getPathway();
+		$pathWayItems 	= $pathway->getPathWay();
+		$lastItemIndex 	= count($pathWayItems) - 1;
+
+
+
+	    for ($i--; $i >= 0; $i--)
+	    {
+			// special handling of the root category
+			if ($crumbList[$i]->id == $rootId)
+			{
+				switch ($displayStyle)
+				{
+					case 0:	// 0 - only menu link
+						// do nothing
+						break;
+					case 1:	// 1 - menu link with category name
+						// replace the last item in the breadcrumb (menu link title) with the current value plus the category title
+						$pathway->setItemName($lastItemIndex, $pathWayItems[$lastItemIndex]->name . ' - ' . $crumbList[$i]->title);
+						break;
+					case 2:	// 2 - only category name
+						// replace the last item in the breadcrumb (menu link title) with the category title
+						$pathway->setItemName($lastItemIndex, $crumbList[$i]->title);
+						break;
+				}
+			}
+			else
+			{
+				//$link = 'index.php?option=com_phocadownload&view=category&id='. $crumbList[$i]->id.':'.$crumbList[$i]->alias.'&Itemid='. $this->itemId;
+				$link = PhocaDownloadRoute::getCategoryRoute($crumbList[$i]->id, $crumbList[$i]->alias);
+				$pathway->addItem($crumbList[$i]->title, Route::_($link));
+			}
+	    }
 	}
 }
 ?>

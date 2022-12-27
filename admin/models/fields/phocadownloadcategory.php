@@ -25,7 +25,7 @@ class JFormFieldPhocaDownloadCategory extends FormField
 		$db = Factory::getDBO();
 
        //build the list of categories
-		$query = 'SELECT a.title AS text, a.id AS value, a.parent_id as parentid'
+		$query = 'SELECT a.title AS text, a.id AS value, a.parent_id as parent_id'
 		. ' FROM #__phocadownload_categories AS a'
 		//. ' WHERE a.published = 1' // don't lose information about category when it will be unpublished - you should still be able to edit file with such category in administration
 		. ' ORDER BY a.ordering';
@@ -40,9 +40,10 @@ class JFormFieldPhocaDownloadCategory extends FormField
 			if ((int)$id > 0) {
 				$catId = $id;
 			}
-		}
-		/*if ($view == 'phocadownloadfile') {
+		}/*
+		if ($view == 'phocadownloadfile') {
 			$id 	= $this->form->getValue('catid'); // id of current category
+
 			if ((int)$id > 0) {
 				$catId = $id;
 			}
@@ -52,7 +53,7 @@ class JFormFieldPhocaDownloadCategory extends FormField
 
 		//$required	= ((string) $this->element['required'] == 'true') ? TRUE : FALSE;
 		$attr = '';
-																									$attr .= $this->element['onchange'] ? ' onchange="'.(string) $this->element['onchange'].'"' : '';
+		$attr .= $this->element['onchange'] ? ' onchange="'.(string) $this->element['onchange'].'"' : '';
 		$attr .= $this->required ? ' required aria-required="true"' : '';
 		$attr .= ' class="form-select"';
 

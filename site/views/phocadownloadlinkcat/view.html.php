@@ -53,7 +53,7 @@ class phocaDownloadViewphocaDownloadLinkCat extends HtmlView
 		$attr 	= 'class="form-select" size="1"';
 		$filter_catid	= '';
 
-		$query = 'SELECT a.title AS text, a.id AS value, a.parent_id as parentid'
+		$query = 'SELECT a.title AS text, a.id AS value, a.parent_id as parent_id'
 		. ' FROM #__phocadownload_categories AS a'
 		. ' WHERE a.published = 1'
 		//. ' AND a.approved = 1'

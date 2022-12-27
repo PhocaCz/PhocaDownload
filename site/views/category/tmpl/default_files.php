@@ -177,6 +177,11 @@ if (!empty($this->files)) {
 				$fileExt = PhocaDownloadFile::getExtension($v->filename_preview);
 				if ($fileExt == 'pdf' || $fileExt == 'jpeg' || $fileExt == 'jpg' || $fileExt == 'png' || $fileExt == 'gif') {
 
+					$dataType = 'image';
+					if ($fileExt == 'pdf') {
+						$dataType = 'document';
+					}
+
 					$filePath	= PhocaDownloadPath::getPathSet('filepreview');
 					$filePath	= str_replace ( '../', Uri::base(true).'/', $filePath['orig_rel_ds']);
 					$previewLink = $filePath . $v->filename_preview;
@@ -191,7 +196,7 @@ if (!empty($this->files)) {
 							//$pdButtonPreview = '<a class="btn btn-warning pd-bs-modal-button" data-toggle="modal" data-target="#phModalPreview" data-href="'.$previewLink.'" '. $this->t['buttonpr']->optionsB.' >'. Text::_('COM_PHOCADOWNLOAD_PREVIEW').'</a>';
 
 
-							$pdButtonPreview = '<a class="btn btn-warning pd-bs-modal-button" data-type="preview" data-title="'. Text::_('COM_PHOCADOWNLOAD_PREVIEW').'" href="'.$previewLink.'">'. Text::_('COM_PHOCADOWNLOAD_PREVIEW').'</a>';
+							$pdButtonPreview = '<a class="btn btn-warning pd-bs-modal-button" data-type="'.$dataType.'" data-title="'. Text::_('COM_PHOCADOWNLOAD_PREVIEW').'" href="'.$previewLink.'">'. Text::_('COM_PHOCADOWNLOAD_PREVIEW').'</a>';
 
 
 						} else {
@@ -200,7 +205,7 @@ if (!empty($this->files)) {
 
 							//$pdButtonPreview = '<a class="btn btn-warning pd-bs-modal-button" data-toggle="modal" data-target="#phModalPreview" data-href="'.$previewLink.'" '. $this->t['buttonpr']->optionsimgB.' >'. Text::_('COM_PHOCADOWNLOAD_PREVIEW').'</a>';
 
-							$pdButtonPreview = '<a class="btn btn-warning pd-bs-modal-button" data-type="preview" data-title="'. Text::_('COM_PHOCADOWNLOAD_PREVIEW').'" href="'.$previewLink.'">'. Text::_('COM_PHOCADOWNLOAD_PREVIEW').'</a>';
+							$pdButtonPreview = '<a class="btn btn-warning pd-bs-modal-button" data-type="'.$dataType.'" data-title="'. Text::_('COM_PHOCADOWNLOAD_PREVIEW').'" href="'.$previewLink.'">'. Text::_('COM_PHOCADOWNLOAD_PREVIEW').'</a>';
 
 						}
 					}

@@ -364,7 +364,7 @@ class Adminviews
         $publish_down->setTimezone($tz);
 
 
-        if ($now->toUnix() <= $publish_up->toUnix()) {
+        if ($now->toUnix() <= ($publish_up->toUnix())) { // Possible $publish_up->toUnix() - 1 for lazy servers where e.g. when multiple add, pending is displayed instead of active, because it is faster then SQL date
             $text = Text::_($this->optionLang . '_PENDING');
         } else if (($now->toUnix() <= $publish_down->toUnix() || $publishDown == $nullDate)) {
             $text = Text::_($this->optionLang . '_ACTIVE');

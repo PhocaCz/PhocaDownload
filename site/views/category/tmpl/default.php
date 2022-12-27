@@ -33,13 +33,13 @@ if ((int)$this->t['tagid'] > 0) {
 		echo '<div class="pd-category">';
 		if ($this->t['display_up_icon'] == 1) {
 
-			if (isset($this->category[0]->parentid)) {
-				if ($this->category[0]->parentid == 0) {
+			if (isset($this->category[0]->parent_id)) {
+				if ($this->category[0]->parent_id == 0) {
 
 					$linkUp = Route::_(PhocaDownloadRoute::getCategoriesRoute());
 					$linkUpText = Text::_('COM_PHOCADOWNLOAD_CATEGORIES');
-				} else if ($this->category[0]->parentid > 0) {
-					$linkUp = Route::_(PhocaDownloadRoute::getCategoryRoute($this->category[0]->parentid, $this->category[0]->parentalias));
+				} else if ($this->category[0]->parent_id > 0) {
+					$linkUp = Route::_(PhocaDownloadRoute::getCategoryRoute($this->category[0]->parent_id, $this->category[0]->parentalias));
 					$linkUpText = $this->category[0]->parenttitle;
 				} else {
 					$linkUp 	= '#';

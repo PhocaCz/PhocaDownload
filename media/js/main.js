@@ -34,10 +34,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
 			let type = this.getAttribute('data-type');
 
+			//let height = this.getAttribute('data-bs-height-dialog');
+			//let width = this.getAttribute('data-bs-width-dialog');
+
+			
 
 			let modalItem = document.getElementById('pdCategoryModal')
 			let modalIframe = document.getElementById('pdCategoryModalIframe');
 			let modalTitle	= document.getElementById('pdCategoryModalLabel');
+
+			//if (height > 0) {
+			//	modalItem.style.height = height + 'px';
+			//}
+			//if (width > 0) {
+			//	modalItem.style.width = width + 'px';
+			//}
 
 			modalItem.className = '';
 			modalItem.classList.add('modal', 'fade', 'show', type);

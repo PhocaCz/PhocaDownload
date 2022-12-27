@@ -162,15 +162,40 @@ class PhocaDownloadCpModelPhocaDownloadM extends AdminModel
 						$datam['filename_preview'] 	= $o['filename_preview'];
 					}
 
+
 					// Save
 					// Bind the form fields to the Phoca download table
 					if (!$row->bind($datam)) {
-						throw new Exception($this->_db->getError());
+						//throw new Exception($this->_db->getError());
+						$this->setError($row->getError());
 						return false;
 					}
 
 					// Create the timestamp for the date
-					$row->date = gmdate('Y-m-d H:i:s');
+					//$row->date = gmdate('Y-m-d H:i:s');
+					$nullDate	= $this->_db->getNullDate();
+					$date	= Factory::getDate();
+					$row->date = $date->toSql();
+
+
+
+					if(intval($row->publish_up) == 0) {
+						$row->publish_up = $row->date;//Factory::getDate()->toSql();
+					}
+
+					// Handle never unpublish date
+					if (trim((string)$row->publish_down) == Text::_('Never') || trim( (string)$row->publish_down ) == '') {
+						$row->publish_down = $nullDate;
+					} else {
+						if (strlen(trim( $row->publish_down )) <= 10) {
+							$row->publish_down .= ' 00:00:00';
+						}
+						//$date = JFactory::getDate($row->publish_down, $tzoffset);
+						$date = Factory::getDate($row->publish_down);
+						$row->publish_down = $date->toSql();
+					}
+					// - - - - - -
+
 
 					// if new item, order last in appropriate group
 
@@ -182,13 +207,15 @@ class PhocaDownloadCpModelPhocaDownloadM extends AdminModel
 
 					// Make sure the Phoca download table is valid
 					if (!$row->check()) {
-						throw new Exception($this->_db->getError());
+						//throw new Exception($this->_db->getError());
+						$this->setError($row->getError());
 						return false;
 					}
 
 					// Store the Phoca download table to the database
 					if (!$row->store()) {
-						throw new Exception($this->_db->getError());
+						//throw new Exception($this->_db->getError());
+						$this->setError($row->getError());
 						return false;
 					}
 					$result->image_count++;
@@ -373,7 +400,8 @@ class PhocaDownloadCpModelPhocaDownloadM extends AdminModel
 					// Save
 					// Bind the form fields to the Phoca download table
 					if (!$row->bind($datam)) {
-						throw new Exception($this->_db->getError());
+						//throw new Exception($this->_db->getError());
+						$this->setError($row->getError());
 						return false;
 					}
 
@@ -388,13 +416,15 @@ class PhocaDownloadCpModelPhocaDownloadM extends AdminModel
 
 					// Make sure the Phoca download table is valid
 					if (!$row->check()) {
-						throw new Exception($this->_db->getError());
+						//throw new Exception($this->_db->getError());
+						$this->setError($row->getError());
 						return false;
 					}
 
 					// Store the Phoca download table to the database
 					if (!$row->store()) {
-						throw new Exception($this->_db->getError());
+						//throw new Exception($this->_db->getError());
+						$this->setError($row->getError());
 						return false;
 					}
 					// --------------------------------------------
@@ -431,39 +461,48 @@ class PhocaDownloadCpModelPhocaDownloadM extends AdminModel
 
 		if ($canPlay || $canPreview) {
 
+			// 1. UPLOAD - this is real upload to folder
+			// 2. STORE - this is storing info to database (e.g. download and play/preview files are identical, then there will be no copy of the file but only storing DB info
 			$uploadPAP = 1;// upload file for preview and play
+			$storePAP = 0;
+
+
+			// 1. Care about upload
 			if (File::exists($filepathPAP) && $overwriteExistingFiles == 0) {
 				//$errUploadMsg = JText::_("COM_PHOCADOWNLOAD_FILE_ALREADY_EXISTS");
 				//return false;
 				$uploadPAP = 0; // don't upload if it exists, it is not main file, don't do false and exit
-
-				if ($canPlay == 1) {
-					$o['filename_play']		=  $storedfilename;
-				} else if ($canPreview == 1) {
-					$o['filename_preview']	=  $storedfilename;
-				}
 			}
 
 			// Overwrite file and add no new item to database
-			$fileExistsPAP = 0;
-			if (File::exists($filepathPAP) && $overwriteExistingFiles == 1) {
-				$fileExistsPAP = 1;
-				if ($canPlay == 1) {
-					$o['filename_play']		=  $storedfilename;
-				} else if ($canPreview == 1) {
-					$o['filename_preview']	=  $storedfilename;
+				$fileExistsPAP = 0;
+				if (File::exists($filepathPAP) && $overwriteExistingFiles == 1) {
+					$fileExistsPAP = 1;
+
+					if ($canPlay == 1) {
+						// set new file only no other is set or it is the same like currect - to overwrite updated version of the same file
+						if ($o['filename_play'] == '' || $o['filename_play'] == $o['filename']) {
+							$o['filename_play']		=  $storedfilename;
+						} else {
+							$uploadPAP = 0;
+						}
+					} else if ($canPreview == 1) {
+						// set new file only no other is set or it is the same like currect - to overwrite updated version of the same file
+						if ($o['filename_preview'] == '' || $o['filename_preview'] == $o['filename']) {
+							$o['filename_preview']	=  $storedfilename;
+						} else {
+							$uploadPAP = 0;
+						}
+					}
 				}
-			}
 
 			if ($uploadPAP == 0) {
 
 			} else {
-
-				// First create folder if not exists
 				if (!Folder::exists($filepathPAPFolder)) {
 					if (Folder::create($filepathPAPFolder)) {
-						$data = "<html>\n<body bgcolor=\"#FFFFFF\">\n</body>\n</html>";
-						File::write($filepathPAPFolder . '/' ."index.html", $data);
+						$dataFile = "<html>\n<body bgcolor=\"#FFFFFF\">\n</body>\n</html>";
+						File::write($filepathPAPFolder . '/' ."index.html", $dataFile);
 					}
 					// else {
 						//$errUploadMsg = JText::_("COM_PHOCADOWNLOAD_UNABLE_TO_CREATE_FOLDER");
@@ -471,27 +510,37 @@ class PhocaDownloadCpModelPhocaDownloadM extends AdminModel
 					//}
 				}
 
-				if (!File::copy($filepath, $filepathPAP)) {
+				if ($filepath === $filepathPAP) {
+					// Don't try to copy the same file to the same file (including path) because you get error
+					$storePAP = 1;
+				} else if (!File::copy($filepath, $filepathPAP)) {
 
 					//$errUploadMsg = JText::_("COM_PHOCADOWNLOAD_UNABLE_TO_UPLOAD_FILE");
 					//return false;
 				} else {
-					// Saving file name into database with relative path
-					/*if (!JFile::exists($filepathUserFolderPAP . '/' ."index.html")) {
-						$data = "<html>\n<body bgcolor=\"#FFFFFF\">\n</body>\n</html>";
-						File::write($filepathUserFolderPAP . '/' ."index.html", $data);
-					}*/
+					$storePAP = 1;
+				}
+			}
 
-					if ($canPlay == 1) {
-						//$image->filename_play		=  $storedfilename;
-						$o['filename_play']		=  $storedfilename;
-					} else if ($canPreview == 1) {
-						//$image->filename_preview	=  $storedfilename;
-						$o['filename_preview']	=  $storedfilename;
-					}
+			// 2. Care about store
+			if ($filepath === $filepathPAP) {
+
+				// SPECIFIC CASE - administrator set the download folder the same like preview/play folder
+				//               - in such case, there will be no copy because both files including path are identical
+				//               - but we still write the info about play/preview into database
+				//               - so no set uploadPAP to 0
+				$storePAP = 1;
+			}
+
+			if ($storePAP == 1) {
+				if ($canPlay == 1) {
+					$o['filename_play']		=  $storedfilename;
+				} else if ($canPreview == 1) {
+					$o['filename_preview']	=  $storedfilename;
 				}
 			}
 		}
+
 		return $o;
 	}
 

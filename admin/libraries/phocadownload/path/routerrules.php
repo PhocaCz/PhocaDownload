@@ -1,12 +1,15 @@
 <?php
-
-
-
+/**
+ * @package     Joomla.Site
+ * @subpackage  com_phocadownload
+ *
+ * @copyright   Copyright (C) 2005 - 2020 Open Source Matters, Inc. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ */
 defined('_JEXEC') or die();
+
 use Joomla\CMS\Component\Router\Rules\MenuRules;
-
-
-use Joomla\Registry\Registry;
+use Joomla\CMS\Factory;
 
 class PhocaDownloadRouterrules extends MenuRules
 {
@@ -18,32 +21,46 @@ class PhocaDownloadRouterrules extends MenuRules
 		parent::buildLookup($language);
 	}
 
+    /*
+     * PHOCAEDIT
+     */
+    public function parse(&$segments, &$vars) {
+
+        // SPECIFIC CASE TAG - tag search output in category view
+        // 1. components/com_phocadownload/router.php getCategorySegment() - BUILD
+        // 2. administrator/components/com_phocadownload/libraries/phocadownload/path/routerrules.php build() - BUILD
+        // 3. administrator/components/com_phocadownload/libraries/phocadownload/path/routerrules.php parse() - PARSE
+        $app    = Factory::getApplication();
+        $tagId  = $app->input->get('tagid', 0, 'int');
+        if ($segments[0] == 'category' && (int)$tagId > 0){
+            // We are in category view but tags output
+            $vars['view'] = 'category';
+            unset($segments[0]);
+        }
+        return parent::parse($segments, $vars);
+    }
+
     /* EDIT of libraries/src/Component/Router/Rules/StandardRules.php build function
      * Because we need to manage when categories view does not have any ID
      * PHOCAEDIT
      */
-    public function build(&$query, &$segments)
-	{
-		if (!isset($query['Itemid'], $query['view']))
-		{
+    public function build(&$query, &$segments) {
+
+		if (!isset($query['Itemid'], $query['view'])) {
 			return;
 		}
 
 		// Get the menu item belonging to the Itemid that has been found
 		$item = $this->router->menu->getItem($query['Itemid']);
 
+		if ($item === null || $item->component !== 'com_' . $this->router->getName() || !isset($item->query['view'])) {
+			return;
+		}
 
         // PHOCAEDIT
         if (!isset($item->query['id']) ){
             $item->query['id'] = 0;
         }
-
-		if ($item === null
-			|| $item->component !== 'com_' . $this->router->getName()
-			|| !isset($item->query['view']))
-		{
-			return;
-		}
 
 		// Get menu item layout
 		$mLayout = isset($item->query['layout']) ? $item->query['layout'] : null;
@@ -51,29 +68,25 @@ class PhocaDownloadRouterrules extends MenuRules
 		// Get all views for this component
 		$views = $this->router->getViews();
 
+
 		// Return directly when the URL of the Itemid is identical with the URL to build
-		if ($item->query['view'] === $query['view'])
-		{
+		if ($item->query['view'] === $query['view']) {
 			$view = $views[$query['view']];
 
-			if (!$view->key)
-			{
+			if (!$view->key) {
 				unset($query['view']);
 
-				if (isset($query['layout']) && $mLayout === $query['layout'])
-				{
+				if (isset($query['layout']) && $mLayout === $query['layout']) {
 					unset($query['layout']);
 				}
 
 				return;
 			}
 
-			if (isset($query[$view->key]) && $item->query[$view->key] == (int) $query[$view->key])
-			{
+			if (isset($query[$view->key]) && $item->query[$view->key] == (int) $query[$view->key]) {
 				unset($query[$view->key]);
 
-				while ($view)
-				{
+				while ($view) {
 					unset($query[$view->parent_key]);
 
 					$view = $view->parent;
@@ -81,8 +94,7 @@ class PhocaDownloadRouterrules extends MenuRules
 
 				unset($query['view']);
 
-				if (isset($query['layout']) && $mLayout === $query['layout'])
-				{
+				if (isset($query['layout']) && $mLayout === $query['layout']) {
 					unset($query['layout']);
 				}
 
@@ -94,78 +106,65 @@ class PhocaDownloadRouterrules extends MenuRules
 		$path  = array_reverse($this->router->getPath($query), true);
 		$found = false;
 
-		foreach ($path as $element => $ids)
-		{
+		foreach ($path as $element => $ids) {
 			$view = $views[$element];
 
-			if ($found === false && $item->query['view'] === $element)
-			{
-				if ($view->nestable)
-				{
+			if ($found === false && $item->query['view'] === $element) {
+				if ($view->nestable) {
 					$found = true;
-				}
-				elseif ($view->children)
-				{
+				} elseif ($view->children) {
 					$found = true;
 
 					continue;
 				}
 			}
 
-			if ($found === false)
-			{
+			if ($found === false) {
 				// Jump to the next view
 				continue;
 			}
 
+			if ($ids) {
 
-			if ($ids)
-			{
-				if ($view->nestable)
-				{
+				if ($view->nestable) {
 					$found2 = false;
 
-					foreach (array_reverse($ids, true) as $id => $segment)
-					{
+					foreach (array_reverse($ids, true) as $id => $segment) {
 
-
-                        if ($found2)
-						{
+                        if ($found2) {
 							$segments[] = str_replace(':', '-', $segment);
-						}
-						elseif ((int) $item->query[$view->key] === (int) $id)
-						{
+
+						} elseif ((int) $item->query[$view->key] === (int) $id) {
 							$found2 = true;
+
+                            // SPECIFIC CASE TAG - tag search output in category view
+                            // 1. components/com_phocadownload/router.php getCategorySegment() - BUILD
+                            // 2. administrator/components/com_phocadownload/libraries/phocadownload/path/routerrules.php build() - BUILD
+                            // 3. administrator/components/com_phocadownload/libraries/phocadownload/path/routerrules.php parse() - PARSE
+                            if ((int)$query['id'] == 0 && $query['view'] == 'category' && isset($query['tagid']) && (int)$query['tagid'] > 0) {
+                                $segments[] = 'category';
+                            }
 						}
 					}
-				}
-				elseif ($ids === true)
-				{
+				} elseif ($ids === true) {
 					$segments[] = $element;
-				}
-				else
-				{
+				} else {
 					$segments[] = str_replace(':', '-', current($ids));
 				}
 			}
 
-			if ($view->parent_key)
-			{
+			if ($view->parent_key) {
 				// Remove parent key from query
 				unset($query[$view->parent_key]);
 			}
 		}
 
-		if ($found)
-		{
+		if ($found) {
 			unset($query[$views[$query['view']]->key], $query['view']);
 
-			if (isset($query['layout']) && $mLayout === $query['layout'])
-			{
+			if (isset($query['layout']) && $mLayout === $query['layout']) {
 				unset($query['layout']);
 			}
 		}
-
 	}
-
 }

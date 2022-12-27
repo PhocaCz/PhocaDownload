@@ -168,45 +168,45 @@ class PhocaDownloadUtils
 				break;
 
 			case 'number':
-				return preg_replace( '/[^.0-9]/', '', $string );
+				return preg_replace( '/[^.0-9]/', '', (string)$string );
 				break;
 
 			case 'number2':
        			//return preg_replace( '/[^0-9\.,+-]/', '', $string );
-       			return preg_replace( '/[^0-9\.,-]/', '', $string );
+       			return preg_replace( '/[^0-9\.,-]/', '', (string)$string );
 			break;
 
 			case 'alphanumeric':
-				return preg_replace("/[^a-zA-Z0-9]+/", '', $string);
+				return preg_replace("/[^a-zA-Z0-9]+/", '', (string)$string);
 				break;
 
 			case 'alphanumeric2':
-				return preg_replace("/[^\\w-]/", '', $string);// Alphanumeric plus _  -
+				return preg_replace("/[^\\w-]/", '', (string)$string);// Alphanumeric plus _  -
 				break;
 
 			case 'alphanumeric3':
-				return preg_replace("/[^\\w.-]/", '', $string);// Alphanumeric plus _ . -
+				return preg_replace("/[^\\w.-]/", '', (string)$string);// Alphanumeric plus _ . -
 				break;
 
 			case 'folder':
 			case 'file':
-				$string =  preg_replace('/[\"\*\/\\\:\<\>\?\'\|]+/', '', $string);
+				$string =  preg_replace('/[\"\*\/\\\:\<\>\?\'\|]+/', '', (string)$string);
 				return htmlspecialchars($string, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 				break;
 
 			case 'folderpath':
 			case 'filepath':
-				$string = preg_replace('/[\"\*\:\<\>\?\'\|]+/', '', $string);
+				$string = preg_replace('/[\"\*\:\<\>\?\'\|]+/', '', (string)$string);
 				return htmlspecialchars($string, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 				break;
 
 			case 'text':
-				return htmlspecialchars(strip_tags($string), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+				return htmlspecialchars(strip_tags((string)$string), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 				break;
 
 			case 'html':
 			default:
-				return htmlspecialchars($string, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+				return htmlspecialchars((string)$string, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 				break;
 
 		}

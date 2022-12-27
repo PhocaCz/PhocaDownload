@@ -26,7 +26,7 @@ class PhocaDownloadCategory
 		foreach ($data as $key) {
 			$show_text =  $text . $key->text;
 
-			if ($key->parentid == $id && $currentId != $id && $currentId != $key->value) {
+			if ($key->parent_id == $id && $currentId != $id && $currentId != $key->value) {
 				$tree[$key->value] 			= new CMSObject();
 				$tree[$key->value]->text 	= $show_text;
 				$tree[$key->value]->value 	= $key->value;
@@ -63,7 +63,7 @@ class PhocaDownloadCategory
 			$tree = array();
 			$text = '';
 
-			$queryAll = ' SELECT cc.id AS value, cc.title AS text, cc.parent_id as parentid'
+			$queryAll = ' SELECT cc.id AS value, cc.title AS text, cc.parent_id as parent_id'
 					.' FROM #__phocadownload_categories AS cc'
 					.' ORDER BY cc.ordering';
 			$db->setQuery($queryAll);
@@ -125,7 +125,7 @@ class PhocaDownloadCategory
 		$db = Factory::getDBO();
 
        //build the list of categories
-		$query = 'SELECT a.title AS text, a.id AS value, a.parent_id as parentid'
+		$query = 'SELECT a.title AS text, a.id AS value, a.parent_id as parent_id'
 		. ' FROM #__phocadownload_categories AS a'
 		. ' WHERE a.published = 1'
 		. ' ORDER BY a.ordering';

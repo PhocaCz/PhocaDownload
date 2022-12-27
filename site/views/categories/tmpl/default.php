@@ -116,16 +116,16 @@ if (!empty($this->t['categories'])) {
             echo '</div>'; // end card body
 
             if ($this->t['displaynumdocsecsheader'] == 1) {
-				echo '<div class="card-footer">';
+				echo '<div class="card-footer pd-categories-card">';
 					echo '<small class="text-muted float-end">';
 						if ($this->t['displaynumdocsecsheader'] == 1) {
 							$numDocAll = (int)$numDoc + (int)$value->numdoc;
 							//$numDoc ... only files in subcategories
 							//$value->numdoc ... only files in the main category
 							//$numDocAll ... files in category and in subcategories
-								echo '<span class="">'.Text::_('COM_PHOCADOWNLOAD_CATEGORIES').': '.$numSubcat.'</span>';
-								echo '&nbsp;/&nbsp;';
-								echo '<span class="">'.Text::_('COM_PHOCADOWNLOAD_FILES').': '.$numDocAll.'</span>';
+								echo '<span class="pd-categories-number">'.Text::_('COM_PHOCADOWNLOAD_CATEGORIES').': '.$numSubcat.'</span>';
+								echo '<span class="pd-sep-number">&nbsp;/&nbsp;</span>';
+								echo '<span class="pd-files-number">'.Text::_('COM_PHOCADOWNLOAD_FILES').': '.$numDocAll.'</span>';
 						}
 					echo '</small>';
 				echo '</div>';

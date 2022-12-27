@@ -180,10 +180,12 @@ if ($this->t['displaytabs'] > 0) {
 
 	echo '</ul>';*/
 
-	$activeTab = 'multipleupload';
+	$activeTab = '';
 	if (isset($this->t['tab']) && $this->t['tab'] != '') {
 	    $activeTab = $this->t['tab'];
-    }
+    } else  {
+		$activeTab = 'multipleupload';
+	}
 
 	echo $r->startTabs($activeTab);
 

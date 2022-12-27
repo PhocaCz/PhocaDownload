@@ -26,7 +26,7 @@ if ($rightDisplay == 1) {
         echo '<div style="display: flex;align-items: center;justify-content: center;"class="ph-media-iframe-box">';
 		if ($this->t['filetype'] == 'mp3') {
 			echo '<audio width="'.$this->t['playerwidth'].'" height="'.$this->t['playerheight'].'" style="margin-top: 10px;" controls>';
-			echo '<source src="'.$this->t['playfilewithpath'].'" type="video/mp4">';
+			echo '<source src="'.$this->t['playfilewithpath'].'" type="audio/mpeg">';
 			echo Text::_('COM_PHOCADOWNLOAD_BROWSER_DOES_NOT_SUPPORT_AUDIO_VIDEO_TAG');
 			echo '</audio>'. "\n";
 		} else if ($this->t['filetype'] == 'mp4') {

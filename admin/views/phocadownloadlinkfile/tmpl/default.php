@@ -266,7 +266,7 @@ JFactory::getDocument()->addScriptDeclaration($js); ?>
                 </div>
 
                 <div class="btn-box-submit">
-                    <button class="btn btn-primary plg-button-insert " onclick="insertLink();"><span class="icon-ok"></span> <?php echo Text::_('COM_PHOCADOWNLOAD_INSERT_CODE'); ?></button>
+                    <button class="btn btn-primary plg-button-insert " onclick="insertLink();return false;"><span class="icon-ok"></span> <?php echo Text::_('COM_PHOCADOWNLOAD_INSERT_CODE'); ?></button>
                 </div>
             </form>
 
@@ -331,7 +331,7 @@ JFactory::getDocument()->addScriptDeclaration($js); ?>
                     <div class="ph-warning"><?php echo Text::_('COM_PHOCADOWNLOAD_WARNING_PLAYER_SIZE') ?></div>
                 <?php } ?>
                 <div class="btn-box-submit">
-                    <button class="btn btn-primary plg-button-insert " onclick="insertLink();"><span class="icon-ok"></span> <?php echo Text::_('COM_PHOCADOWNLOAD_INSERT_CODE'); ?></button>
+                    <button class="btn btn-primary plg-button-insert " onclick="insertLink();return false;"><span class="icon-ok"></span> <?php echo Text::_('COM_PHOCADOWNLOAD_INSERT_CODE'); ?></button>
                 </div>
             </form>
 
@@ -379,7 +379,7 @@ JFactory::getDocument()->addScriptDeclaration($js); ?>
                 </div>
 
                 <div class="btn-box-submit">
-                    <button class="btn btn-primary plg-button-insert " onclick="insertLink();"><span class="icon-ok"></span> <?php echo Text::_('COM_PHOCADOWNLOAD_INSERT_CODE'); ?></button>
+                    <button class="btn btn-primary plg-button-insert " onclick="insertLink();return false;"><span class="icon-ok"></span> <?php echo Text::_('COM_PHOCADOWNLOAD_INSERT_CODE'); ?></button>
                 </div>
             </form>
 
@@ -407,7 +407,7 @@ JFactory::getDocument()->addScriptDeclaration($js); ?>
                 </div>
 
                 <div class="btn-box-submit">
-                    <button class="btn btn-primary plg-button-insert " onclick="insertLink();"><span class="icon-ok"></span> <?php echo Text::_('COM_PHOCADOWNLOAD_INSERT_CODE'); ?></button>
+                    <button class="btn btn-primary plg-button-insert " onclick="insertLink();return false;"><span class="icon-ok"></span> <?php echo Text::_('COM_PHOCADOWNLOAD_INSERT_CODE'); ?></button>
                 </div>
             </form>
 

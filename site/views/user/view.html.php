@@ -92,7 +92,7 @@ class PhocaDownloadViewUser extends HtmlView
 		$this->t['send_mail_upload'] 		= $this->t['p']->get( 'send_mail_upload', 0 );
 		$this->t['pw']						= PhocaDownloadRenderFront::renderPhocaDownload();
 		//Subcateogry
-		//$this->t['parentid']			= $app->input->get('parentcategoryid', 0, 'int');
+		//$this->t['parent_id']			= $app->input->get('parentcategoryid', 0, 'int');
 
 		//$document->addScript(JUri::base(true).'/components/com_phocadownload/assets/js/comments.js');
 		$document->addCustomTag(PhocaDownloadRenderFront::renderOnUploadJS());
@@ -262,7 +262,7 @@ class PhocaDownloadViewUser extends HtmlView
 		$whereC 		= ( count( $whereC ) ? ' WHERE '. implode( ' AND ', $whereC ) : '' );
 
 		// get list of categories for dropdown filter
-		$query = 'SELECT cc.id AS value, cc.title AS text, cc.parent_id as parentid' .
+		$query = 'SELECT cc.id AS value, cc.title AS text, cc.parent_id as parent_id' .
 				' FROM #__phocadownload_categories AS cc' .
 				$whereC.
 				' ORDER BY cc.ordering';

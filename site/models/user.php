@@ -315,6 +315,7 @@ class PhocaDownloadModelUser extends BaseDatabaseModel
 					// =================================================
 					// Make a copy for play and preview
 					$papCopy 	= $paramsC->get( 'pap_copy', 0 );
+
 					if ($papCopy == 1 || $papCopy == 3) {
 						$canPlay	= PhocaDownloadFile::canPlay($file['namepap']);
 						$canPreview = PhocaDownloadFile::canPreview($file['namepap']);
@@ -323,7 +324,13 @@ class PhocaDownloadModelUser extends BaseDatabaseModel
 
 						if ($canPlay || $canPreview) {
 
+							// 1. UPLOAD - this is real upload to folder
+							// 2. STORE - this is storing info to database (e.g. download and play/preview files are identical, then there will be no copy of the file but only storing DB info
 							$uploadPAP = 1;// upload file for preview and play
+							$storePAP = 0;
+
+
+							// 1. Care about upload
 							if (File::exists($filepathPAP) && $overwriteExistingFiles == 0) {
 								//$errUploadMsg = JText::_("COM_PHOCADOWNLOAD_FILE_ALREADY_EXISTS");
 								//return false;
@@ -350,22 +357,33 @@ class PhocaDownloadModelUser extends BaseDatabaseModel
 									//}
 								}
 
-								if (!File::copy($filepath, $filepathPAP)) {
+								if ($filepath === $filepathPAP) {
+									// Don't try to copy the same file to the same file (including path) because you get error
+									$storePAP = 1;
+								} else if (!File::copy($filepath, $filepathPAP)) {
 
 									//$errUploadMsg = JText::_("COM_PHOCADOWNLOAD_UNABLE_TO_UPLOAD_FILE");
 									//return false;
 								} else {
-									// Saving file name into database with relative path
-									if (!File::exists($filepathUserFolderPAP . '/' ."index.html")) {
-										$data = "<html>\n<body bgcolor=\"#FFFFFF\">\n</body>\n</html>";
-										File::write($filepathUserFolderPAP . '/' ."index.html", $data);
-									}
+									$storePAP = 1;
+								}
+							}
 
-									if ($canPlay == 1) {
-										$post['filename_play']		=  'userupload/'.$userFolder.'/' . $file['namepap'];
-									} else if ($canPreview == 1) {
-										$post['filename_preview']	=  'userupload/'.$userFolder.'/' . $file['namepap'];
-									}
+							// 2. Care about store
+							if ($filepath === $filepathPAP) {
+
+								// SPECIFIC CASE - administrator set the download folder the same like preview/play folder
+								//               - in such case, there will be no copy because both files including path are identical
+								//               - but we still write the info about play/preview into database
+								//               - so no set uploadPAP to 0
+								$storePAP = 1;
+							}
+
+							if ($storePAP == 1) {
+								if ($canPlay == 1) {
+									$post['filename_play']		=  'userupload/'.$userFolder.'/' . $file['namepap'];
+								} else if ($canPreview == 1) {
+									$post['filename_preview']	=  'userupload/'.$userFolder.'/' . $file['namepap'];
 								}
 							}
 						}
@@ -440,7 +458,8 @@ class PhocaDownloadModelUser extends BaseDatabaseModel
 
 		// Bind the form fields to the Phoca gallery table
 		if (!$row->bind($data)) {
-			throw new Exception($this->_db->getError());
+			//throw new Exception($this->_db->getError());
+			$this->setError($row->getError());
 			return false;
 		}
 
@@ -462,7 +481,8 @@ class PhocaDownloadModelUser extends BaseDatabaseModel
 
 		$row->date 			= $now;
 		$row->publish_up	= $now; //date('Y-m-d H:i:s', $jnowU);
-		$row->publish_down	= null;
+		//$row->publish_down	= null;
+		$row->publish_down	= '0000-00-00 00:00:00';
 		$row->filename	= $filename;
 		$row->catid		= $data['catidfiles'];
 
@@ -479,13 +499,15 @@ class PhocaDownloadModelUser extends BaseDatabaseModel
 
 		// Make sure the Phoca gallery table is valid
 		if (!$row->check()) {
-			throw new Exception($this->_db->getError());
+			//throw new Exception($this->_db->getError());
+			$this->setError($row->getError());
 			return false;
 		}
 
 		// Store the Phoca gallery table to the database
 		if (!$row->store()) {
-			throw new Exception($this->_db->getError());
+			//throw new Exception($this->_db->getError());
+			$this->setError($row->getError());
 			return false;
 		}
 
