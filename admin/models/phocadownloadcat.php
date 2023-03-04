@@ -274,6 +274,7 @@ class PhocaDownloadCpModelPhocaDownloadCat extends AdminModel
 			// - - - - - - - - - - - - - - -
 
 			// Images with new cid - - - - -
+			$err_img = array();
 			if (count( $cid )) {
 				ArrayHelper::toInteger($cid);
 				$cids = implode( ',', $cid );
@@ -293,7 +294,7 @@ class PhocaDownloadCpModelPhocaDownloadCat extends AdminModel
 					return false;
 				}
 
-				$err_img = array();
+
 				$cid 	 = array();
 				foreach ($rows as $row) {
 					if ($row->numcat == 0) {
@@ -326,18 +327,19 @@ class PhocaDownloadCpModelPhocaDownloadCat extends AdminModel
 
 			// There are some images in the category - don't delete it
 			$msg = '';
-			if (count( $err_cat ) || count( $err_img )) {
-				if (count( $err_cat )) {
+			if (!empty( $err_cat ) || !empty( $err_img )) {
+				if (!empty( $err_cat )) {
 					$cids_cat = implode( ", ", $err_cat );
 					$msg .= Text::plural( 'COM_PHOCADOWNLOAD_ERROR_DELETE_CONTAIN_CAT', $cids_cat );
 				}
 
-				if (count( $err_img )) {
+				if (!empty( $err_img )) {
 					$cids_img = implode( ", ", $err_img );
 					$msg .= Text::plural( 'COM_PHOCADOWNLOAD_ERROR_DELETE_CONTAIN_FILE', $cids_img );
 				}
 				$link = 'index.php?option=com_phocadownload&view=phocadownloadcats';
-				$app->redirect($link, $msg);
+				$app->enqueueMessage($msg, 'error');
+				$app->redirect($link);
 			}
 		}
 		return true;

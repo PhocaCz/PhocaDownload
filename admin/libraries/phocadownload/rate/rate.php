@@ -12,6 +12,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Uri\Uri;
 
@@ -238,6 +239,12 @@ class PhocaDownloadRate
 		$urlRefresh		= 'index.php?option=com_phocadownload&view=ratingfilea&task=refreshrate&small='.$small.'&format=json&'.Session::getFormToken().'=1';
 		$imgLoadingUrl = Uri::base(). 'media/com_phocadownload/images/icon-loading2.gif';
 		$imgLoadingHTML = '<img src="'.$imgLoadingUrl.'" alt="" />';
+
+
+		$url = Route::_($url, false);
+		$urlRefresh = Route::_($urlRefresh, false);
+
+
 		$js  = '<script type="text/javascript">' . "\n" . '<!--' . "\n";
 		//$js .= 'window.addEvent("domready",function() {
 		$js .= '

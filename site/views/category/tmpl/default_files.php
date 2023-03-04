@@ -377,9 +377,9 @@ if (!empty($this->files)) {
 				}
 
 				$tooltipcontent = str_replace('"', '\'', $tooltipcontent);
-				$sA = array(utf8_encode(chr(11)), utf8_encode(chr(160)));
+				//$sA = array(utf8_encode(chr(11)), utf8_encode(chr(160)));
 				$eA	= array("\t", "\n", "\r", "\0");
-				$tooltipcontent = str_replace($sA, ' ', $tooltipcontent);
+				//$tooltipcontent = str_replace($sA, ' ', $tooltipcontent);
 				$tooltipcontent = str_replace($eA, '', $tooltipcontent);
 
 				//$textO = htmlspecialchars(addslashes('<div style=\'text-align:left;padding:5px\'>'.$tooltipcontent.'</div>'));

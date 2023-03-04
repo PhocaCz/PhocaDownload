@@ -15,6 +15,7 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
+use Joomla\CMS\Menu\AbstractMenu;
 use Joomla\CMS\Session\Session;
 // Component Helper
 jimport('joomla.application.component.helper');
@@ -285,10 +286,11 @@ class PhocaDownloadRoute
 	{
 
 		$app		= Factory::getApplication();
-		$menus		= $app->getMenu('site', array());
+		//$menus		= $app->getMenu('site', array()); // Problems in indexer
+		$menus    = AbstractMenu::getInstance('site');
 		$items		= $menus->getItems('component', $component);
-		$menu 		= $app->getMenu();
-		$active 	= $menu->getActive();
+		//$menu 		= $menus;//$app->getMenu();
+		$active 	= $menus->getActive();
 		$option		= $app->input->get( 'option', '', 'string' );
 
 		// Don't check ID for specific views. e.g. categories view does not have ID

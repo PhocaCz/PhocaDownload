@@ -142,7 +142,9 @@ class PhocaDownloadCpViewPhocaDownloadCats extends HtmlView
 		// Limit the level of tree
 		if (!$maxLevel || ($maxLevel && $level < $maxLevel)) {
 			foreach ($data as $key) {
+
 				$show_text 	=  $text . $key->title;
+				//$show_text 	=    $key->title;
 
 				static $iCT = 0;// All displayed items
 
