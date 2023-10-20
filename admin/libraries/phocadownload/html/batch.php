@@ -11,11 +11,12 @@ defined('JPATH_PLATFORM') or die;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Layout\LayoutHelper;
 
 abstract class PhocaDownloadBatch
 {
 
-	public static function item($published, $category = 0)
+	/*public static function item($published, $category = 0)
 	{
 		// Create the copy/move options.
 		$options = array(
@@ -50,10 +51,85 @@ abstract class PhocaDownloadBatch
 			'<fieldset id="batch-choose-action" class="combo">',
 				'<select name="batch[category_id]" class="form-control" id="batch-category-id">',
 					'<option value=""> - '.Text::_('JSELECT').' - </option>',
-					/*JHtml::_('select.options',	JHtml::_('category.options', $extension, array('published' => (int) $published))),*/
+					/*JHtml::_('select.options',	JHtml::_('category.options', $extension, array('published' => (int) $published))),*//*
 					HTMLHelper::_('select.options',  $tree ),
 				'</select>',
 				HTMLHelper::_( 'select.radiolist', $options, 'batch[move_copy]', '', 'value', 'text', 'm'),
+			'</fieldset>'
+		);
+
+		return implode("\n", $lines);
+	}
+*/
+
+	private static function buildCategoryTree(array &$options, array $categories, string $treeTitle): void {
+		foreach ($categories as $category) {
+		  $title = ($treeTitle ? $treeTitle . ' - ' : '') . $category->title;
+		  $options[] = (object)[
+			'text' => $title . ($category->language === '*' ? '' : ' (' . $category->language . ')'),
+			'value' => $category->id,
+		  ];
+		  if ($category->children)
+			self::buildCategoryTree($options, $category->children, $title);
+		}
+	  }
+
+	public static function item($published, $category = 0)
+	{
+		// Create the copy/move options.
+		$options = array(
+			HTMLHelper::_('select.option', 'c', Text::_('JLIB_HTML_BATCH_COPY')),
+			HTMLHelper::_('select.option', 'm', Text::_('JLIB_HTML_BATCH_MOVE'))
+		);
+
+    $rootCategories = array_filter(PhocadownloadCategory::getCategories(), function($category) {
+      return !$category->parent_id;
+    });
+
+    $tree = [];
+    $tree[] = HTMLHelper::_('select.option', '', Text::_('JSELECT'), 'value', 'text');
+    if ($category) {
+      $tree[] = HTMLHelper::_('select.option', 0, Text::_('JLIB_HTML_ADD_TO_ROOT'), 'value', 'text');
+    }
+    self::buildCategoryTree($tree, $rootCategories, '');
+
+    $fancySelectData = [
+      'autocomplete'   => 'off',
+      'autofocus'      => false,
+      'class'          => '',
+      'description'    => '',
+      'disabled'       => false,
+      'group'          => false,
+      'id'             => 'batch-category-id',
+      'hidden'         => false,
+      'hint'           => '',
+      'label'          => '',
+      'labelclass'     => '',
+      'onchange'       => '',
+      'onclick'        => '',
+      'multiple'       => false,
+      'pattern'        => '',
+      'readonly'       => false,
+      'repeat'         => false,
+      'required'       => false,
+      'size'           => 4,
+      'spellcheck'     => false,
+      'validate'       => '',
+      'value'          => '',
+      'options'        => $tree,
+      'dataAttributes' => [],
+      'dataAttribute'  => '',
+      'name'           => 'batch[category_id]',
+    ];
+
+		// Create the batch selector to change select the category by which to move or copy.
+		$lines = array(
+			'<label id="batch-choose-action-lbl" for="batch-choose-action">',
+			Text::_('JLIB_HTML_BATCH_MENU_LABEL'),
+			'</label>',
+			'<fieldset id="batch-choose-action" class="combo">',
+      LayoutHelper::render('joomla.form.field.list-fancy-select', $fancySelectData),
+  		HTMLHelper::_( 'select.radiolist', $options, 'batch[move_copy]', '', 'value', 'text', 'm'),
 			'</fieldset>'
 		);
 

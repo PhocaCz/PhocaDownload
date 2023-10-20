@@ -16,6 +16,7 @@ jimport('joomla.application.component.model');
 class PhocaDownloadCategory
 {
 
+	private static $categoriesCache = null;
 	private static $categoryA = array();
 	private static $categoryF = array();
 	private static $categoryP = array();
@@ -244,6 +245,31 @@ class PhocaDownloadCategory
 			}
 		}
 		return $path;
+	}
+
+
+	private static function loadCategoriesCache(): void {
+        if (self::$categoriesCache === null) {
+            $db = Factory::getDBO();
+            $db->setQuery('SELECT a.*, null AS children FROM #__phocadownload_categories AS a ORDER BY a.ordering, a.id');
+            $categories = $db->loadObjectList('id') ?? [];
+
+            array_walk($categories, function ($category) use ($categories) {
+                if ($category->parent_id) {
+                    if ($categories[$category->parent_id]->children === null)
+                        $categories[$category->parent_id]->children = [];
+                    $categories[$category->parent_id]->children[] = $category;
+                }
+            });
+
+            self::$categoriesCache = $categories;
+        }
+    }
+
+	public static function getCategories(): array {
+		self::loadCategoriesCache();
+
+		return self::$categoriesCache;
 	}
 }
 ?>
