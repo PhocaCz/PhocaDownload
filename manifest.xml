@@ -39,6 +39,5 @@
 		<targetplatform name="joomla" version="4\.*"/>
 		<client>administrator</client>
 	</update>
-	<update>
 
 </updates>
