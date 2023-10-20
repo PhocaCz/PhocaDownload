@@ -476,7 +476,7 @@ class PhocaDownloadModelUser extends BaseDatabaseModel
 
 		$unow		= time();
 		$unow		= $unow - 2;//Frontend will display pending if standard $jnow->toSql(); will be used
-		$jnow		= JFactory::getDate($unow);// the class JDate construct works with unix date
+		$jnow		= Factory::getDate($unow);// the class JDate construct works with unix date
 		$now		= $jnow->toSql();
 
 		$row->date 			= $now;

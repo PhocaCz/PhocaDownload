@@ -91,8 +91,8 @@ class PhocaDownloadModelPlay extends BaseDatabaseModel
 		$wheres[] = " c.id = " . (int) $fileId;
 		
 		if ($this->getState('filter.language')) {
-			$wheres[] =  ' c.language IN ('.$this->_db->Quote(JFactory::getLanguage()->getTag()).','.$this->_db->Quote('*').')';
-			$wheres[] =  ' cc.language IN ('.$this->_db->Quote(JFactory::getLanguage()->getTag()).','.$this->_db->Quote('*').')';
+			$wheres[] =  ' c.language IN ('.$this->_db->Quote(Factory::getLanguage()->getTag()).','.$this->_db->Quote('*').')';
+			$wheres[] =  ' cc.language IN ('.$this->_db->Quote(Factory::getLanguage()->getTag()).','.$this->_db->Quote('*').')';
 		}
 		
 		// Active
@@ -148,8 +148,8 @@ class PhocaDownloadModelPlay extends BaseDatabaseModel
 		$wheres[] 	= " cc.published = 1";
 		
 		if ($this->getState('filter.language')) {
-			$wheres[] =  ' c.language IN ('.$this->_db->Quote(JFactory::getLanguage()->getTag()).','.$this->_db->Quote('*').')';
-			$wheres[] =  ' cc.language IN ('.$this->_db->Quote(JFactory::getLanguage()->getTag()).','.$this->_db->Quote('*').')';
+			$wheres[] =  ' c.language IN ('.$this->_db->Quote(Factory::getLanguage()->getTag()).','.$this->_db->Quote('*').')';
+			$wheres[] =  ' cc.language IN ('.$this->_db->Quote(Factory::getLanguage()->getTag()).','.$this->_db->Quote('*').')';
 		}
 
 		if ($pQ == 1) {

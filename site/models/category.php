@@ -39,7 +39,7 @@ class PhocaDownloadModelCategory extends BaseDatabaseModel
 
 		//$paramsC 			= JComponentHelper::getParams('com_phocadownload') ;
 		$paramsC = $app->getParams();
-		$defaultPagination	= $paramsC->get( 'default_pagination', '20' );
+		$defaultPagination	= (int)$paramsC->get( 'default_pagination', '20' );
 		$file_ordering		= $paramsC->get( 'file_ordering', 1 );
 
 		$context			= $this->_context.'.';
@@ -126,8 +126,8 @@ class PhocaDownloadModelCategory extends BaseDatabaseModel
 		$wheres[] = ' cc.published = 1';
 
 		if ($this->getState('filter.language')) {
-			$wheres[] =  ' c.language IN ('.$this->_db->Quote(JFactory::getLanguage()->getTag()).','.$this->_db->Quote('*').')';
-			$wheres[] =  ' cc.language IN ('.$this->_db->Quote(JFactory::getLanguage()->getTag()).','.$this->_db->Quote('*').')';
+			$wheres[] =  ' c.language IN ('.$this->_db->Quote(Factory::getLanguage()->getTag()).','.$this->_db->Quote('*').')';
+			$wheres[] =  ' cc.language IN ('.$this->_db->Quote(Factory::getLanguage()->getTag()).','.$this->_db->Quote('*').')';
 		}
 
 		// Active
@@ -208,7 +208,7 @@ class PhocaDownloadModelCategory extends BaseDatabaseModel
 		$wheres[] = " cc.published = 1";
 
 		if ($this->getState('filter.language')) {
-			$wheres[] =  ' cc.language IN ('.$this->_db->Quote(JFactory::getLanguage()->getTag()).','.$this->_db->Quote('*').')';
+			$wheres[] =  ' cc.language IN ('.$this->_db->Quote(Factory::getLanguage()->getTag()).','.$this->_db->Quote('*').')';
 		}
 
 

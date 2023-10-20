@@ -102,4 +102,19 @@ class PhocaDownloadTag
 
 		return $tagsO;
 	}
+
+    public static function getAllTags($order = 'id' ) {
+
+		$db =Factory::getDBO();
+		$query = 'SELECT a.id AS value, a.title AS text'
+				.' FROM #__phocadownload_tags AS a'
+				. ' ORDER BY '. $order;
+		$db->setQuery($query);
+
+
+
+		$tags = $db->loadObjectList();
+
+		return $tags;
+	}
 }

@@ -204,9 +204,11 @@ class PhocaDownloadRoute
 	{
 		$needles = array(
 			'categories' => '',
-			//'section'  => (int) $sectionid,
 			'category' => (int) $catid,
-			'file'  => (int) $id
+			'feed' => $id //feed
+			//'section'  => (int) $sectionid,
+			//'category' => (int) $catid /*,
+			//'file'  => (int) $id*/
 		);
 
 		//Create the link

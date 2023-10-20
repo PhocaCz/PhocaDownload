@@ -18,18 +18,24 @@ class JFormFieldPhocaTags extends FormField
 	protected $type 		= 'PhocaTags';
 
 	protected function getInput() {
-		
-		$id = (int) $this->form->getValue('id');
+
+        $id = (int) $this->form->getValue('id');
 
 		$activeTags = array();
 		if ((int)$id > 0) {
 			$activeTags	= PhocaDownloadTag::getTags($id, 1);
 		}
-		
-		
-		return PhocaDownloadTag::getAllTagsSelectBox($this->name, $this->id, $activeTags, NULL, 'a.id' );
-		
-		
+		//return PhocaGalleryTag::getAllTagsSelectBox($this->name, $this->id, $activeTags, NULL,'id' );
+
+
+		$tags 				= PhocaDownloadTag::getAllTags();
+		$data               = $this->getLayoutData();
+		$data['options']    = (array)$tags;
+		$data['value']      = $activeTags;
+
+		return $this->getRenderer($this->layout)->render($data);
+
+
 	}
 }
 ?>

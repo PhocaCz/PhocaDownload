@@ -55,7 +55,7 @@ echo '<p>&nbsp;</p>';
 
 echo '<div class="ph-cp-hr"></div>'.'<div class="btn-group">
 						 
-<a class="btn btn-large btn-primary" href="https://www.phoca.cz/version/index.php?'.$this->t['c'].'='.  $this->t['version'] .'" target="_blank"><i class="icon-loop icon-white"></i>&nbsp;&nbsp;'.  JText::_($this->t['l'].'_CHECK_FOR_UPDATE') .'</a></div>';
+<a class="btn btn-large btn-primary" href="https://www.phoca.cz/version/index.php?'.$this->t['c'].'='.  $this->t['version'] .'" target="_blank"><i class="icon-loop icon-white"></i>&nbsp;&nbsp;'.  Text::_($this->t['l'].'_CHECK_FOR_UPDATE') .'</a></div>';
 
 echo '<div style="margin-top:30px;height:39px;background: url(\''.Uri::root(true).'/media/com_'.$this->t['c'].'/images/administrator/line.png\') 100% 0 no-repeat;">&nbsp;</div>';
 

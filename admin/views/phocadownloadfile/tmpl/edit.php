@@ -9,6 +9,7 @@
  defined('_JEXEC') or die;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\SiteRouter;
 use Joomla\CMS\Uri\Uri;
 
 use Joomla\CMS\Application\CMSApplication;
@@ -20,7 +21,7 @@ if (isset($this->item->extid) && $this->item->extid != '') {
 
 $r = $this->r;
 
-JFactory::getDocument()->addScriptDeclaration(
+Factory::getDocument()->addScriptDeclaration(
 
 'Joomla.submitbutton = function(task) {
 	if (task != "'. $this->t['task'].'.cancel" && document.getElementById("jform_catid").value == "") {
@@ -77,8 +78,9 @@ if (isset($this->item->id) && isset($this->item->catid) && isset($this->item->to
 
 	phocadownloadimport('phocadownload.path.route');
 	$downloadLink = PhocaDownloadRoute::getDownloadRoute((int)$this->item->id, (int)$this->item->catid, $this->item->token, 0);
-	$app    		= CMSApplication::getInstance('site');
-	$router 		= $app->getRouter();
+	//$app    		= CMSApplication::getInstance('site');
+	//$router 		= $app->getRouter();
+	$router 		= Factory::getContainer()->get(SiteRouter::class);
 	$uri 			= $router->build($downloadLink);
     $frontendUrl 	= str_replace(Uri::root(true).'/administrator/', '',$uri->toString());
     $frontendUrl 	= str_replace(Uri::root(true), '', $frontendUrl);

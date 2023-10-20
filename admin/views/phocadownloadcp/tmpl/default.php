@@ -61,8 +61,8 @@ echo '<h3>'.  Text::_($this->t['l'] . '_TRANSLATION').': '. Text::_($this->t['l'
 
 
 echo '<div class="ph-cp-hr"></div>'
-.'<div class="btn-group"><a class="btn btn-large btn-primary" href="https://www.phoca.cz/version/index.php?'.$this->t['c'].'='.  $this->t['version'] .'" target="_blank"><i class="icon-loop icon-white"></i>&nbsp;&nbsp;'.  JText::_($this->t['l'] . '_CHECK_FOR_UPDATE') .'</a></div>'
-.'<div style="float:right; margin: 0 10px"><a href="https://www.phoca.cz/" target="_blank">'.JHtml::_('image', $this->t['i'] . 'logo.png', 'Phoca.cz' ).'</a></div>';
+.'<div class="btn-group"><a class="btn btn-large btn-primary" href="https://www.phoca.cz/version/index.php?'.$this->t['c'].'='.  $this->t['version'] .'" target="_blank"><i class="icon-loop icon-white"></i>&nbsp;&nbsp;'.  Text::_($this->t['l'] . '_CHECK_FOR_UPDATE') .'</a></div>'
+.'<div style="float:right; margin: 0 10px"><a href="https://www.phoca.cz/" target="_blank">'.HTMLHelper::_('image', $this->t['i'] . 'logo.png', 'Phoca.cz' ).'</a></div>';
 
 
 

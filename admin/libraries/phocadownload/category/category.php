@@ -26,7 +26,7 @@ class PhocaDownloadCategory
 		foreach ($data as $key) {
 			$show_text =  $text . $key->text;
 
-			if ($key->parent_id == $id && $currentId != $id && $currentId != $key->value) {
+			if (isset($key->parent_id) && $key->parent_id == $id && $currentId != $id && $currentId != $key->value) {
 				$tree[$key->value] 			= new CMSObject();
 				$tree[$key->value]->text 	= $show_text;
 				$tree[$key->value]->value 	= $key->value;

@@ -97,7 +97,7 @@ class PhocaDownloadModelCategories extends BaseDatabaseModel
 		$wheres[] = " cc.access IN (".$userLevels.")";
 
 		if ($this->getState('filter.language')) {
-			$wheres[] =  ' cc.language IN ('.$this->_db->Quote(JFactory::getLanguage()->getTag()).','.$this->_db->Quote('*').')';
+			$wheres[] =  ' cc.language IN ('.$this->_db->Quote(Factory::getLanguage()->getTag()).','.$this->_db->Quote('*').')';
 		}
 
 		$categoriesOrdering = $this->_getCategoryOrdering();
@@ -150,7 +150,7 @@ class PhocaDownloadModelCategories extends BaseDatabaseModel
 		$wheres[] = " cc.access IN (".$userLevels.")";
 
 		if ($this->getState('filter.language')) {
-			$wheres[] =  ' cc.language IN ('.$this->_db->Quote(JFactory::getLanguage()->getTag()).','.$this->_db->Quote('*').')';
+			$wheres[] =  ' cc.language IN ('.$this->_db->Quote(Factory::getLanguage()->getTag()).','.$this->_db->Quote('*').')';
 		}
 
 		$categoryOrdering = $this->_getCategoryOrdering();
@@ -217,8 +217,8 @@ class PhocaDownloadModelCategories extends BaseDatabaseModel
 
 
 		if ($this->getState('filter.language')) {
-			$wheres[] =  ' c.language IN ('.$this->_db->Quote(JFactory::getLanguage()->getTag()).','.$this->_db->Quote('*').')';
-			$wheres[] =  ' cc.language IN ('.$this->_db->Quote(JFactory::getLanguage()->getTag()).','.$this->_db->Quote('*').')';
+			$wheres[] =  ' c.language IN ('.$this->_db->Quote(Factory::getLanguage()->getTag()).','.$this->_db->Quote('*').')';
+			$wheres[] =  ' cc.language IN ('.$this->_db->Quote(Factory::getLanguage()->getTag()).','.$this->_db->Quote('*').')';
 		}
 
 		// Active

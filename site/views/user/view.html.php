@@ -7,6 +7,8 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined( '_JEXEC' ) or die();
+
+use Joomla\CMS\Client\ClientHelper;
 use Joomla\CMS\MVC\View\HtmlView;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
@@ -101,7 +103,7 @@ class PhocaDownloadViewUser extends HtmlView
 		$model 			= $this->getModel('user');
 
 		// Upload Form - - - - - - - - - - - - - - -
-		$ftp = !JClientHelper::hasCredentials('ftp');// Set FTP form
+		$ftp = !ClientHelper::hasCredentials('ftp');// Set FTP form
 		$session = Factory::getSession();
 		$this->t['session'] = $session;
 		// END Upload Form - - - - - - - - - - - - -

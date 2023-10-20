@@ -7,11 +7,11 @@
 
 
 
-<field name="categories" type="editor" height="400" buttons="true" hide="pagebreak,readmore" class="form-control" label="COM_PHOCADOWNLOAD_FIELD_CATEGORIES_LAYOUT_LABEL" filter="JComponentHelper::filterText" description="COM_PHOCADOWNLOAD_FIELD_CATEGORIES_LAYOUT_DESC" />
+<field name="categories" type="editor" height="400" buttons="true" hide="pagebreak,readmore" class="form-control" label="COM_PHOCADOWNLOAD_FIELD_CATEGORIES_LAYOUT_LABEL" filter="ComponentHelper::filterText" description="COM_PHOCADOWNLOAD_FIELD_CATEGORIES_LAYOUT_DESC" />
 
-<field name="category" type="editor" height="400" buttons="true" hide="pagebreak,readmore" class="form-control" label="COM_PHOCADOWNLOAD_FIELD_CATEGORY_LAYOUT_LABEL" filter="JComponentHelper::filterText" description="COM_PHOCADOWNLOAD_FIELD_CATEGORY_LAYOUT_DESC" />
+<field name="category" type="editor" height="400" buttons="true" hide="pagebreak,readmore" class="form-control" label="COM_PHOCADOWNLOAD_FIELD_CATEGORY_LAYOUT_LABEL" filter="ComponentHelper::filterText" description="COM_PHOCADOWNLOAD_FIELD_CATEGORY_LAYOUT_DESC" />
 
-<field name="file" type="editor" height="400" buttons="true" hide="pagebreak,readmore" class="form-control" label="COM_PHOCADOWNLOAD_FIELD_FILE_LAYOUT_LABEL" filter="JComponentHelper::filterText" description="COM_PHOCADOWNLOAD_FIELD_FILE_LAYOUT_DESC" />
+<field name="file" type="editor" height="400" buttons="true" hide="pagebreak,readmore" class="form-control" label="COM_PHOCADOWNLOAD_FIELD_FILE_LAYOUT_LABEL" filter="ComponentHelper::filterText" description="COM_PHOCADOWNLOAD_FIELD_FILE_LAYOUT_DESC" />
 
 	</fieldset>
 

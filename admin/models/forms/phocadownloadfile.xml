@@ -14,7 +14,7 @@
 
 <field name="project_name" type="text" class="form-control" size="128" label="COM_PHOCADOWNLOAD_FIELD_PROJECT_NAME_LABEL" description="COM_PHOCADOWNLOAD_FIELD_PROJECT_NAME_DESC" />
 
-<field name="catid" type="phocadownloadcategory" label="COM_PHOCADOWNLOAD_FIELD_CATEGORY_LABEL" description="COM_PHOCADOWNLOAD_FIELD_CATEGORY_DESC" class="form-control" required="true" />
+<field name="catid" type="phocadownloadcategory" onchange="changeCatid()" label="COM_PHOCADOWNLOAD_FIELD_CATEGORY_LABEL" description="COM_PHOCADOWNLOAD_FIELD_CATEGORY_DESC"  required="true" />
 
 <field name="ordering" type="PhocaDownloadOrdering" table="file" class="form-select" label="COM_PHOCADOWNLOAD_FIELD_ORDERING_LABEL" description="COM_PHOCADOWNLOAD_FIELD_ORDERING_DESC" />
 
@@ -83,10 +83,10 @@
 
 
 
-<field name="description" type="editor" buttons="true"  label="COM_PHOCADOWNLOAD_FIELD_DESCRIPTION_LABEL" filter="JComponentHelper::filterText" description="COM_PHOCADOWNLOAD_FIELD_DESCRIPTION_DESC" />
-<field name="features" type="editor" buttons="true"  label="COM_PHOCADOWNLOAD_FIELD_FEATURES_LABEL" filter="JComponentHelper::filterText" description="COM_PHOCADOWNLOAD_FIELD_FEATURES_DESC" />
-<field name="changelog" type="editor" buttons="true"  label="COM_PHOCADOWNLOAD_FIELD_CHANGELOG_LABEL" filter="JComponentHelper::filterText" description="COM_PHOCADOWNLOAD_FIELD_CHANGELOG_DESC" />
-<field name="notes" type="editor" buttons="true"  label="COM_PHOCADOWNLOAD_FIELD_NOTES_LABEL" filter="JComponentHelper::filterText" description="COM_PHOCADOWNLOAD_FIELD_NOTES_DESC" />
+<field name="description" type="editor" buttons="true"  label="COM_PHOCADOWNLOAD_FIELD_DESCRIPTION_LABEL" filter="ComponentHelper::filterText" description="COM_PHOCADOWNLOAD_FIELD_DESCRIPTION_DESC" />
+<field name="features" type="editor" buttons="true"  label="COM_PHOCADOWNLOAD_FIELD_FEATURES_LABEL" filter="ComponentHelper::filterText" description="COM_PHOCADOWNLOAD_FIELD_FEATURES_DESC" />
+<field name="changelog" type="editor" buttons="true"  label="COM_PHOCADOWNLOAD_FIELD_CHANGELOG_LABEL" filter="ComponentHelper::filterText" description="COM_PHOCADOWNLOAD_FIELD_CHANGELOG_DESC" />
+<field name="notes" type="editor" buttons="true"  label="COM_PHOCADOWNLOAD_FIELD_NOTES_LABEL" filter="ComponentHelper::filterText" description="COM_PHOCADOWNLOAD_FIELD_NOTES_DESC" />
 
 <field name="metakey" type="textarea"
 			label="JField_Meta_Keywords_Label" description="JField_Meta_Keywords_Desc"
@@ -117,14 +117,14 @@
 	<option value="*">JALL</option>
 </field>
 
-<field name="date" type="Calendar" class="form-control" label="COM_PHOCADOWNLOAD_FIELD_DATE_LABEL" description="COM_PHOCADOWNLOAD_FIELD_DATE_DESC" format="%Y-%m-%d %H:%M:%S" size="20" filter="user_utc" />
+<field name="date" type="Calendar" class="form-control" label="COM_PHOCADOWNLOAD_FIELD_DATE_LABEL" description="COM_PHOCADOWNLOAD_FIELD_DATE_DESC" showtime="true" format="%Y-%m-%d %H:%M:%S" translateformat="true" />
 
-<field name="publish_up" type="Calendar" class="form-control" label="COM_PHOCADOWNLOAD_FIELD_START_PUBLISHING_LABEL" description="COM_PHOCADOWNLOAD_FIELD_START_PUBLISHING_DESC" format="%Y-%m-%d %H:%M:%S" size="20" filter="user_utc" />
-<field name="publish_down" type="Calendar" class="form-control" label="COM_PHOCADOWNLOAD_FIELD_FINISH_PUBLISHING_LABEL" description="COM_PHOCADOWNLOAD_FIELD_FINISH_PUBLISHING_DESC" format="%Y-%m-%d %H:%M:%S" size="20" filter="user_utc" />
+<field name="publish_up" type="Calendar" class="form-control" label="COM_PHOCADOWNLOAD_FIELD_START_PUBLISHING_LABEL" description="COM_PHOCADOWNLOAD_FIELD_START_PUBLISHING_DESC" showtime="true" format="%Y-%m-%d %H:%M:%S" translateformat="true" />
+<field name="publish_down" type="Calendar" class="form-control" label="COM_PHOCADOWNLOAD_FIELD_FINISH_PUBLISHING_LABEL" description="COM_PHOCADOWNLOAD_FIELD_FINISH_PUBLISHING_DESC" showtime="true" format="%Y-%m-%d %H:%M:%S" translateformat="true" />
 
 <field name="hits" type="Text" class="form-control" size="6" label="COM_PHOCADOWNLOAD_FIELD_DOWNLOADS_LABEL" description="COM_PHOCADOWNLOAD_FIELD_DOWNLOADS_DESC" />
 
-<field name="tags" type="phocatags" multiple="1" label="COM_PHOCADOWNLOAD_FIELD_TAGS_LABEL" description="COM_PHOCADOWNLOAD_FIELD_TAGS_DESC" class="form-control" size="1" />
+<field name="tags" type="phocatags" multiple="1" label="COM_PHOCADOWNLOAD_FIELD_TAGS_LABEL" description="COM_PHOCADOWNLOAD_FIELD_TAGS_DESC"  layout="joomla.form.field.list-fancy-select" size="1" />
 
 <field name="tags_string" type="text" label="COM_PHOCADOWNLOAD_FIELD_TAGS_STRING_LABEL" description="COM_PHOCADOWNLOAD_FIELD_TAGS_STRING_DESC" class="form-control" size="1" />
 

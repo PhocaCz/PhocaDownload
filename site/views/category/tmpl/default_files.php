@@ -232,6 +232,7 @@ if (!empty($this->files)) {
 			$pdImage = '';
 			if ($v->image_download != '') {
 				$pdImage .= '<div class="pd-image pd-colfull">'.$l->getImageDownload($v->image_download).'</div>';
+
 				$d .= $pdImage;
 			}
 

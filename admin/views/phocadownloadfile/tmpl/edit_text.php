@@ -22,7 +22,7 @@ if (isset($this->item->extid) && $this->item->extid != '') {
 $r = $this->r;
 
 
-JFactory::getDocument()->addScriptDeclaration(
+Factory::getDocument()->addScriptDeclaration(
 
 'Joomla.submitbutton = function(task) {
 	if (task != "'. $this->t['task'].'.cancel" && document.getElementById("jform_catid").value == "") {

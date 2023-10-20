@@ -37,6 +37,22 @@ class PhocaDownloadRouterrules extends MenuRules
             $vars['view'] = 'category';
             unset($segments[0]);
         }
+
+        // SPECIFIC CASE FEED (we prevent the word "feed" in URL)
+        $format  = $app->input->get('format', '', 'string');
+        if ($format == 'feed') {
+            if ($segments[0] == 'feed'){
+
+               $vars['view'] = 'feed';
+               if (isset($segments[1]) && (int)($segments[1] > 0)) {
+                   $vars['id'] = (int)$segments[1];
+                    unset($segments[1]);
+               }
+               unset($segments[0]);
+            }
+        }
+
+
         return parent::parse($segments, $vars);
     }
 
@@ -45,6 +61,8 @@ class PhocaDownloadRouterrules extends MenuRules
      * PHOCAEDIT
      */
     public function build(&$query, &$segments) {
+
+
 
 		if (!isset($query['Itemid'], $query['view'])) {
 			return;
@@ -74,7 +92,7 @@ class PhocaDownloadRouterrules extends MenuRules
 			$view = $views[$query['view']];
 
 			if (!$view->key) {
-				unset($query['view']);
+				///unset($query['view']);
 
 				if (isset($query['layout']) && $mLayout === $query['layout']) {
 					unset($query['layout']);
@@ -84,15 +102,17 @@ class PhocaDownloadRouterrules extends MenuRules
 			}
 
 			if (isset($query[$view->key]) && $item->query[$view->key] == (int) $query[$view->key]) {
-				unset($query[$view->key]);
+				///unset($query[$view->key]);
 
 				while ($view) {
-					unset($query[$view->parent_key]);
+					///unset($query[$view->parent_key]);
 
 					$view = $view->parent;
 				}
 
-				unset($query['view']);
+
+               /// unset($query['view']);
+
 
 				if (isset($query['layout']) && $mLayout === $query['layout']) {
 					unset($query['layout']);
@@ -147,9 +167,20 @@ class PhocaDownloadRouterrules extends MenuRules
 						}
 					}
 				} elseif ($ids === true) {
+
 					$segments[] = $element;
 				} else {
-					$segments[] = str_replace(':', '-', current($ids));
+
+                    // FEED
+                    // Specific case: feed view (we just use the "feed" in url
+                    if (isset($query['view']) && $query['view'] == 'feed') {
+                        // /feed/number_of_module_id
+                        $segments[] = 'feed';
+                        $segments[] = str_replace(':', '-', current($ids));
+                    } else {
+                        $segments[] = str_replace(':', '-', current($ids));
+                    }
+
 				}
 			}
 
@@ -166,5 +197,13 @@ class PhocaDownloadRouterrules extends MenuRules
 				unset($query['layout']);
 			}
 		}
+
+
+
+       /* if ($query['format'] == 'feed') {
+
+            $segments['view'] = 'feed';
+        }*/
+
 	}
 }

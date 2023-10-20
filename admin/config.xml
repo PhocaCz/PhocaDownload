@@ -579,7 +579,7 @@
 	<option value="0">COM_PHOCADOWNLOAD_NO</option>
 </field>
 
-<field name="description" default="" type="editor" class="form-control" label="COM_PHOCADOWNLOAD_FIELD_DESCRIPTION_LABEL" description="COM_PHOCADOWNLOAD_FIELD_DESCRIPTION_DESC" filter="JComponentHelper::filterText" />
+<field name="description" default="" type="editor" class="form-control" label="COM_PHOCADOWNLOAD_FIELD_DESCRIPTION_LABEL" description="COM_PHOCADOWNLOAD_FIELD_DESCRIPTION_DESC" filter="ComponentHelper::filterText" />
 
 
 <field name="registered_access_level" type="phocaaccesslevel" label="COM_PHOCADOWNLOAD_FIELD_REGISTERED_ACCESS_LEVEL_LABEL" description="COM_PHOCADOWNLOAD_FIELD_REGISTERED_ACCESS_LEVEL_DESC" multiple="true" size="10" layout="joomla.form.field.list-fancy-select" >

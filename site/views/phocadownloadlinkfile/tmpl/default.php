@@ -149,7 +149,7 @@ if ($this->t['type'] == 4) {
 $js .= '}';
 $js .= '}';
 
-JFactory::getDocument()->addScriptDeclaration($js); ?>
+Factory::getDocument()->addScriptDeclaration($js); ?>
 
 <div id="phocadownload-links">
     <fieldset class="adminform options-menu options-form">

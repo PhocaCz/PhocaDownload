@@ -40,6 +40,8 @@ class PhocadownloadRouter extends RouterView
 		$category->setKey('id')->setParent($categories, 'parent_id')->setNestable();
         $this->registerView($category);
 
+
+
 		$file = new RouterViewConfiguration('file');
 		$file->setKey('id')->setParent($category, 'catid');//->setNestable();
 		$this->registerView($file);
@@ -48,12 +50,17 @@ class PhocadownloadRouter extends RouterView
 		//$play->setKey('id')->setParent($category, 'catid');//->setNestable();
 		//$this->registerView($play);
 
-		$views = array('play', 'download', 'feed', 'user');
+		$views = array('play', 'download', 'user');
         foreach ($views as $k => $v) {
             $item = new RouterViewConfiguration($v);
 		    $item->setName($v)->setParent($file, 'id')->setParent($category, 'catid');
 		    $this->registerView($item);
         }
+
+        $feed = new RouterViewConfiguration('feed');
+        $feed->setName('feed')->setKey('id')->setParent($categories, 'parent_id');
+        $this->registerView($feed);
+
 
 		parent::__construct($app, $menu);
 
@@ -64,6 +71,23 @@ class PhocadownloadRouter extends RouterView
 		$this->attachRule(new StandardRules($this));
 		$this->attachRule(new NomenuRules($this));
 	}
+
+    public function getFeedSegment($id, $query) {
+
+       if ((int)$id == 0 && isset($query['id']) && (int)$query['id'] > 0) {
+
+            $segment = [];
+            $segment[0] = (int)$query['id'];
+
+            return $segment;
+        } else {
+           $segment = [];
+           $segment[0] = (int)$id;
+
+           return $segment;
+        }
+
+    }
 
 	public function getCategorySegment($id, $query) {
 

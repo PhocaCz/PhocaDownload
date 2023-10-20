@@ -361,8 +361,15 @@ if (!empty($this->file[0])) {
 			} else {
 				// External link
 				if ($v->link_external != '') {
+
+					if ($v->directlink == 1){
+						$finalLink = $v->link_external;
+					} else {
+						$finalLink = Route::_(PhocaDownloadRoute::getFileRoute($v->id, $v->categoryid,$v->alias, $v->categoryalias, 0, 'download'));
+					}
+
 					$o .= '<form action="" name="phocaDownloadForm" id="phocadownloadform" target="'.$this->t['download_external_link'].'">';
-					$o .= '<input class="btn btn-success" type="button" name="submit" onClick="location.href=\''.$v->link_external.'\';" id="pdlicensesubmit" value="'.Text::_('COM_PHOCADOWNLOAD_DOWNLOAD').'" />';
+					$o .= '<input class="btn btn-success" type="button" name="submit" onClick="location.href=\''.$finalLink.'\';" id="pdlicensesubmit" value="'.Text::_('COM_PHOCADOWNLOAD_DOWNLOAD').'" />';
 				} else {
 					$o .= '<form action="'.htmlspecialchars($this->t['action']).'" method="post" name="phocaDownloadForm" id="phocadownloadform">';
 					$o .= '<input class="btn btn-success" type="submit" name="submit" id="pdlicensesubmit" value="'.Text::_('COM_PHOCADOWNLOAD_DOWNLOAD').'" />';
@@ -371,6 +378,7 @@ if (!empty($this->file[0])) {
 					$o .= '<input type="hidden" name="'. Session::getFormToken().'" value="1" />';
 				}
 				$o .= '</form>';
+
 			}
 
 

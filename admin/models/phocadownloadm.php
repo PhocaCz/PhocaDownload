@@ -374,6 +374,19 @@ class PhocaDownloadCpModelPhocaDownloadM extends AdminModel
 					$datam['approved']		= $data['approved'];
 					$datam['language']		= $data['language'];
 
+					// Default values
+					if (!isset($data['publish_up']) || $data['publish_up'] == '0' || $data['publish_up'] == '') {
+						$datam['publish_up']		= '0000-00-00 00:00:00';
+					} else {
+						$datam['publish_up']		= $data['publish_up'];
+					}
+
+					if (!isset($data['publish_down']) || $data['publish_down'] == '0' || $data['publish_down'] == '') {
+						$datam['publish_down']		= '0000-00-00 00:00:00';
+					} else {
+						$datam['publish_down']		= $data['publish_down'];
+					}
+
 					if ($data['title']	!= '') {
 						$datam['title']		= $data['title'];
 					} else {
