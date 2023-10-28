@@ -28,7 +28,7 @@
 <field name="image" type="phocaselectfilename" manager="image" label="COM_PHOCADOWNLOAD_FIELD_CATEGORY_IMAGE_LABEL"  description="COM_PHOCADOWNLOAD_FIELD_CATEGORY_IMAGE_DESC" class="form-control" size="40" />
 
 
-<field name="description" type="editor" buttons="true" hide="pagebreak,readmore" class="form-control" label="COM_PHOCADOWNLOAD_FIELD_DESCRIPTION_LABEL" filter="ComponentHelper::filterText" description="COM_PHOCADOWNLOAD_FIELD_DESCRIPTION_DESC" />
+<field name="description" type="editor" buttons="true" hide="pagebreak,readmore" class="form-control" label="COM_PHOCADOWNLOAD_FIELD_DESCRIPTION_LABEL" filter="\Joomla\CMS\Component\ComponentHelper::filterText" description="COM_PHOCADOWNLOAD_FIELD_DESCRIPTION_DESC" />
 
 
 
@@ -57,7 +57,7 @@
 
 
 
-<field name="date" type="Calendar" class="form-control" label="COM_PHOCADOWNLOAD_FIELD_DATE_LABEL" description="COM_PHOCADOWNLOAD_FIELD_DATE_DESC" filter="ComponentHelper::filterText" showtime="true" format="%Y-%m-%d %H:%M:%S" translateformat="true" />
+<field name="date" type="Calendar" class="form-control" label="COM_PHOCADOWNLOAD_FIELD_DATE_LABEL" description="COM_PHOCADOWNLOAD_FIELD_DATE_DESC" filter="\Joomla\CMS\Component\ComponentHelper::filterText" showtime="true" format="%Y-%m-%d %H:%M:%S" translateformat="true" />
 <!--
 <field name="hits" type="Text" class="form-control" size="6" label="COM_PHOCADOWNLOAD_FIELD_HITS" description="COM_PHOCADOWNLOAD_FIELD_HITS_DESC" />
 -->

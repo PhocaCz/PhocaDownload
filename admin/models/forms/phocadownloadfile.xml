@@ -83,10 +83,10 @@
 
 
 
-<field name="description" type="editor" buttons="true"  label="COM_PHOCADOWNLOAD_FIELD_DESCRIPTION_LABEL" filter="ComponentHelper::filterText" description="COM_PHOCADOWNLOAD_FIELD_DESCRIPTION_DESC" />
-<field name="features" type="editor" buttons="true"  label="COM_PHOCADOWNLOAD_FIELD_FEATURES_LABEL" filter="ComponentHelper::filterText" description="COM_PHOCADOWNLOAD_FIELD_FEATURES_DESC" />
-<field name="changelog" type="editor" buttons="true"  label="COM_PHOCADOWNLOAD_FIELD_CHANGELOG_LABEL" filter="ComponentHelper::filterText" description="COM_PHOCADOWNLOAD_FIELD_CHANGELOG_DESC" />
-<field name="notes" type="editor" buttons="true"  label="COM_PHOCADOWNLOAD_FIELD_NOTES_LABEL" filter="ComponentHelper::filterText" description="COM_PHOCADOWNLOAD_FIELD_NOTES_DESC" />
+<field name="description" type="editor" buttons="true" filter="\Joomla\CMS\Component\ComponentHelper::filterText"  label="COM_PHOCADOWNLOAD_FIELD_DESCRIPTION_LABEL" description="COM_PHOCADOWNLOAD_FIELD_DESCRIPTION_DESC" />
+<field name="features" type="editor" buttons="true"  label="COM_PHOCADOWNLOAD_FIELD_FEATURES_LABEL" filter="\Joomla\CMS\Component\ComponentHelper::filterText" description="COM_PHOCADOWNLOAD_FIELD_FEATURES_DESC" />
+<field name="changelog" type="editor" buttons="true"  label="COM_PHOCADOWNLOAD_FIELD_CHANGELOG_LABEL" filter="\Joomla\CMS\Component\ComponentHelper::filterText" description="COM_PHOCADOWNLOAD_FIELD_CHANGELOG_DESC" />
+<field name="notes" type="editor" buttons="true"  label="COM_PHOCADOWNLOAD_FIELD_NOTES_LABEL" filter="\Joomla\CMS\Component\ComponentHelper::filterText" description="COM_PHOCADOWNLOAD_FIELD_NOTES_DESC" />
 
 <field name="metakey" type="textarea"
 			label="JField_Meta_Keywords_Label" description="JField_Meta_Keywords_Desc"
