@@ -2,12 +2,12 @@
 <form>
 <fieldset addfieldpath="/administrator/components/com_phocadownload/models/fields">
 	<fields name="filter">
-		
-		
+
+
 	<field name="search" type="text" inputmode="search" label="COM_PHOCADOWNLOAD_SEARCH" description="COM_PHOCADOWNLOAD_SEARCH" hint="JSEARCH_FILTER" />
 
 		<field name="published" type="list" label="JOPTION_FILTER_PUBLISHED" description="JOPTION_FILTER_PUBLISHED_DESC" onchange="this.form.submit();" >
-		
+
 		<option value="">JOPTION_SELECT_PUBLISHED</option>
 		<option value="1">COM_PHOCADOWNLOAD_PUBLISHED</option>
 		<option value="0">COM_PHOCADOWNLOAD_UNPUBLISHED</option>
@@ -15,13 +15,13 @@
 
 		<!--<field name="category_id" type="PhocaDownloadCategory" label="JOPTION_FILTER_CATEGORY" description="JOPTION_FILTER_CATEGORY_DESC"   onchange="this.form.submit();" />-->
 
-		<field name="category_id" type="PhocaDownloadCategory" typemethod="filter" layout="joomla.form.field.list-fancy-select" label="JOPTION_FILTER_CATEGORY" description="JOPTION_FILTER_CATEGORY_DESC"   onchange="this.form.submit();" />
-		
+		<field name="category_id" type="PhocaDownloadCategory" typemethod="filter" layout="joomla.form.field.list-fancy-select" label="JOPTION_FILTER_CATEGORY" description="JOPTION_FILTER_CATEGORY_DESC"   onchange="this.form.submit();" class="js-select-submit-on-change" multiple="true" hint="JOPTION_SELECT_CATEGORY" />
+
 		<field name="language" type="contentlanguage" label="JOPTION_FILTER_LANGUAGE" description="JOPTION_FILTER_LANGUAGE_DESC" onchange="this.form.submit();">
 			<option value="">JOPTION_SELECT_LANGUAGE</option>
 			<option value="*">JALL</option>
 		</field>
-		
+
 		<input type="hidden" name="form_submited" value="1"/>
 	</fields>
 

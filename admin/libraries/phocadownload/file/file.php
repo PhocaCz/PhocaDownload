@@ -97,6 +97,8 @@ class PhocaDownloadFile
 			case 'jpeg':
 			case 'gif':
 			case 'bmp':
+			case 'webp':
+			case 'avif':
 				$icon = 'img';
 			break;
 

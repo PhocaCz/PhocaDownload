@@ -409,35 +409,33 @@ class PhocaDownloadViewCategory extends HtmlView
 	{
 	    $app = Factory::getApplication();
 		$i = 0;
-		$category = $this->category[0];
 
-	    while (isset($category->id))
-	    {
+		if (isset($this->category[0])) {
+			$category = $this->category[0];
 
-			$crumbList[$i++] = $category;
-			if ($category->id == $rootId)
-			{
-				break;
+			while (isset($category->id)) {
+
+				$crumbList[$i++] = $category;
+				if ($category->id == $rootId) {
+					break;
+				}
+
+				$db    = Factory::getDBO();
+				$query = 'SELECT *' .
+					' FROM #__phocadownload_categories AS c' .
+					' WHERE c.id = ' . (int)$category->parent_id . // $category->parent_id
+					' AND c.published = 1';
+				$db->setQuery($query);
+				$rows = $db->loadObjectList('id');
+
+				if (!empty($rows)) {
+					$category = $rows[$category->parent_id];
+				} else {
+					$category = '';
+				}
+				//	$category = $rows[$category->parent_id];
 			}
-
-	        $db = Factory::getDBO();
-	        $query = 'SELECT *' .
-	            ' FROM #__phocadownload_categories AS c' .
-	            ' WHERE c.id = '.(int) $category->parent_id. // $category->parent_id
-	            ' AND c.published = 1';
-	        $db->setQuery($query);
-	        $rows = $db->loadObjectList('id');
-
-			if (!empty($rows))
-			{
-				$category = $rows[$category->parent_id];
-			}
-			else
-			{
-				$category = '';
-			}
-		//	$category = $rows[$category->parent_id];
-	    }
+		}
 
 	    $pathway 		= $app->getPathway();
 		$pathWayItems 	= $pathway->getPathWay();

@@ -39,16 +39,16 @@
 <field name="license_url" type="text" label="COM_PHOCADOWNLOAD_FIELD_LICENSE_URL_LABEL"  description="COM_PHOCADOWNLOAD_FIELD_LICENSE_URL_DESC" class="form-control" size="40" />
 <field name="confirm_license" type="phocadownloadlicense" label="COM_PHOCADOWNLOAD_FIELD_CONFIRM_LICENSE_LABEL"  description="COM_PHOCADOWNLOAD_FIELD_CONFIRM_LICENSE_DESC" class="form-control" size="40" />
 
-<field name="directlink" type="list" label="COM_PHOCADOWNLOAD_FIELD_DIRECT_LINK_LABEL" default="0"  description="COM_PHOCADOWNLOAD_FIELD_DIRECT_LINK_DESC" class="form-control"  >
+<field name="directlink" type="list" label="COM_PHOCADOWNLOAD_FIELD_DIRECT_LINK_LABEL" default="0"  description="COM_PHOCADOWNLOAD_FIELD_DIRECT_LINK_DESC" class="form-select"  >
 	<option value="1">COM_PHOCADOWNLOAD_YES</option>
 	<option	value="0">COM_PHOCADOWNLOAD_NO</option>
 </field>
 
 <field name="link_external" type="text" label="COM_PHOCADOWNLOAD_FIELD_EXTERNAL_LINK_LABEL"  description="COM_PHOCADOWNLOAD_FIELD_EXTERNAL_LINK_DESC" class="form-control" size="40" />
 
-<field name="access" type="accesslevel" label="JFIELD_ACCESS_LABEL" description="JFIELD_ACCESS_DESC" class="form-control" size="1" />
+<field name="access" type="accesslevel" label="JFIELD_ACCESS_LABEL" description="JFIELD_ACCESS_DESC" class="form-select" size="1" />
 
-<field name="unaccessible_file" type="list" label="COM_PHOCADOWNLOAD_FIELD_DISPLAY_INACCESSIBLE_FILE_LABEL" default="0" description="COM_PHOCADOWNLOAD_FIELD_DISPLAY_INACCESSIBLE_FILE_DESC" class="form-control"  >
+<field name="unaccessible_file" type="list" label="COM_PHOCADOWNLOAD_FIELD_DISPLAY_INACCESSIBLE_FILE_LABEL" default="0" description="COM_PHOCADOWNLOAD_FIELD_DISPLAY_INACCESSIBLE_FILE_DESC" class="form-select"  >
 	<option value="1">COM_PHOCADOWNLOAD_YES</option>
 	<option	value="0">COM_PHOCADOWNLOAD_NO</option>
 </field>
@@ -61,7 +61,7 @@
 <field name="mirror1link" type="Text" class="form-control" size="40" label="COM_PHOCADOWNLOAD_MIRROR_LINK_LINK_LABEL" description="COM_PHOCADOWNLOAD_FIELD_MIRROR_LINK_LINK_DESC"  />
 <field name="mirror1title" type="Text" class="form-control" size="40" label="COM_PHOCADOWNLOAD_MIRROR_LINK_TITLE_LABEL" description="COM_PHOCADOWNLOAD_FIELD_MIRROR_LINK_TITLE_DESC"  />
 
-<field name="mirror1target" type="list" class="form-control"  label="COM_PHOCADOWNLOAD_MIRROR_LINK_TARGET_LABEL" description="COM_PHOCADOWNLOAD_FIELD_MIRROR_LINK_TARGET_DESC"  default="_self" >
+<field name="mirror1target" type="list" class="form-select"  label="COM_PHOCADOWNLOAD_MIRROR_LINK_TARGET_LABEL" description="COM_PHOCADOWNLOAD_FIELD_MIRROR_LINK_TARGET_DESC"  default="_self" >
 	<option value="_self">COM_PHOCADOWNLOAD_OPEN_WINDOW_SELF</option>
 	<option value="_blank">COM_PHOCADOWNLOAD_OPEN_WINDOW_BLANK</option>
 	<option value="_parent">COM_PHOCADOWNLOAD_OPEN_WINDOW_PARENT</option>
@@ -71,7 +71,7 @@
 <field name="mirror2link" type="Text" class="form-control" size="40" label="COM_PHOCADOWNLOAD_MIRROR_LINK_LINK2_LABEL" description="COM_PHOCADOWNLOAD_FIELD_MIRROR_LINK_LINK2_DESC"  />
 <field name="mirror2title" type="Text" class="form-control" size="40" label="COM_PHOCADOWNLOAD_MIRROR_LINK_TITLE2_LABEL" description="COM_PHOCADOWNLOAD_FIELD_MIRROR_LINK_TITLE2_DESC"  />
 
-<field name="mirror2target" type="list" class="form-control"  label="COM_PHOCADOWNLOAD_MIRROR_LINK_TARGET2_LABEL" description="COM_PHOCADOWNLOAD_FIELD_MIRROR_LINK_TARGET2_DESC"  default="_self" >
+<field name="mirror2target" type="list" class="form-select"  label="COM_PHOCADOWNLOAD_MIRROR_LINK_TARGET2_LABEL" description="COM_PHOCADOWNLOAD_FIELD_MIRROR_LINK_TARGET2_DESC"  default="_self" >
 	<option value="_self">COM_PHOCADOWNLOAD_OPEN_WINDOW_SELF</option>
 	<option value="_blank">COM_PHOCADOWNLOAD_OPEN_WINDOW_BLANK</option>
 	<option value="_parent">COM_PHOCADOWNLOAD_OPEN_WINDOW_PARENT</option>
@@ -103,24 +103,24 @@
 
 	<fieldset name="publish" label="COM_PHOCADOWNLOAD_GROUP_LABEL_PUBLISHING_DETAILS" >
 
-<field name="published" type="list" label="COM_PHOCADOWNLOAD_FIELD_PUBLISHED_LABEL" description="COM_PHOCADOWNLOAD_FIELD_PUBLISHED_DESC" class="form-control" size="1" default="1">
+<field name="published" type="list" label="COM_PHOCADOWNLOAD_FIELD_PUBLISHED_LABEL" description="COM_PHOCADOWNLOAD_FIELD_PUBLISHED_DESC" class="form-select" size="1" default="1">
 	<option value="1">JPUBLISHED</option>
 	<option	value="0">JUNPUBLISHED</option>
 </field>
 
-<field name="approved" type="list" label="COM_PHOCADOWNLOAD_FIELD_APPROVED_LABEL" description="COM_PHOCADOWNLOAD_FIELD_APPROVED_DESC" class="form-control" size="1" default="1">
+<field name="approved" type="list" label="COM_PHOCADOWNLOAD_FIELD_APPROVED_LABEL" description="COM_PHOCADOWNLOAD_FIELD_APPROVED_DESC" class="form-select" size="1" default="1">
 	<option value="1">COM_PHOCADOWNLOAD_APPROVED</option>
 	<option	value="0">COM_PHOCADOWNLOAD_NOT_APPROVED</option>
 </field>
 
-<field name="language" type="contentlanguage" label="JFIELD_LANGUAGE_LABEL" description="COM_PHOCADOWNLOAD_FIELD_LANGUAGE_FILE_DESC" class="form-control">
+<field name="language" type="contentlanguage" label="JFIELD_LANGUAGE_LABEL" description="COM_PHOCADOWNLOAD_FIELD_LANGUAGE_FILE_DESC" class="form-select">
 	<option value="*">JALL</option>
 </field>
 
-<field name="date" type="Calendar" class="form-control" label="COM_PHOCADOWNLOAD_FIELD_DATE_LABEL" description="COM_PHOCADOWNLOAD_FIELD_DATE_DESC" showtime="true" format="%Y-%m-%d %H:%M:%S" translateformat="true" />
+<field name="date" type="Calendar" class="form-control" label="COM_PHOCADOWNLOAD_FIELD_DATE_LABEL" description="COM_PHOCADOWNLOAD_FIELD_DATE_DESC" showtime="true" filter="user_utc" translateformat="true" />
 
-<field name="publish_up" type="Calendar" class="form-control" label="COM_PHOCADOWNLOAD_FIELD_START_PUBLISHING_LABEL" description="COM_PHOCADOWNLOAD_FIELD_START_PUBLISHING_DESC" showtime="true" format="%Y-%m-%d %H:%M:%S" translateformat="true" />
-<field name="publish_down" type="Calendar" class="form-control" label="COM_PHOCADOWNLOAD_FIELD_FINISH_PUBLISHING_LABEL" description="COM_PHOCADOWNLOAD_FIELD_FINISH_PUBLISHING_DESC" showtime="true" format="%Y-%m-%d %H:%M:%S" translateformat="true" />
+<field name="publish_up" type="Calendar" class="form-control" label="COM_PHOCADOWNLOAD_FIELD_START_PUBLISHING_LABEL" description="COM_PHOCADOWNLOAD_FIELD_START_PUBLISHING_DESC" showtime="true" filter="user_utc" translateformat="true" />
+<field name="publish_down" type="Calendar" class="form-control" label="COM_PHOCADOWNLOAD_FIELD_FINISH_PUBLISHING_LABEL" description="COM_PHOCADOWNLOAD_FIELD_FINISH_PUBLISHING_DESC" showtime="true" filter="user_utc" translateformat="true" />
 
 <field name="hits" type="Text" class="form-control" size="6" label="COM_PHOCADOWNLOAD_FIELD_DOWNLOADS_LABEL" description="COM_PHOCADOWNLOAD_FIELD_DOWNLOADS_DESC" />
 

@@ -130,6 +130,7 @@ class PhocaDownloadCpModelPhocaDownloadFile extends AdminModel
 		$table->hits			= PhocaDownloadUtils::getIntFromString($table->hits);
 		$table->tokenhits		= PhocaDownloadUtils::getIntFromString($table->tokenhits);
 
+
 		if (empty($table->alias)) {
 			$table->alias = ApplicationHelper::stringURLSafe($table->title);
 		}

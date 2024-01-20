@@ -6,21 +6,21 @@
 
 <field name="alias" type="text" class="form-control" size="40" label="COM_PHOCADOWNLOAD_FIELD_ALIAS_LABEL" description="COM_PHOCADOWNLOAD_FIELD_ALIAS_M_DESC" />
 
-<field name="catid" type="phocadownloadcategory" label="COM_PHOCADOWNLOAD_FIELD_CATEGORY_LABEL" description="COM_PHOCADOWNLOAD_FIELD_CATEGORY_DESC" class="form-control" />
+<field name="catid" type="phocadownloadcategory" label="COM_PHOCADOWNLOAD_FIELD_CATEGORY_LABEL" description="COM_PHOCADOWNLOAD_FIELD_CATEGORY_DESC" />
 
 
 
-<field name="published" type="list" label="COM_PHOCADOWNLOAD_FIELD_PUBLISHED_LABEL" description="COM_PHOCADOWNLOAD_FIELD_PUBLISHED_DESC" class="form-control" size="1" default="1">
+<field name="published" type="list" label="COM_PHOCADOWNLOAD_FIELD_PUBLISHED_LABEL" description="COM_PHOCADOWNLOAD_FIELD_PUBLISHED_DESC" class="form-select" size="1" default="1">
 	<option value="1">JPUBLISHED</option>
 	<option	value="0">JUNPUBLISHED</option>
 </field>
 
-<field name="approved" type="list" label="COM_PHOCADOWNLOAD_FIELD_APPROVED_LABEL" description="COM_PHOCADOWNLOAD_FIELD_APPROVED_DESC" class="form-control" size="1" default="1">
+<field name="approved" type="list" label="COM_PHOCADOWNLOAD_FIELD_APPROVED_LABEL" description="COM_PHOCADOWNLOAD_FIELD_APPROVED_DESC" class="form-select" size="1" default="1">
 	<option value="1">COM_PHOCADOWNLOAD_APPROVED</option>
 	<option	value="0">COM_PHOCADOWNLOAD_NOT_APPROVED</option>
 </field>
 
-<field name="language" type="contentlanguage" label="JFIELD_LANGUAGE_LABEL" description="COM_PHOCADOWNLOAD_FIELD_LANGUAGE_FILE_DESC" class="form-control">
+<field name="language" type="contentlanguage" label="JFIELD_LANGUAGE_LABEL" description="COM_PHOCADOWNLOAD_FIELD_LANGUAGE_FILE_DESC" class="form-select">
 	<option value="*">JALL</option>
 </field>
 <!--

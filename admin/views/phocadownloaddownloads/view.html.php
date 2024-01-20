@@ -60,7 +60,7 @@ class PhocaDownloadCpViewPhocaDownloadDownloads extends HtmlView
 
 			$bar = Toolbar::getInstance('toolbar');
 
-			$dhtml = '<button class="btn btn-small" onclick="javascript:if(document.adminForm.boxchecked.value==0){alert(\''.Text::_('COM_PHOCADOWNLOAD_SELECT_ITEM_RESET').'\');}else{if(confirm(\''.Text::_('COM_PHOCADOWNLOAD_WARNING_RESET_DOWNLOADS').'\')){Joomla.submitbutton(\''.$this->t['tasks'].'.reset\');}}" ><i class="icon-reset" title="'.Text::_('COM_PHOCADOWNLOAD_RESET').'"></i> '.Text::_('COM_PHOCADOWNLOAD_RESET').'</button>';
+			$dhtml = '<button class="btn btn-small btn-danger" onclick="javascript:if(document.adminForm.boxchecked.value==0){alert(\''.Text::_('COM_PHOCADOWNLOAD_SELECT_ITEM_RESET').'\');}else{if(confirm(\''.Text::_('COM_PHOCADOWNLOAD_WARNING_RESET_DOWNLOADS').'\')){Joomla.submitbutton(\''.$this->t['tasks'].'.reset\');}}" ><i class="icon-reset" title="'.Text::_('COM_PHOCADOWNLOAD_RESET').'"></i> '.Text::_('COM_PHOCADOWNLOAD_RESET').'</button>';
 			$bar->appendButton('Custom', $dhtml);
 			ToolbarHelper::divider();
 			//JToolbarHelper::custom('phocadownloaduserstat.reset', 'reset.png', '', 'COM_PHOCADOWNLOAD_RESET' , false);

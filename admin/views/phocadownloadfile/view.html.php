@@ -31,7 +31,6 @@ class PhocaDownloadCpViewPhocaDownloadFile extends HtmlView
 		$this->item		= $this->get('Item');
 
 
-
 		if (isset($this->item->textonly) && (int)$this->item->textonly == 1 && Factory::getApplication()->input->get('layout') != 'edit_text') {
 			$tpl = 'text';
 		}

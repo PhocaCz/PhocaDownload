@@ -10,6 +10,8 @@ defined( '_JEXEC' ) or die();
 use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\Utilities\ArrayHelper;
+
 jimport( 'joomla.application.component.modellist' );
 jimport( 'joomla.filesystem.folder' );
 jimport( 'joomla.filesystem.file' );
@@ -81,7 +83,8 @@ class PhocaDownloadCpModelPhocaDownloadFiles extends ListModel
 		$id	.= ':'.$this->getState('filter.search');
 		$id	.= ':'.$this->getState('filter.access');
 		$id	.= ':'.$this->getState('filter.published');
-		$id	.= ':'.$this->getState('filter.category_id');
+		//$id	.= ':'.$this->getState('filter.category_id');
+		$id .= ':' . serialize($this->getState('filter.category_id'));
 		$id	.= ':'.$this->getState('filter.image_id');
 
 		return parent::getStoreId($id);
@@ -154,10 +157,28 @@ class PhocaDownloadCpModelPhocaDownloadFiles extends ListModel
 		}
 
 		// Filter by category.
-		$categoryId = $this->getState('filter.category_id');
-		if (is_numeric($categoryId)) {
+		//$categoryId = $this->getState('filter.category_id');
+
+		$categoryId = $this->getState('filter.category_id', []);
+
+        if (!\is_array($categoryId)) {
+            $categoryId = $categoryId ? [$categoryId] : [];
+        }
+
+		/*if (is_numeric($categoryId)) {
 			$query->where('a.catid = ' . (int) $categoryId);
-		}
+		}*/
+		 if (\count($categoryId)) {
+            $categoryId       = ArrayHelper::toInteger($categoryId);
+            $subCatItemsWhere = [];
+            foreach ($categoryId as $k => $v) {
+				$categoryWhere = 'a.catid = ' . (int) $v;
+                $subCatItemsWhere[] = '(' . $categoryWhere . ')';
+            }
+            $query->where('(' . implode(' OR ', $subCatItemsWhere) . ')');
+        }
+
+
 
 		// Filter on the language.
 		if ($language = $this->getState('filter.language')) {

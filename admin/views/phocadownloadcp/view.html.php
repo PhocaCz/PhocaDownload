@@ -56,7 +56,7 @@ class PhocaDownloadCpViewPhocaDownloadCp extends HtmlView
 
 		// This button is unnecessary but it is displayed because Joomla! design bug
 		$bar = Toolbar::getInstance( 'toolbar' );
-		$dhtml = '<a href="index.php?option=com_phocadownload" class="btn btn-small"><i class="icon-home-2" title="'.Text::_($this->t['l'].'_CONTROL_PANEL').'"></i> '.Text::_($this->t['l'].'_CONTROL_PANEL').'</a>';
+		$dhtml = '<a href="index.php?option=com_phocadownload" class="btn btn-primary btn-small"><i class="icon-home-2" title="'.Text::_($this->t['l'].'_CONTROL_PANEL').'"></i> '.Text::_($this->t['l'].'_CONTROL_PANEL').'</a>';
 		$bar->appendButton('Custom', $dhtml);
 
 		if ($canDo->get('core.admin')) {

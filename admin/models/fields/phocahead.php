@@ -21,9 +21,17 @@ class JFormFieldPhocaHead extends FormField
 	protected function getInput() {
 
 		$tc = 'phocadownload';
-		$ts = 'media/com_'.$tc.'/css/administrator/';
+		//$ts = 'media/com_'.$tc.'/css/administrator/';
 		$ti = 'media/com_'.$tc.'/images/administrator/';
-		HTMLHelper::stylesheet( $ts.'/'.$tc.'options.css' );
+		//HTMLHelper::stylesheet( $ts.'/'.$tc.'options.css' );
+
+		$app				= Factory::getApplication();
+		$wa 				= $app->getDocument()->getWebAssetManager();
+		$option				= 'com_phocagallery';
+		$wa->registerAndUseStyle($option . '.options', 'media/' .$option . '/css/administrator/phocadownloadoptions.css', array('version' => 'auto'));
+		$wa->registerAndUseStyle($option . '.theme', 'media/' .$option . '/css/administrator/theme-dark.css', array('version' => 'auto'), [], ['template.active']);
+
+
 		//echo '<div style="clear:both;"></div>';
 		$phocaImage	= ( (string)$this->element['phocaimage'] ? $this->element['phocaimage'] : '' );
 		$image 		= '';

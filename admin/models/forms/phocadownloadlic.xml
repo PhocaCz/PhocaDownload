@@ -14,7 +14,7 @@
 <field name="ordering" type="PhocaDownloadOrdering" table="file" class="form-select" label="COM_PHOCADOWNLOAD_FIELD_ORDERING_LABEL" description="COM_PHOCADOWNLOAD_FIELD_ORDERING_DESC" />
 
 
-<field name="description" type="editor" buttons="true" hide="pagebreak,readmore" class="form-control" label="COM_PHOCADOWNLOAD_FIELD_LICENSE_TEXT_LABEL" filter="\Joomla\CMS\Component\ComponentHelper::filterText" description="COM_PHOCADOWNLOAD_FIELD_LICENSE_TEXT_DESC" />
+<field name="description" type="editor" buttons="true" hide="pagebreak,readmore" label="COM_PHOCADOWNLOAD_FIELD_LICENSE_TEXT_LABEL" filter="\Joomla\CMS\Component\ComponentHelper::filterText" description="COM_PHOCADOWNLOAD_FIELD_LICENSE_TEXT_DESC" />
 
 
 	</fieldset>
@@ -22,7 +22,7 @@
 
 	<fieldset name="publish" label="COM_PHOCADOWNLOAD_GROUP_LABEL_PUBLISHING_DETAILS" >
 
-<field name="published" type="list" label="COM_PHOCADOWNLOAD_FIELD_PUBLISHED_LABEL" description="COM_PHOCADOWNLOAD_FIELD_PUBLISHED_DESC" class="form-control" size="1" default="1">
+<field name="published" type="list" label="COM_PHOCADOWNLOAD_FIELD_PUBLISHED_LABEL" description="COM_PHOCADOWNLOAD_FIELD_PUBLISHED_DESC" class="form-select" size="1" default="1">
 	<option value="1">JPUBLISHED</option>
 	<option	value="0">JUNPUBLISHED</option>
 </field>

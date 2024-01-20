@@ -62,7 +62,7 @@ class PhocaDownloadCpViewPhocaDownloadLogs extends HtmlView
 
 			$bar = Toolbar::getInstance('toolbar');
 
-			$dhtml = '<button class="btn btn-small" onclick="javascript:if(confirm(\''.addslashes(Text::_('COM_PHOCADOWNLOAD_WARNING_RESET_LOG')).'\')){Joomla.submitbutton(\'phocadownloadlogs.reset\');}" ><i class="icon-approve" title="'.Text::_('COM_PHOCADOWNLOAD_RESET_LOG').'"></i> '.Text::_('COM_PHOCADOWNLOAD_RESET_LOG').'</button>';
+			$dhtml = '<button class="btn btn-small btn-danger" onclick="javascript:if(confirm(\''.addslashes(Text::_('COM_PHOCADOWNLOAD_WARNING_RESET_LOG')).'\')){Joomla.submitbutton(\'phocadownloadlogs.reset\');}" ><i class="icon-approve" title="'.Text::_('COM_PHOCADOWNLOAD_RESET_LOG').'"></i> '.Text::_('COM_PHOCADOWNLOAD_RESET_LOG').'</button>';
 			$bar->appendButton('Custom', $dhtml);
 			ToolbarHelper::divider();
 			//JToolbarHelper::custom('phocadownloaduserstat.reset', 'reset.png', '', 'COM_PHOCADOWNLOAD_RESET' , false);

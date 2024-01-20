@@ -541,7 +541,7 @@
 	<option value="6">COM_PHOCADOWNLOAD_HTML4_UPLOADER</option>
 </field>
 
-<field name="default_access" default="1" type="accesslevel" label="COM_PHOCADOWNLOAD_FIELD_DEFAULT_ACCESS_LABEL" description="COM_PHOCADOWNLOAD_FIELD_DEFAULT_ACCESS_DESC" class="form-control" size="1" />
+<field name="default_access" default="1" type="accesslevel" label="COM_PHOCADOWNLOAD_FIELD_DEFAULT_ACCESS_LABEL" description="COM_PHOCADOWNLOAD_FIELD_DEFAULT_ACCESS_DESC" class="form-select" size="1" />
 
 <field name="enable_xss_check" type="list" default="1" label="COM_PHOCADOWNLOAD_FIELD_ENABLE_XSS_CHECK_LABEL" description="COM_PHOCADOWNLOAD_FIELD_ENABLE_XSS_CHECK_DESC">
 	<option value="1">COM_PHOCADOWNLOAD_YES_FRONTEND</option>

@@ -95,14 +95,13 @@ if (isset($this->item->id) && isset($this->item->catid) && isset($this->item->to
 }
 
 
-
-
 foreach($this->form->getFieldset('publish') as $field) {
 	echo '<div class="control-group">';
 	if (!$field->hidden) {
 		echo '<div class="control-label">'.$field->label.'</div>';
 	}
 	echo '<div class="controls">';
+
 	echo $field->input;
 	echo '</div></div>';
 }

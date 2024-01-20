@@ -53,7 +53,7 @@ echo $r->startTable('categoryList');
 
 echo $r->startTblHeader();
 echo $r->firstColumnHeader($listDirn, $listOrder, 'a', true);
-echo $r->secondColumnHeader($listDirn, $listOrder, 'a', true);
+///echo $r->secondColumnHeader($listDirn, $listOrder, 'a', true);
 
 //echo $r->thOrderingXML('JGRID_HEADING_ORDERING', $listDirn, $listOrder);
 //echo '<th class="nowrap center hidden-phone ph-ordering"></th>';
@@ -98,7 +98,7 @@ $linkEdit 		= Route::_( $urlEdit. $item->id );
 
 echo $r->startTr($i, isset($item->catid) ? (int)$item->catid : 0);
 echo $r->firstColumn($i, $item->id, $canChange, $saveOrder, $orderkey, $item->ordering);
-echo $r->secondColumn($i, $item->id, $canChange, $saveOrder, $orderkey, $item->ordering);
+///echo $r->secondColumn($i, $item->id, $canChange, $saveOrder, $orderkey, $item->ordering);
 $checkO = '';
 /*if ($item->checked_out) {
 	$checkO .= HTMLHelper::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, $this->t['tasks'].'.', $canCheckin);

@@ -60,7 +60,7 @@ echo $r->startTable('categoryList');
 echo $r->startTblHeader();
 
 echo $r->firstColumnHeader($listDirn, $listOrder, 'a', true);
-echo $r->secondColumnHeader($listDirn, $listOrder, 'a', true);
+///echo $r->secondColumnHeader($listDirn, $listOrder, 'a', true);
 //echo '<th class="nowrap center hidden-phone ph-ordering"></th>';//$r->thOrderingXML('JGRID_HEADING_ORDERING', $listDirn, $listOrder);
 //echo $r->thCheck('JGLOBAL_CHECK_ALL');
 echo '<th class="ph-uploaduser">'.HTMLHelper::_('searchtools.sort', $this->t['l'].'_USER', 'username', $listDirn, $listOrder ).'</th>'."\n";
@@ -100,7 +100,7 @@ $item->ordering = 0;
 
 echo $r->startTr($i, isset($item->catid) ? (int)$item->catid : 0);
 echo $r->firstColumn($i, $item->id, $canChange, $saveOrder, $orderkey, $item->ordering);
-echo $r->secondColumn($i, $item->id, $canChange, $saveOrder, $orderkey, $item->ordering);
+///echo $r->secondColumn($i, $item->id, $canChange, $saveOrder, $orderkey, $item->ordering);
 
 $usrO = $item->usernameno;
 if ($item->username) {$usrO = $usrO . ' ('.$item->username.')';}

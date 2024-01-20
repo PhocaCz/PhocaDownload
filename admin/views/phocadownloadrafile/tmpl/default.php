@@ -62,7 +62,7 @@ echo $r->startTable('categoryList');
 
 echo $r->startTblHeader();
 echo $r->firstColumnHeader($listDirn, $listOrder, 'a', true);
-echo $r->secondColumnHeader($listDirn, $listOrder, 'a', true);
+///echo $r->secondColumnHeader($listDirn, $listOrder, 'a', true);
 
 
 
@@ -110,7 +110,7 @@ $orderkey   	= 0;
 
 echo $r->startTr($i, isset($item->catid) ? (int)$item->catid : 0);
 echo $r->firstColumn($i, $item->id, $canChange, $saveOrder, $orderkey, $item->ordering);
-echo $r->secondColumn($i, $item->id, $canChange, $saveOrder, $orderkey, $item->ordering);
+///echo $r->secondColumn($i, $item->id, $canChange, $saveOrder, $orderkey, $item->ordering);
 
 $usrU = $item->ratingname;
 if ($item->ratingusername) {$usrU = $usrU . ' ('.$item->ratingusername.')';}
