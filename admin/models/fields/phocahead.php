@@ -29,7 +29,7 @@ class JFormFieldPhocaHead extends FormField
 
 		$app				= Factory::getApplication();
 		$wa 				= $app->getDocument()->getWebAssetManager();
-		$option				= 'com_phocagallery';
+		$option				= 'com_phocadownload';
 		$wa->registerAndUseStyle($option . '.options', 'media/' .$option . '/css/administrator/phocadownloadoptions.css', array('version' => 'auto'));
 		$wa->registerAndUseStyle($option . '.theme', 'media/' .$option . '/css/administrator/theme-dark.css', array('version' => 'auto'), [], ['template.active']);
 

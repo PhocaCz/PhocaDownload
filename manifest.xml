@@ -49,7 +49,7 @@
 		<downloads>
 			<downloadurl type="full" format="zip">https://github.com/PhocaCz/PhocaDownload/releases/download/5.0.1/com_phocadownload_v5.0.1.zip</downloadurl>
 		</downloads>
-		<sha512>82a441e3391244543de1b33a4f8f0444e31bb10c69b765ee7ae4082eeaa4fc9db65e271e28a2f9b17fad2898b573f1718036177e46e6db649b814a254ed74ea6</sha512>
+		<sha512>db3921291c66ae5a2969eda7ec5cdb31c4453953928581282614efec15b30b7f55343bbb2163d34778279264e68f31b9946fc300522ca0dec58477ff000dcc7c</sha512>
 		<tags>
 			<tag>stable</tag>
 		</tags>
