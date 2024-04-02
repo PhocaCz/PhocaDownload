@@ -66,7 +66,7 @@ if (!empty($this->files)) {
 			$linkDownloadB = '';
 			$linkDownloadE = '';
 			if ((int)$v->confirm_license > 0 || $this->t['display_file_view'] == 1) {
-				$linkDownloadB = '<a class="" href="'. JRoute::_(PhocaDownloadRoute::getFileRoute($v->id, $v->catid,$v->alias, $v->categoryalias, $v->sectionid). $this->t['limitstarturl']).'" >';	// we need pagination to go back
+				$linkDownloadB = '<a class="" href="'. Route::_(PhocaDownloadRoute::getFileRoute($v->id, $v->catid,$v->alias, $v->categoryalias, $v->sectionid). $this->t['limitstarturl']).'" >';	// we need pagination to go back
 				$linkDownloadE ='</a>';
 			} else {
 				if ($v->link_external != '' && $v->directlink == 1) {

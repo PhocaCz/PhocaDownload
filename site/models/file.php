@@ -54,7 +54,8 @@ class PhocaDownloadModelFile extends BaseDatabaseModel
 				if (!in_array($this->_file[0]->access, $user->getAuthorisedViewLevels())) {
 					//$app->redirect(JRoute::_('index.php?option=com_user&view=login', false), JText::_("Please login to download the file"));
 					// Return URL
-					$return	= 'index.php?option=com_phocadownload&view=file&id='.$this->_file[0]->id.':'.$this->_file[0]->alias. $limitstartUrl . '&Itemid='. $app->input->get('Itemid', 0, 'int');
+					$return	= 'index.php?option=com_phocadownload&view=file&catid='.$this->_file[0]->catid.':'.$this->_file[0]->categoryalias
+							. '&id='.$this->_file[0]->id.':'.$this->_file[0]->alias. $limitstartUrl . '&Itemid='. $app->input->get('Itemid', 0, 'int');
 					$returnUrl  	= 'index.php?option=com_users&view=login&return='.base64_encode($return);
 					$app->enqueueMessage(Text::_("COM_PHOCADOWNLOAD_PLEASE_LOGIN_DOWNLOAD_FILE"), 'error');
 					$app->redirect(Route::_($returnUrl, false));
