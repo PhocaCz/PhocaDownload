@@ -152,6 +152,7 @@ if ($this->manager == 'filemultiple') {
 	echo '<input type="hidden" name="task" value="" />'. "\n";
 	echo '<input type="hidden" name="boxchecked" value="0" />'. "\n";
 	echo '<input type="hidden" name="layout" value="edit" />'. "\n";
+    echo '<input type="hidden" name="return-url" value="'. $this->returnUrl.'" />';
 	echo HTMLHelper::_('form.token');
 	echo $r->endForm();
 

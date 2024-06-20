@@ -23,6 +23,8 @@ class PhocaDownloadFile
 	 */
 	public static function getFileSizeReadable ($size, $retstring = null, $onlyMB = false) {
 
+		$size = (int)$size;
+
 		if ($onlyMB) {
 			$sizes = array('B', 'kB', 'MB');
 		} else {

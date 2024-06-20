@@ -108,7 +108,10 @@ class JFormFieldPhocaDownloadCategory extends FormField
 		  }
 		} else {
 		  // in filter we need zero value for canceling the filter
-		  if ($typeMethod == 'filter') {
+
+			if ($typeMethod == 'menulink') {
+				// Required for menu link,
+			} else if ($typeMethod == 'filter') {
 			$options[] = HTMLHelper::_('select.option', '', '- ' . Text::_('COM_PHOCADOWNLOAD_SELECT_CATEGORY') . ' -', 'value', 'text');
 		  } else {
 			$options[] = HTMLHelper::_('select.option', '0', '- '.Text::_('COM_PHOCADOWNLOAD_SELECT_CATEGORY').' -', 'value', 'text');

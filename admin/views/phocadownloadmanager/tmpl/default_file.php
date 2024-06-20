@@ -20,15 +20,31 @@ if ($this->manager == 'filemultiple') {
 	$checked 	= HTMLHelper::_('grid.id', $this->filei + count($this->folders), $this->files[$this->filei]->path_with_name_relative_no );
 
 	$icon		= PhocaDownloadFile::getMimeTypeIcon($this->_tmp_file->name);
+
+	//$fileNameEncode = urlencode($this->_tmp_file->path_with_name_relative_no);
+	//$deleteCode = '<input class="form-check-input" autocomplete="off" type="checkbox" id="cid'.$fileNameEncode.'" name="cid['.$fileNameEncode.']" value="'.$fileNameEncode.'" onclick="Joomla.isChecked(this.checked);">';
+
+	$deleteCode = '<a class="ph-action-inline-icon-box ph-inline-task" href="javascript:void(0);" onclick="javascript:if (confirm(\''.Text::_('COM_PHOCADOWNLOAD_DELETE_FILE_SERVER_WARNING').'\')){ return Joomla.listItemTask(\'cb'.$this->filei.'\',\'phocadownloadmanager.delete\');}" title="'.Text::_('COM_PHOCADOWNLOAD_DELETE').'"><span class="ph-cp-item ph-icon-task ph-icon-leftm"><i class="duotone icon-purge"></i></span></a>';
+
+
+
+
 	echo '<tr>'
 	.' <td>'. $checked .'</td>'
 	.' <td class="ph-img-table">'
 	. $icon .'</a></td>'
-	.' <td>' . $this->_tmp_file->name . '</td>'
+	.' <td>'
+	.'<div class="ph-files-row">'
+	.'<div ph-icon-leftm>' . $this->_tmp_file->name . '</div>'
+	.'<div class="ph-files-row-item">' . $deleteCode . '</div>'
+	. '</td>'
 	.'</tr>';
 
 
 } else {
+
+
+
 	if (($group['i'] == 1) && ($ext == 'png' || $ext == 'jpg' || $ext == 'gif' || $ext == 'jpeg') ) {
 
 		echo '<tr>'

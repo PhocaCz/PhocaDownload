@@ -1164,3 +1164,17 @@ li.plupload_droptext:before {
 .ph-intendation {
 	display: inline-block;
 }
+
+.duotone.icon-purge:after,
+.duotone.icon-purge:before {
+	color: #CC1020;
+}
+
+.ph-icon-leftm {
+	margin-left: 2em;
+}
+
+.ph-files-row {
+	display: flex;
+	justify-content:space-between;
+}

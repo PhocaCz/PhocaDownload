@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	anchor.addEventListener('click', event => {
 		// `this` refers to the anchor tag that's been clicked
 		event.preventDefault();
-		console.log(this.getAttribute('href'));
+		console .log(this.getAttribute('href'));
 	}, true);
 	};*/
 
@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			//let height = this.getAttribute('data-bs-height-dialog');
 			//let width = this.getAttribute('data-bs-width-dialog');
 
-			
+
 
 			let modalItem = document.getElementById('pdCategoryModal')
 			let modalIframe = document.getElementById('pdCategoryModalIframe');

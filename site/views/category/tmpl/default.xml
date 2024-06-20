@@ -10,7 +10,7 @@
 		<fields name="request">
 		<fieldset name="request" addfieldpath="/administrator/components/com_phocadownload/models/fields">
 
-			<field name="id" type="phocadownloadcategory" section="com_phocadownload" default="0" label="COM_PHOCADOWNLOAD_FIELD_SELECT_CATEGORY_LABEL" description="COM_PHOCADOWNLOAD_FIELD_SELECT_CATEGORY_DESC" required="true" />
+			<field name="id" type="phocadownloadcategory" section="com_phocadownload" default="" typemethod="menulink" label="COM_PHOCADOWNLOAD_FIELD_SELECT_CATEGORY_LABEL" description="COM_PHOCADOWNLOAD_FIELD_SELECT_CATEGORY_DESC" required="true" />
 		</fieldset>
 	</fields>
 

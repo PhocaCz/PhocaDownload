@@ -33,6 +33,7 @@ class PhocaDownloadCpViewPhocaDownloadManager extends HtmlView
 	protected $currentFolder;
 	protected $t;
 	protected $r;
+	protected $returnUrl;
 
 	public function display($tpl = null) {
 
@@ -40,16 +41,12 @@ class PhocaDownloadCpViewPhocaDownloadManager extends HtmlView
 		$this->r 		= new PhocaDownloadRenderAdminView();
 		$this->field	= Factory::getApplication()->input->get('field');
 		$this->fce 		= 'phocaSelectFileName_'.$this->field;
-
-
-
-
+		$this->returnUrl = base64_encode(Uri::getInstance()->toString());
 		$this->folderstate	= $this->get('FolderState');
 		$this->files		= $this->get('Files');
 		$this->folders		= $this->get('Folders');
 		$this->session		= Factory::getSession();
 		$this->manager 		= Factory::getApplication()->input->get( 'manager', '',  'file' );
-
 
 
 		if ($this->manager == 'filemultiple') {
