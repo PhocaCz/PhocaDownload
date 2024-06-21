@@ -138,7 +138,7 @@ class PhocaDownloadCpViewPhocaDownloadManager extends HtmlView
 									 .$this->session->getName().'='.$this->session->getId().'&'
 									 . Session::getFormToken().'=1&tab=multipleupload&manager='.PhocaDownloadUtils::filterValue($this->manager, 'alphanumeric').'&field='.PhocaDownloadUtils::filterValue($this->field, 'alphanumeric2').'&folder='. PhocaDownloadUtils::filterValue($this->currentFolder, 'folderpath');
 			$mU->reload				= Uri::base().'index.php?option=com_phocadownload&view=phocadownloadmanager'
-									.str_replace('&amp;', '&', PhocaDownloadUtils::filterValue($group['c'], 'text')).'&'
+									.str_replace('&amp;', '&', $group['c']).'&'
 									.$this->session->getName().'='.$this->session->getId().'&'
 									. Session::getFormToken().'=1&tab=multipleupload&'
 									.'manager='.PhocaDownloadUtils::filterValue($this->manager, 'alphanumeric').'&field='.PhocaDownloadUtils::filterValue($this->field, 'alphanumeric2').'&folder='. PhocaDownloadUtils::filterValue($this->currentFolder, 'folderpath');

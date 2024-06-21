@@ -67,10 +67,12 @@ class PhocaDownloadCpControllerPhocaDownloadManager extends FormController
 
 		$cid	= Factory::getApplication()->input->get('cid', array(), '', 'array');
 		$returnUrl	= Factory::getApplication()->input->get( 'return-url', null, 'post', 'base64' );//includes field
+		$manager		= Factory::getApplication()->input->get( 'manager', 'file', 'string' );
+
 
 		if ($cid[0] != '') {
 
-			$filePath	= PhocaDownloadPath::getPathSet('file');
+			$filePath	= PhocaDownloadPath::getPathSet($manager);
 			$fileToRemove = $filePath['orig_abs_ds']. $cid[0];
 
 			if (File::exists($fileToRemove)) {
@@ -79,7 +81,7 @@ class PhocaDownloadCpControllerPhocaDownloadManager extends FormController
 
 				$query = 'SELECT a.filename'
 				.' FROM #__phocadownload AS a'
-				.' WHERE a.filename = '.$db->quote($cid[0])
+				.' WHERE a.filename = '.$db->quote($cid[0]) . ' OR a.filename_play = '.$db->quote($cid[0]). ' OR a.filename_preview = '.$db->quote($cid[0])
 				.' ORDER BY a.id';
 				$db->setQuery($query, 0, 1);
 				$filename = $db->loadObject();

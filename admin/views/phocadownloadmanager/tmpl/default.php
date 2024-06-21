@@ -19,7 +19,7 @@ JHtml::_('formbehavior.chosen', 'select');*/
 
 $r 			=  new PhocaDownloadRenderAdminView();
 
-if ($this->manager == 'filemultiple') {
+//if ($this->manager == 'filemultiple') {
 
     Factory::getDocument()->addScriptDeclaration('
 	
@@ -64,7 +64,7 @@ if ($this->manager == 'filemultiple') {
 		//Joomla.submitform(task);
 	}');
 
-}
+//}
 
 echo '<div id="phocadownloadmanager">';
 
@@ -79,6 +79,8 @@ if ($this->manager == 'filemultiple') {
 	echo '</div>'. "\n";
 
 	echo '</div>'. "\n";
+} else {
+    echo $r->startForm($this->t['o'], $this->t['task'], 'adminForm', 'adminForm');
 }
 
 if ($this->manager == 'filemultiple') {
@@ -97,6 +99,7 @@ echo '<th class="hidden-phone ph-check">'. "\n";
 if ($this->manager == 'filemultiple') {
 	echo '<input type="checkbox" name="checkall-toggle" value="" title="'.Text::_('JGLOBAL_CHECK_ALL').'" onclick="Joomla.checkAll(this)" />'. "\n";
 } else {
+    echo '<div style="display:none"><input type="checkbox" name="checkall-toggle" value="" title="'.Text::_('JGLOBAL_CHECK_ALL').'" onclick="Joomla.checkAll(this)" /></div>'. "\n";
 	echo '';
 }
 echo '</th>'. "\n";
@@ -147,19 +150,24 @@ if (count($this->files) > 0 || count($this->folders) > 0) { ?>
 echo '</tbody>'
 .'</table>';
 
-if ($this->manager == 'filemultiple') {
+
+// we have now delete function
+
+//if ($this->manager == 'filemultiple') {
 
 	echo '<input type="hidden" name="task" value="" />'. "\n";
 	echo '<input type="hidden" name="boxchecked" value="0" />'. "\n";
 	echo '<input type="hidden" name="layout" value="edit" />'. "\n";
     echo '<input type="hidden" name="return-url" value="'. $this->returnUrl.'" />';
+    echo '<input type="hidden" name="manager" value="'. $this->manager.'" />';
 	echo HTMLHelper::_('form.token');
 	echo $r->endForm();
 
 	echo '</div>';
 	echo '<div class="clearfix"></div>';
 
-} ?>
+//}
+?>
 
 <div style="border-bottom:1px solid #cccccc;margin-bottom: 10px">&nbsp;</div>
 
