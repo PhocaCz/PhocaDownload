@@ -128,7 +128,7 @@ if (!empty($this->files)) {
 			// pdbuttonplay
 			$pdButtonPlay = '';
 
-			if (isset($v->filename_play) && $v->filename_play != '') {
+			if ($this->t['display_play'] == 1 && isset($v->filename_play) && $v->filename_play != '') {
 				$fileExt 	= PhocaDownloadFile::getExtension($v->filename_play);
 				$canPlay	= PhocaDownloadFile::canPlay($v->filename_play);
 
@@ -145,7 +145,6 @@ if (!empty($this->files)) {
 							$buttonPlOptions = $this->t['buttonpl']->optionsmp3;
 							$dataType="play-thin";
 						}
-
 
 						$pdButtonPlay = '<a class="btn btn-danger"  href="'.$playLink.'" onclick="'. $buttonPlOptions.'" >'. Text::_('COM_PHOCADOWNLOAD_PLAY').'</a>';
 					} else {
@@ -173,7 +172,7 @@ if (!empty($this->files)) {
 
 			// pdbuttonpreview
 			$pdButtonPreview = '';
-			if (isset($v->filename_preview) && $v->filename_preview != '') {
+			if ($this->t['display_preview'] == 1 && isset($v->filename_preview) && $v->filename_preview != '') {
 				$fileExt = PhocaDownloadFile::getExtension($v->filename_preview);
 				if ($fileExt == 'pdf' || $fileExt == 'jpeg' || $fileExt == 'jpg' || $fileExt == 'png' || $fileExt == 'gif') {
 
@@ -204,7 +203,6 @@ if (!empty($this->files)) {
 							//$pdButtonPreview .= '<a class="btn btn-warning pd-bs-modal-button" href="'.$previewLink.'" rel="'. $this->t['buttonpr']->optionsimg.'" >'. JText::_('COM_PHOCADOWNLOAD_PREVIEW').'</a>';
 
 							//$pdButtonPreview = '<a class="btn btn-warning pd-bs-modal-button" data-toggle="modal" data-target="#phModalPreview" data-href="'.$previewLink.'" '. $this->t['buttonpr']->optionsimgB.' >'. Text::_('COM_PHOCADOWNLOAD_PREVIEW').'</a>';
-
 							$pdButtonPreview = '<a class="btn btn-warning pd-bs-modal-button" data-type="'.$dataType.'" data-title="'. Text::_('COM_PHOCADOWNLOAD_PREVIEW').'" href="'.$previewLink.'">'. Text::_('COM_PHOCADOWNLOAD_PREVIEW').'</a>';
 
 						}

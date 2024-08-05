@@ -902,13 +902,14 @@ margin-left: 5px;
     height: 40%;
 }
 #pdCategoryModal.image .modal-content {
-	height: 40%;
+	height: 70%;
 }
 
 #pdCategoryModal.document .modal-content {
 	height: 80%;
 }
 
+#pdCategoryModal .modal-body iframe html body,
 #pdCategoryModal.play-thin .modal-body iframe html body {
 	display: flex;
 	align-items: center;

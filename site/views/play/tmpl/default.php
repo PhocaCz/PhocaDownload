@@ -23,7 +23,7 @@ if ($rightDisplay == 1) {
 	if ($this->t['html5_play'] == 1 && $this->t['filetype'] != 'flv') {
 
         // style because of iframe
-        echo '<div style="display: flex;align-items: center;justify-content: center;"class="ph-media-iframe-box">';
+        echo '<div style="display: flex;align-items: center;justify-content: center;" class="ph-media-iframe-box">';
 		if ($this->t['filetype'] == 'mp3') {
 			echo '<audio width="'.$this->t['playerwidth'].'" height="'.$this->t['playerheight'].'" style="margin-top: 10px;" controls>';
 			echo '<source src="'.$this->t['playfilewithpath'].'" type="audio/mpeg">';
