@@ -8,10 +8,13 @@
  * @copyright Copyright (C) Jan Pavelka www.phoca.cz
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
+
 defined('_JEXEC') or die();
+
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Pagination\Pagination;
+use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Client\ClientHelper;
 use Joomla\CMS\Component\ComponentHelper;
@@ -31,9 +34,19 @@ class PhocaDownloadModelUser extends BaseDatabaseModel
 	var $_pagination_files 		= null;
 	var $_context_files			= 'com_phocadownload.phocadownloaduserfiles';
 
+	protected $event_before_save = null;
+	protected $event_after_save = null;
+
 
 	function __construct() {
 		parent::__construct();
+
+		//if (isset($config['event_before_save'])) {
+        //    $this->event_before_save = $config['event_before_save'];
+        //} elseif (empty($this->event_before_save)) {
+            $this->event_before_save = 'onContentBeforeSave';
+        //}
+		$this->event_after_save = 'onContentAfterSave';
 
 		$app	= Factory::getApplication();
 		// SubCategory
@@ -415,9 +428,11 @@ class PhocaDownloadModelUser extends BaseDatabaseModel
 	function _save($data, $filename, &$errSaveMsg, $fileExists = 0) {
 
 		$user 	= Factory::getUser();
+		$app = Factory::getApplication();
 
 		$paramsC 					= ComponentHelper::getParams('com_phocadownload') ;
 		$default_access 			= $paramsC->get( 'default_access', 1 );
+		$frontend_run_events 		= $paramsC->get( 'frontend_run_events', 0 );
 		$fileId = false;
 		if ($fileExists == 1) {
 			// We not only owerwrite the file but we must update it
@@ -441,8 +456,10 @@ class PhocaDownloadModelUser extends BaseDatabaseModel
 
 		$row = $this->getTable('phocadownload');
 
+		$isNew = true;
 		if (isset($fileId->id) && (int)$fileId->id > 0) {
 			$data['id'] = (int)$fileId->id;
+			$isNew = false;
 		}
 
 
@@ -504,6 +521,44 @@ class PhocaDownloadModelUser extends BaseDatabaseModel
 			return false;
 		}
 
+		/*
+		PluginHelper::importPlugin($this->events_map['save']);
+		$result = $app->triggerEvent($this->event_before_save, array($this->option.'.'.$this->name, $row, $isNew, $data));
+		if (\in_array(false, $result, true)) {
+			$this->setError($row->getError());
+			return false;
+		}
+
+		// Store the data.
+		/*if (!$table->store()) {
+			throw new Exception($table->getError(), 500);
+			return false;
+		}*/
+
+		// Trigger the before save event.
+		if ($frontend_run_events == 1) {
+			PluginHelper::importPlugin('content');
+			$context    = $this->option . '.' . 'file';// com_phocadownload.file
+			$table      = $row;
+			$dispatcher = $this->getDispatcher();
+
+			// Before Save
+			$beforeSaveEvent = new Joomla\CMS\Event\Model\BeforeSaveEvent($this->event_before_save, [
+				'context' => $context,
+				'subject' => $table,
+				'isNew' => $isNew,
+				'data' => $data,
+			]);
+			$result          = $dispatcher->dispatch($this->event_before_save, $beforeSaveEvent)->getArgument('result', []);
+			//$result = $app->triggerEvent($this->event_before_save, array($context, $row, $isNew, $data));
+
+
+			/*if (\in_array(false, $result, true)) {
+                $this->setError($table->getError());
+                return false;
+            }*/
+		}
+
 		// Store the Phoca gallery table to the database
 		if (!$row->store()) {
 			//throw new Exception($this->_db->getError());
@@ -511,6 +566,16 @@ class PhocaDownloadModelUser extends BaseDatabaseModel
 			return false;
 		}
 
+		if ($frontend_run_events == 1) {
+			// After Save
+			$afterSaveEvent = new Joomla\CMS\Event\Model\AfterSaveEvent($this->event_after_save, [
+				'context' => $context,
+				'subject' => $table,
+				'isNew' => $isNew,
+				'data' => $data,
+			]);
+			$result         = $dispatcher->dispatch($this->event_after_save, $afterSaveEvent)->getArgument('result', []);
+		}
 		PhocaDownloadLog::log($row->id, 2);
 
 		return true;

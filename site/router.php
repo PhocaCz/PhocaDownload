@@ -50,10 +50,18 @@ class PhocadownloadRouter extends RouterView
 		//$play->setKey('id')->setParent($category, 'catid');//->setNestable();
 		//$this->registerView($play);
 
-		$views = array('play', 'download', 'user');
+		$views = array('play', 'user');
         foreach ($views as $k => $v) {
             $item = new RouterViewConfiguration($v);
 		    $item->setName($v)->setParent($file, 'id')->setParent($category, 'catid');
+		    $this->registerView($item);
+        }
+
+        $views = array('download');
+        foreach ($views as $k => $v) {
+            $item = new RouterViewConfiguration($v);
+		    //$item->setName($v)->setParent($file, 'id')->setParent($category, 'catid');
+            $item->setName($v)->setParent($file, 'id')->setParent($categories, 'parent_id');
 		    $this->registerView($item);
         }
 
