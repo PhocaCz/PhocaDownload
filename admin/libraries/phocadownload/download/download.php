@@ -253,7 +253,9 @@ class PhocaDownloadDownload
 					//@readfile($absOrRelFile);
 
 					// Try to deliver in chunks
-					@set_time_limit(0);
+					if (function_exists('set_time_limit')) {
+						@set_time_limit(0);
+					}
 					$fp = @fopen($absOrRelFile, 'rb');
 					if ($fp !== false) {
 						while (!feof($fp)) {

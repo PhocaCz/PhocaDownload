@@ -611,6 +611,8 @@ class PhocaDownloadCpModelPhocaDownloadFile extends AdminModel
 		$paramsC 		= ComponentHelper::getParams('com_phocadownload');
 		$deleteExistingFiles 	= $paramsC->get( 'delete_existing_files', 0 );
 
+		$table		= $this->getTable();
+
 		if (count( $cid )) {
 			ArrayHelper::toInteger($cid);
 			$cids = implode( ',', $cid );
@@ -624,12 +626,25 @@ class PhocaDownloadCpModelPhocaDownloadFile extends AdminModel
 
 
 			//Delete it from DB
-			$query = 'DELETE FROM #__phocadownload'
+			/*$query = 'DELETE FROM #__phocadownload'
 				. ' WHERE id IN ( '.$cids.' )';
 			$this->_db->setQuery( $query );
 			if(!$this->_db->execute()) {
 				throw new Exception($this->_db->getError());
 				return false;
+			}*/
+			$app		= Factory::getApplication();
+			PluginHelper::importPlugin($this->events_map['delete']);
+			foreach ($cid as $i => $pk) {
+				if ($table->load($pk)) {
+					if ($this->canDelete($table)) {
+						if (!$table->delete($pk)) {
+							throw new Exception($table->getError(), 500);
+							return false;
+						}
+						$app->triggerEvent($this->event_after_delete, array($this->option.'.'.$this->name, $table));
+					}
+				}
 			}
 
 			//Delete tags from DB
@@ -665,6 +680,16 @@ class PhocaDownloadCpModelPhocaDownloadFile extends AdminModel
 					}
 				}
 			}
+
+
+			/*$app		= Factory::getApplication();
+			PluginHelper::importPlugin($this->events_map['delete']);
+			$result = $app->triggerEvent($this->event_after_delete, array($this->option.'.'.$this->name, $table));
+			if (\in_array(false, $result, true)) {
+				$this->setError($table->getError());
+				return false;
+			}*/
+
 
 		}
 		return true;

@@ -235,7 +235,6 @@ class PhocaDownloadLayout
 			$sA = explode(',', $string);
 			if (!empty($sA)) {
 				foreach ($sA as $k => $v) {
-
 					// Specific cases for Joomla! CMS
 					switch($v) {
 						case '1.5': $c = 'pd-j-15'; break;
@@ -245,10 +244,10 @@ class PhocaDownloadLayout
 						case '3.5': $c = 'pd-j-35'; break;
 						case '4.x': $c = 'pd-j-4x'; break;
 						case '4.0': $c = 'pd-j-40'; break;
-						default: $c = 'label-default bg-default';break;
+						default: $c = 'label-default bg-default label-'. PhocaDownloadUtils::getAliasName($v);break;
 					}
 
-					$o[] = '<span class="label badge '.$c.'">'.$v.'</span>';
+					$o[] = '<span class="label badge '.$c.'">'.trim($v).'</span>';
 				}
 			}
 		}
