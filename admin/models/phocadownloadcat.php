@@ -124,7 +124,7 @@ class PhocaDownloadCpModelPhocaDownloadCat extends AdminModel
 		//$condition[] = 'state >= 0';
 		return $condition;
 	}
-	
+
 	/*
 	 * Custom Save method - libraries/joomla/application/component/modeladmin.php
 	 */
@@ -191,11 +191,11 @@ class PhocaDownloadCpModelPhocaDownloadCat extends AdminModel
 		}
 
 		// Trigger the onContentBeforeSave event.
-		$result = Factory::getApplication()->triggerEvent($this->event_before_save, array($this->option.'.'.$this->name, $table, $isNew, $data));
+		/*$result = Factory::getApplication()->triggerEvent($this->event_before_save, array($this->option.'.'.$this->name, $table, $isNew, $data));
 		if (in_array(false, $result, true)) {
 			$this->setError($table->getError());
 			return false;
-		}
+		}*/
 		/*
 		$result = $dispatcher->trigger($this->event_before_save, array($this->option.'.'.$this->name, $table, $isNew));
 		if (in_array(false, $result, true)) {
