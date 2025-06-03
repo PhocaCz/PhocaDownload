@@ -19,9 +19,9 @@ use Joomla\CMS\Session\Session;
 use Joomla\CMS\Client\ClientHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Filesystem\File;
-use Joomla\CMS\Filesystem\Path;
-use Joomla\CMS\Filesystem\Folder;
+use Joomla\Filesystem\File;
+use Joomla\Filesystem\Path;
+use Joomla\Filesystem\Folder;
 jimport('joomla.application.component.model');
 jimport( 'joomla.filesystem.folder' );
 jimport( 'joomla.filesystem.file' );
@@ -159,7 +159,7 @@ class PhocaDownloadModelUser extends BaseDatabaseModel
 
 		if (!$edit) {
 			//If this file doesn't exists don't save it
-			if (!phocadownloadFile::existsFileOriginal($data['filename'])) {
+			if (!PhocaDownloadFile::existsFileOriginal($data['filename'])) {
 				$this->set Error('File not exists');
 				return false;
 			}
@@ -300,14 +300,14 @@ class PhocaDownloadModelUser extends BaseDatabaseModel
 					return false;
 				}
 
-				if (File::exists($filepath) && $overwriteExistingFiles == 0) {
+				if (PhocaDownloadFile::exists($filepath) && $overwriteExistingFiles == 0) {
 					$errUploadMsg = Text::_("COM_PHOCADOWNLOAD_FILE_ALREADY_EXISTS");
 					return false;
 				}
 
 				// Overwrite file and add no new item to database
 				$fileExists = 0;
-				if (File::exists($filepath) && $overwriteExistingFiles == 1) {
+				if (PhocaDownloadFile::exists($filepath) && $overwriteExistingFiles == 1) {
 					$fileExists = 1;
 				}
 
@@ -317,7 +317,7 @@ class PhocaDownloadModelUser extends BaseDatabaseModel
 				} else {
 
 					// Saving file name into database with relative path
-					if (!File::exists($filepathUserFolder . '/' ."index.html")) {
+					if (!PhocaDownloadFile::exists($filepathUserFolder . '/' ."index.html")) {
 						$data = "<html>\n<body bgcolor=\"#FFFFFF\">\n</body>\n</html>";
 						File::write($filepathUserFolder . '/' ."index.html", $data);
 					}
@@ -344,7 +344,7 @@ class PhocaDownloadModelUser extends BaseDatabaseModel
 
 
 							// 1. Care about upload
-							if (File::exists($filepathPAP) && $overwriteExistingFiles == 0) {
+							if (PhocaDownloadFile::exists($filepathPAP) && $overwriteExistingFiles == 0) {
 								//$errUploadMsg = JText::_("COM_PHOCADOWNLOAD_FILE_ALREADY_EXISTS");
 								//return false;
 								$uploadPAP = 0; // don't upload if it exists, it is not main file, don't do false and exit
@@ -352,14 +352,14 @@ class PhocaDownloadModelUser extends BaseDatabaseModel
 
 							// Overwrite file and add no new item to database
 							$fileExistsPAP = 0;
-							if (File::exists($filepathPAP) && $overwriteExistingFiles == 1) {
+							if (PhocaDownloadFile::exists($filepathPAP) && $overwriteExistingFiles == 1) {
 								$fileExistsPAP = 1;
 							}
 
 							if ($uploadPAP == 0) {
 
 							} else {
-								if (!Folder::exists($filepathUserFolderPAP)) {
+								if (!PhocaDownloadFile::folderExists($filepathUserFolderPAP)) {
 									if (Folder::create($filepathUserFolderPAP)) {
 										$data = "<html>\n<body bgcolor=\"#FFFFFF\">\n</body>\n</html>";
 										File::write($filepathUserFolderPAP . '/' ."index.html", $data);

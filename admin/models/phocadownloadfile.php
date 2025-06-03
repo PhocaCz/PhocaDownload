@@ -17,9 +17,9 @@ use Joomla\CMS\Application\ApplicationHelper;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Filesystem\Path;
-use Joomla\CMS\Filesystem\File;
-use Joomla\CMS\Filesystem\Folder;
+use Joomla\Filesystem\Path;
+use Joomla\Filesystem\File;
+use Joomla\Filesystem\Folder;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Filter\OutputFilter;
 
@@ -298,7 +298,7 @@ class PhocaDownloadCpModelPhocaDownloadFile extends AdminModel
 
 
 				// 1. Care about upload
-				if (File::exists($filepathPAP) && $overwriteExistingFiles == 0) {
+				if (PhocaDownloadFile::exists($filepathPAP) && $overwriteExistingFiles == 0) {
 					//$errUploadMsg = JText::_("COM_PHOCADOWNLOAD_FILE_ALREADY_EXISTS");
 					//return false;
 					$uploadPAP = 0; // don't upload if it exists, it is not main file, don't do false and exit
@@ -306,7 +306,7 @@ class PhocaDownloadCpModelPhocaDownloadFile extends AdminModel
 
 				// Overwrite file and add no new item to database
 				$fileExistsPAP = 0;
-				if (File::exists($filepathPAP) && $overwriteExistingFiles == 1) {
+				if (PhocaDownloadFile::exists($filepathPAP) && $overwriteExistingFiles == 1) {
 					$fileExistsPAP = 1;
 
 					if ($canPlay == 1) {
@@ -329,7 +329,7 @@ class PhocaDownloadCpModelPhocaDownloadFile extends AdminModel
 				if ($uploadPAP == 0) {
 
 				} else {
-					if (!Folder::exists($filepathPAPFolder)) {
+					if (!PhocaDownloadFile::folderExists($filepathPAPFolder)) {
 						if (Folder::create($filepathPAPFolder)) {
 							$dataFile = "<html>\n<body bgcolor=\"#FFFFFF\">\n</body>\n</html>";
 							File::write($filepathPAPFolder . '/' ."index.html", $dataFile);
@@ -391,7 +391,7 @@ class PhocaDownloadCpModelPhocaDownloadFile extends AdminModel
 			if ($canPlay || $canPreview) {
 
 				$uploadPAP = 1;// upload file for preview and play
-				if (File::exists($filepathPAP) && $overwriteExistingFiles == 0) {
+				if (PhocaDownloadFile::exists($filepathPAP) && $overwriteExistingFiles == 0) {
 					//$errUploadMsg = JText::_("COM_PHOCADOWNLOAD_FILE_ALREADY_EXISTS");
 					//return false;
 					$uploadPAP = 0; // don't upload if it exists, it is not main file, don't do false and exit
@@ -416,7 +416,7 @@ class PhocaDownloadCpModelPhocaDownloadFile extends AdminModel
 
 				// Overwrite file and add no new item to database
 				$fileExistsPAP = 0;
-				if (File::exists($filepathPAP) && $overwriteExistingFiles == 1) {
+				if (PhocaDownloadFile::exists($filepathPAP) && $overwriteExistingFiles == 1) {
 					$fileExistsPAP = 1;
 
 					if ($canPlay == 1) {
@@ -439,7 +439,7 @@ class PhocaDownloadCpModelPhocaDownloadFile extends AdminModel
 				if ($uploadPAP == 0) {
 
 				} else {
-					if (!Folder::exists($filepathPAPFolder)) {
+					if (!PhocaDownloadFile::folderExists($filepathPAPFolder)) {
 						if (Folder::create($filepathPAPFolder)) {
 							$dataFile = "<html>\n<body bgcolor=\"#FFFFFF\">\n</body>\n</html>";
 							File::write($filepathPAPFolder . '/' ."index.html", $dataFile);

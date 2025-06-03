@@ -8,7 +8,7 @@
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Filesystem\Path;
+use Joomla\Filesystem\Path;
 use Joomla\CMS\Uri\Uri;
 
 class PhocaDownloadPath

@@ -9,7 +9,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Filesystem\Folder;
+use Joomla\Filesystem\Folder;
 use Joomla\CMS\Installer\Installer;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Application\ApplicationHelper;
@@ -24,11 +24,11 @@ class PhocaDownloadUtils
 
 	public static function getExtensionVersion($c = 'phocadownload') {
 		$folder = JPATH_ADMINISTRATOR .'/components/com_'.$c;
-		if (Folder::exists($folder)) {
+		if (PhocaDownloadFile::folderExists($folder)) {
 			$xmlFilesInDir = Folder::files($folder, '.xml$');
 		} else {
 			$folder = JPATH_SITE . '/components/com_'.$c;
-			if (Folder::exists($folder)) {
+			if (PhocaDownloadFile::folderExists($folder)) {
 				$xmlFilesInDir = Folder::files($folder, '.xml$');
 			} else {
 				$xmlFilesInDir = null;

@@ -14,9 +14,9 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Client\ClientHelper;
-use Joomla\CMS\Filesystem\File;
-use Joomla\CMS\Filesystem\Path;
-use Joomla\CMS\Filesystem\Folder;
+use Joomla\Filesystem\File;
+use Joomla\Filesystem\Path;
+use Joomla\Filesystem\Folder;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -121,7 +121,7 @@ class PhocaDownloadFileUpload
 				// Get the real size - if chunk is uploaded, it is only a part size, so we must compute all size
 				// If there is last chunk we can computhe the whole size
 				if ($lastChunk == $chunks) {
-					if (File::exists($filepathImgTemp) && File::exists($file['tmp_name'])) {
+					if (PhocaDownloadFile::exists($filepathImgTemp) && PhocaDownloadFile::exists($file['tmp_name'])) {
 						$realSize = filesize($filepathImgTemp) + filesize($file['tmp_name']);
 					}
 				}
@@ -140,7 +140,7 @@ class PhocaDownloadFileUpload
 					File::delete($filepathImgFinal);
 				}
 
-				if (File::exists($filepathImgFinal)) {
+				if (PhocaDownloadFile::exists($filepathImgFinal)) {
 					if($lastChunk == $chunks){
 						@Folder::delete($filepathFolderTemp);
 					}
@@ -164,12 +164,12 @@ class PhocaDownloadFileUpload
 				}
 
 				// Ok create temp folder and add chunks
-				if (!Folder::exists($filepathFolderTemp)) {
+				if (!PhocaDownloadFile::folderExists($filepathFolderTemp)) {
 					@Folder::create($filepathFolderTemp);
 				}
 
 				// Remove old temp files
-				if (Folder::exists($filepathFolderTemp)) {
+				if (PhocaDownloadFile::folderExists($filepathFolderTemp)) {
 					$dirFiles = Folder::files($filepathFolderTemp);
 					if (!empty($dirFiles)) {
 						foreach ($dirFiles as $fileS) {
@@ -304,7 +304,7 @@ class PhocaDownloadFileUpload
 					'details' => Text::_($errUploadMsg))));
 				}
 
-				if (File::exists($filepathImgFinal) && $overwriteExistingFiles == 0) {
+				if (PhocaDownloadFile::exists($filepathImgFinal) && $overwriteExistingFiles == 0) {
 					jexit(json_encode(array( 'jsonrpc' => '2.0', 'result' => 'error', 'code' => 108,
 					'message' => Text::_('COM_PHOCADOWNLOAD_ERROR').': ',
 					'details' => Text::_('COM_PHOCADOWNLOAD_FILE_ALREADY_EXISTS'))));
@@ -420,7 +420,7 @@ class PhocaDownloadFileUpload
 				}
 			}
 
-			if (File::exists($filepath) && $overwriteExistingFiles == 0) {
+			if (PhocaDownloadFile::exists($filepath) && $overwriteExistingFiles == 0) {
 				if ($return) {
 					$app->enqueueMessage(Text::_("COM_PHOCADOWNLOAD_FILE_ALREADY_EXISTS"), 'error');
 					$app->redirect(base64_decode($return).'&manager='.(string)$manager.'&folder='.$folderUrl);

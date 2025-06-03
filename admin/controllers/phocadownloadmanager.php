@@ -15,7 +15,7 @@ use Joomla\CMS\MVC\Controller\FormController;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
-use Joomla\CMS\Filesystem\File;
+use Joomla\Filesystem\File;
 use Joomla\CMS\Language\Text;
 
 jimport('joomla.application.component.controllerform');
@@ -75,7 +75,7 @@ class PhocaDownloadCpControllerPhocaDownloadManager extends FormController
 			$filePath	= PhocaDownloadPath::getPathSet($manager);
 			$fileToRemove = $filePath['orig_abs_ds']. $cid[0];
 
-			if (File::exists($fileToRemove)) {
+			if (PhocaDownloadFile::exists($fileToRemove)) {
 
 				$db = Factory::getDBO();
 

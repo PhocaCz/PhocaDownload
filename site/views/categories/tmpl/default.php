@@ -9,8 +9,8 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Filesystem\Path;
-use Joomla\CMS\Filesystem\File;
+use Joomla\Filesystem\Path;
+use Joomla\Filesystem\File;
 
 echo '<div id="phoca-dl-categories-box" class="pd-categories-view'.$this->t['p']->get( 'pageclass_sfx' ).'">';
 
@@ -164,7 +164,7 @@ if (!empty($this->t['mostvieweddocs']) && $this->t['displaymostdownload'] == 1) 
 			// FILESIZE
 			if ($value->filename !='') {
 				$absFile = str_replace('/', '/', Path::clean($this->t['absfilepath'] . $value->filename));
-				if (File::exists($absFile)) {
+				if (PhocaDownloadFile::exists($absFile)) {
 					$fileSize = PhocaDownloadFile::getFileSizeReadable(filesize($absFile));
 				} else {
 					$fileSize = '';

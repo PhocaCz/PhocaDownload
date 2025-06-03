@@ -14,9 +14,9 @@ use Joomla\CMS\Session\Session;
 use Joomla\CMS\Client\ClientHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Filesystem\Path;
-use Joomla\CMS\Filesystem\Folder;
-use Joomla\CMS\Filesystem\File;
+use Joomla\Filesystem\Path;
+use Joomla\Filesystem\Folder;
+use Joomla\Filesystem\File;
 jimport('joomla.client.helper');
 jimport('joomla.filesystem.file');
 jimport('joomla.filesystem.folder');
@@ -75,7 +75,7 @@ class PhocaDownloadCpControllerPhocaDownloadUpload extends PhocaDownloadCpContro
 		if (strlen($folderNew) > 0) {
 			$folder = Path::clean($path['orig_abs_ds'].$parent.'/'.$folderNew);
 
-			if (!Folder::exists($folder) && !File::exists($folder)) {
+			if (!PhocaDownloadFile::folderExists($folder) && !PhocaDownloadFile::exists($folder)) {
 				//JFolder::create($path, $folder_permissions );
 
 				switch((int)$folder_permissions) {

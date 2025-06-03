@@ -15,7 +15,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Session\Session;
-use Joomla\CMS\Filesystem\File;
+use Joomla\Filesystem\File;
 use Joomla\CMS\Uri\Uri;
 
 // Frontend editor - button plugin
@@ -584,7 +584,7 @@ class PhocaDownloadRenderAdminViews extends AdminViews
 
 		if ($avatarAbs != '' && $avatarRel != '') {
 			// AVATAR
-			if (File::exists($avatarAbs.$item->avatar)){
+			if (PhocaDownloadFile::exists($avatarAbs.$item->avatar)){
 				$o .= '<a class="'. $button->methodname.'"'
 				//.' title="'. $button->text.'"'
 				.' href="'.Uri::root().$avatarRel.$item->avatar.'" '

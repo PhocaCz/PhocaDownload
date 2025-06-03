@@ -12,12 +12,12 @@ defined('_JEXEC') or die();
 use Joomla\CMS\MVC\Model\AdminModel;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Filesystem\Path;
+use Joomla\Filesystem\Path;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Object\CMSObject;
-use Joomla\CMS\Filesystem\Folder;
-use Joomla\CMS\Filesystem\File;
+use Joomla\Filesystem\Folder;
+use Joomla\Filesystem\File;
 use Joomla\CMS\Table\Table;
 jimport('joomla.application.component.modeladmin');
 jimport('joomla.filesystem.folder');
@@ -360,7 +360,7 @@ class PhocaDownloadCpModelPhocaDownloadM extends AdminModel
 
 				//$ext = strtolower(JFile::getExt($filename));
 
-				if (File::exists($fullPath.'/'.$filename) &&
+				if (PhocaDownloadFile::exists($fullPath.'/'.$filename) &&
 					substr($filename, 0, 1) != '.' &&
 					strtolower($filename) !== 'index.html' &&
 					!$this->_FileExist($existingImages, $storedfilename, $category_id) ) {
@@ -481,7 +481,7 @@ class PhocaDownloadCpModelPhocaDownloadM extends AdminModel
 
 
 			// 1. Care about upload
-			if (File::exists($filepathPAP) && $overwriteExistingFiles == 0) {
+			if (PhocaDownloadFile::exists($filepathPAP) && $overwriteExistingFiles == 0) {
 				//$errUploadMsg = JText::_("COM_PHOCADOWNLOAD_FILE_ALREADY_EXISTS");
 				//return false;
 				$uploadPAP = 0; // don't upload if it exists, it is not main file, don't do false and exit
@@ -489,7 +489,7 @@ class PhocaDownloadCpModelPhocaDownloadM extends AdminModel
 
 			// Overwrite file and add no new item to database
 				$fileExistsPAP = 0;
-				if (File::exists($filepathPAP) && $overwriteExistingFiles == 1) {
+				if (PhocaDownloadFile::exists($filepathPAP) && $overwriteExistingFiles == 1) {
 					$fileExistsPAP = 1;
 
 					if ($canPlay == 1) {
@@ -512,7 +512,7 @@ class PhocaDownloadCpModelPhocaDownloadM extends AdminModel
 			if ($uploadPAP == 0) {
 
 			} else {
-				if (!Folder::exists($filepathPAPFolder)) {
+				if (!PhocaDownloadFile::folderExists($filepathPAPFolder)) {
 					if (Folder::create($filepathPAPFolder)) {
 						$dataFile = "<html>\n<body bgcolor=\"#FFFFFF\">\n</body>\n</html>";
 						File::write($filepathPAPFolder . '/' ."index.html", $dataFile);

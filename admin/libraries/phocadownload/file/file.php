@@ -7,9 +7,9 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
-use Joomla\CMS\Filesystem\File;
+use Joomla\Filesystem\File;
 use Joomla\CMS\Uri\Uri;
-use Joomla\CMS\Filesystem\Path;
+use Joomla\Filesystem\Path;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Component\ComponentHelper;
@@ -241,7 +241,7 @@ class PhocaDownloadFile
 		//$format = JText::_($format);
 		$path			= PhocaDownloadPath::getPathSet();
 		$fileNameAbs	= Path::clean($path['orig_abs'] . '/' . $filename);
-		if (File::exists($fileNameAbs)) {
+		if (PhocaDownloadFile::exists($fileNameAbs)) {
 			switch($function) {
 				case 2:
 					$fileTime = filectime($fileNameAbs);
@@ -434,5 +434,13 @@ class PhocaDownloadFile
 		}
 		return false;
 	}
+
+	public static function exists($file) {
+        return is_file(Path::clean($file));
+    }
+
+	public static function folderExists($path) {
+        return is_dir(Path::clean($path));
+    }
 }
 ?>

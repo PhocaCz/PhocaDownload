@@ -14,10 +14,10 @@ defined('_JEXEC') or die();
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
-use Joomla\CMS\Filesystem\File;
+use Joomla\Filesystem\File;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Plugin\PluginHelper;
-use Joomla\CMS\Filesystem\Path;
+use Joomla\Filesystem\Path;
 use Joomla\CMS\Table\Table;
 jimport('joomla.application.component.model');
 jimport( 'joomla.filesystem.folder' );
@@ -543,7 +543,7 @@ class PhocaDownloadDownload
 				$absFile = str_replace('\\', '/', Path::clean($filePath['orig_abs_ds'] . $filenameT));
 			}
 
-			if (File::exists($absFile)) {
+			if (PhocaDownloadFile::exists($absFile)) {
 				$outcome['file'] 		= $absFile;
 				$outcome['directlink']	= $directlinkT;
 				$outcome['externallink']= $linkExternalT;

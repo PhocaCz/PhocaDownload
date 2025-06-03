@@ -11,8 +11,8 @@
 defined('_JEXEC') or die();
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Uri\Uri;
-use Joomla\CMS\Filesystem\Path;
-use Joomla\CMS\Filesystem\File;
+use Joomla\Filesystem\Path;
+use Joomla\Filesystem\File;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
@@ -110,7 +110,7 @@ class PhocaDownloadLayout
 		$size = '';
 		if ($filename != '') {
 			$absFile = str_replace('\\', '/', Path::clean($this->fileAbsPath . $filename));
-			if (File::exists($absFile)) {
+			if (PhocaDownloadFile::exists($absFile)) {
 				$size = PhocaDownloadFile::getFileSizeReadable(filesize($absFile));
 			} else {
 				$size = '';

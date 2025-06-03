@@ -8,10 +8,12 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
-use Joomla\CMS\Filesystem\Folder;
-use Joomla\CMS\Filesystem\File;
+use Joomla\Filesystem\Folder;
+use Joomla\Filesystem\File;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+use Joomla\Filesystem\Path;
+
 jimport( 'joomla.filesystem.folder' );
 
 class com_phocadownloadInstallerScript
@@ -43,7 +45,7 @@ class com_phocadownloadInstallerScript
 
 		$msg = '';
 		foreach ($folder as $k => $v) {
-			if (!Folder::exists( $v[1])) {
+			if (!is_dir(Path::clean( $v[1]))) {
 				if (Folder::create( $v[1], 0755 )) {
 					$data = "<html>\n<body bgcolor=\"#FFFFFF\">\n</body>\n</html>";
 					File::write($v[1].'/'."index.html", $data);
