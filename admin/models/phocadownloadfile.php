@@ -22,12 +22,14 @@ use Joomla\Filesystem\File;
 use Joomla\Filesystem\Folder;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Filter\OutputFilter;
-
+use Phoca\PhocaDownload\MVC\Model\AdminModelTrait;
 
 jimport('joomla.application.component.modeladmin');
 
 class PhocaDownloadCpModelPhocaDownloadFile extends AdminModel
 {
+
+    use AdminModelTrait;
 	protected	$option 		= 'com_phocadownload';
 	protected 	$text_prefix	= 'com_phocadownload';
 	public 		$typeAlias 		= 'com_phocadownload.phocadownloadfile';

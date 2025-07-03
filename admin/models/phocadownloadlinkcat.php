@@ -10,10 +10,13 @@
  */
 defined('_JEXEC') or die();
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Phoca\PhocaDownload\MVC\Model\AdminModelTrait;
+
 jimport('joomla.application.component.model');
 
 class PhocaDownloadCpModelPhocaDownloadLinkCat extends BaseDatabaseModel
 {
+	use AdminModelTrait;
 	//var $_data_sec;
 	var $_data_cat;
 	

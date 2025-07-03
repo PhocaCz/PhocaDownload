@@ -11,6 +11,7 @@ use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\Utilities\ArrayHelper;
+use Phoca\PhocaDownload\MVC\Model\AdminModelTrait;
 
 jimport( 'joomla.application.component.modellist' );
 jimport( 'joomla.filesystem.folder' );
@@ -18,6 +19,7 @@ jimport( 'joomla.filesystem.file' );
 
 class PhocaDownloadCpModelPhocaDownloadFiles extends ListModel
 {
+	use AdminModelTrait;
 	protected	$option 		= 'com_phocadownload';
 
 	public function __construct($config = array())

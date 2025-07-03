@@ -13,34 +13,37 @@ use Joomla\CMS\MVC\Model\AdminModel;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Application\ApplicationHelper;
+use Phoca\PhocaDownload\MVC\Model\AdminModelTrait;
 jimport('joomla.application.component.modeladmin');
 
 
 class PhocaDownloadCpModelPhocaDownloadLic extends AdminModel
 {
+
+    use AdminModelTrait;
 	protected	$option 		= 'com_phocadownload';
 	protected 	$text_prefix	= 'com_phocadownload';
 	public 		$typeAlias 		= 'com_phocadownload.phocadownloadlic';
-	
+
 	protected function canDelete($record)
 	{
 		//$user = JFactory::getUser();
 		return parent::canDelete($record);
 	}
-	
+
 	protected function canEditState($record)
 	{
 		//$user = JFactory::getUser();
 		return parent::canEditState($record);
 	}
-	
+
 	public function getTable($type = 'PhocaDownloadLic', $prefix = 'Table', $config = array())
 	{
 		return Table::getInstance($type, $prefix, $config);
 	}
-	
+
 	public function getForm($data = array(), $loadData = true) {
-		
+
 		$app	= Factory::getApplication();
 		$form 	= $this->loadForm('com_phocadownload.phocadownloadlic', 'phocadownloadlic', array('control' => 'jform', 'load_data' => $loadData));
 		if (empty($form)) {
@@ -48,7 +51,7 @@ class PhocaDownloadCpModelPhocaDownloadLic extends AdminModel
 		}
 		return $form;
 	}
-	
+
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
@@ -60,7 +63,7 @@ class PhocaDownloadCpModelPhocaDownloadLic extends AdminModel
 
 		return $data;
 	}
-	
+
 	protected function prepareTable($table)
 	{
 		jimport('joomla.filter.output');

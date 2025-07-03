@@ -12,23 +12,26 @@ defined( '_JEXEC' ) or die();
 use Joomla\CMS\MVC\Model\AdminModel;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Factory;
+use Phoca\PhocaDownload\MVC\Model\AdminModelTrait;
 jimport('joomla.application.component.modeladmin');
 
 
 class PhocaDownloadCpModelPhocaDownloadLayout extends AdminModel
 {
+
+    use AdminModelTrait;
 	protected	$option 		= 'com_phocadownload';
 	protected 	$text_prefix	= 'com_phocadownload';
 	public 		$typeAlias 		= 'com_phocadownload.phocadownloadlayout';
-	
-	
+
+
 	public function getTable($type = 'PhocaDownloadLayout', $prefix = 'Table', $config = array())
 	{
 		return Table::getInstance($type, $prefix, $config);
 	}
-	
+
 	public function getForm($data = array(), $loadData = true) {
-		
+
 		$app	= Factory::getApplication();
 		$form 	= $this->loadForm('com_phocadownload.phocadownloadlayout', 'phocadownloadlayout', array('control' => 'jform', 'load_data' => $loadData));
 		if (empty($form)) {
@@ -36,7 +39,7 @@ class PhocaDownloadCpModelPhocaDownloadLayout extends AdminModel
 		}
 		return $form;
 	}
-	
+
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
@@ -48,6 +51,6 @@ class PhocaDownloadCpModelPhocaDownloadLayout extends AdminModel
 
 		return $data;
 	}
-	
+
 }
 ?>

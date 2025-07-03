@@ -12,12 +12,14 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Application\ApplicationHelper;
+use Phoca\PhocaDownload\MVC\Model\AdminModelTrait;
 jimport('joomla.application.component.modellist');
 
 
 
 class PhocaDownloadCpModelPhocaDownloadRaFile extends ListModel
 {
+	use AdminModelTrait;
 	protected	$option 		= 'com_phocadownload';
 	public 		$typeAlias 		= 'com_phocadownload.phocadownloadrafile';
 

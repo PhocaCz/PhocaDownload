@@ -10,6 +10,7 @@ defined('_JEXEC') or die();
 use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
+use Phoca\PhocaDownload\MVC\Model\AdminModelTrait;
 jimport('joomla.application.component.modellist');
 jimport( 'joomla.filesystem.folder' );
 jimport( 'joomla.filesystem.file' );
@@ -17,6 +18,7 @@ jimport( 'joomla.filesystem.file' );
 class PhocaDownloadCpModelPhocaDownloadUploads extends ListModel
 {
 
+	use AdminModelTrait;
 	protected	$option 		= 'com_phocadownload';
 	public 		$context		= 'com_phocadownload.phocadownloaduploads';
 

@@ -10,10 +10,12 @@ defined( '_JEXEC' ) or die();
 use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
+use Phoca\PhocaDownload\MVC\Model\AdminModelTrait;
 jimport('joomla.application.component.modellist');
 
 class PhocaDownloadCpModelPhocaDownloadLics extends ListModel
 {
+	use AdminModelTrait;
 	protected	$option 		= 'com_phocadownload';
 
 	public function __construct($config = array())

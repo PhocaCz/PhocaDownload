@@ -13,12 +13,14 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\Filesystem\Path;
 use Joomla\Filesystem\Folder;
 use Joomla\CMS\Language\Text;
+use Phoca\PhocaDownload\MVC\Model\AdminModelTrait;
 jimport( 'joomla.application.component.modellist' );
 jimport( 'joomla.filesystem.folder' );
 jimport( 'joomla.filesystem.file' );
 
 class PhocaDownloadCpModelPhocaDownloadStyles extends ListModel
 {
+	use AdminModelTrait;
 	protected	$option 		= 'com_phocadownload';
 
 	public function __construct($config = array())

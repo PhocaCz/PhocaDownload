@@ -4,7 +4,7 @@
  * file to provide auto-loading of the classes in this library.
  */
 
-
+JLoader::registerNamespace('\\Phoca\\PhocaDownload', __DIR__ . '/src');
 
 spl_autoload_register ( function ($class) {
 	/*

@@ -5,6 +5,7 @@
 	"license": "GNU/GPL",
 	"projectName": "PhocaDownload",
 	"extensionName": "Phoca Download",
+	"nameSpace": "Phoca\\Component\\PhocaDownload",
 	"projectInitials" : "PD",
 	"description": "Phoca Download is download manager for Joomla! CMS. It includes component, modules and plugins and allows displaying files on website which can be downloaded (previewed, played) by website visitors.",
 	"projectUrl": "https://www.phoca.cz/phocadownload",

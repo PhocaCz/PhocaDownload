@@ -330,6 +330,46 @@ a.upItemLink::before {
     color: #fff;
 }
 
+.phTemplateItems {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top:1em;
+    margin-bottom: 2em;
+}
+
+.phTemplateItem {
+    padding: 1em;
+    text-align: center;
+    width: calc(33% - 0.4em);
+    margin: 0.2em;
+    border-radius: 0.3em;
+}
+
+.phTemplateItem img{
+    width: 100%;
+    height: auto;
+}
+
+.phTemplateItemsInfo {
+    margin: 1em auto;
+}
+.phTemplateItemTitle {
+    font-size: small;
+}
+
+.phTemplateItem a::before {
+    content: none;
+}
+
+.phTemplateItemTitle,
+.phTemplateItemsInfo {
+    color: #fff;
+}
+
+.g5-actions a.g5-button {
+	color: #fff;
+}
+
 </style>";
 	}
 }

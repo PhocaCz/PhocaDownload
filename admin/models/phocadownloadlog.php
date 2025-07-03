@@ -8,10 +8,13 @@
  */
 defined('_JEXEC') or die();
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Phoca\PhocaDownload\MVC\Model\AdminModelTrait;
 jimport('joomla.application.component.model');
 
 class PhocaDownloadCpModelPhocaDownloadLog extends BaseDatabaseModel
 {
+	use AdminModelTrait;
+
 	function __construct() {
 		parent::__construct();
 	}

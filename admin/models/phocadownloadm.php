@@ -19,12 +19,15 @@ use Joomla\CMS\Object\CMSObject;
 use Joomla\Filesystem\Folder;
 use Joomla\Filesystem\File;
 use Joomla\CMS\Table\Table;
+use Phoca\PhocaDownload\MVC\Model\AdminModelTrait;
 jimport('joomla.application.component.modeladmin');
 jimport('joomla.filesystem.folder');
 jimport('joomla.filesystem.file');
 
 class PhocaDownloadCpModelPhocaDownloadM extends AdminModel
 {
+
+    use AdminModelTrait;
 
 	protected $option 		= 'com_phocadownload';
 	protected $text_prefix 	= 'com_phocadownload';

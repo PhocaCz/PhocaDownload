@@ -15,10 +15,13 @@ use Joomla\CMS\Table\Table;
 use Joomla\Registry\Registry;
 use Joomla\CMS\Application\ApplicationHelper;
 use Joomla\Utilities\ArrayHelper;
+use Phoca\PhocaDownload\MVC\Model\AdminModelTrait;
 jimport('joomla.application.component.modeladmin');
 
 class PhocaDownloadCpModelPhocaDownloadDownload extends AdminModel
 {
+
+    use AdminModelTrait;
 	protected	$option 		= 'com_phocadownload';
 	protected 	$text_prefix	= 'com_phocadownload';
 	public 		$typeAlias 		= 'com_phocadownload.phocadownloaddownload';

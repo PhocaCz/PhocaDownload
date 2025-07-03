@@ -12,11 +12,13 @@ defined('_JEXEC') or die();
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Pagination\Pagination;
+use Phoca\PhocaDownload\MVC\Model\AdminModelTrait;
 jimport('joomla.application.component.model');
 use Joomla\String\StringHelper;
 
 class PhocaDownloadCpModelPhocaDownloadLinkFile extends BaseDatabaseModel
 {
+	use AdminModelTrait;
 	var $_data 			= null;
 	var $_total 		= null;
 	var $_pagination 	= null;
