@@ -28,7 +28,7 @@ class PhocaDownloadViewPlay extends HtmlView
 		$uri 			= Uri::getInstance();
 		$model			= $this->getModel();
 		$document		= Factory::getDocument();
-		$fileId			= $app->input->get('id', 0, 'int');
+		$fileId			= $app->getInput()->get('id', 0, 'int');
 		$file			= $model->getFile($fileId);
 
 		$fileExt		= '';

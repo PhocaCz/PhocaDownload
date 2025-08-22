@@ -71,7 +71,7 @@ if (!empty($this->file[0])) {
 		// Is this direct menu link to File View
 		$directFv 	= 0;
 		$app		= Factory::getApplication();
-		$itemId 	= $app->input->get('Itemid', 0, 'int');
+		$itemId 	= $app->getInput()->get('Itemid', 0, 'int');
 		$menu		= $app->getMenu();
 		$item		= $menu->getItem($itemId);
 		if (isset($item->query['view']) && $item->query['view'] == 'file') {

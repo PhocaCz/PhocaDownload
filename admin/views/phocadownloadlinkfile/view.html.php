@@ -40,7 +40,7 @@ class PhocaDownloadCpViewPhocaDownloadLinkFile extends HtmlView
 
 		}
 
-		$editor    = $app->input->getCmd('editor', '');
+		$editor    = $app->getInput()->getCmd('editor', '');
 		if (!empty($editor)) {
 			$this->document->addScriptOptions('xtd-phocadownload', array('editor' => $editor));
 		}
@@ -50,9 +50,9 @@ class PhocaDownloadCpViewPhocaDownloadLinkFile extends HtmlView
 
 		//JHtml::stylesheet( 'media/com_phocadownload/css/administrator/phocadownload.css' );
 
-		$eName				= $app->input->get('editor');
+		$eName				= $app->getInput()->get('editor');
 		$this->t['ename']		= preg_replace( '#[^A-Z0-9\-\_\[\]]#i', '', $eName );
-		$this->t['type']		= $app->input->get( 'type', 1, '', 'int' );
+		$this->t['type']		= $app->getInput()->get( 'type', 1, '', 'int' );
 		$this->t['backlink']	= $tUri.'index.php?option=com_phocadownload&amp;view=phocadownloadlinks&amp;tmpl=component&amp;editor='.$this->t['ename'];
 
 
@@ -60,9 +60,9 @@ class PhocaDownloadCpViewPhocaDownloadLinkFile extends HtmlView
 
 		//Filter
 		$context			= 'com_phocadownload.phocadownload.list.';
-		//$sectionid			= JFactory::getApplication()->input->get( 'sectionid', -1, '', 'int' );
+		//$sectionid			= JFactory::getApplication()->getInput()->get( 'sectionid', -1, '', 'int' );
 		//$redirect			= $sectionid;
-		$option				= Factory::getApplication()->input->getCmd( 'option' );
+		$option				= Factory::getApplication()->getInput()->getCmd( 'option' );
 
 		$filter_published		= $app->getUserStateFromRequest( $this->_context.'.filter_published',	'filter_published', '',	'word' );
 		$filter_catid		= $app->getUserStateFromRequest( $this->_context.'.filter_catid',	'filter_catid', 0,	'int' );

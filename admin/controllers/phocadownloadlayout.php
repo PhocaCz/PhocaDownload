@@ -74,7 +74,7 @@ class PhocaDownloadCpControllerPhocaDownloadLayout extends FormController
 			$key = $table->getKeyName();
 		}
 
-		$recordId = Factory::getApplication()->input->getInt($key);
+		$recordId = Factory::getApplication()->getInput()->getInt($key);
 
 
 		// Attempt to check-in the current record.

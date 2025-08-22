@@ -65,9 +65,9 @@ class PhocaDownloadCpControllerPhocaDownloadManager extends FormController
 
 		Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 
-		$cid	= Factory::getApplication()->input->get('cid', array(), '', 'array');
-		$returnUrl	= Factory::getApplication()->input->get( 'return-url', null, 'post', 'base64' );//includes field
-		$manager		= Factory::getApplication()->input->get( 'manager', 'file', 'string' );
+		$cid	= Factory::getApplication()->getInput()->get('cid', array(), '', 'array');
+		$returnUrl	= Factory::getApplication()->getInput()->get( 'return-url', null, 'post', 'base64' );//includes field
+		$manager		= Factory::getApplication()->getInput()->get( 'manager', 'file', 'string' );
 
 
 		if ($cid[0] != '') {

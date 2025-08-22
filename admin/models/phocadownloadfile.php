@@ -94,7 +94,7 @@ class PhocaDownloadCpModelPhocaDownloadFile extends AdminModel
 				$data->set('catid', (int)$filter[0]);
 			} else {
 				// UNDER TEST
-				$catid = $app->input->get('catid');
+				$catid = $app->getInput()->get('catid');
 				if ((int)$catid > 0) {
 					$data->set('catid', (int)$catid);
 				}
@@ -220,7 +220,7 @@ class PhocaDownloadCpModelPhocaDownloadFile extends AdminModel
 	function save($data) {
 
 		$app		= Factory::getApplication();
-		$input  	= Factory::getApplication()->input;
+		$input  	= Factory::getApplication()->getInput();
 		//$dispatcher = J Dispatcher::getInstance();
 		$table		= $this->getTable();
 		$pk			= (!empty($data['id'])) ? $data['id'] : (int)$this->getState($this->getName().'.id');
@@ -727,7 +727,7 @@ class PhocaDownloadCpModelPhocaDownloadFile extends AdminModel
 		}
 
 		// Check that the user has create permission for the component
-		$extension	= Factory::getApplication()->input->getCmd('option');
+		$extension	= Factory::getApplication()->getInput()->getCmd('option');
 		$user		= Factory::getUser();
 		if (!$user->authorise('core.create', $extension)) {
 
@@ -841,7 +841,7 @@ class PhocaDownloadCpModelPhocaDownloadFile extends AdminModel
 		}
 
 		// Check that user has create and edit permission for the component
-		$extension	= Factory::getApplication()->input->getCmd('option');
+		$extension	= Factory::getApplication()->getInput()->getCmd('option');
 		$user		= Factory::getUser();
 		if (!$user->authorise('core.create', $extension)) {
 			throw new Exception(Text::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_CREATE'), 500);

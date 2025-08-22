@@ -31,7 +31,7 @@ class PhocaDownloadRouterrules extends MenuRules
         // 2. administrator/components/com_phocadownload/libraries/phocadownload/path/routerrules.php build() - BUILD
         // 3. administrator/components/com_phocadownload/libraries/phocadownload/path/routerrules.php parse() - PARSE
         $app    = Factory::getApplication();
-        $tagId  = $app->input->get('tagid', 0, 'int');
+        $tagId  = $app->getInput()->get('tagid', 0, 'int');
         if ($segments[0] == 'category' && (int)$tagId > 0){
             // We are in category view but tags output
             $vars['view'] = 'category';
@@ -39,7 +39,7 @@ class PhocaDownloadRouterrules extends MenuRules
         }
 
         // SPECIFIC CASE FEED (we prevent the word "feed" in URL)
-        $format  = $app->input->get('format', '', 'string');
+        $format  = $app->getInput()->get('format', '', 'string');
         if ($format == 'feed') {
             if ($segments[0] == 'feed'){
 

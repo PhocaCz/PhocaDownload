@@ -32,7 +32,7 @@ class PhocaDownloadViewFeed extends HtmlView
 		//$menu		= $app->getMenu();
 		$document	= Factory::getDocument();
 		//$params 	= $app->getParams();
-		$moduleId	= $app->input->get('id', 0, 'int');
+		$moduleId	= $app->getInput()->get('id', 0, 'int');
 		//$table 		= JTable::getInstance('module');
 
 

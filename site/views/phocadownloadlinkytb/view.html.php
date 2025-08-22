@@ -36,7 +36,7 @@ class phocaDownloadViewphocaDownloadLinkYtb extends HtmlView
 
 		}
 
-		$editor    = $app->input->getCmd('editor', '');
+		$editor    = $app->getInput()->getCmd('editor', '');
 		if (!empty($editor)) {
 			$this->document->addScriptOptions('xtd-phocadownload', array('editor' => $editor));
 		}
@@ -46,7 +46,7 @@ class phocaDownloadViewphocaDownloadLinkYtb extends HtmlView
 		HTMLHelper::stylesheet( 'media/plg_editors-xtd_phocadownload/css/phocadownload.css' );
 
 
-		$eName				= Factory::getApplication()->input->get('editor');
+		$eName				= Factory::getApplication()->getInput()->get('editor');
 		$this->t['ename']		= preg_replace( '#[^A-Z0-9\-\_\[\]]#i', '', $eName );
 		$this->t['backlink']	= $tUri.'index.php?option=com_phocadownload&amp;view=phocadownloadlinks&amp;tmpl=component&amp;editor='.$this->t['ename'];
 

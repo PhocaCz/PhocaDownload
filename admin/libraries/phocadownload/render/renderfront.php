@@ -44,7 +44,7 @@ class PhocaDownloadRenderFront
 
 	public static function renderAllCSS($noBootStrap = 0) {
 		$app	= Factory::getApplication();
-		$itemid	= $app->input->get('Itemid', 0, 'int');
+		$itemid	= $app->getInput()->get('Itemid', 0, 'int');
 		$db 	= Factory::getDBO();
 		$query = 'SELECT a.filename as filename, a.type as type, a.menulink as menulink'
 				.' FROM #__phocadownload_styles AS a'
@@ -132,7 +132,7 @@ class PhocaDownloadRenderFront
 		if ($displayL == 1 && (int)$param['report_link_guestbook_id'] > 0) {
 
 			$onclick = "window.open(this.href,'win2','width=600,height=500,scrollbars=yes,menubar=no,resizable=yes'); return false;";
-			//$href	= JRoute::_('index.php?option=com_phocaguestbook&view=guestbook&id='.(int)$param['report_link_guestbook_id'].'&reporttitle='.strip_tags($title).'&tmpl=component&Itemid='. JFactory::getApplication()->input->get('Itemid', 0, '', 'int') );
+			//$href	= JRoute::_('index.php?option=com_phocaguestbook&view=guestbook&id='.(int)$param['report_link_guestbook_id'].'&reporttitle='.strip_tags($title).'&tmpl=component&Itemid='. JFactory::getApplication()->getInput()->get('Itemid', 0, '', 'int') );
 
 			$href	= PhocaDownloadRoute::getGuestbookRoute((int)$param['report_link_guestbook_id'],urlencode(strip_tags($title) ));
 			//$href	= JRoute::_('index.php?option=com_phocaguestbook&view=guestbook&id='.(int)$param['report_link_guestbook_id'].'&reporttitle='.strip_tags($title).'&tmpl=component');
@@ -505,7 +505,7 @@ class PhocaDownloadRenderFront
             return '';
         }
 
-        //$view = $app->input->get('view', '', 'string');
+        //$view = $app->getInput()->get('view', '', 'string');
 
         /*if (!empty($hideHeader) && $view != '') {
             if (in_array($view, $hideHeader)) {
@@ -565,7 +565,7 @@ class PhocaDownloadRenderFront
             return '';
         }
 
-        //$view = $app->input->get('view', '', 'string');
+        //$view = $app->getInput()->get('view', '', 'string');
 
         /*if (!empty($hideHeader) && $view != '') {
             if (in_array($view, $hideHeader)) {

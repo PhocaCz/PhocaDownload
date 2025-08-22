@@ -14,7 +14,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\MVC\Controller\BaseController;
 jimport('joomla.application.component.controller');
 $app		= Factory::getApplication();
-$option 	= $app->input->get('option');
+$option 	= $app->getInput()->get('option');
 
 $l['cp']		= array('COM_PHOCADOWNLOAD_CONTROL_PANEL', '');
 $l['f']			= array('COM_PHOCADOWNLOAD_FILES', 'phocadownloadfiles');
@@ -31,10 +31,10 @@ $l['log']		= array('COM_PHOCADOWNLOAD_LOGGING', 'phocadownloadlogs');
 $l['in']		= array('COM_PHOCADOWNLOAD_INFO', 'phocadownloadinfo');
 
 // Submenu view
-//$view	= JFactory::getApplication()->input->get( 'view', '', '', 'string', J R EQUEST_ALLOWRAW );
-//$layout	= JFactory::getApplication()->input->get( 'layout', '', '', 'string', J R EQUEST_ALLOWRAW );
-$view	= Factory::getApplication()->input->get('view');
-$layout	= Factory::getApplication()->input->get('layout');
+//$view	= JFactory::getApplication()->getInput()->get( 'view', '', '', 'string', J R EQUEST_ALLOWRAW );
+//$layout	= JFactory::getApplication()->getInput()->get( 'layout', '', '', 'string', J R EQUEST_ALLOWRAW );
+$view	= Factory::getApplication()->getInput()->get('view');
+$layout	= Factory::getApplication()->getInput()->get('layout');
 
 if ($layout == 'edit') {
 } else {

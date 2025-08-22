@@ -262,7 +262,7 @@ if (!empty($this->t['filesitems'])) {
 <input type="hidden" name="actionid" value=""/>
 <input type="hidden" name="tab" value="<?php echo $this->t['currenttab']['files'];?>" />
 <input type="hidden" name="limitstart" value="<?php echo $this->t['filespagination']->limitstart;?>" />
-<input type="hidden" name="Itemid" value="<?php echo $app->input->get('Itemid', 0, 'int') ?>"/>
+<input type="hidden" name="Itemid" value="<?php echo $app->getInput()->get('Itemid', 0, 'int') ?>"/>
 <input type="hidden" name="filter_order" value="<?php echo $this->t['listsfiles']['order']; ?>" />
 <input type="hidden" name="filter_order_Dir" value="" />
 
@@ -369,7 +369,7 @@ if ($this->t['errorcatid'] != '') {
 	<input type="hidden" name="view" value="user"/>
 	<input type="hidden" name="task" value="upload"/>
 	<input type="hidden" name="tab" value="<?php echo $this->t['currenttab']['files'];?>" />
-	<input type="hidden" name="Itemid" value="<?php echo $app->input->get('Itemid', 0, 'int') ?>"/>
+	<input type="hidden" name="Itemid" value="<?php echo $app->getInput()->get('Itemid', 0, 'int') ?>"/>
 	<input type="hidden" name="filter_order" value="<?php echo $this->t['listsfiles']['order']; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="" />
 	<input type="hidden" name="catidfiles" value="<?php echo $this->t['catidfiles'] ?>"/>

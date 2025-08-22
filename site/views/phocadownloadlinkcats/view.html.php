@@ -34,7 +34,7 @@ class phocaDownloadViewphocaDownloadLinkCats extends HtmlView
 
 		}
 
-		$editor    = $app->input->getCmd('editor', '');
+		$editor    = $app->getInput()->getCmd('editor', '');
 		if (!empty($editor)) {
 			$this->document->addScriptOptions('xtd-phocadownload', array('editor' => $editor));
 		}
@@ -45,7 +45,7 @@ class phocaDownloadViewphocaDownloadLinkCats extends HtmlView
 		$document	= Factory::getDocument();
 		$uri		= Uri::getInstance();
 
-		$eName				= $app->input->get('editor');
+		$eName				= $app->getInput()->get('editor');
 		$this->t['ename']		= preg_replace( '#[^A-Z0-9\-\_\[\]]#i', '', $eName );
 		$this->t['backlink']	= $tUri.'index.php?option=com_phocadownload&amp;view=phocadownloadlinks&amp;tmpl=component&amp;editor='.$this->t['ename'];
 

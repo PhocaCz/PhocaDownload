@@ -32,14 +32,14 @@ class PhocaDownloadViewFile extends HtmlView
 		$uri 					= Uri::getInstance();
 		$model					= $this->getModel();
 		$document				= Factory::getDocument();
-		$fileId					= $app->input->get('id', 0, 'int');
+		$fileId					= $app->getInput()->get('id', 0, 'int');
 
 		//if ($fileId == 0) {
 		//	throw new Exception(JText::_('COM_PHOCADOWNLOAD_FILE_NOT_FOUND'), 404);
 		//}
 
-		$this->t['limitstart']	= $app->input->get( 'start', 0, 'int');// we need it for category back link
-		$this->t['tmpl']		= $app->input->get( 'tmpl', '', 'string' );
+		$this->t['limitstart']	= $app->getInput()->get( 'start', 0, 'int');// we need it for category back link
+		$this->t['tmpl']		= $app->getInput()->get( 'tmpl', '', 'string' );
 		$this->t['mediapath']	= PhocaDownloadPath::getPathMedia();
 
 		$this->t['tmplr'] = 0;
@@ -115,14 +115,14 @@ class PhocaDownloadViewFile extends HtmlView
 
 		// DOWNLOAD
 		// - - - - - - - - - - - - - - -
-		$download				= $app->input->get( 'download', array(0), 'array' );
-		$licenseAgree			= $app->input->get( 'license_agree', '', 'string' );
+		$download				= $app->getInput()->get( 'download', array(0), 'array' );
+		$licenseAgree			= $app->getInput()->get( 'license_agree', '', 'string' );
 		$downloadId		 		= (int) $download[0];
 		if ($downloadId > 0) {
 			if (isset($this->file[0]->id)) {
-				$currentLink	= 'index.php?option=com_phocadownload&view=file&id='.$this->file[0]->id.':'.$this->file[0]->alias. $this->t['limitstarturl'] . '&Itemid='. $app->input->get('Itemid', 0, 'int');
+				$currentLink	= 'index.php?option=com_phocadownload&view=file&id='.$this->file[0]->id.':'.$this->file[0]->alias. $this->t['limitstarturl'] . '&Itemid='. $app->getInput()->get('Itemid', 0, 'int');
 			} else {
-				$currentLink	= 'index.php?option=com_phocadownload&view=categories&Itemid='. $app->input->get('Itemid', 0, 'int');
+				$currentLink	= 'index.php?option=com_phocadownload&view=categories&Itemid='. $app->getInput()->get('Itemid', 0, 'int');
 			}
 
 			// Check Token

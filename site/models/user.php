@@ -51,7 +51,7 @@ class PhocaDownloadModelUser extends BaseDatabaseModel
 		$app	= Factory::getApplication();
 		// SubCategory
 		$limit_files		= $app->getUserStateFromRequest( $this->_context_files.'.list.limit', 'limit', 20, 'int' );
-		$limitstart_files 	= $app->input->get('limitstart', 0, 'int');
+		$limitstart_files 	= $app->getInput()->get('limitstart', 0, 'int');
 		$limitstart_files 	= ($limit_files != 0 ? (floor($limitstart_files / $limit_files) * $limit_files) : 0);
 		$this->setState($this->_context_files.'.list.limit', $limit_files);
 		$this->setState($this->_context_files.'.list.limitstart', $limitstart_files);
@@ -246,11 +246,11 @@ class PhocaDownloadModelUser extends BaseDatabaseModel
 		$user 				= Factory::getUser();
 		$ftp 		= ClientHelper::setCredentialsFromRequest('ftp');
 		$path		= PhocaDownloadPath::getPathSet();
-		$folder		= $app->input->get( 'folder', '', '', 'path' );
-		$format		= $app->input->get( 'format', 'html', '', 'cmd');
-		$return		= $app->input->get( 'return-url', null, 'post', 'base64' );
-		$viewBack	= $app->input->get( 'viewback', '', 'post', 'string' );
-		//$catid 		= $app->input->get( 'catid', '', '', 'int'  );
+		$folder		= $app->getInput()->get( 'folder', '', '', 'path' );
+		$format		= $app->getInput()->get( 'format', 'html', '', 'cmd');
+		$return		= $app->getInput()->get( 'return-url', null, 'post', 'base64' );
+		$viewBack	= $app->getInput()->get( 'viewback', '', 'post', 'string' );
+		//$catid 		= $app->getInput()->get( 'catid', '', '', 'int'  );
 		$paramsC 	= ComponentHelper::getParams('com_phocadownload') ;
 
 		$overwriteExistingFiles 	= $paramsC->get( 'overwrite_existing_files', 0 );

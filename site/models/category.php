@@ -46,7 +46,7 @@ class PhocaDownloadModelCategory extends BaseDatabaseModel
 
 		// Get the pagination request variables
 		$this->setState('limit', $app->getUserStateFromRequest($context.'limit', 'limit', $defaultPagination, 'int'));
-		$this->setState('limitstart', $app->input->get('limitstart', 0, 'int'));
+		$this->setState('limitstart', $app->getInput()->get('limitstart', 0, 'int'));
 
 		// In case limit has been changed, adjust limitstart accordingly
 		$this->setState('limitstart', ($this->getState('limit') != 0 ? (floor($this->getState('limitstart') / $this->getState('limit')) * $this->getState('limit')) : 0));
@@ -56,8 +56,8 @@ class PhocaDownloadModelCategory extends BaseDatabaseModel
 		$this->setState('fileordering', $app->getUserStateFromRequest($context .'fileordering', 'fileordering', $file_ordering, 'int'));
 
 		// Get the filter request variables
-		$this->setState('filter_order', Factory::getApplication()->input->getCmd('filter_order', 'ordering'));
-		$this->setState('filter_order_dir', Factory::getApplication()->input->getCmd('filter_order_Dir', 'ASC'));
+		$this->setState('filter_order', Factory::getApplication()->getInput()->getCmd('filter_order', 'ordering'));
+		$this->setState('filter_order_dir', Factory::getApplication()->getInput()->getCmd('filter_order_Dir', 'ASC'));
 
 	}
 

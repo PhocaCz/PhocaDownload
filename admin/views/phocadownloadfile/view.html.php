@@ -31,7 +31,7 @@ class PhocaDownloadCpViewPhocaDownloadFile extends HtmlView
 		$this->item		= $this->get('Item');
 
 
-		if (isset($this->item->textonly) && (int)$this->item->textonly == 1 && Factory::getApplication()->input->get('layout') != 'edit_text') {
+		if (isset($this->item->textonly) && (int)$this->item->textonly == 1 && Factory::getApplication()->getInput()->get('layout') != 'edit_text') {
 			$tpl = 'text';
 		}
 		$this->addToolbar();
@@ -41,7 +41,7 @@ class PhocaDownloadCpViewPhocaDownloadFile extends HtmlView
 	protected function addToolbar() {
 
 		require_once JPATH_COMPONENT.'/helpers/'.$this->t['tasks'].'.php';
-		Factory::getApplication()->input->set('hidemainmenu', true);
+		Factory::getApplication()->getInput()->set('hidemainmenu', true);
 		$bar 		= Toolbar::getInstance('toolbar');
 		$user		= Factory::getUser();
 		$isNew		= ($this->item->id == 0);

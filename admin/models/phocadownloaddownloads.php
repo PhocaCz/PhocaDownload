@@ -61,7 +61,7 @@ class PhocaDownloadCpModelPhocaDownloadDownloads extends ListModel
 		$state = $app->getUserStateFromRequest($this->context.'.filter.published', 'filter_published', '', 'string');
 		$this->setState('filter.published', $state);
 */
-		$id = Factory::getApplication()->input->get( 'id', '', '', 'int');
+		$id = Factory::getApplication()->getInput()->get( 'id', '', '', 'int');
 		if ((int)$id > 0) {
 			$this->setState('filter.filestat_id', $id);
 		} else {

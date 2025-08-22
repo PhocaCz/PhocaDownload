@@ -54,9 +54,9 @@ class PhocaDownloadCpModelPhocaDownloadM extends AdminModel
 
 		$app		= Factory::getApplication();
 
-		$foldercid	= $app->input->get('foldercid', array(), 'raw');
-		$cid		= $app->input->get('cid', 0, 'raw');
-		$data		= $app->input->get('jform', array(0), 'post', 'array');
+		$foldercid	= $app->getInput()->get('foldercid', array(), 'raw');
+		$cid		= $app->getInput()->get('cid', 0, 'raw');
+		$data		= $app->getInput()->get('jform', array(0), 'post', 'array');
 
 
 		// =================================================

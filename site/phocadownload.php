@@ -45,7 +45,7 @@ jimport( 'joomla.filesystem.file' );
 
 
 // Require specific controller if requested
-if($controller = Factory::getApplication()->input->get('controller')) {
+if($controller = Factory::getApplication()->getInput()->get('controller')) {
     $path = JPATH_COMPONENT.'/controllers/'.$controller.'.php';
     if (file_exists($path)) {
         require_once $path;
@@ -56,6 +56,6 @@ if($controller = Factory::getApplication()->input->get('controller')) {
 
 $classname    = 'PhocaDownloadController'.ucfirst((string)$controller);
 $controller   = new $classname( );
-$controller->execute( Factory::getApplication()->input->get('task') );
+$controller->execute( Factory::getApplication()->getInput()->get('task') );
 $controller->redirect();
 ?>

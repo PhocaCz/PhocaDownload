@@ -59,9 +59,9 @@ class PhocaDownloadCpModelPhocaDownloadManager extends AdminModel
 		static $set;
 
 		if (!$set) {
-			$folder		= Factory::getApplication()->input->get( 'folder', '', '', 'path' );
-			$upload		= Factory::getApplication()->input->get( 'upload', '', '', 'int' );
-			$manager	= Factory::getApplication()->input->get( 'manager', '', '', 'path' );
+			$folder		= Factory::getApplication()->getInput()->get( 'folder', '', '', 'path' );
+			$upload		= Factory::getApplication()->getInput()->get( 'upload', '', '', 'int' );
+			$manager	= Factory::getApplication()->getInput()->get( 'manager', '', '', 'path' );
 
 			$this->setState('folder', $folder);
 			$this->setState('manager', $manager);

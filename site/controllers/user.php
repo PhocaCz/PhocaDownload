@@ -24,14 +24,14 @@ class PhocaDownloadControllerUser extends PhocaDownloadController
 
 		$this->registerTask( 'unpublish', 'unpublish' );
 		$app					= Factory::getApplication();
-		$this->itemId			= $app->input->get( 'Itemid', 0, 'int' );
+		$this->itemId			= $app->getInput()->get( 'Itemid', 0, 'int' );
 		$this->loginUrl			= Route::_('index.php?option=com_users&view=login', false);
 		$this->loginString		= Text::_('COM_PHOCADOWNLOAD_NOT_AUTHORISED_ACTION');
 		$this->url				= 'index.php?option=com_phocadownload&view=user&Itemid='. $this->itemId;
 	}
 	/*
 	function display() {
-		if ( ! Factory::getApplication()->input->getCmd( 'view' ) ) {
+		if ( ! Factory::getApplication()->getInput()->getCmd( 'view' ) ) {
 			$this->input->set('view', 'user' );
 		}
 		parent::display();
@@ -40,8 +40,8 @@ class PhocaDownloadControllerUser extends PhocaDownloadController
 	function unpublish() {
 
 		$app				= Factory::getApplication();
-		$post['id']			= $app->input->get( 'actionid', '', 'int', 0  );
-		$post['limitstart']	= $app->input->get( 'limitstart', '', 'int', 0  );
+		$post['id']			= $app->getInput()->get( 'actionid', '', 'int', 0  );
+		$post['limitstart']	= $app->getInput()->get( 'limitstart', '', 'int', 0  );
 		$model 				= $this->getModel('user');
 		//$isOwnerCategory 	= 1;//$model->isOwnerCategoryImage((int)$this->_user->id, (int)$id);
 		// USER RIGHT - Delete - - - - - - - - - - -
@@ -76,8 +76,8 @@ class PhocaDownloadControllerUser extends PhocaDownloadController
 
 	function publish() {
 		$app				= Factory::getApplication();
-		$post['id']			= $app->input->get( 'actionid', '', 'int', 0  );
-		$post['limitstart']	= $app->input->get( 'limitstart', '', 'int', 0  );
+		$post['id']			= $app->getInput()->get( 'actionid', '', 'int', 0  );
+		$post['limitstart']	= $app->getInput()->get( 'limitstart', '', 'int', 0  );
 		$model 				= $this->getModel('user');
 		//$isOwnerCategory 	= 1;//$model->isOwnerCategoryImage((int)$this->_user->id, (int)$id);
 
@@ -115,8 +115,8 @@ class PhocaDownloadControllerUser extends PhocaDownloadController
 	function delete() {
 
 		$app				= Factory::getApplication();
-		$post['id']			= $app->input->get( 'actionid', '', 'int', 0  );
-		$post['limitstart']	= $app->input->get( 'limitstart', '', 'int', 0  );
+		$post['id']			= $app->getInput()->get( 'actionid', '', 'int', 0  );
+		$post['limitstart']	= $app->getInput()->get( 'limitstart', '', 'int', 0  );
 		$model 				= $this->getModel('user');
 		//$isOwnerCategory 	= 1;//$model->isOwnerCategoryImage((int)$this->_user->id, (int)$id);
 

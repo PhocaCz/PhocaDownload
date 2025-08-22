@@ -26,10 +26,10 @@ class PhocaDownloadCpControllerPhocaDownloadFile extends FormController
 		
 		parent::__construct($config);
 		
-		$task = Factory::getApplication()->input->get('task');
+		$task = Factory::getApplication()->getInput()->get('task');
 		if ((string)$task == 'addtext') {
-			Factory::getApplication()->input->set('task','add');
-			Factory::getApplication()->input->set('layout','edit_text');
+			Factory::getApplication()->getInput()->set('task','add');
+			Factory::getApplication()->getInput()->set('layout','edit_text');
 		}
 	}
 	
@@ -69,7 +69,7 @@ class PhocaDownloadCpControllerPhocaDownloadFile extends FormController
 	
 	/*
 	function copyquick() {
-		$cid	= Factory::getApplication()->input->get( 'cid', array(0), 'post', 'array' );
+		$cid	= Factory::getApplication()->getInput()->get( 'cid', array(0), 'post', 'array' );
 		$model	= $this->getModel( 'phocadownloadfile' );
 		if ($model->copyQuick($cid)) {
 			$msg = Text::_( 'COM_PHOCADOWNLOAD_SUCCESS_COPY_FILE' );

@@ -293,13 +293,13 @@ class PhocaDownloadRoute
 		$items		= $menus->getItems('component', $component);
 		//$menu 		= $menus;//$app->getMenu();
 		$active 	= $menus->getActive();
-		$option		= $app->input->get( 'option', '', 'string' );
+		$option		= $app->getInput()->get( 'option', '', 'string' );
 
 		// Don't check ID for specific views. e.g. categories view does not have ID
 		$notCheckIdArray =  array('categories');
 
 		if(!$items) {
-			$itemId =  $app->input->get('Itemid', 0, 'int');
+			$itemId =  $app->getInput()->get('Itemid', 0, 'int');
 			if ($itemId > 0) {
 				$item = new stdClass();
 				$item->id = $itemId;

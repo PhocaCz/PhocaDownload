@@ -30,9 +30,9 @@ class PhocaDownloadCpControllerPhocaDownloadDownloads extends FormController
 
 	function reset() {
 
-		$post					= Factory::getApplication()->input->get('post');
-		$cid					= Factory::getApplication()->input->get( 'cid', array(0), 'post', 'array' );
-		$idFile					= Factory::getApplication()->input->get( 'idfile', 0, 'post', 'int' );
+		$post					= Factory::getApplication()->getInput()->get('post');
+		$cid					= Factory::getApplication()->getInput()->get( 'cid', array(0), 'post', 'array' );
+		$idFile					= Factory::getApplication()->getInput()->get( 'idfile', 0, 'post', 'int' );
 
 		$model = $this->getModel( 'phocadownloaddownloads' );
 
@@ -49,7 +49,7 @@ class PhocaDownloadCpControllerPhocaDownloadDownloads extends FormController
 	function delete() {
 
 
-		$cid					= Factory::getApplication()->input->get( 'cid', array(0), 'post', 'array' );
+		$cid					= Factory::getApplication()->getInput()->get( 'cid', array(0), 'post', 'array' );
 
 
 		$model = $this->getModel( 'phocadownloaddownload' );

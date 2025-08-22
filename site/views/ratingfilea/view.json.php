@@ -34,12 +34,12 @@ class PhocaDownloadViewRatingFileA extends HtmlView
 		$params			= $app->getParams();
 		
 		
-		$ratingVote 	= $app->input->get( 'ratingVote', 0, 'post', 'int'  );
-		$ratingId 		= $app->input->get( 'ratingId', 0, 'post', 'int'  );// ID of File
-		$format 		= $app->input->get( 'format', '', 'post', 'string'  );
-		$task 			= $app->input->get( 'task', '', 'get', 'string'  );
-		$view 			= $app->input->get( 'view', '', 'get', 'string'  );
-		$small			= $app->input->get( 'small', 1, 'get', 'string'  );//small or large rating icons
+		$ratingVote 	= $app->getInput()->get( 'ratingVote', 0, 'post', 'int'  );
+		$ratingId 		= $app->getInput()->get( 'ratingId', 0, 'post', 'int'  );// ID of File
+		$format 		= $app->getInput()->get( 'format', '', 'post', 'string'  );
+		$task 			= $app->getInput()->get( 'task', '', 'get', 'string'  );
+		$view 			= $app->getInput()->get( 'view', '', 'get', 'string'  );
+		$small			= $app->getInput()->get( 'small', 1, 'get', 'string'  );//small or large rating icons
 		
 		$paramsC 		= ComponentHelper::getParams('com_phocadownload');
 		$param['displayratingfile'] = $paramsC->get( 'display_rating_file', 0 );
@@ -60,8 +60,8 @@ class PhocaDownloadViewRatingFileA extends HtmlView
 		} else if ($task == 'rate') {
 		
 			$user 		= Factory::getUser();
-			//$view 		= $app->input->get( 'view', '', 'get', '', J R EQUEST_NOTRIM  );
-			//$Itemid		= $app->input->get( 'Itemid', 0, 'int');
+			//$view 		= $app->getInput()->get( 'view', '', 'get', '', J R EQUEST_NOTRIM  );
+			//$Itemid		= $app->getInput()->get( 'Itemid', 0, 'int');
 		
 			$neededAccessLevels	= PhocaDownloadAccess::getNeededAccessLevels();
 			$access				= PhocaDownloadAccess::isAccess($user->getAuthorisedViewLevels(), $neededAccessLevels);

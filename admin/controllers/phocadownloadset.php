@@ -22,12 +22,12 @@ class PhocaDownloadCpControllerPhocaDownloadset extends PhocaDownloadCpControlle
 	}
 
 	function save() {
-		$post					= Factory::getApplication()->input->get('post');
-		$phocaSet				= Factory::getApplication()->input->get( 'phocaset', array(0), 'post', 'array' );
+		$post					= Factory::getApplication()->getInput()->get('post');
+		$phocaSet				= Factory::getApplication()->getInput()->get( 'phocaset', array(0), 'post', 'array' );
 
 		$model = $this->getModel( 'phocadownloadset' );
 		$errorMsg = '';
-		switch ( Factory::getApplication()->input->getCmd('task') ) {
+		switch ( Factory::getApplication()->getInput()->getCmd('task') ) {
 			case 'apply':
 				
 				if ($model->store($phocaSet, $errorMsg)) {

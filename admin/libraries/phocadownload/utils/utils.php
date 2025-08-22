@@ -59,7 +59,7 @@ class PhocaDownloadUtils
 
 		$a			= array();
 		$app		= Factory::getApplication();
-		$a['o'] 	= htmlspecialchars(strip_tags($app->input->get('option')));
+		$a['o'] 	= htmlspecialchars(strip_tags($app->getInput()->get('option')));
 		$a['c'] 	= str_replace('com_', '', $a['o']);
 		$a['n'] 	= 'Phoca' . ucfirst(str_replace('com_phoca', '', $a['o']));
 		$a['l'] 	= strtoupper($a['o']);

@@ -39,14 +39,14 @@ class PhocaDownloadCpViewPhocaDownloadManager extends HtmlView
 
 		$this->t		= PhocaDownloadUtils::setVars('manager');
 		$this->r 		= new PhocaDownloadRenderAdminView();
-		$this->field	= Factory::getApplication()->input->get('field');
+		$this->field	= Factory::getApplication()->getInput()->get('field');
 		$this->fce 		= 'phocaSelectFileName_'.$this->field;
 		$this->returnUrl = base64_encode(Uri::getInstance()->toString());
 		$this->folderstate	= $this->get('FolderState');
 		$this->files		= $this->get('Files');
 		$this->folders		= $this->get('Folders');
 		$this->session		= Factory::getSession();
-		$this->manager 		= Factory::getApplication()->input->get( 'manager', '',  'file' );
+		$this->manager 		= Factory::getApplication()->getInput()->get( 'manager', '',  'file' );
 
 
 		if ($this->manager == 'filemultiple') {
@@ -69,7 +69,7 @@ class PhocaDownloadCpViewPhocaDownloadManager extends HtmlView
 		// - - - - - - - - - -
 		//TABS
 		// - - - - - - - - - -
-		$this->t['tab'] 			= Factory::getApplication()->input->get('tab', '', '', 'string');
+		$this->t['tab'] 			= Factory::getApplication()->getInput()->get('tab', '', '', 'string');
 		$this->t['displaytabs']	= 0;
 
 		// UPLOAD
@@ -101,8 +101,8 @@ class PhocaDownloadCpViewPhocaDownloadManager extends HtmlView
 		// Multiple Upload
 		// - - - - - - - - - - -
 		// Get infos from multiple upload
-		$muFailed						= Factory::getApplication()->input->get( 'mufailed', '0', '', 'int' );
-		$muUploaded						= Factory::getApplication()->input->get( 'muuploaded', '0', '', 'int' );
+		$muFailed						= Factory::getApplication()->getInput()->get( 'mufailed', '0', '', 'int' );
+		$muUploaded						= Factory::getApplication()->getInput()->get( 'muuploaded', '0', '', 'int' );
 		$this->t['mu_response_msg']	= $muUploadedMsg 	= '';
 
 		if ($muUploaded > 0) {
@@ -176,7 +176,7 @@ class PhocaDownloadCpViewPhocaDownloadManager extends HtmlView
 
 	protected function addToolbar() {
 
-		Factory::getApplication()->input->set('hidemainmenu', true);
+		Factory::getApplication()->getInput()->set('hidemainmenu', true);
 		require_once JPATH_COMPONENT.'/helpers/'.$this->t['task'].'.php';
 		$state	= $this->get('State');
 		$class	= ucfirst($this->t['task']).'Helper';

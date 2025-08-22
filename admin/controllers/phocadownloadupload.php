@@ -41,13 +41,13 @@ class PhocaDownloadCpControllerPhocaDownloadUpload extends PhocaDownloadCpContro
 		//$folder_permissions = octdec((int)$folder_permissions);
 
 
-		$folderNew		= Factory::getApplication()->input->getCmd( 'foldername', '');
-		$folderCheck	= Factory::getApplication()->input->get( 'foldername', null, 'string');
-		$parent			= Factory::getApplication()->input->get( 'folderbase', '', 'path' );
-		$tab			= Factory::getApplication()->input->get( 'tab', 0, 'string' );
-		$field			= Factory::getApplication()->input->get( 'field');
-		$viewBack		= Factory::getApplication()->input->get( 'viewback', '', 'phocadownloadmanager' );
-		$manager		= Factory::getApplication()->input->get( 'manager', 'file', 'string' );
+		$folderNew		= Factory::getApplication()->getInput()->getCmd( 'foldername', '');
+		$folderCheck	= Factory::getApplication()->getInput()->get( 'foldername', null, 'string');
+		$parent			= Factory::getApplication()->getInput()->get( 'folderbase', '', 'path' );
+		$tab			= Factory::getApplication()->getInput()->get( 'tab', 0, 'string' );
+		$field			= Factory::getApplication()->getInput()->get( 'field');
+		$viewBack		= Factory::getApplication()->getInput()->get( 'viewback', '', 'phocadownloadmanager' );
+		$manager		= Factory::getApplication()->getInput()->get( 'manager', 'file', 'string' );
 
 
 		$link = '';
@@ -64,7 +64,7 @@ class PhocaDownloadCpControllerPhocaDownloadUpload extends PhocaDownloadCpContro
 			exit;
 		}
 
-		Factory::getApplication()->input->set('folder', $parent);
+		Factory::getApplication()->getInput()->set('folder', $parent);
 
 		if (($folderCheck !== null) && ($folderNew !== $folderCheck)) {
 			$app->enqueueMessage( Text::_('COM_PHOCADOWNLOAD_WARNING_DIRNAME'));
@@ -110,7 +110,7 @@ class PhocaDownloadCpControllerPhocaDownloadUpload extends PhocaDownloadCpContro
 			    $app->enqueueMessage(Text::_("COM_PHOCADOWNLOAD_ERROR_FOLDER_CREATING_EXISTS"), 'error');
 				$app->redirect($link);
 			}
-			//JFactory::getApplication()->input->set('folder', ($parent) ? $parent.'/'.$folder : $folder);
+			//JFactory::getApplication()->getInput()->set('folder', ($parent) ? $parent.'/'.$folder : $folder);
 		}
 		$app->redirect($link);
 	}

@@ -44,6 +44,6 @@ phocadownloadimport('phocadownload.rate.rate');
 
 jimport('joomla.application.component.controller');
 $controller	= BaseController::getInstance('PhocaDownloadCp');
-$controller->execute(Factory::getApplication()->input->get('task'));
+$controller->execute(Factory::getApplication()->getInput()->get('task'));
 $controller->redirect();
 ?>

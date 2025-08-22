@@ -77,7 +77,7 @@ class JFormFieldPhocaDownloadCategory extends FormField
 
 		 // TO DO - check for other views than category edit
 		$omitIds = [];
-		switch (Factory::getApplication()->input->get('view')) {
+		switch (Factory::getApplication()->getInput()->get('view')) {
 		  case 'phocadownloadcategory':
 			if ($this->form->getValue('id') > 0)
 			  $omitIds[] = $this->form->getValue('id');
@@ -165,7 +165,7 @@ function changeCatid() {
 		$data = $db->loadObjectList();
 
 
-		$view 	= Factory::getApplication()->input->get( 'view' );
+		$view 	= Factory::getApplication()->getInput()->get( 'view' );
 		$catId	= -1;
 		if ($view == 'phocadownloadcat') {
 			$id 	= $this->form->getValue('id'); // id of current category

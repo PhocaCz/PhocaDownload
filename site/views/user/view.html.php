@@ -42,7 +42,7 @@ class PhocaDownloadViewUser extends HtmlView
 
 		$this->t['pi']		= 'media/com_phocadownload/images/';
 		$this->t['pp']		= 'index.php?option=com_phocadownload&view=user&controller=user';
-		$this->t['pl']		= 'index.php?option=com_users&view=login&return='.base64_encode($this->t['pp'].'&Itemid='. $app->input->get('Itemid', 0, 'int'));
+		$this->t['pl']		= 'index.php?option=com_users&view=login&return='.base64_encode($this->t['pp'].'&Itemid='. $app->getInput()->get('Itemid', 0, 'int'));
 
 		$neededAccessLevels	= PhocaDownloadAccess::getNeededAccessLevels();
 		$access				= PhocaDownloadAccess::isAccess($user->getAuthorisedViewLevels(), $neededAccessLevels);
@@ -83,7 +83,7 @@ class PhocaDownloadViewUser extends HtmlView
 			exit;
 		}
 
-		$this->t['tab'] 					= $app->input->get('tab', 0, 'string');
+		$this->t['tab'] 					= $app->getInput()->get('tab', 0, 'string');
 		$this->t['maxuploadchar']			= $this->t['p']->get( 'max_upload_char', 1000 );
 		$this->t['enableuseruploadapprove']	= $this->t['p']->get( 'enable_user_upload_approve', 0 );
 		$this->t['showpageheading'] 		= $this->t['p']->get( 'show_page_heading', 1 );
@@ -94,7 +94,7 @@ class PhocaDownloadViewUser extends HtmlView
 		$this->t['send_mail_upload'] 		= $this->t['p']->get( 'send_mail_upload', 0 );
 		$this->t['pw']						= PhocaDownloadRenderFront::renderPhocaDownload();
 		//Subcateogry
-		//$this->t['parent_id']			= $app->input->get('parentcategoryid', 0, 'int');
+		//$this->t['parent_id']			= $app->getInput()->get('parentcategoryid', 0, 'int');
 
 		//$document->addScript(JUri::base(true).'/components/com_phocadownload/assets/js/comments.js');
 		$document->addCustomTag(PhocaDownloadRenderFront::renderOnUploadJS());
@@ -132,12 +132,12 @@ class PhocaDownloadViewUser extends HtmlView
 		$this->t['errorwebsite'] 	= '';
 		$this->t['errorfile'] 		= '';
 
-		$task 	= $app->input->get( 'task', '', 'string' );
+		$task 	= $app->getInput()->get( 'task', '', 'string' );
 
 		if($task == 'upload') {
-			$post['title']			= $app->input->get( 'phocadownloaduploadtitle', '', 'string' );
-			$post['description']	= $app->input->get( 'phocadownloaduploaddescription', '', 'string' );
-			$post['catidfiles']		= $app->input->get( 'catidfiles', 0, 'int' );
+			$post['title']			= $app->getInput()->get( 'phocadownloaduploadtitle', '', 'string' );
+			$post['description']	= $app->getInput()->get( 'phocadownloaduploaddescription', '', 'string' );
+			$post['catidfiles']		= $app->getInput()->get( 'catidfiles', 0, 'int' );
 			$post['description']	= substr($post['description'], 0, (int)$this->t['maxuploadchar']);
 
 			$post['approved']		= 0;
@@ -146,11 +146,11 @@ class PhocaDownloadViewUser extends HtmlView
 			if ($this->t['enableuseruploadapprove'] == 0) {
 				$post['approved']	= 1;
 			}
-			$post['author']		= $app->input->get( 'phocadownloaduploadauthor', '', 'string' );
-			$post['email']		= $app->input->get( 'phocadownloaduploademail', '', 'string' );
-			$post['website']	= $app->input->get( 'phocadownloaduploadwebsite', '', 'string' );
-			$post['license']	= $app->input->get( 'phocadownloaduploadlicense', '', 'string' );
-			$post['version']	= $app->input->get( 'phocadownloaduploadversion', '', 'string' );
+			$post['author']		= $app->getInput()->get( 'phocadownloaduploadauthor', '', 'string' );
+			$post['email']		= $app->getInput()->get( 'phocadownloaduploademail', '', 'string' );
+			$post['website']	= $app->getInput()->get( 'phocadownloaduploadwebsite', '', 'string' );
+			$post['license']	= $app->getInput()->get( 'phocadownloaduploadlicense', '', 'string' );
+			$post['version']	= $app->getInput()->get( 'phocadownloaduploadversion', '', 'string' );
 
 			if ($post['title'] != '')		{$formData->set('title', $post['title']);}
 			if ($post['description'] != '')	{$formData->set('description', $post['description']);}
@@ -180,7 +180,7 @@ class PhocaDownloadViewUser extends HtmlView
 			$errUploadMsg	= '';
 			$redirectUrl 	= '';
 
-			$fileArray 		= Factory::getApplication()->input->files->get( 'Filedata', null, 'raw');
+			$fileArray 		= Factory::getApplication()->getInput()->files->get( 'Filedata', null, 'raw');
 
 			if(empty($fileArray)) {
 
@@ -212,8 +212,8 @@ class PhocaDownloadViewUser extends HtmlView
 						PhocaDownloadMail::sendMail((int)$this->t['send_mail_upload'], $post['title'], 2);
 					}
 
-					$Itemid		= $app->input->get( 'Itemid', 0, 'int');
-					$limitStart	= $app->input->get( 'limitstart', 0, 'int');
+					$Itemid		= $app->getInput()->get( 'Itemid', 0, 'int');
+					$limitStart	= $app->getInput()->get( 'limitstart', 0, 'int');
 					if ($limitStart > 0) {
 						$limitStartUrl	= '&limitstart='.$limitStart;
 					} else {

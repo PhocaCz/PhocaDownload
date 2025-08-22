@@ -34,15 +34,15 @@ class PhocaDownloadViewCategory extends HtmlView
 		$uri 					= Uri::getInstance();
 		$model					= $this->getModel();
 		$document				= Factory::getDocument();
-		$this->t['categoryid']	= $app->input->get( 'id', 0, 'int' );
-		$this->t['tagid']		= $app->input->get( 'tagid', 0, 'int' );
+		$this->t['categoryid']	= $app->getInput()->get( 'id', 0, 'int' );
+		$this->t['tagid']		= $app->getInput()->get( 'tagid', 0, 'int' );
 
 		//if ($this->t['categoryid'] == 0 && $this->t['tagid'] == 0) {
 			//throw new Exception(JText::_('COM_PHOCADOWNLOAD_CATEGORY_NOT_FOUND'), 404);
 		//}
 
 
-		$limitStart				= $app->input->get( 'limitstart', 0, 'int' );
+		$limitStart				= $app->getInput()->get( 'limitstart', 0, 'int' );
 		$this->t['mediapath']	= PhocaDownloadPath::getPathMedia();
 
 		$this->category			= $model->getCategory($this->t['categoryid']);
@@ -119,11 +119,11 @@ class PhocaDownloadViewCategory extends HtmlView
 
 		// DOWNLOAD
 		// - - - - - - - - - - - - - - -
-		$download	= $app->input->get( 'download', array(0),'array' );
+		$download	= $app->getInput()->get( 'download', array(0),'array' );
 		$downloadId	= (int) $download[0];
 		if ($downloadId > 0) {
 			if (isset($this->category[0]->id) && (int)$this->category[0]->id > 0 ) {
-				$currentLink	= 'index.php?option=com_phocadownload&view=category&id='.$this->category[0]->id.':'.$this->category[0]->alias.$this->t['limitstarturl'] . '&Itemid='. $app->input->get('Itemid', 0, 'int');
+				$currentLink	= 'index.php?option=com_phocadownload&view=category&id='.$this->category[0]->id.':'.$this->category[0]->alias.$this->t['limitstarturl'] . '&Itemid='. $app->getInput()->get('Itemid', 0, 'int');
 			} else {
 				$currentLink = $uri;
 			}

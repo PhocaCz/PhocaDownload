@@ -31,7 +31,7 @@ class phocaDownloadCpViewphocaDownloadLinks extends HtmlView
 
 		}
 
-		$editor    = $app->input->getCmd('editor', '');
+		$editor    = $app->getInput()->getCmd('editor', '');
 		if (!empty($editor)) {
 			$this->document->addScriptOptions('xtd-phocadownload', array('editor' => $editor));
 		}
@@ -41,7 +41,7 @@ class phocaDownloadCpViewphocaDownloadLinks extends HtmlView
 		HTMLHelper::stylesheet( 'media/com_phocadownload/css/administrator/phocadownload.css' );
 		HTMLHelper::stylesheet( 'media/plg_editors-xtd_phocadownload/css/phocadownload.css' );
 
-		$eName	= Factory::getApplication()->input->get('editor');
+		$eName	= Factory::getApplication()->getInput()->get('editor');
 		$eName	= preg_replace( '#[^A-Z0-9\-\_\[\]]#i', '', $eName );
 
 

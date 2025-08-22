@@ -40,7 +40,7 @@ class PhocaDownloadCpControllerPhocaDownloadFiles extends AdminController
 		Session::checkToken() or die(Text::_('JINVALID_TOKEN'));
 
 		// Get items to publish from the request.
-		$cid	= Factory::getApplication()->input->get('cid', array(), '', 'array');
+		$cid	= Factory::getApplication()->getInput()->get('cid', array(), '', 'array');
 		$data	= array('approve' => 1, 'disapprove' => 0);
 		$task 	= $this->getTask();
 		$value	= ArrayHelper::getValue($data, $task, 0, 'int');

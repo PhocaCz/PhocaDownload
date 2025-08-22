@@ -407,7 +407,7 @@ class PhocaDownloadCpModelPhocaDownloadCat extends AdminModel
 		}
 
 		// Check that the user has create permission for the component
-		$extension	= Factory::getApplication()->input->getCmd('option');
+		$extension	= Factory::getApplication()->getInput()->getCmd('option');
 		$user		= Factory::getUser();
 		if (!$user->authorise('core.create', $extension)) {
 
@@ -512,7 +512,7 @@ class PhocaDownloadCpModelPhocaDownloadCat extends AdminModel
 		}
 
 		// Check that user has create and edit permission for the component
-		$extension	= Factory::getApplication()->input->getCmd('option');
+		$extension	= Factory::getApplication()->getInput()->getCmd('option');
 		$user		= Factory::getUser();
 		if (!$user->authorise('core.create', $extension)) {
 
