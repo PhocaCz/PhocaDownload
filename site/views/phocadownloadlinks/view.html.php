@@ -39,8 +39,11 @@ class phocaDownloadViewphocaDownloadLinks extends HtmlView
 
 		$document	= Factory::getDocument();
 		$uri		= Uri::getInstance();
-		HTMLHelper::stylesheet( 'media/com_phocadownload/css/administrator/phocadownload.css' );
-		HTMLHelper::stylesheet( 'media/plg_editors-xtd_phocadownload/css/phocadownload.css' );
+		$wa 				= $app->getDocument()->getWebAssetManager();
+		$wa->registerAndUseStyle('com_phocadownload.phocadownload.admin', 'media/com_phocadownload/css/administrator/phocadownload.css', array('version' => 'auto'));
+		$wa->registerAndUseStyle('plg_editors-xtd_phocadownload', 'media/plg_editors-xtd_phocadownload/css/phocadownload.css', array('version' => 'auto'));
+		//HTMLHelper::stylesheet( 'media/com_phocadownload/css/administrator/phocadownload.css' );
+		//HTMLHelper::stylesheet( 'media/plg_editors-xtd_phocadownload/css/phocadownload.css' );
 
 		$eName	= Factory::getApplication()->getInput()->get('editor');
 		$eName	= preg_replace( '#[^A-Z0-9\-\_\[\]]#i', '', $eName );

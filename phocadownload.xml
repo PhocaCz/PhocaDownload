@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="component" method="upgrade" version="5.0">
+<extension type="component" method="upgrade" version="6.0">
 	<name>com_phocadownload</name>
 	<author>Jan Pavelka (www.phoca.cz)</author>
-	<creationDate>22/08/2025</creationDate>
+	<creationDate>05/12/2025</creationDate>
 	<authorEmail></authorEmail>
 	<authorUrl>https://www.phoca.cz</authorUrl>
 	<copyright>Jan Pavelka</copyright>
 	<license>GNU/GPL</license>
-	<version>5.1.3</version>
+	<version>6.0.0</version>
 	<description>COM_PHOCADOWNLOAD_XML_DESCRIPTION</description>
 	<namespace path="src">Phoca\Component\PhocaDownload</namespace>
 	<scriptfile>script.php</scriptfile>

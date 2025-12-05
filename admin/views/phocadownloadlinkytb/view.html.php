@@ -41,8 +41,11 @@ class phocaDownloadCpViewphocaDownloadLinkYtb extends HtmlView
 		}
 
 
-		HTMLHelper::stylesheet( 'media/com_phocadownload/css/administrator/phocadownload.css' );
-		HTMLHelper::stylesheet( 'media/plg_editors-xtd_phocadownload/css/phocadownload.css' );
+		//HTMLHelper::stylesheet( 'media/com_phocadownload/css/administrator/phocadownload.css' );
+		//HTMLHelper::stylesheet( 'media/plg_editors-xtd_phocadownload/css/phocadownload.css' );
+		$wa 				= $app->getDocument()->getWebAssetManager();
+		$wa->registerAndUseStyle('com_phocadownload.phocadownload.admin', 'media/com_phocadownload/css/administrator/phocadownload.css', array('version' => 'auto'));
+		$wa->registerAndUseStyle('plg_editors-xtd_phocadownload', 'media/plg_editors-xtd_phocadownload/css/phocadownload.css', array('version' => 'auto'));
 
 
 		$eName				= Factory::getApplication()->getInput()->get('editor');

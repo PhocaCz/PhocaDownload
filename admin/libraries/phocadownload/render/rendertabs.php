@@ -9,6 +9,8 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  */
 defined('_JEXEC') or die('Restricted access');
+
+use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 
 class PhocaDownloadRenderTabs
@@ -22,8 +24,13 @@ class PhocaDownloadRenderTabs
 
         $this->id = uniqid();
         HTMLHelper::_('jquery.framework', false);
-        HTMLHelper::_('script', 'media/com_phocadownload/js/tabs/tabs.js', array('version' => 'auto'));
-        HTMLHelper::_('stylesheet', 'media/com_phocadownload/js/tabs/tabs.css', array('version' => 'auto'));
+        //HTMLHelper::_('script', 'media/com_phocadownload/js/tabs/tabs.js', array('version' => 'auto'));
+        //HTMLHelper::_('stylesheet', 'media/com_phocadownload/js/tabs/tabs.css', array('version' => 'auto'));
+
+        $app = Factory::getApplication();
+        $wa  = $app->getDocument()->getWebAssetManager();
+        $wa->registerAndUseStyle('com_phocadownload.tabs', 'media/com_phocadownload/js/tabs/tabs.css', array('version' => 'auto'));
+        $wa->registerAndUseScript('com_phocadownload.tabs.js', 'media/com_phocadownload/js/tabs/tabs.js', ['version' => 'auto']);
     }
 
     public function setActiveTab($item) {

@@ -35,7 +35,9 @@ class PhocaDownloadRenderFront
         //$doc->addScriptOptions('phParamsPG', $oParams);
 
 
-        HTMLHelper::_('script', 'media/com_phocadownload/js/main.js', array('version' => 'auto'));
+        //HTMLHelper::_('script', 'media/com_phocadownload/js/main.js', array('version' => 'auto'));
+        $wa  = $app->getDocument()->getWebAssetManager();
+        $wa->registerAndUseScript('com_phocadownload.main.js', 'media/com_phocadownload/js/main.js', ['version' => 'auto']);
         Factory::getApplication()
 			->getDocument()
 			->getWebAssetManager()
@@ -52,6 +54,10 @@ class PhocaDownloadRenderFront
 			    .' ORDER BY a.type, a.ordering ASC';
 		$db->setQuery($query);
 		$filenames = $db->loadObjectList();
+
+		$wa  = $app->getDocument()->getWebAssetManager();
+
+
 		if (!empty($filenames)) {
 			foreach ($filenames as $fk => $fv) {
 
@@ -62,10 +68,12 @@ class PhocaDownloadRenderFront
 					$menuLinks 	= explode(',', $fv->menulink);
 					$isIncluded	= in_array((int)$itemid, $menuLinks);
 					if ($isIncluded) {
-						HTMLHelper::stylesheet($path . $fv->filename );
+						//HTMLHelper::stylesheet($path . $fv->filename );
+                        $wa->registerAndUseStyle('com_phocadownload.'. str_replace('.css', '', $fv->filename), $path . $fv->filename, array('version' => 'auto'));
 					}
 				} else {
-					HTMLHelper::stylesheet($path . $fv->filename );
+					//HTMLHelper::stylesheet($path . $fv->filename );
+                    $wa->registerAndUseStyle('com_phocadownload.'. str_replace('.css', '', $fv->filename), $path . $fv->filename, array('version' => 'auto'));
 				}
 			}
 		}
@@ -317,7 +325,9 @@ class PhocaDownloadRenderFront
 				
 			});
 		});';
-		$document->addScriptDeclaration($s);
+        $app = Factory::getApplication();
+        $wa  = $app->getDocument()->getWebAssetManager();
+		$wa->addInlineScript($s);
 	}
 
 	/* Launch

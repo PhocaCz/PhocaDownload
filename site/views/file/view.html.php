@@ -70,7 +70,10 @@ class PhocaDownloadViewFile extends HtmlView
 			 .'   enableDownloadButtonPD = 0;'
 			 .' }'
 			 .'}';
-		$document->addScriptDeclaration($js);
+		//$document->addScriptDeclaration($js);
+		$app = Factory::getApplication();
+        $wa  = $app->getDocument()->getWebAssetManager();
+		$wa->addInlineScript($js);
 
 
 		// Params

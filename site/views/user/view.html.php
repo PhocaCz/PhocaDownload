@@ -58,7 +58,9 @@ class PhocaDownloadViewUser extends HtmlView
 
 		HTMLHelper::_('jquery.framework', false);
 		$document	= Factory::getDocument();
-		$document->addScriptDeclaration(
+		$app = Factory::getApplication();
+        $wa  = $app->getDocument()->getWebAssetManager();
+		$wa->addInlineScript(
 		'jQuery(document).ready(function(){
 			jQuery(\'.phfileuploadcheckcat\').click(function(){
 			if( !jQuery(\'#catid\').val() || jQuery(\'#catid\').val() == 0) { 
