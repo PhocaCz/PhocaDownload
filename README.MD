@@ -78,9 +78,7 @@ If you need additional information beyond this GitHub repository, further docume
 
 #### Demo
 
-- [Joomla! 3 Demo](https://www.phoca.cz/joomla3demo/)
-- [Joomla! 2.5 Demo](https://www.phoca.cz/joomlademo/)
-- [Joomla! 1.5 Demo](https://www.phoca.cz/demo/)
+- [Joomla! 6 Demo](https://www.phoca.cz/demo/)
 
 ### Version (Joomla! 3.x - no longer supported)
 3.2.3
@@ -89,7 +87,7 @@ If you need additional information beyond this GitHub repository, further docume
 ### Version (Joomla! 5.x - no longer supported)
 5.1.3
 ### Version (Joomla! 6.x)
-6.1.5
+6.1.6
 
 ### License
 

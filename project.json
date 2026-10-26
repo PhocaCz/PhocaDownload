@@ -13,9 +13,7 @@
 	"projectMainComponent": "Phoca Download",
 	"projectMainComponentInfoUrl": "https://www.phoca.cz/project/phocadownload-joomla-download",
 	"projectDemo" : {
-		"Joomla! 3 Demo": "https://www.phoca.cz/joomla3demo/",
-		"Joomla! 2.5 Demo": "https://www.phoca.cz/joomlademo/",
-		"Joomla! 1.5 Demo": "https://www.phoca.cz/demo/"
+		"Joomla! 6 Demo": "https://www.phoca.cz/demo/"
 
 	},
 	"projectColor": "#339933",
