@@ -104,9 +104,18 @@ class PhocaDownloadUtils
 		}
 
 	}
-	public static function isURLAddress($url) {
+	/*public static function isURLAddress($url) {
 		return preg_match('|^http(s)?://[a-z0-9-]+(.[a-z0-9-]+)*(:[0-9]+)?(/.*)?$|i', $url);
-	}
+	}*/
+
+	public static function isURLAddress($url) {
+		//return preg_match('|^http(s)?://[a-z0-9-]+(.[a-z0-9-]+)*(:[0-9]+)?(/.*)?$|i', $url);
+		// Reject control chars, whitespace, quotes, angle brackets, backticks
+		if (!is_string($url) || $url === '' || preg_match('/[\x00-\x20\x7f"\'<>`]/', $url)) {
+			return false;
+		}
+		return (bool) preg_match('|^https?://[a-z0-9-]+(\.[a-z0-9-]+)*(:[0-9]+)?(/[^\x00-\x20\x7f"\'<>`]*)?$|i', $url);
+ 	}
 
 	public static  function setQuestionmarkOrAmp($url) {
 		$isThereQMR = false;

@@ -312,11 +312,11 @@ if ($this->t['errorcatid'] != '') {
 
 		<tr>
 			<td><strong><?php echo Text::_( 'COM_PHOCADOWNLOAD_FILE_TITLE' ); ?>:</strong></td>
-			<td><input type="text" id="phocadownload-upload-title" name="phocadownloaduploadtitle" value="<?php echo $this->t['formdata']->title ?>"  maxlength="255" class="form-control comment-input" /></td>
+			<td><input type="text" id="phocadownload-upload-title" name="phocadownloaduploadtitle" value="<?php echo htmlspecialchars($this->t['formdata']->title, ENT_QUOTES, 'UTF-8') ?>"  maxlength="255" class="form-control comment-input" /></td>
 		</tr>
 		<tr>
 			<td><strong><?php echo Text::_( 'COM_PHOCADOWNLOAD_DESCRIPTION' ); ?>:</strong></td>
-			<td><textarea id="phocadownload-upload-description" name="phocadownloaduploaddescription" onkeyup="countCharsUpload();" rows="7" class="form-control comment-input pd-comment-input"><?php echo $this->t['formdata']->description ?></textarea></td>
+			<td><textarea id="phocadownload-upload-description" name="phocadownloaduploaddescription" onkeyup="countCharsUpload();" rows="7" class="form-control comment-input pd-comment-input"><?php echo htmlspecialchars($this->t['formdata']->description, ENT_QUOTES, 'UTF-8') ?></textarea></td>
 		</tr>
 		<tr>
 			<td>&nbsp;</td>
@@ -326,11 +326,11 @@ if ($this->t['errorcatid'] != '') {
 
 		<tr>
 			<td><strong><?php echo Text::_( 'COM_PHOCADOWNLOAD_AUTHOR' ); ?>:</strong></td>
-			<td><input type="text" id="phocadownload-upload-author" name="phocadownloaduploadauthor" value="<?php echo $this->t['formdata']->author ?>"  maxlength="255" class="form-control comment-input" /></td>
+			<td><input type="text" id="phocadownload-upload-author" name="phocadownloaduploadauthor" value="<?php echo htmlspecialchars($this->t['formdata']->author, ENT_QUOTES, 'UTF-8') ?>"  maxlength="255" class="form-control comment-input" /></td>
 		</tr>
 		<tr>
 			<td><strong><?php echo Text::_( 'COM_PHOCADOWNLOAD_AUTHOR_EMAIL' ); ?>:</strong></td>
-			<td><input type="text" id="phocadownload-upload-email" name="phocadownloaduploademail" value="<?php echo $this->t['formdata']->email ?>"  maxlength="255" class="form-control comment-input" /></td>
+			<td><input type="text" id="phocadownload-upload-email" name="phocadownloaduploademail" value="<?php echo htmlspecialchars($this->t['formdata']->email, ENT_QUOTES, 'UTF-8') ?>"  maxlength="255" class="form-control comment-input" /></td>
 		</tr>
 
 		<?php
@@ -341,7 +341,7 @@ if ($this->t['errorcatid'] != '') {
 
 		<tr>
 			<td><strong><?php echo Text::_( 'COM_PHOCADOWNLOAD_AUTHOR_WEBSITE' ); ?>:</strong></td>
-			<td><input type="text" id="phocadownload-upload-website" name="phocadownloaduploadwebsite" value="<?php echo $this->t['formdata']->website ?>"  maxlength="255" class="form-control comment-input" /></td>
+			<td><input type="text" id="phocadownload-upload-website" name="phocadownloaduploadwebsite" value="<?php echo htmlspecialchars($this->t['formdata']->website, ENT_QUOTES, 'UTF-8') ?>"  maxlength="255" class="form-control comment-input" /></td>
 		</tr>
 
 		<?php
@@ -352,12 +352,12 @@ if ($this->t['errorcatid'] != '') {
 
 		<tr>
 			<td><strong><?php echo Text::_( 'COM_PHOCADOWNLOAD_LICENSE' ); ?>:</strong></td>
-			<td><input type="text" id="phocadownload-upload-license" name="phocadownloaduploadlicense" value="<?php echo $this->t['formdata']->license ?>"  maxlength="255" class="form-control comment-input" /></td>
+			<td><input type="text" id="phocadownload-upload-license" name="phocadownloaduploadlicense" value="<?php echo htmlspecialchars($this->t['formdata']->license, ENT_QUOTES, 'UTF-8') ?>"  maxlength="255" class="form-control comment-input" /></td>
 		</tr>
 
 		<tr>
 			<td><strong><?php echo Text::_( 'COM_PHOCADOWNLOAD_VERSION' ); ?>:</strong></td>
-			<td><input type="text" id="phocadownload-upload-version" name="phocadownloaduploadversion" value="<?php echo $this->t['formdata']->version ?>"  maxlength="255" class="form-control comment-input" /></td>
+			<td><input type="text" id="phocadownload-upload-version" name="phocadownloaduploadversion" value="<?php echo htmlspecialchars($this->t['formdata']->version, ENT_QUOTES, 'UTF-8') ?>"  maxlength="255" class="form-control comment-input" /></td>
 		</tr>
 
 	</table>

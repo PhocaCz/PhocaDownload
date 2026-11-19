@@ -466,7 +466,8 @@ class PhocaDownloadModelUser extends BaseDatabaseModel
 
 		$data['userid']			= $user->id;
 		$data['author_email']	= $data['email'];
-		$data['author_url']		= $data['website'];
+		//$data['author_url']		= $data['website'];
+		$data['author_url']		= PhocaDownloadUtils::isURLAddress($data['website']) ? $data['website'] : '';
 		$data['access']			= $default_access;
 		$data['token']			= PhocaDownloadUtils::getToken($data['title'].$filename);
 		//$data['token']			= PhocaDownloadUtils::getToken($data['title'].$data['filename']);

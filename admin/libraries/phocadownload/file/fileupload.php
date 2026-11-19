@@ -34,6 +34,12 @@ class PhocaDownloadFileUpload
 
 		$overwriteExistingFiles 	= $paramsC->get( 'overwrite_existing_files', 0 );
 
+			$allowUnsafeUploadAdministrationBool = false;
+		$allowUnsafeUploadAdministration 	= (int)$paramsC->get( 'allow_unsafe_upload_administration', 0 );
+		if ($frontEnd === 0 && $allowUnsafeUploadAdministration === 1) {
+			$allowUnsafeUploadAdministrationBool = true;
+		}
+
 		$app->allowCache(false);
 
 		// Chunk Files
@@ -311,7 +317,7 @@ class PhocaDownloadFileUpload
 				}
 
 
-				if(!File::upload($file['tmp_name'], $filepathImgFinal, false)) {
+				if(!File::upload($file['tmp_name'], $filepathImgFinal, false, $allowUnsafeUploadAdministrationBool)) {
 
 					jexit(json_encode(array( 'jsonrpc' => '2.0', 'result' => 'error', 'code' => 109,
 					'message' => Text::_('COM_PHOCADOWNLOAD_ERROR').': ',
@@ -347,6 +353,13 @@ class PhocaDownloadFileUpload
 	//	$uploadMethod 	= $paramsC->get( 'multiple_upload_method', 4 );
 
 		$overwriteExistingFiles 	= $paramsC->get( 'overwrite_existing_files', 0 );
+
+		$overwriteExistingFiles 	= $paramsC->get( 'overwrite_existing_files', 0 );
+		$allowUnsafeUploadAdministrationBool = false;
+		$allowUnsafeUploadAdministration 	= (int)$paramsC->get( 'allow_unsafe_upload_administration', 0 );
+		if ($frontEnd === 0 && $allowUnsafeUploadAdministration === 1) {
+			$allowUnsafeUploadAdministrationBool = true;
+		}
 
 		$app			= Factory::getApplication();
 		Session::checkToken( 'request' ) or jexit( 'ERROR: '. Text::_('COM_PHOCADOWNLOAD_INVALID_TOKEN'));
@@ -432,7 +445,7 @@ class PhocaDownloadFileUpload
 				}
 			}
 
-			if (!File::upload($file['tmp_name'], $filepath, false)) {
+			if (!File::upload($file['tmp_name'], $filepath, false, $allowUnsafeUploadAdministrationBool)) {
 				if ($return) {
 
 					$app->enqueueMessage( Text::_('COM_PHOCADOWNLOAD_ERROR_UNABLE_TO_UPLOAD_FILE'), 'error');

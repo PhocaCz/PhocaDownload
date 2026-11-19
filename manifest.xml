@@ -13,8 +13,8 @@
 		<tags>
 			<tag>stable</tag>
 		</tags>
-		<maintainer><![CDATA[ Phoca.cz ]]></maintainer>
-		<maintainerurl>https://www.phoca.cz/</maintainerurl>
+		<maintainer><![CDATA[ Phoca FOSS & Open Source Community ]]></maintainer>
+		<maintainerurl>https://github.com/PhocaCz</maintainerurl>
 		<section>Updates</section>
 		<targetplatform name="joomla" version="3.([89]|10)"/>
 		<client>administrator</client>
@@ -33,8 +33,8 @@
 		<tags>
 			<tag>stable</tag>
 		</tags>
-		<maintainer><![CDATA[ Phoca.cz ]]></maintainer>
-		<maintainerurl>https://www.phoca.cz/</maintainerurl>
+		<maintainer><![CDATA[ Phoca FOSS & Open Source Community ]]></maintainer>
+		<maintainerurl>https://github.com/PhocaCz</maintainerurl>
 		<section>Updates</section>
 		<targetplatform name="joomla" version="4\.*"/>
 		<client>administrator</client>
@@ -53,8 +53,8 @@
 		<tags>
 			<tag>stable</tag>
 		</tags>
-		<maintainer><![CDATA[ Phoca.cz ]]></maintainer>
-		<maintainerurl>https://www.phoca.cz/</maintainerurl>
+		<maintainer><![CDATA[ Phoca FOSS & Open Source Community ]]></maintainer>
+		<maintainerurl>https://github.com/PhocaCz</maintainerurl>
 		<section>Updates</section>
 		<targetplatform name="joomla" version="5\.*"/>
 		<client>administrator</client>
@@ -64,17 +64,18 @@
 		<description><![CDATA[ Phoca Download is download manager for Joomla! CMS. It includes component, modules and plugins and allows displaying files on website which can be downloaded (previewed, played) by website visitors. ]]></description>
 		<element>com_phocadownload</element>
 		<type>component</type>
-		<version>6.1.6</version>
-		<infourl title="Phoca Download 6.1.6">http://www.phoca.cz/version/index.php?phocadownload=6.1.6</infourl>
+		<version>6.1.7</version>
+		<infourl title="Phoca Download 6.1.7">http://www.phoca.cz/version/index.php?phocadownload=6.1.7</infourl>
+		<changelogurl>https://raw.githubusercontent.com/PhocaCz/PhocaDownload/master/changelog6.xml</changelogurl>
 		<downloads>
-			<downloadurl type="full" format="zip">https://github.com/PhocaCz/PhocaDownload/releases/download/6.1.6/com_phocadownload_v6.1.6.zip</downloadurl>
+			<downloadurl type="full" format="zip">https://github.com/PhocaCz/PhocaDownload/releases/download/6.1.7/com_phocadownload_v6.1.7.zip</downloadurl>
 		</downloads>
-		<sha512>e762b732da079744c6ebf9ab1a6921d311827dee566f748351d0a935a87fcb6ef3f13baf85351e0ea68f2c286634341f78cbaf95fbd5fd3c9c6eef5a03d71f11</sha512>
+		<sha512>10835af6b48f78c6460cd3780cec07d8de1db679fb514c1db65d92954a385db2eaeb4899d510315e1c9c49d9566c2b8d633732065b922cea07d835bea9577c5e</sha512>
 		<tags>
 			<tag>stable</tag>
 		</tags>
-		<maintainer><![CDATA[ Phoca.cz ]]></maintainer>
-		<maintainerurl>https://www.phoca.cz/</maintainerurl>
+		<maintainer><![CDATA[ Phoca FOSS & Open Source Community ]]></maintainer>
+		<maintainerurl>https://github.com/PhocaCz</maintainerurl>
 		<section>Updates</section>
 		<targetplatform name="joomla" version="6\.*"/>
 		<client>administrator</client>

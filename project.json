@@ -119,5 +119,6 @@
 		"Allowing download for registered users only": "https://www.phoca.cz/documents/17-phoca-download-component/269-allowing-download-for-registered-users-only",
 		"User Upload - Uploading Files In Frontend": "https://www.phoca.cz/documents/17-phoca-download-component/347-user-upload-uploading-files-in-frontend",
 		"FAQ": "https://www.phoca.cz/documents/17-phoca-download-component/85-faq"
-	}
+	},
+	"projectBranch": "master"
 }

@@ -32,7 +32,7 @@ class JFormFieldPhocaDownloadCategory extends FormField
 		return $renderer;
 	}
 
-	private function buildCategoryTree(array &$options, array $categories, string $treeTitle, array $typeFilter, array $langFilter, array $omitIds): void {
+	private function buildCategoryTree(array &$options, array $categories, string $treeTitle, array $typeFilter, array $langFilter, array $omitIds, bool $includeChildren = true): void {
 			foreach ($categories as $category) {
 				  if ($typeFilter && !in_array($category->type, $typeFilter)) continue;
 				  if ($langFilter && !in_array($category->language, $langFilter)) continue;
@@ -43,8 +43,8 @@ class JFormFieldPhocaDownloadCategory extends FormField
 					'text' => $title . ($category->language === '*' ? '' : ' (' . $category->language . ')'),
 					'value' => $category->id,
 				  ];
-				  if ($category->children)
-					$this->buildCategoryTree($options, $category->children, $title, $typeFilter, $langFilter, $omitIds);
+				  if ($includeChildren && $category->children)
+					$this->buildCategoryTree($options, $category->children, $title, $typeFilter, $langFilter, $omitIds, $includeChildren);
 			}
 	}
 
@@ -96,9 +96,22 @@ class JFormFieldPhocaDownloadCategory extends FormField
 			}
 		});
 
-		$rootCategories = array_filter($categories, function($category) {
-		  return !$category->parent_id;
-		});
+		$parentField = (string) $this->element['parentfield'];
+		$parentGroup = (string) $this->element['parentgroup'];
+		$directChildrenOnly = (string) $this->element['directchildren'] === 'true';
+
+		if ($parentField !== '') {
+			$parentCategoryId = (int) $this->form->getValue($parentField, $parentGroup !== '' ? $parentGroup : null);
+			$rootCategories = $parentCategoryId > 0
+				? array_filter($categories, static function ($category) use ($parentCategoryId) {
+					return (int) $category->parent_id === $parentCategoryId;
+				})
+				: [];
+		} else {
+			$rootCategories = array_filter($categories, static function ($category) {
+				return !$category->parent_id;
+			});
+		}
 
 		$options = [];
 		if ($multiple) {
@@ -118,7 +131,7 @@ class JFormFieldPhocaDownloadCategory extends FormField
 		  }
 		}
 
-		$this->buildCategoryTree($options, $rootCategories, '', $typeFilter, $langFilter, $omitIds);
+		$this->buildCategoryTree($options, $rootCategories, '', $typeFilter, $langFilter, $omitIds, !$directChildrenOnly);
 
 		$data = $this->getLayoutData();
 		$data['options'] = $options;

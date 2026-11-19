@@ -561,6 +561,11 @@
 	<option value="1">COM_PHOCADOWNLOAD_YES</option>
 </field>
 
+	<field name="allow_unsafe_upload_administration" type="list" default="0" label="COM_PHOCADOWNLOAD_ALLOW_UNSAFE_UPLOAD_ADMINISTRATION_LABEL" description="COM_PHOCADOWNLOAD_ALLOW_UNSAFE_UPLOAD_ADMINISTRATION_DESC">
+	<option value="0">COM_PHOCADOWNLOAD_NO</option>
+	<option value="1">COM_PHOCADOWNLOAD_YES</option>
+</field>
+
 </fieldset>
 
 <fieldset name="general" label="COM_PHOCADOWNLOAD_CONFIG_HEAD_GENERAL_LABEL">

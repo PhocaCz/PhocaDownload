@@ -165,7 +165,7 @@ if (!empty($this->file[0])) {
 			if ($v->license != '') {
 				if ($v->license_url != '') {
 					$pdLicense .= '<div class="pd-license-txt">'.Text::_('COM_PHOCADOWNLOAD_LICENSE').':</div>';
-					$pdLicense .= '<div class="pd-fl-m"><a href="'.$v->license_url.'" target="_blank">'.$v->license.'</a></div>';
+					$pdLicense .= '<div class="pd-fl-m"><a href="'.htmlspecialchars($v->license_url, ENT_QUOTES, 'UTF-8').'" target="_blank">'.$v->license.'</a></div>';
 				} else {
 					$pdLicense .= '<div class="pd-license-txt">'.Text::_('COM_PHOCADOWNLOAD_LICENSE').':</div>';
 					$pdLicense .= '<div class="pd-fl-m">'.$v->license.'</div>';
@@ -176,7 +176,8 @@ if (!empty($this->file[0])) {
 			if ($v->author != '') {
 				if ($v->author_url != '') {
 					$pdAuthor .= '<div class="pd-author-txt">'.Text::_('COM_PHOCADOWNLOAD_AUTHOR').':</div>';
-					$pdAuthor .= '<div class="pd-fl-m"><a href="'.$v->author_url.'" target="_blank">'.$v->author.'</a></div>';
+					//$pdAuthor .= '<div class="pd-fl-m"><a href="'.$v->author_url.'" target="_blank">'.$v->author.'</a></div>';
+					$pdAuthor .= '<div class="pd-fl-m"><a href="'.htmlspecialchars($v->author_url, ENT_QUOTES, 'UTF-8').'" target="_blank" rel="noopener noreferrer">'.htmlspecialchars($v->author, ENT_QUOTES, 'UTF-8').'</a></div>';
 				} else {
 					$pdAuthor .= '<div class="pd-author-txt">'.Text::_('COM_PHOCADOWNLOAD_AUTHOR').':</div>';
 					$pdAuthor .= '<div class="pd-fl-m">'.$v->author.'</div>';

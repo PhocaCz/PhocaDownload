@@ -170,7 +170,7 @@ class PhocaDownloadAccess
 				break;
 			}
 		}
-		return (boolean)$rightGroupAccess;
+		return (bool)$rightGroupAccess;
 	}
 }
 ?>
