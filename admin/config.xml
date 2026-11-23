@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config>
-<fields addfieldpath="/administrator/components/com_phocadownload/models/fields">
-	<fieldset name="display" label="COM_PHOCADOWNLOAD_CONFIG_HEAD_DISPLAY_LABEL">
+<fields addfieldprefix="Phoca\Component\Phocadownload\Administrator\Field">
+	<fieldset name="display" label="COM_PHOCADOWNLOAD_CONFIG_HEAD_DISPLAY_LABEL" addfieldprefix="Phoca\Component\Phocadownload\Administrator\Field">
 
-<field name="phocahead1" type="phocahead"  default="COM_PHOCADOWNLOAD_CONFIG_CATEGORY_CATEGORIES_VIEW_LABEL" label="" description=""/>
+<field name="phocahead1" type="PhocaHead"  default="COM_PHOCADOWNLOAD_CONFIG_CATEGORY_CATEGORIES_VIEW_LABEL" label="" description=""/>
 
 <field name="filename_or_name" type="list" default="filenametitle" label="COM_PHOCADOWNLOAD_FIELD_FILENAME_OR_NAME_LABEL" description="COM_PHOCADOWNLOAD_FIELD_FILENAME_OR_NAME_LABEL_DESC">
 	<option value="filename">COM_PHOCADOWNLOAD_FILENAME</option>
@@ -405,7 +405,6 @@
 {css=text/css}
 {html=text/html}
 {htm=text/html}
-{shtml=text/html}
 {txt=text/plain}
 {text=text/plain}
 {log=text/plain}
@@ -552,7 +551,17 @@
 	<option value="0">COM_PHOCADOWNLOAD_NO</option>
 </field>
 
+<field name="harden_folder" type="radio" layout="joomla.form.field.radio.switcher" default="1" label="COM_PHOCADOWNLOAD_FIELD_HARDEN_FOLDER_LABEL" description="COM_PHOCADOWNLOAD_FIELD_HARDEN_FOLDER_DESC" filter="integer">
+	<option value="0">COM_PHOCADOWNLOAD_NO</option>
+	<option value="1">COM_PHOCADOWNLOAD_YES</option>
+</field>
+
 <field name="frontend_run_events" type="list" default="0" label="COM_PHOCADOWNLOAD_RUN_EVENTS_FRONTEND_LABEL" description="COM_PHOCADOWNLOAD_RUN_EVENTS_FRONTEND_DESC">
+	<option value="0">COM_PHOCADOWNLOAD_NO</option>
+	<option value="1">COM_PHOCADOWNLOAD_YES</option>
+</field>
+
+	<field name="allow_unsafe_upload_administration" type="list" default="0" label="COM_PHOCADOWNLOAD_ALLOW_UNSAFE_UPLOAD_ADMINISTRATION_LABEL" description="COM_PHOCADOWNLOAD_ALLOW_UNSAFE_UPLOAD_ADMINISTRATION_DESC">
 	<option value="0">COM_PHOCADOWNLOAD_NO</option>
 	<option value="1">COM_PHOCADOWNLOAD_YES</option>
 </field>

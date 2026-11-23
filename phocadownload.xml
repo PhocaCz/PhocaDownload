@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="component" method="upgrade" version="6.0">
+<extension type="component" method="upgrade" version="7.0">
 	<name>com_phocadownload</name>
 	<author>Jan Pavelka (www.phoca.cz)</author>
-	<creationDate>10/07/2026</creationDate>
+	<creationDate>23/11/2026</creationDate>
 	<authorEmail></authorEmail>
 	<authorUrl>https://www.phoca.cz</authorUrl>
 	<copyright>Jan Pavelka</copyright>
 	<license>GNU/GPL</license>
-	<version>6.1.3</version>
+	<version>7.0.0Alpha</version>
 	<description>COM_PHOCADOWNLOAD_XML_DESCRIPTION</description>
 	<namespace path="src">Phoca\Component\PhocaDownload</namespace>
 	<scriptfile>script.php</scriptfile>
@@ -32,15 +32,11 @@
 	</update>
 
 	<files folder="site">
-		<folder>controllers</folder>
-		<folder>helpers</folder>
-		<folder>views</folder>
+		<folder>tmpl</folder>
+		<folder>src</folder>
 		<folder>layouts</folder>
-		<folder>models</folder>
 		<filename>index.html</filename>
-		<filename>phocadownload.php</filename>
 		<filename>router.php</filename>
-		<filename>controller.php</filename>
 	</files>
 
 	<media destination="com_phocadownload" folder="media">
@@ -61,38 +57,34 @@
 		<menu img="media/com_phocadownload/images/administrator/icon-16-pdl-menu.png" alt="COM_PHOCADOWNLOAD" link="option=com_phocadownload">COM_PHOCADOWNLOAD</menu>
 
 			<submenu>
-				<menu img="media/com_phocadownload/images/administrator/icon-16-pdl-control-panel.png" alt="COM_PHOCADOWNLOAD_CONTROLPANEL" view="phocadownloadcp" link="option=com_phocadownload">COM_PHOCADOWNLOAD_CONTROLPANEL</menu>
-				<menu img="media/com_phocadownload/images/administrator/icon-16-pdl-menu-files.png" alt="COM_PHOCADOWNLOAD_FILES" view="phocadownloadfiles" link="option=com_phocadownload&amp;view=phocadownloadfiles">COM_PHOCADOWNLOAD_FILES</menu>
-				<menu img="media/com_phocadownload/images/administrator/icon-16-pdl-menu-category.png" alt="COM_PHOCADOWNLOAD_CATEGORIES" view="phocadownloadcats" link="option=com_phocadownload&amp;view=phocadownloadcats">COM_PHOCADOWNLOAD_CATEGORIES</menu>
-				<menu img="media/com_phocadownload/images/administrator/icon-16-pdl-menu-lic.png" alt="COM_PHOCADOWNLOAD_LICENSES" view="phocadownloadlics" link="option=com_phocadownload&amp;view=phocadownloadlics">COM_PHOCADOWNLOAD_LICENSES</menu>
-				<menu img="media/com_phocadownload/images/administrator/icon-16-pdl-menu-stat.png" alt="COM_PHOCADOWNLOAD_STATISTICS" view="phocadownloadstat" link="option=com_phocadownload&amp;view=phocadownloadstat">COM_PHOCADOWNLOAD_STATISTICS</menu>
-				<menu img="media/com_phocadownload/images/administrator/icon-16-pdl-menu-downloads.png" alt="COM_PHOCADOWNLOAD_DOWNLOADS" view="phocadownloaddownloads" link="option=com_phocadownload&amp;view=phocadownloaddownloads">COM_PHOCADOWNLOAD_DOWNLOADS</menu>
-				<menu img="media/com_phocadownload/images/administrator/icon-16-pdl-menu-uploads.png" alt="COM_PHOCADOWNLOAD_UPLOADS" view="phocadownloaduploads" link="option=com_phocadownload&amp;view=phocadownloaduploads">COM_PHOCADOWNLOAD_UPLOADS</menu>
-				<menu img="media/com_phocadownload/images/administrator/icon-16-pdl-menu-vote-file.png" alt="COM_PHOCADOWNLOAD_FILE_RATING" view="phocadownloadrafile" link="option=com_phocadownload&amp;view=phocadownloadrafile">COM_PHOCADOWNLOAD_FILE_RATING</menu>
-				<menu img="media/com_phocadownload/images/administrator/icon-16-pdl-menu-tags.png" alt="COM_PHOCADOWNLOAD_TAGS" view="phocadownloadtags" link="option=com_phocadownload&amp;view=phocadownloadtags">COM_PHOCADOWNLOAD_TAGS</menu>
-				<menu img="media/com_phocadownload/images/administrator/icon-16-pdl-menu-style.png" alt="COM_PHOCADOWNLOAD_STYLES" view="phocadownloadstyles" link="option=com_phocadownload&amp;view=phocadownloadstyles">COM_PHOCADOWNLOAD_STYLES</menu>
-				<menu img="media/com_phocadownload/images/administrator/icon-16-pdl-menu-logs.png" alt="COM_PHOCADOWNLOAD_LOGGING" view="phocadownloadlogs" link="option=com_phocadownload&amp;view=phocadownloadlogs">COM_PHOCADOWNLOAD_LOGGING</menu>
-				<menu img="media/com_phocadownload/images/administrator/icon-16-pdl-menu-info.png" alt="COM_PHOCADOWNLOAD_INFO" view="phocadownloadinfo" link="option=com_phocadownload&amp;view=phocadownloadinfo">COM_PHOCADOWNLOAD_INFO</menu>
+				<menu img="media/com_phocadownload/images/administrator/icon-16-pdl-control-panel.png" alt="COM_PHOCADOWNLOAD_CONTROLPANEL" view="cp" link="option=com_phocadownload">COM_PHOCADOWNLOAD_CONTROLPANEL</menu>
+				<menu img="media/com_phocadownload/images/administrator/icon-16-pdl-menu-files.png" alt="COM_PHOCADOWNLOAD_FILES" view="files" link="option=com_phocadownload&amp;view=files">COM_PHOCADOWNLOAD_FILES</menu>
+				<menu img="media/com_phocadownload/images/administrator/icon-16-pdl-menu-category.png" alt="COM_PHOCADOWNLOAD_CATEGORIES" view="cats" link="option=com_phocadownload&amp;view=cats">COM_PHOCADOWNLOAD_CATEGORIES</menu>
+				<menu img="media/com_phocadownload/images/administrator/icon-16-pdl-menu-lic.png" alt="COM_PHOCADOWNLOAD_LICENSES" view="lics" link="option=com_phocadownload&amp;view=lics">COM_PHOCADOWNLOAD_LICENSES</menu>
+				<menu img="media/com_phocadownload/images/administrator/icon-16-pdl-menu-stat.png" alt="COM_PHOCADOWNLOAD_STATISTICS" view="stat" link="option=com_phocadownload&amp;view=stat">COM_PHOCADOWNLOAD_STATISTICS</menu>
+				<menu img="media/com_phocadownload/images/administrator/icon-16-pdl-menu-downloads.png" alt="COM_PHOCADOWNLOAD_DOWNLOADS" view="downloads" link="option=com_phocadownload&amp;view=downloads">COM_PHOCADOWNLOAD_DOWNLOADS</menu>
+				<menu img="media/com_phocadownload/images/administrator/icon-16-pdl-menu-uploads.png" alt="COM_PHOCADOWNLOAD_UPLOADS" view="uploads" link="option=com_phocadownload&amp;view=uploads">COM_PHOCADOWNLOAD_UPLOADS</menu>
+				<menu img="media/com_phocadownload/images/administrator/icon-16-pdl-menu-vote-file.png" alt="COM_PHOCADOWNLOAD_FILE_RATING" view="rafile" link="option=com_phocadownload&amp;view=rafile">COM_PHOCADOWNLOAD_FILE_RATING</menu>
+				<menu img="media/com_phocadownload/images/administrator/icon-16-pdl-menu-tags.png" alt="COM_PHOCADOWNLOAD_TAGS" view="tags" link="option=com_phocadownload&amp;view=tags">COM_PHOCADOWNLOAD_TAGS</menu>
+				<menu img="media/com_phocadownload/images/administrator/icon-16-pdl-menu-style.png" alt="COM_PHOCADOWNLOAD_STYLES" view="styles" link="option=com_phocadownload&amp;view=styles">COM_PHOCADOWNLOAD_STYLES</menu>
+				<menu img="media/com_phocadownload/images/administrator/icon-16-pdl-menu-logs.png" alt="COM_PHOCADOWNLOAD_LOGGING" view="logs" link="option=com_phocadownload&amp;view=logs">COM_PHOCADOWNLOAD_LOGGING</menu>
+				<menu img="media/com_phocadownload/images/administrator/icon-16-pdl-menu-info.png" alt="COM_PHOCADOWNLOAD_INFO" view="info" link="option=com_phocadownload&amp;view=info">COM_PHOCADOWNLOAD_INFO</menu>
 			</submenu>
 
 		<files folder="admin">
-			<folder>libraries</folder>
-			<folder>controllers</folder>
 			<folder>install</folder>
 			<folder>update</folder>
-			<folder>tables</folder>
-			<folder>helpers</folder>
-			<folder>views</folder>
+			<folder>forms</folder>
+			<folder>tmpl</folder>
+			<folder>src</folder>
 			<folder>help</folder>
 			<folder>layouts</folder>
-			<folder>models</folder>
+			<folder>services</folder>
 			<filename>FOSS.md</filename>
 			<filename>index.html</filename>
 			<filename>LICENSE</filename>
-			<filename>phocadownload.php</filename>
 			<filename>config.xml</filename>
 			<filename>access.xml</filename>
-			<filename>controller.php</filename>
 		</files>
 
 		<languages folder="admin/language">
@@ -102,6 +94,7 @@
 	</administration>
 	
 	
+	<changelogurl>https://raw.githubusercontent.com/PhocaCz/PhocaDownload/master/changelog7.xml</changelogurl>
 
 	<updateservers>
 		<server type="extension" name="COM_PHOCADOWNLOAD" priority="1"><![CDATA[https://raw.githubusercontent.com/PhocaCz/PhocaDownload/master/manifest.xml]]></server>

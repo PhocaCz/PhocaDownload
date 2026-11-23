@@ -16,13 +16,15 @@ use Joomla\CMS\Component\Router\Rules\StandardRules;
 use Joomla\CMS\Component\Router\Rules\NomenuRules;
 use Joomla\CMS\Factory;
 use Joomla\Database\ParameterType;
+use Phoca\Component\Phocadownload\Administrator\Category\Category;
+use Phoca\Component\Phocadownload\Administrator\Path\Routerrules;
 
 
 if (! class_exists('PhocaDownloadLoader')) {
     require_once( JPATH_ADMINISTRATOR.'/components/com_phocadownload/libraries/loader.php');
 }
 
-class PhocadownloadRouter extends RouterView
+class PhocaRouter extends RouterView
 {
 	protected $noIDs = false;
 
@@ -72,10 +74,10 @@ class PhocadownloadRouter extends RouterView
 
 		parent::__construct($app, $menu);
 
-		phocadownloadimport('phocadownload.path.routerrules');
-		phocadownloadimport('phocadownload.category.category');
+		//phocadownloadimport('phocadownload.path.routerrules');
+		//phocadownloadimport('phocadownload.category.category');
 		$this->attachRule(new MenuRules($this));
-		$this->attachRule(new PhocaDownloadRouterrules($this));
+		$this->attachRule(new Routerrules($this));
 		$this->attachRule(new StandardRules($this));
 		$this->attachRule(new NomenuRules($this));
 	}
@@ -114,11 +116,11 @@ class PhocadownloadRouter extends RouterView
             return $path;
         }
 
-	    $category = PhocaDownloadCategory::getCategoryById($id);
+	    $category = Category::getCategoryById($id);
 
 		if (isset($category->id)) {
 
-		    $path = PhocaDownloadCategory::getPath(array(), (int)$category->id, $category->parent_id, $category->title, $category->alias);
+		    $path = Category::getPath(array(), (int)$category->id, $category->parent_id, $category->title, $category->alias);
 
 		    //$path = array_reverse($path, true);
 		    //$path = array_reverse($category->getPath(), true);
@@ -143,7 +145,7 @@ class PhocadownloadRouter extends RouterView
 	public function getFileSegment($id, $query) {
 
 		if (!strpos($id, ':'))  {
-			$db = Factory::getDbo();
+			$db = Factory::getContainer()->get(\Joomla\Database\DatabaseInterface::class);
 			$dbquery = $db->getQuery(true);
 			$dbquery->select($dbquery->qn('alias'))
 				->from($dbquery->qn('#__phocadownload'))
@@ -164,7 +166,7 @@ class PhocadownloadRouter extends RouterView
 	public function getPlaySegment($id, $query) {
 
 		if (!strpos($id, ':')) {
-			$db = Factory::getDbo();
+			$db = Factory::getContainer()->get(\Joomla\Database\DatabaseInterface::class);
 			$dbquery = $db->getQuery(true);
 			$dbquery->select($dbquery->qn('alias'))
 				->from($dbquery->qn('#__phocadownload'))
@@ -213,7 +215,7 @@ class PhocadownloadRouter extends RouterView
         }
 
 	    if ($this->noIDs)  {
-	        $db = Factory::getDbo();
+	        $db = Factory::getContainer()->get(\Joomla\Database\DatabaseInterface::class);
 			$dbquery = $db->getQuery(true);
 			$dbquery->select($db->quoteName('id'))
 				->from($db->quoteName('#__phocadownload_categories'))
@@ -233,10 +235,10 @@ class PhocadownloadRouter extends RouterView
         $category = false;
 	    if (isset($query['id'])) {
 		    if ((int)$query['id'] > 0) {
-                $category = PhocaDownloadCategory::getCategoryById($query['id']);
+                $category = Category::getCategoryById($query['id']);
             } else if ((int)$segment > 0) {
 		        // to do noids alias
-		        $category = PhocaDownloadCategory::getCategoryById((int)$segment);
+		        $category = Category::getCategoryById((int)$segment);
                 if (isset($category->id) && (int)$category->id > 0 && $category->parent_id == 0) {
                     // We don't have root category with 0 so we need to start with segment one
                     return (int)$category->id;
@@ -286,7 +288,7 @@ class PhocadownloadRouter extends RouterView
 
 		if ($this->noIDs)
 		{
-			$db = Factory::getDbo();
+			$db = Factory::getContainer()->get(\Joomla\Database\DatabaseInterface::class);
 			$dbquery = $db->getQuery(true);
 			$dbquery->select($dbquery->qn('id'))
 				->from($dbquery->qn('#__phocadownload'))
@@ -312,14 +314,14 @@ class PhocadownloadRouter extends RouterView
 function PhocaDownloadBuildRoute(&$query) {
 
 	$app = Factory::getApplication();
-	$router = new PhocadownloadRouter($app, $app->getMenu());
+	$router = new PhocaRouter($app, $app->getMenu());
 	return $router->build($query);
 }
 
 function PhocaDownloadParseRoute($segments) {
 
 	$app = Factory::getApplication();
-	$router = new PhocadownloadRouter($app, $app->getMenu());
+	$router = new PhocaRouter($app, $app->getMenu());
 	return $router->parse($segments);
 }
 

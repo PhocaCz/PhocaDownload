@@ -872,8 +872,8 @@ li.plupload_droptext:before {
 }
 
 @media (max-width: 768px) {
-	.ph-admin-additional-box { 
-		float: none; 
+	.ph-admin-additional-box {
+		float: none;
 		width: 100%;
 		margin: 0 0 0.75em 0;
 	}

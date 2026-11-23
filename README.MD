@@ -83,13 +83,15 @@ If you need additional information beyond this GitHub repository, further docume
 - [Joomla! 1.5 Demo](https://www.phoca.cz/demo/)
 
 ### Version (Joomla! 3.x - no longer supported)
-3.2.3
+3.5.8
 ### Version (Joomla! 4.x - no longer supported)
-4.0.9
+4.0.13
 ### Version (Joomla! 5.x - no longer supported)
-5.1.3
+5.2.4
 ### Version (Joomla! 6.x)
-6.1.3
+6.1.7
+### Version (Joomla! 7.x)
+7.0.0Alpha
 
 ### License
 

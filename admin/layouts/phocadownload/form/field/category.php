@@ -47,7 +47,7 @@ extract($displayData);
  * @var   array    $dataAttributes  Miscellaneous data attribute for eg, data-*
  */
 
-$html = array();
+$html = [];
 $attr = '';
 
 // Initialize the field attributes.
@@ -96,12 +96,12 @@ if ($refreshPage === true && $hasCustomFields) {
   $attr2 .= ' data-refresh-catid="' . $refreshCatId . '" data-refresh-section="' . $refreshSection . '"';
   $attr2 .= ' onchange="Joomla.categoryHasChanged(this)"';
 
-  Factory::getDocument()->getWebAssetManager()
+  Factory::getApplication()->getDocument()->getWebAssetManager()
     ->registerAndUseScript('field.category-change', 'layouts/joomla/form/field/category-change.min.js', [], ['defer' => true], ['core'])
     ->useScript('webcomponent.core-loader');
 
   // Pass the element id to the javascript
-  Factory::getDocument()->addScriptOptions('category-change', $id);
+  Factory::getApplication()->getDocument()->addScriptOptions('category-change', $id);
 } else {
   $attr2 .= $onchange ? ' onchange="' . $onchange . '"' : '';
 }
