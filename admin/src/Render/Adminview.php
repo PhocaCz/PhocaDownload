@@ -44,9 +44,9 @@ $app = Factory::getApplication();
 		$this->document	  	= $app->getDocument();
 		$wa 				= $app->getDocument()->getWebAssetManager();
 
-		HTMLHelper::_('behavior.formvalidator');
-		HTMLHelper::_('behavior.keepalive');
-		HTMLHelper::_('jquery.framework', false);
+		$wa->useScript('form.validate');
+		$wa->useScript('keepalive');
+		Factory::getApplication()->getDocument()->getWebAssetManager()->useScript('jquery');
 
 		$wa->registerAndUseStyle($this->option . '.font', 'media/' . $this->option . '/duotone/joomla-fonts.css', array('version' => 'auto'));
 		$wa->registerAndUseStyle($this->option . '.main', 'media/' .$this->option . '/css/administrator/'.str_replace('com_', '', $this->option).'.css', array('version' => 'auto'));

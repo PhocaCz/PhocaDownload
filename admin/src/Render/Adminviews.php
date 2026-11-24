@@ -49,9 +49,9 @@ $app = Factory::getApplication();
 		$wa 				= $app->getDocument()->getWebAssetManager();
 
 		HTMLHelper::_('bootstrap.tooltip');
-        HTMLHelper::_('behavior.multiselect');
+        $wa->useScript('multiselect');
         HTMLHelper::_('dropdown.init');
-        HTMLHelper::_('jquery.framework', false);
+        Factory::getApplication()->getDocument()->getWebAssetManager()->useScript('jquery');
 
 		$wa->registerAndUseStyle($this->option . '.font', 'media/' . $this->option . '/duotone/joomla-fonts.css', array('version' => 'auto'));
 		$wa->registerAndUseStyle($this->option . '.main', 'media/' .$this->option . '/css/administrator/'.str_replace('com_', '', $this->option).'.css', array('version' => 'auto'));
@@ -60,8 +60,7 @@ $app = Factory::getApplication();
 
         // Modal
         if ($this->tmpl == 'component') {
-            HTMLHelper::_('behavior.core');
-            HTMLHelper::_('behavior.polyfill', array('event'), 'lt IE 9');
+            $wa->useScript('core');
             //HTMLHelper::_('script', 'media/' . $this->option . '/js/administrator/admin-phocaitems-modal.min.js', array('version' => 'auto', 'relative' => true));
             HTMLHelper::_('bootstrap.tooltip', '.hasTooltip', array('placement' => 'bottom'));
             HTMLHelper::_('bootstrap.popover', '.hasPopover', array('placement' => 'bottom'));
@@ -330,7 +329,7 @@ $app = Factory::getApplication();
         //$app			= Factory::getApplication();
         $nullDate     = $db->getNullDate();
         $now          = Factory::getDate();
-        $config       = Factory::getConfig();
+        $config       = Factory::getApplication()->getConfig();
         $publish_up   = Factory::getDate($publishUp);
         $publish_down = Factory::getDate($publishDown);
         $tz           = new \DateTimeZone($config->get('offset'));
@@ -391,7 +390,7 @@ $app = Factory::getApplication();
         if ($this->compatible) {
             HTMLHelper::_('draggablelist.draggable');
         } else {
-            HTMLHelper::_('sortablelist.sortable', 'categoryList', 'adminForm', strtolower($listDirn), $saveOrderingUrl, false, true);
+            HTMLHelper::_('draggablelist.draggable', 'categoryList', 'adminForm', strtolower($listDirn), $saveOrderingUrl, false, true);
         }
 
         return $saveOrderingUrl;

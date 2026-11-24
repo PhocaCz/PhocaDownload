@@ -489,7 +489,7 @@ class Download
 		} else {
 
 			if (!empty($filename[0])) {
-				$rightDisplay = Access::getUserRight('accessuserid', $filename[0]->cataccessuserid, $filename[0]->cataccess, $user->getAuthorisedViewLevels(), $user->get('id', 0), 0);
+				$rightDisplay = Access::getUserRight('accessuserid', $filename[0]->cataccessuserid, $filename[0]->cataccess, $user->getAuthorisedViewLevels(), $user->id, 0);
 			}
 			// - - - - - - - - - - - - - - - - - - - - - -
 			if ($rightDisplay == 0) {
@@ -596,7 +596,7 @@ class Download
 	protected static function hit($id) {
 
 		$app	= Factory::getApplication();
-		$table 	= Table::getInstance('PhocaDownload', 'Table');
+		$table 	= Factory::getApplication()->bootComponent('com_phocadownload')->getMVCFactory()->createTable('File', 'Administrator');
 		$table->hit($id);
 		return true;
 	}

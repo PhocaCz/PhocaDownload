@@ -104,7 +104,7 @@ class StyleModel extends AdminModel
 		else {
 			// Set the values
 			//$table->modified	= $date->toSql();
-			//$table->modified_by	= $user->get('id');
+			//$table->modified_by	= $user->id;
 		}
 	}
 
@@ -119,8 +119,8 @@ class StyleModel extends AdminModel
 	public function increaseOrdering($categoryId) {
 
 		$ordering = 1;
-		$this->_db->setQuery('SELECT MAX(ordering) FROM #__phocadownload_styles WHERE type='.(int)$categoryId);
-		$max = $this->_db->loadResult();
+		$this->getDatabase()->setQuery('SELECT MAX(ordering) FROM #__phocadownload_styles WHERE type='.(int)$categoryId);
+		$max = $this->getDatabase()->loadResult();
 		$ordering = $max + 1;
 		return $ordering;
 	}

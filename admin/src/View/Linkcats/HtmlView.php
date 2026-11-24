@@ -52,7 +52,7 @@ class HtmlView extends BaseHtmlView
 		$wa->registerAndUseStyle('com_phocadownload.phocadownload.admin', 'media/com_phocadownload/css/administrator/phocadownload.css', array('version' => 'auto'));
 		$wa->registerAndUseStyle('plg_editors-xtd_phocadownload', 'media/plg_editors-xtd_phocadownload/css/phocadownload.css', array('version' => 'auto'));
 
-		$document	= Factory::getDocument();
+		$document	= Factory::getApplication()->getDocument();
 		$uri		= Uri::getInstance();
 
 		$eName				= $app->getInput()->get('editor');

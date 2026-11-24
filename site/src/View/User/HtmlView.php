@@ -67,7 +67,7 @@ class HtmlView extends BaseHtmlView
 		Front::renderMainJs();
 		Front::renderAllCSS();
 
-		HTMLHelper::_('jquery.framework', false);
+		Factory::getApplication()->getDocument()->getWebAssetManager()->useScript('jquery');
 		
 		$document	= $app->getDocument();
 		$app = Factory::getApplication();
@@ -368,7 +368,7 @@ class HtmlView extends BaseHtmlView
 		/*$this->t['display_bootstrap3_layout']	= $this->t['p']->get( 'display_bootstrap3_layout', 0 );
 		if ($this->t['display_bootstrap3_layout'] > 0) {
 
-			HTMLHelper::_('jquery.framework', false);
+			Factory::getApplication()->getDocument()->getWebAssetManager()->useScript('jquery');
 			if ((int)$this->t['display_bootstrap3_layout'] == 2) {
 				HTMLHelper::stylesheet('media/com_phocadownload/bootstrap/css/bootstrap.min.css' );
 				HTMLHelper::stylesheet('media/com_phocadownload/bootstrap/css/bootstrap.extended.css' );

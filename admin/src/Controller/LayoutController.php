@@ -9,6 +9,7 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die;
+use Joomla\CMS\Cache\CacheControllerFactoryInterface;
 use Joomla\CMS\MVC\Controller\FormController;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
@@ -32,7 +33,7 @@ class LayoutController extends FormController
 		parent::execute($task);
 		// Clear the component's cache
 		if ($task != 'display') {
-			$cache = Factory::getCache('com_phocadownload');
+			$cache = Factory::getContainer()->get(CacheControllerFactoryInterface::class)->createCacheController('callback', ['defaultgroup' => 'com_phocadownload']);
 			$cache->clean();
 		}
 	}

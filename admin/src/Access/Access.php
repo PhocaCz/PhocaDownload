@@ -69,7 +69,7 @@ class Access
 		$user = $app->getIdentity();
 		// we can get the variables here, not before function call
 		$userAID = $user->getAuthorisedViewLevels();
-		$userId = $user->get('id', 0);
+		$userId = $user->id;
 
 		$guest = 0;
 		if (isset($user->guest) && $user->guest == 1) {

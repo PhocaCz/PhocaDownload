@@ -13,6 +13,8 @@ namespace Phoca\Component\Phocadownload\Administrator\Table;
 defined('_JEXEC') or die('Restricted access');
 
 
+use Joomla\Event\DispatcherInterface;
+use Joomla\Database\DatabaseInterface;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
@@ -25,8 +27,8 @@ use Phoca\Component\Phocadownload\Administrator\File\File;
 class FileTable extends Table
 {
 
-	function __construct(& $db) {
-		parent::__construct('#__phocadownload', 'id', $db);
+	public function __construct(DatabaseInterface $db, ?DispatcherInterface $dispatcher = null) {
+		parent::__construct('#__phocadownload', 'id', $db, $dispatcher);
 	}
 
 	function check()

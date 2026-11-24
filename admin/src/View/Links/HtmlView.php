@@ -46,7 +46,7 @@ class HtmlView extends BaseHtmlView
 			$this->document->addScriptOptions('xtd-phocadownload', array('editor' => $editor));
 		}
 
-		$document	= Factory::getDocument();
+		$document	= Factory::getApplication()->getDocument();
 		$uri		= Uri::getInstance();
 		//HTMLHelper::stylesheet( 'media/com_phocadownload/css/administrator/phocadownload.css' );
 		//HTMLHelper::stylesheet( 'media/plg_editors-xtd_phocadownload/css/phocadownload.css' );

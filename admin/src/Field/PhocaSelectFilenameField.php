@@ -49,7 +49,7 @@ class PhocaSelectFilenameField extends FormField
 
 
 
-		HTMLHelper::_('jquery.framework');
+		Factory::getApplication()->getDocument()->getWebAssetManager()->useScript('jquery');
 
 		$script = [];
 		$script[] = '	function phocaSelectFileName_'.$this->id.'(title) {';

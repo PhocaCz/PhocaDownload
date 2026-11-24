@@ -288,7 +288,7 @@ $app = Factory::getApplication();
 		/** @var CMSWebApplicationInterface $app */
 $app = Factory::getApplication();
 		$document	= $app->getDocument();
-		HTMLHelper::_('jquery.framework', false);
+		Factory::getApplication()->getDocument()->getWebAssetManager()->useScript('jquery');
 		$s = '
 		jQuery(document).ready(function(){
 			

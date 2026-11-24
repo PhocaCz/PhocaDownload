@@ -12,6 +12,7 @@
 namespace Phoca\Component\Phocadownload\Administrator\Mail;
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Mail\MailerFactoryInterface;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -80,7 +81,7 @@ class Mail
 		$subject = html_entity_decode($subject, ENT_QUOTES);
 		$message = html_entity_decode($message, ENT_QUOTES);
 
-		$mail = Factory::getMailer();
+		$mail = Factory::getContainer()->get(MailerFactoryInterface::class)->createMailer();
 		$mail->sendMail($mailfrom, $fromname, $email, $subject, $message);
 		return true;
 	}

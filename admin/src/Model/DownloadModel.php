@@ -124,7 +124,7 @@ class DownloadModel extends AdminModel
 		else {
 			// Set the values
 			//$table->modified	= $date->toSql();
-			//$table->modified_by	= $user->get('id');
+			//$table->modified_by	= $user->id;
 		}
 	}
 
@@ -142,9 +142,9 @@ function delete(&$cid = array()) {
 			//Delete it from DB
 			$query = 'DELETE FROM #__phocadownload_user_stat'
 				. ' WHERE id IN ( '.$cids.' )';
-			$this->_db->setQuery( $query );
-			if(!$this->_db->execute()) {
-				throw new \Exception($this->_db->getError());
+			$this->getDatabase()->setQuery( $query );
+			if(!$this->getDatabase()->execute()) {
+				throw new \Exception('Database error');
 				return false;
 			}
 

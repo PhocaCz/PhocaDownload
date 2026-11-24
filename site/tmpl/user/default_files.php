@@ -108,7 +108,7 @@ if (is_array($rows)) {
 	$rightDisplayDelete	= 0;
 	$catAccess	= Access::getCategoryAccessByFileId((int)$row->id);
 	if (!empty($catAccess)) {
-		$rightDisplayDelete = Access::getUserRight('deleteuserid', $catAccess->deleteuserid, 2, $user->getAuthorisedViewLevels(), $user->get('id', 0), 0);
+		$rightDisplayDelete = Access::getUserRight('deleteuserid', $catAccess->deleteuserid, 2, $user->getAuthorisedViewLevels(), $user->id, 0);
 	}
 	// - - - - - - - - - - - - - - - - - - - - - -
 

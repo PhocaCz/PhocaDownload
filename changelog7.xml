@@ -3,6 +3,14 @@
 	<changelog>
 		<element>com_phocadownload</element>
 		<type>component</type>
+		<version>7.0.0Alpha2</version>
+		<note>
+			<item><![CDATA[Maintenance release.]]></item>
+		</note>
+	</changelog>
+	<changelog>
+		<element>com_phocadownload</element>
+		<type>component</type>
 		<version>7.0.0Alpha</version>
 		<note>
 			<item><![CDATA[Maintenance release.]]></item>

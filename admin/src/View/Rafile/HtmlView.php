@@ -59,7 +59,7 @@ class HtmlView extends BaseHtmlView
 		$user		= $app->getIdentity();
 		$state	= $this->get('State');
 		//$isNew		= ($this->item->id == 0);
-		//$checkedOut	= !($this->item->checked_out == 0 || $this->item->checked_out == $user->get('id'));
+		//$checkedOut	= !($this->item->checked_out == 0 || $this->item->checked_out == $user->id);
 		//$class		= ucfirst($this->t['task']).'Helper';
 		$canDo		= RaFileHelper::getActions($this->t, $state->get('filter.category_id'));
 

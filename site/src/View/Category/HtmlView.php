@@ -13,7 +13,6 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Application\CMSWebApplicationInterface;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Object\CMSObject;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Phoca\Component\Phocadownload\Administrator\Download\Download;
@@ -119,7 +118,7 @@ class HtmlView extends BaseHtmlView
 
 		// Rating
 		if ($this->t['display_rating_file'] == 1 || $this->t['display_rating_file'] == 3) {
-			HTMLHelper::_('jquery.framework', false);
+			Factory::getApplication()->getDocument()->getWebAssetManager()->useScript('jquery');
 			Rate::renderRateFileJS(1);
 			$this->t['display_rating_file'] = 1;
 		} else {
@@ -258,7 +257,7 @@ class HtmlView extends BaseHtmlView
 	/*	$this->t['display_bootstrap3_layout']	= $this->t['p']->get( 'display_bootstrap3_layout', 0 );
 		if ((int)$this->t['display_bootstrap3_layout'] > 0) {
 
-			HTMLHelper::_('jquery.framework', false);
+			Factory::getApplication()->getDocument()->getWebAssetManager()->useScript('jquery');
 			if ((int)$this->t['display_bootstrap3_layout'] == 2) {
 				HTMLHelper::stylesheet('media/com_phocadownload/bootstrap/css/bootstrap.min.css' );
 				HTMLHelper::stylesheet('media/com_phocadownload/bootstrap/css/bootstrap.extended.css' );

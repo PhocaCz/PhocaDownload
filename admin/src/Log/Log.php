@@ -43,7 +43,7 @@ class Log
 		$uri 	= Uri::getInstance();
 		$db 	= Factory::getContainer()->get(\Joomla\Database\DatabaseInterface::class);
 
-		$row 	= Table::getInstance('PhocaDownloadLogging', 'Table');
+		$row 	= Factory::getApplication()->bootComponent('com_phocadownload')->getMVCFactory()->createTable('Logging', 'Administrator');
 		$data					= [];
 		$data['type']			= (int)$type;
 		$data['fileid']			= (int)$fileid;

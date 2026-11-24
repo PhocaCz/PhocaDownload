@@ -209,9 +209,9 @@ $app = Factory::getApplication();
 			//Delete it from DB
 			$query = 'DELETE FROM #__phocadownload_file_votes'
 				. ' WHERE id IN ( '.$cids.' )';
-			$this->_db->setQuery( $query );
-			if(!$this->_db->execute()) {
-				throw new \Exception($this->_db->getError());
+			$this->getDatabase()->setQuery( $query );
+			if(!$this->getDatabase()->execute()) {
+				throw new \Exception('Database error');
 				return false;
 			}
 
@@ -255,7 +255,7 @@ $app = Factory::getApplication();
 		else {
 			// Set the values
 			//$table->modified	= $date->toSql();
-			//$table->modified_by	= $user->get('id');
+			//$table->modified_by	= $user->id;
 		}
 	}
 

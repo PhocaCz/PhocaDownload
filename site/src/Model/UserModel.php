@@ -87,7 +87,6 @@ $app = Factory::getApplication();
 
 	public function getPaginationFiles($userId) {
 		if (empty($this->_pagination_files)) {
-			jimport('joomla.html.pagination');
 			$this->_pagination_files = new Pagination( $this->getTotalFiles($userId),  $this->getState($this->_context_files.'.list.limitstart'), $this->getState($this->_context_files.'.list.limit') );
 		}
 		return $this->_pagination_files;
@@ -143,7 +142,7 @@ $app = Factory::getApplication();
 			$where[] = 'a.catid = '.(int) $filter_catid;
 		}
 		if ($search) {
-			$where[] = 'LOWER(a.title) LIKE '.$this->_db->Quote('%'.$search.'%');
+			$where[] = 'LOWER(a.title) LIKE '.$this->getDatabase()->Quote('%'.$search.'%');
 		}
 		if ( $filter_published ) {
 			if ( $filter_published == 'P' ) {
@@ -199,14 +198,14 @@ $app = Factory::getApplication();
 
 		if(isset($data['id']) && $data['id'] > 0) {
 			if (!$row->load($data['id'])) {
-				throw new \Exception($this->_db->getErrorMsg(), 500);
+				throw new \Exception($this->getDatabase()->getErrorMsg(), 500);
 				return false;
 			}
 		}
 
 		// Bind the form fields to the Phoca gallery table
 		if (!$row->bind($data)) {
-			throw new \Exception($this->_db->getErrorMsg(), 500);
+			throw new \Exception($this->getDatabase()->getErrorMsg(), 500);
 			return false;
 		}
 
@@ -221,13 +220,13 @@ $app = Factory::getApplication();
 
 		// Make sure the Phoca gallery table is valid
 		if (!$row->check()) {
-			throw new \Exception($this->_db->getErrorMsg(), 500);
+			throw new \Exception($this->getDatabase()->getErrorMsg(), 500);
 			return false;
 		}
 
 		// Store the Phoca gallery table to the database
 		if (!$row->store()) {
-			throw new \Exception($this->_db->getErrorMsg(), 500);
+			throw new \Exception($this->getDatabase()->getErrorMsg(), 500);
 			return false;
 		}
 
@@ -254,7 +253,6 @@ $app = Factory::getApplication();
 
 		$app		= Factory::getApplication();;
 		Session::checkToken( 'request' ) or jexit( 'Invalid Token' );
-		jimport('joomla.client.helper');
 		$user 				= $app->getIdentity();
 		$ftp 		= ClientHelper::setCredentialsFromRequest('ftp');
 		$path		= PhocaDownloadPath::getPathSet();
@@ -487,7 +485,7 @@ $app = Factory::getApplication();
 
 		// Bind the form fields to the Phoca gallery table
 		if (!$row->bind($data)) {
-			//throw new \Exception($this->_db->getError());
+			//throw new \Exception('Database error');
 			$this->setError($row->getError());
 			return false;
 		}
@@ -528,7 +526,7 @@ $app = Factory::getApplication();
 
 		// Make sure the Phoca gallery table is valid
 		if (!$row->check()) {
-			//throw new \Exception($this->_db->getError());
+			//throw new \Exception('Database error');
 			$this->setError($row->getError());
 			return false;
 		}
@@ -573,7 +571,7 @@ $app = Factory::getApplication();
 
 		// Store the Phoca gallery table to the database
 		if (!$row->store()) {
-			//throw new \Exception($this->_db->getError());
+			//throw new \Exception('Database error');
 			$this->setError($row->getError());
 			return false;
 		}
@@ -599,8 +597,8 @@ $app = Factory::getApplication();
 			. ' FROM #__phocadownload_categories AS c'
 			. ' WHERE c.id = '.(int)$catid;
 
-		$this->_db->setQuery( $query );
-		$sectionId = $this->_db->loadObject();
+		$this->getDatabase()->setQuery( $query );
+		$sectionId = $this->getDatabase()->loadObject();
 
 		if (isset($sectionId->section)) {
 			return $sectionId->section;
@@ -616,8 +614,8 @@ $app = Factory::getApplication();
 			. ' WHERE cc.owner_id = '.(int)$userId
 			. ' AND a.id = '.(int)$fileId;
 
-		$this->_db->setQuery( $query );
-		$ownerCategoryId = $this->_db->loadObject();
+		$this->getDatabase()->setQuery( $query );
+		$ownerCategoryId = $this->getDatabase()->loadObject();
 		if (isset($ownerCategoryId->id)) {
 			return $ownerCategoryId->id;
 		}
@@ -631,10 +629,10 @@ $app = Factory::getApplication();
 			//. ' LEFT JOIN #__phocadownload_categories AS cc ON cc.id = a.catid '
 			. ' SET a.published = '.(int) $publish
 			. ' WHERE a.id = '.(int)$id;
-			//. ' AND cc.owner_id = '.(int) $user->get('id');
+			//. ' AND cc.owner_id = '.(int) $user->id;
 
-		$this->_db->setQuery( $query );
-		if (!$this->_db->execute()) {
+		$this->getDatabase()->setQuery( $query );
+		if (!$this->getDatabase()->execute()) {
 
 			throw new \Exception('Database Error Publishing', 500);
 			return false;
@@ -650,23 +648,23 @@ $app = Factory::getApplication();
 		// - - - - - - - - - - - - -
 		// Get all filenames we want to delete from database, we delete all thumbnails from server of this file
 		$queryd = 'SELECT filename as filename FROM #__phocadownload WHERE id = '.(int)$id;
-		$this->_db->setQuery($queryd);
-		$fileObject = $this->_db->loadObjectList();
+		$this->getDatabase()->setQuery($queryd);
+		$fileObject = $this->getDatabase()->loadObjectList();
 		// - - - - - - - - - - - - -
 
 		$query = 'DELETE FROM #__phocadownload'
 			. ' WHERE id ='.(int)$id;
 
-		$this->_db->setQuery( $query );
-		if(!$this->_db->execute()) {
+		$this->getDatabase()->setQuery( $query );
+		if(!$this->getDatabase()->execute()) {
 			throw new \Exception('Database Error - Delete Files', 500);
 			return false;
 		}
 
 		 //Delete record from statistics table
 		$query = 'DELETE FROM #__phocadownload_user_stat WHERE fileid='.(int)$id;
-		$this->_db->setQuery( $query );
-		if(!$this->_db->execute()) {
+		$this->getDatabase()->setQuery( $query );
+		if(!$this->getDatabase()->execute()) {
 			throw new \Exception('Database Error - Delete User Stats (Files)', 500);
 			return false;
 		}
@@ -675,8 +673,8 @@ $app = Factory::getApplication();
 		$query = 'DELETE FROM #__phocadownload_tags_ref'
 			. ' WHERE fileid ='.(int)$id;
 
-		$this->_db->setQuery( $query );
-		if(!$this->_db->execute()) {
+		$this->getDatabase()->setQuery( $query );
+		if(!$this->getDatabase()->execute()) {
 
 			throw new \Exception('Database Error - Delete Tags (Files)', 500);
 			return false;
@@ -689,8 +687,8 @@ $app = Factory::getApplication();
 			foreach ($fileObject as $key => $value) {
 				//The file can be stored in other category - don't delete it from server because other category use it
 				$querys = "SELECT id as id FROM #__phocadownload WHERE filename='".$value->filename."' ";
-				$this->_db->setQuery($querys);
-				$sameFileObject = $this->_db->loadObject();
+				$this->getDatabase()->setQuery($querys);
+				$sameFileObject = $this->getDatabase()->loadObject();
 				// same file in other category doesn't exist - we can delete it
 				if (!$sameFileObject) {
 					File::delete(Path::clean($path['orig_abs_ds'].$value->filename));

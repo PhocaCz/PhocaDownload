@@ -19,7 +19,6 @@ use Joomla\CMS\Session\Session;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Client\ClientHelper;
 use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Object\CMSObject;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Phoca\Component\Phocadownload\Administrator\File\File as PhocaFile;
 use Phoca\Component\Phocadownload\Administrator\File\UploadMultiple;
@@ -171,7 +170,7 @@ $app = Factory::getApplication();
 
 		$this->addToolbar();
 		parent::display($tpl);
-		echo HTMLHelper::_('behavior.keepalive');
+		Factory::getApplication()->getDocument()->getWebAssetManager()->useScript('keepalive');
 	}
 
 	function setFolder($index = 0) {

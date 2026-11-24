@@ -14,7 +14,6 @@ use Joomla\CMS\Table\Table;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\Filesystem\Folder;
-use Joomla\CMS\Object\CMSObject;
 use Joomla\Filesystem\Path;
 use Phoca\Component\Phocadownload\Administrator\MVC\Model\AdminModelTrait;
 use Phoca\Component\Phocadownload\Administrator\Path\Path as PhocaDownloadPath;

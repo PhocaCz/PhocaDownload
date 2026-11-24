@@ -12,7 +12,6 @@ use Joomla\CMS\Language\Text;
 use Phoca\Component\Phocadownload\Administrator\File\File;
 use Phoca\Component\Phocadownload\Administrator\Utils\Settings;
 
-jimport( 'joomla.filesystem.file' );
 
 $ext 	= File::getExtension( $this->_tmp_file->path_without_name_relative );
 $group 	= Settings::getManagerGroup($this->manager);

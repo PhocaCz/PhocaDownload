@@ -98,7 +98,7 @@ class LicModel extends AdminModel
 		else {
 			// Set the values
 			//$table->modified	= $date->toSql();
-			//$table->modified_by	= $user->get('id');
+			//$table->modified_by	= $user->id;
 		}
 	}
 }

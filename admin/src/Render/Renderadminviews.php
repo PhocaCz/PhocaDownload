@@ -20,10 +20,6 @@ use Joomla\CMS\Session\Session;
 use Joomla\Filesystem\File;
 use Joomla\CMS\Uri\Uri;
 
-// Frontend editor - button plugin
-require_once JPATH_ADMINISTRATOR . '/components/com_phocadownload/libraries/autoloadPhoca.php';
-
-use Phoca\Render\Adminviews;
 use Phoca\Component\Phocadownload\Administrator\File\File as PhocaDownloadFile;
 
 

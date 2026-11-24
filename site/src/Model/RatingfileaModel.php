@@ -12,7 +12,6 @@ namespace Phoca\Component\Phocadownload\Site\Model;
 defined('_JEXEC') or die();
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Phoca\Component\Phocadownload\Administrator\Rate\Rate;
-jimport('joomla.application.component.model');
 
 
 class RatingFileAModel extends BaseDatabaseModel
@@ -22,7 +21,7 @@ class RatingFileAModel extends BaseDatabaseModel
 		$row = $this->getTable('Filevotes');
 
 		if (!$row->bind($data)) {
-			//throw new \Exception($this->_db->getError());
+			//throw new \Exception('Database error');
 			$this->setError($row->getError());
 			return false;
 		}
@@ -37,13 +36,13 @@ class RatingFileAModel extends BaseDatabaseModel
 		}
 
 		if (!$row->check()) {
-			//throw new \Exception($this->_db->getError());
+			//throw new \Exception('Database error');
 			$this->setError($row->getError());
 			return false;
 		}
 
 		if (!$row->store()) {
-			//throw new \Exception($this->_db->getError());
+			//throw new \Exception('Database error');
 			$this->setError($row->getError());
 			return false;
 		}

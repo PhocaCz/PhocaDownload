@@ -18,7 +18,6 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\View\JsonView as BaseJsonView;
 use Phoca\Component\Phocadownload\Administrator\Access\Access;
 use Phoca\Component\Phocadownload\Administrator\Rate\Rate;
-jimport( 'joomla.application.component.view');
 
 class JsonView extends BaseJsonView
 {

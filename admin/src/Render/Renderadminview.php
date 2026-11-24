@@ -13,7 +13,6 @@ namespace Phoca\Component\Phocadownload\Administrator\Render;
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 use Joomla\CMS\Session\Session;
-use Phoca\Render\Adminview;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Version;
 use Joomla\CMS\HTML\HTMLHelper;

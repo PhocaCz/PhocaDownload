@@ -25,7 +25,7 @@ class RenderTabs
     public function __construct() {
 
         $this->id = uniqid();
-        HTMLHelper::_('jquery.framework', false);
+        Factory::getApplication()->getDocument()->getWebAssetManager()->useScript('jquery');
         //HTMLHelper::_('script', 'media/com_phocadownload/js/tabs/tabs.js', array('version' => 'auto'));
         //HTMLHelper::_('stylesheet', 'media/com_phocadownload/js/tabs/tabs.css', array('version' => 'auto'));
 

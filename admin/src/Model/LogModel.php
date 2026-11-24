@@ -23,9 +23,9 @@ class LogModel extends BaseDatabaseModel
 	function reset() {
 		//$user 	= J$app->getIdentity();
 		$query = 'TRUNCATE #__phocadownload_logging';
-		$this->_db->setQuery( $query );
-		if (!$this->_db->execute()) {
-			throw new \Exception($this->_db->getError());
+		$this->getDatabase()->setQuery( $query );
+		if (!$this->getDatabase()->execute()) {
+			throw new \Exception('Database error');
 			return false;
 		}
 		return true;

@@ -14,7 +14,6 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\Filesystem\Path;
 
-jimport( 'joomla.filesystem.folder' );
 
 class com_phocadownloadInstallerScript
 {
@@ -84,7 +83,7 @@ class com_phocadownloadInstallerScript
 
 	public function loadLanguage($parent) {
 		$extension = $this->extension;
-		$lang = Factory::getLanguage();
+		$lang = Factory::getApplication()->getLanguage();
 		$path = $parent->getParent()->getPath('source');
 		$lang->load($this->extension, $path, 'en-GB', true);
 		$lang->load($this->extension, $path, $lang->getDefault(), true);

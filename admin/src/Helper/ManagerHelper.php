@@ -11,7 +11,6 @@
 namespace Phoca\Component\Phocadownload\Administrator\Helper;
 defined('_JEXEC') or die;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Object\CMSObject;
 
 class ManagerHelper
 {

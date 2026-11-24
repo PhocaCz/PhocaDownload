@@ -23,7 +23,6 @@ use Phoca\Component\Phocadownload\Administrator\File\File;
 use Phoca\Component\Phocadownload\Administrator\Ordering\Ordering;
 use Phoca\Component\Phocadownload\Administrator\Path\Route as PhocaRoute;
 
-jimport( 'joomla.application.component.view');
 
 class HtmlView extends BaseHtmlView
 {
@@ -112,7 +111,7 @@ class HtmlView extends BaseHtmlView
 					// ACCESS is handled in SQL query, ACCESS USER ID is handled here (specific users)
 					$rightDisplay	= 0;
 					if (!empty($valueDoc)) {
-						$rightDisplay = Access::getUserRight('accessuserid', $valueDoc->cataccessuserid, $valueDoc->cataccess, $user->getAuthorisedViewLevels(), $user->get('id', 0), 0);
+						$rightDisplay = Access::getUserRight('accessuserid', $valueDoc->cataccessuserid, $valueDoc->cataccess, $user->getAuthorisedViewLevels(), $user->id, 0);
 					}
 					// - - - - - - - - - - - - - - - - - - - - - -
 					if ($rightDisplay == 1) {

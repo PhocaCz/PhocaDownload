@@ -119,8 +119,8 @@ $app = Factory::getApplication();
 		//$items	= $this->_getList($query);
 
 		// Check for a database error.
-/*		if ($this->_db->getErrorNum()) {
-			throw new \Exception($this->_db->getErrorMsg(), 500);
+/*		if ($this->getDatabase()->getErrorNum()) {
+			throw new \Exception($this->getDatabase()->getErrorMsg(), 500);
 			return false;
 		}*/
 

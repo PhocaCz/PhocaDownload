@@ -9,13 +9,15 @@
 namespace Phoca\Component\Phocadownload\Administrator\Table;
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\Event\DispatcherInterface;
+use Joomla\Database\DatabaseInterface;
 use Joomla\CMS\Table\Table;
 /* jimport('joomla.filter.input'); */
 
 class LoggingTable extends Table
 {
-	function __construct(& $db) {
-		parent::__construct('#__phocadownload_logging', 'id', $db);
+	public function __construct(DatabaseInterface $db, ?DispatcherInterface $dispatcher = null) {
+		parent::__construct('#__phocadownload_logging', 'id', $db, $dispatcher);
 	}
 }
 ?>

@@ -15,7 +15,6 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Object\CMSObject;
 use Phoca\Component\Phocadownload\Administrator\Render\Adminviews;
 use Phoca\Component\Phocadownload\Administrator\Utils\Utils;
 use Phoca\Component\Phocadownload\Administrator\Helper\CatsHelper;

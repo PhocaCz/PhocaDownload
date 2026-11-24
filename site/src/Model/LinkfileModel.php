@@ -113,7 +113,7 @@ $app = Factory::getApplication();
 			$where[] = 'a.catid = '.(int) $filter_catid;
 		}
 		if ($search) {
-			$where[] = 'LOWER(a.title) LIKE '.$this->_db->Quote('%'.$search.'%');
+			$where[] = 'LOWER(a.title) LIKE '.$this->getDatabase()->Quote('%'.$search.'%');
 		}
 		if ( $filter_published ) {
 			if ( $filter_published == 'P' ) {

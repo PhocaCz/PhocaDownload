@@ -13,7 +13,6 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\Event\Event;
-jimport('joomla.application.component.model');
 
 
 class DownloadModel extends BaseDatabaseModel
@@ -54,15 +53,15 @@ class DownloadModel extends BaseDatabaseModel
 		
 		$wheres[] = " c.approved = 1";
 		$wheres[] = " c.published = 1";
-		$wheres[] = " c.token = " . $this->_db->Quote($downloadToken);
+		$wheres[] = " c.token = " . $this->getDatabase()->Quote($downloadToken);
 		
 		
 		// Active
 		$jnow		= Factory::getDate();
 		$now		= $jnow->toSql();
-		$nullDate	= $this->_db->getNullDate();
-		$wheres[] = ' ( c.publish_up = '.$this->_db->Quote($nullDate).' OR c.publish_up <= '.$this->_db->Quote($now).' )';
-		$wheres[] = ' ( c.publish_down = '.$this->_db->Quote($nullDate).' OR c.publish_down >= '.$this->_db->Quote($now).' )';
+		$nullDate	= $this->getDatabase()->getNullDate();
+		$wheres[] = ' ( c.publish_up = '.$this->getDatabase()->Quote($nullDate).' OR c.publish_up <= '.$this->getDatabase()->Quote($now).' )';
+		$wheres[] = ' ( c.publish_down = '.$this->getDatabase()->Quote($nullDate).' OR c.publish_down >= '.$this->getDatabase()->Quote($now).' )';
 		
 		if ($pQ == 1) {
 			// GWE MOD - to allow for access restrictions

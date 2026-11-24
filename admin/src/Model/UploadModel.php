@@ -23,10 +23,10 @@ class UploadModel extends BaseDatabaseModel
 		//$user 	= J$app->getIdentity();
 		$query = 'UPDATE #__phocadownload'
 			. ' SET approved = 1';
-			//. ' AND ( checked_out = 0 OR ( checked_out = '.(int) $user->get('id').' ) )';
-		$this->_db->setQuery( $query );
-		if (!$this->_db->execute()) {
-			throw new \Exception($this->_db->getError());
+			//. ' AND ( checked_out = 0 OR ( checked_out = '.(int) $user->id.' ) )';
+		$this->getDatabase()->setQuery( $query );
+		if (!$this->getDatabase()->execute()) {
+			throw new \Exception('Database error');
 			return false;
 		}
 		return true;

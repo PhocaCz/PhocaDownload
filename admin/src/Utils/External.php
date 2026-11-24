@@ -14,7 +14,7 @@ class External
 	public static function checkOSE($fileName) {
 		if (file_exists(JPATH_SITE.'/components/com_osemsc/init.php') 
 		&& file_exists(JPATH_ADMINISTRATOR.'/components/com_ose_cpu/define.php')) {
-            require_once(JPATH_SITE.'components/com_osemsc/init.php');
+            require_once(JPATH_SITE.'/components/com_osemsc/init.php');
             oseRegistry :: call('content')->checkAccess('phoca', 'category', $fileName->catid);
         } else if (file_exists(JPATH_ADMINISTRATOR . "/components/com_osemsc/warehouse/api.php")) {
             require_once (JPATH_ADMINISTRATOR . "/components/com_osemsc/warehouse/api.php");

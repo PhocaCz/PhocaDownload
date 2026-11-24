@@ -132,16 +132,16 @@ class CategoryModel extends BaseDatabaseModel
 		$wheres[] = ' cc.published IN (1,2)';
 
 		if ($this->getState('filter.language')) {
-			$wheres[] =  ' c.language IN ('.$this->_db->Quote(Factory::getLanguage()->getTag()).','.$this->_db->Quote('*').')';
-			$wheres[] =  ' cc.language IN ('.$this->_db->Quote(Factory::getLanguage()->getTag()).','.$this->_db->Quote('*').')';
+			$wheres[] =  ' c.language IN ('.$this->getDatabase()->Quote(Factory::getApplication()->getLanguage()->getTag()).','.$this->getDatabase()->Quote('*').')';
+			$wheres[] =  ' cc.language IN ('.$this->getDatabase()->Quote(Factory::getApplication()->getLanguage()->getTag()).','.$this->getDatabase()->Quote('*').')';
 		}
 
 		// Active
 		$jnow		= Factory::getDate();
 		$now		= $jnow->toSql();
-		$nullDate	= $this->_db->getNullDate();
-		$wheres[] = ' ( c.publish_up = '.$this->_db->Quote($nullDate).' OR c.publish_up <= '.$this->_db->Quote($now).' )';
-		$wheres[] = ' ( c.publish_down = '.$this->_db->Quote($nullDate).' OR c.publish_down >= '.$this->_db->Quote($now).' )';
+		$nullDate	= $this->getDatabase()->getNullDate();
+		$wheres[] = ' ( c.publish_up = '.$this->getDatabase()->Quote($nullDate).' OR c.publish_up <= '.$this->getDatabase()->Quote($now).' )';
+		$wheres[] = ' ( c.publish_down = '.$this->getDatabase()->Quote($nullDate).' OR c.publish_down >= '.$this->getDatabase()->Quote($now).' )';
 
 		if ($pQ == 1) {
 			// GWE MOD - to allow for access restrictions
@@ -224,7 +224,7 @@ class CategoryModel extends BaseDatabaseModel
 		$wheres[] = " cc.published IN (1,2)";
 
 		if ($this->getState('filter.language')) {
-			$wheres[] =  ' cc.language IN ('.$this->_db->Quote(Factory::getLanguage()->getTag()).','.$this->_db->Quote('*').')';
+			$wheres[] =  ' cc.language IN ('.$this->getDatabase()->Quote(Factory::getApplication()->getLanguage()->getTag()).','.$this->getDatabase()->Quote('*').')';
 		}
 
 

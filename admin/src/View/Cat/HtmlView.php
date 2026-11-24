@@ -51,7 +51,7 @@ class HtmlView extends BaseHtmlView
 
 		// Edit or Create?
 		if (!$isNew) {
-			$model->checkout( $user->get('id') );
+			$model->checkout( $user->id );
 		} else {
 			// Initialise new record
 			$this->item->approved 		= 1;
@@ -73,7 +73,7 @@ class HtmlView extends BaseHtmlView
 		$app = Factory::getApplication();
 		$user		= $app->getIdentity();
 		$isNew		= ($this->item->id == 0);
-		$checkedOut	= !($this->item->checked_out == 0 || $this->item->checked_out == $user->get('id'));
+		$checkedOut	= !($this->item->checked_out == 0 || $this->item->checked_out == $user->id);
 		//$class		= ucfirst($this->t['tasks']).'Helper';
 		$canDo		= CatsHelper::getActions($this->t, $this->state->get('filter.category_id'));
 

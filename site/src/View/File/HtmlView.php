@@ -118,7 +118,7 @@ class HtmlView extends BaseHtmlView
 
 		// Rating
 		if ($this->t['display_rating_file'] == 2 || $this->t['display_rating_file'] == 3 ) {
-			HTMLHelper::_('jquery.framework', true);
+			Factory::getApplication()->getDocument()->getWebAssetManager()->useScript('jquery')->useScript('jquery-noconflict');
 			Rate::renderRateFileJS(1);
 			$this->t['display_rating_file'] = 1;
 		} else {
@@ -172,7 +172,7 @@ class HtmlView extends BaseHtmlView
 
 		if ($this->t['display_bootstrap3_layout'] > 0) {
 
-			HTMLHelper::_('jquery.framework', false);
+			Factory::getApplication()->getDocument()->getWebAssetManager()->useScript('jquery');
 			if ((int)$this->t['display_bootstrap3_layout'] == 2) {
 				HTMLHelper::stylesheet('media/com_phocadownload/bootstrap/css/bootstrap.min.css' );
 				HTMLHelper::stylesheet('media/com_phocadownload/bootstrap/css/bootstrap.extended.css' );

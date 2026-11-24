@@ -224,8 +224,8 @@ $app = Factory::getApplication();
 		$query = 'SELECT COUNT(a.id) AS count'
 			.' FROM #__phocadownload AS a'
 			.' WHERE approved = 0';
-		$this->_db->setQuery($query, 0, 1);
-		$countNotApproved = $this->_db->loadObject();
+		$this->getDatabase()->setQuery($query, 0, 1);
+		$countNotApproved = $this->getDatabase()->loadObject();
 		return $countNotApproved;
 	}
 }

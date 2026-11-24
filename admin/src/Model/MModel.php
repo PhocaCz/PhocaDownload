@@ -17,7 +17,6 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\Filesystem\Path;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
-use Joomla\CMS\Object\CMSObject;
 use Joomla\Filesystem\Folder;
 use Joomla\Filesystem\File;
 use Joomla\CMS\Table\Table;
@@ -98,14 +97,14 @@ class MModel extends AdminModel
 		// Cache all existing categories
 		$query = 'SELECT id, title, parent_id'
 	    . ' FROM #__phocadownload_categories' ;
-		$this->_db->setQuery( $query );
-	    $existingCategories = $this->_db->loadObjectList() ;
+		$this->getDatabase()->setQuery( $query );
+	    $existingCategories = $this->getDatabase()->loadObjectList() ;
 
 		// Cache all existing files
 		$query = 'SELECT catid, filename'
 	    . ' FROM #__phocadownload';
-		$this->_db->setQuery( $query );
-	    $existingFiles = $this->_db->loadObjectList() ;
+		$this->getDatabase()->setQuery( $query );
+	    $existingFiles = $this->getDatabase()->loadObjectList() ;
 
 		$result					= new \StdClass();
 		$result->category_count = 0;
@@ -174,14 +173,14 @@ class MModel extends AdminModel
 					// Save
 					// Bind the form fields to the Phoca download table
 					if (!$row->bind($datam)) {
-						//throw new \Exception($this->_db->getError());
+						//throw new \Exception('Database error');
 						$this->setError($row->getError());
 						return false;
 					}
 
 					// Create the timestamp for the date
 					//$row->date = gmdate('Y-m-d H:i:s');
-					$nullDate	= $this->_db->getNullDate();
+					$nullDate	= $this->getDatabase()->getNullDate();
 					$date	= Factory::getDate();
 					$row->date = $date->toSql();
 
@@ -215,14 +214,14 @@ class MModel extends AdminModel
 
 					// Make sure the Phoca download table is valid
 					if (!$row->check()) {
-						//throw new \Exception($this->_db->getError());
+						//throw new \Exception('Database error');
 						$this->setError($row->getError());
 						return false;
 					}
 
 					// Store the Phoca download table to the database
 					if (!$row->store()) {
-						//throw new \Exception($this->_db->getError());
+						//throw new \Exception('Database error');
 						$this->setError($row->getError());
 						return false;
 					}
@@ -272,7 +271,7 @@ class MModel extends AdminModel
 		  $row->date 		= gmdate('Y-m-d H:i:s');
 		 // $row->alias 		= $row->title; //PhocaFile::getAliasName($categoryName);
 		  //$row->userfolder	= ltrim(str_replace('\\', '/', JPath::clean($relativePath )), '/');
-		  $row->ordering 	= $row->getNextOrder( "parent_id = " . $this->_db->Quote($row->parent_id) );
+		  $row->ordering 	= $row->getNextOrder( "parent_id = " . $this->getDatabase()->Quote($row->parent_id) );
 
 		  if (!$row->check()) {
 			throw new \Exception($row->getError('Check Problem'), 500);
@@ -421,7 +420,7 @@ class MModel extends AdminModel
 					// Save
 					// Bind the form fields to the Phoca download table
 					if (!$row->bind($datam)) {
-						//throw new \Exception($this->_db->getError());
+						//throw new \Exception('Database error');
 						$this->setError($row->getError());
 						return false;
 					}
@@ -437,14 +436,14 @@ class MModel extends AdminModel
 
 					// Make sure the Phoca download table is valid
 					if (!$row->check()) {
-						//throw new \Exception($this->_db->getError());
+						//throw new \Exception('Database error');
 						$this->setError($row->getError());
 						return false;
 					}
 
 					// Store the Phoca download table to the database
 					if (!$row->store()) {
-						//throw new \Exception($this->_db->getError());
+						//throw new \Exception('Database error');
 						$this->setError($row->getError());
 						return false;
 					}

@@ -9,7 +9,6 @@
 namespace Phoca\Component\Phocadownload\Administrator\Category;
 
 defined('_JEXEC') or die();
-use Joomla\CMS\Object\CMSObject;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;

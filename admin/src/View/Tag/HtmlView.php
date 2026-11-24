@@ -50,7 +50,7 @@ class HtmlView extends BaseHtmlView
 		$app = Factory::getApplication();
 		$user		= $app->getIdentity();
 		$isNew		= ($this->item->id == 0);
-		$checkedOut	= !($this->item->checked_out == 0 || $this->item->checked_out == $user->get('id'));
+		$checkedOut	= !($this->item->checked_out == 0 || $this->item->checked_out == $user->id);
 		//$class		= ucfirst($this->t['tasks']).'Helper';
 		$canDo		= TagsHelper::getActions($this->t, $this->state->get('filter.tag_id'));
 

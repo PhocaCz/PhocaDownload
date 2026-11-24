@@ -207,12 +207,12 @@ $app = Factory::getApplication();
 			//Delete it from DB
 			$query = 'UPDATE #__phocadownload_user_stat'
 					.' SET count = 0,'
-					.' date = '.$this->_db->Quote($date)
+					.' date = '.$this->getDatabase()->Quote($date)
 					.' WHERE id IN ( '.$cids.' )';
 
-			$this->_db->setQuery( $query );
-			if(!$this->_db->execute()) {
-				throw new \Exception($this->_db->getError());
+			$this->getDatabase()->setQuery( $query );
+			if(!$this->getDatabase()->execute()) {
+				throw new \Exception('Database error');
 				return false;
 			}
 		}

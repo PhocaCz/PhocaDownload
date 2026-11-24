@@ -19,7 +19,7 @@ use Psr\Container\ContainerInterface;
 use Joomla\CMS\Component\Router\RouterServiceInterface;
 use Joomla\CMS\Component\Router\RouterServiceTrait;
 
-class phocadownloadComponent extends MVCComponent implements
+class PhocadownloadComponent extends MVCComponent implements
     BootableExtensionInterface,
     RouterServiceInterface
 {

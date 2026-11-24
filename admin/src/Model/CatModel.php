@@ -9,6 +9,7 @@
 namespace Phoca\Component\Phocadownload\Administrator\Model;
 
 defined( '_JEXEC' ) or die();
+use Joomla\CMS\Cache\CacheControllerFactoryInterface;
 use Joomla\CMS\MVC\Model\AdminModel;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Table\Table;
@@ -121,7 +122,7 @@ class CatModel extends AdminModel
 		} else {
 			// Set the values
 			//$table->modified	= $date->toSql();
-			//$table->modified_by	= $user->get('id');
+			//$table->modified_by	= $user->id;
 		}
 	}
 
@@ -228,7 +229,7 @@ class CatModel extends AdminModel
 
 
 		// Clean the cache.
-		$cache = Factory::getCache($this->option);
+		$cache = Factory::getContainer()->get(CacheControllerFactoryInterface::class)->createCacheController('callback', ['defaultgroup' => $this->option]);
 		$cache->clean();
 
 		// Trigger the onContentAfterSave event.
@@ -352,7 +353,7 @@ class CatModel extends AdminModel
 					. ' WHERE catid IN ( '.$cids.' )';
 					$db->setQuery( $query );
 					if (!$db->query()) {
-						throw new \Exception($this->_db->getErrorMsg(), 500);
+						throw new \Exception($this->getDatabase()->getErrorMsg(), 500);
 						return false;
 					}*/
 				}
@@ -388,7 +389,7 @@ class CatModel extends AdminModel
 
 		// Check that the category exists
 		if ($categoryId) {
-			$categoryTable = Table::getInstance('Cat', 'Table');
+			$categoryTable = Factory::getApplication()->bootComponent('com_phocadownload')->getMVCFactory()->createTable('Cat', 'Administrator');
 
 			if (!$categoryTable->load($categoryId)) {
 				if ($error = $categoryTable->getError()) {
@@ -475,7 +476,7 @@ class CatModel extends AdminModel
 			}
 
 			// Get the new item ID
-			$newId = $table->get('id');
+			$newId = $table->id;
 
 			// Add the new ID to the array
 			$newIds[$pk]	= $newId;
@@ -497,7 +498,7 @@ class CatModel extends AdminModel
 
 		// Check that the category exists
 		if ($categoryId) {
-			$categoryTable = Table::getInstance('Cat', 'Table');
+			$categoryTable = Factory::getApplication()->bootComponent('com_phocadownload')->getMVCFactory()->createTable('Cat', 'Administrator');
 			if (!$categoryTable->load($categoryId)) {
 				if ($error = $categoryTable->getError()) {
 					// Fatal error
@@ -586,8 +587,8 @@ class CatModel extends AdminModel
 	public function increaseOrdering($categoryId) {
 
 		$ordering = 1;
-		$this->_db->setQuery('SELECT MAX(ordering) FROM #__phocadownload_categories WHERE parent_id='.(int)$categoryId);
-		$max = $this->_db->loadResult();
+		$this->getDatabase()->setQuery('SELECT MAX(ordering) FROM #__phocadownload_categories WHERE parent_id='.(int)$categoryId);
+		$max = $this->getDatabase()->loadResult();
 		$ordering = $max + 1;
 		return $ordering;
 	}

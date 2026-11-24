@@ -33,7 +33,7 @@ class HtmlView extends BaseHtmlView
 		$app	= Factory::getApplication();
 		$this->r = new AdminViews();
 		$this->t = Utils::setVars('linkytb');
-		$document	= Factory::getDocument();
+		$document	= Factory::getApplication()->getDocument();
 		$uri		= Uri::getInstance();
 		//Frontend Changes
 		$tUri = '';

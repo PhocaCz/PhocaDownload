@@ -309,17 +309,3 @@ class Router extends RouterView
 		return parent::build($query);
 	}
 }
-
-function PhocaDownloadBuildRoute(&$query) {
-
-	$app = Factory::getApplication();
-	$router = new PhocaRouter($app, $app->getMenu());
-	return $router->build($query);
-}
-
-function PhocaDownloadParseRoute($segments) {
-
-	$app = Factory::getApplication();
-	$router = new PhocaRouter($app, $app->getMenu());
-	return $router->parse($segments);
-}

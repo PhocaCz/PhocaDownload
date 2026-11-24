@@ -40,7 +40,7 @@ class UploadMultiple
 		$uploadMethod 	= $paramsC->get( 'multiple_upload_method', 4 );
 
 		//JHtml::_('behavior.framework', true);// Load it here to be sure, it is loaded before jquery
-		HTMLHelper::_('jquery.framework', false);// Load it here because of own nonConflict method (nonconflict is set below)
+		Factory::getApplication()->getDocument()->getWebAssetManager()->useScript('jquery');// Load it here because of own nonConflict method (nonconflict is set below)
 		//$document = $app->getDocument();
 		/** @var CMSWebApplicationInterface $app */
 		$app = Factory::getApplication();

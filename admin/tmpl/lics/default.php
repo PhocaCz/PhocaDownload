@@ -17,7 +17,7 @@ $r = new Phoca\Component\Phocadownload\Administrator\Render\Adminviews();
 
 $app = Factory::getApplication();
 $user		= $app->getIdentity();
-$userId		= $user->get('id');
+$userId		= $user->id;
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
 $canOrder	= $user->authorise('core.edit.state', $this->t['o']);
@@ -85,7 +85,7 @@ $orderkey   	= array_search($item->id, $this->ordering[0]);
 $ordering		= ($listOrder == 'a.ordering');
 $canCreate		= $user->authorise('core.create', $this->t['o']);
 $canEdit		= $user->authorise('core.edit', $this->t['o']);
-$canCheckin		= $user->authorise('core.manage', 'com_checkin') || $item->checked_out==$user->get('id') || $item->checked_out==0;
+$canCheckin		= $user->authorise('core.manage', 'com_checkin') || $item->checked_out==$user->id || $item->checked_out==0;
 $canChange		= $user->authorise('core.edit.state', $this->t['o']) && $canCheckin;
 $linkEdit 		= Route::_( $urlEdit. $item->id );
 

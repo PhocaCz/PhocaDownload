@@ -34,7 +34,7 @@ class User
 			break;
 
 			case 3:
-				$o['lang'] 		= Factory::getLanguage()->getTag();
+				$o['lang'] 		= Factory::getApplication()->getLanguage()->getTag();
 				$o['langinput'] = '<input type="hidden" name="'.$formName.'" value="'.$o['lang'].'" />';
 			break;
 

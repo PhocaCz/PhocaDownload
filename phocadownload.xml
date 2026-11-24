@@ -2,14 +2,14 @@
 <extension type="component" method="upgrade" version="7.0">
 	<name>com_phocadownload</name>
 	<author>Jan Pavelka (www.phoca.cz)</author>
-	<creationDate>23/11/2026</creationDate>
+	<creationDate>24/11/2026</creationDate>
 	<authorEmail></authorEmail>
 	<authorUrl>https://www.phoca.cz</authorUrl>
 	<copyright>Jan Pavelka</copyright>
 	<license>GNU/GPL</license>
-	<version>7.0.0Alpha</version>
+	<version>7.0.0Alpha2</version>
 	<description>COM_PHOCADOWNLOAD_XML_DESCRIPTION</description>
-	<namespace path="src">Phoca\Component\PhocaDownload</namespace>
+	<namespace path="src">Phoca\Component\Phocadownload</namespace>
 	<scriptfile>script.php</scriptfile>
 	<projectName>PhocaDownload</projectName>
 
@@ -36,7 +36,6 @@
 		<folder>src</folder>
 		<folder>layouts</folder>
 		<filename>index.html</filename>
-		<filename>router.php</filename>
 	</files>
 
 	<media destination="com_phocadownload" folder="media">
