@@ -45,7 +45,7 @@ class UserController extends BaseController
 		$app				= Factory::getApplication();
 		$post['id']			= $app->getInput()->get( 'actionid', 0, 'int' );
 		$post['limitstart']	= $app->getInput()->get( 'limitstart', '', 'int' );
-		$model = Factory::getApplication()->bootComponent('com_phocadownload')->getMVCFactory()->createModel('User', 'Site', ['ignore_request' => true]);
+		$model = Factory::getApplication()->bootComponent('com_phocadownload')->getMVCFactory()->createModel('User', 'Site');
 
 		// USER RIGHT - Delete
 		// 2, 2 means that user access will be ignored in function getUserRight for display Delete button

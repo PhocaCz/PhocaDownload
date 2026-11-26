@@ -89,7 +89,7 @@
 		<downloads>
 			<downloadurl type="full" format="zip">https://github.com/PhocaCz/PhocaDownload/releases/download/7.0.0Alpha3/com_phocadownload_v7.0.0Alpha3.zip</downloadurl>
 		</downloads>
-		<sha512>407a3376fe5d6fa24b3a6c370e89a3d2d0845f076a65398c52fb80dd805cae9771e4c139494426b52610b4b945c036a2e8d14a4749e75fd510c7fef7fe409ef8</sha512>
+		<sha512>419434323ba7223e203285b8c4b7346ac629dd3f43bc7d3d1722db39b792ac0f4b10127f76fe94ce50874807d6a1da23d2cf794efb19acb1a39bf544b35a3101</sha512>
 		<tags>
 			<tag>stable</tag>
 		</tags>

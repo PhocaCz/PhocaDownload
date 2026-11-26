@@ -38,12 +38,10 @@ class HtmlView extends BaseHtmlView
 
 		/** @var \Joomla\CMS\Application\CMSApplication $app */
 		$app = Factory::getApplication();
-
 		/** @var \Joomla\CMS\MVC\Factory\MVCFactoryServiceInterface $component */
 		$component = $app->bootComponent('com_phocadownload');
-
 		/** @var \Phoca\Component\Phocadownload\Administrator\Model\FileModel $model */
-		$model = $component->getMVCFactory()->createModel('File', 'Administrator', ['ignore_request' => true]);
+		$model = $component->getMVCFactory()->createModel('File', 'Administrator');
 		
 		$this->state	= $model->getState();
 		$this->form		= $model->getForm();

@@ -16,7 +16,7 @@ use Phoca\Component\Phocadownload\Administrator\Render\Adminviews;
 use Phoca\Component\Phocadownload\Administrator\Stat\Stat;
 use Phoca\Component\Phocadownload\Administrator\Utils\Utils;
 use Phoca\Component\Phocadownload\Administrator\Helper\StatHelper;
-
+use Joomla\CMS\Factory;
 /* jimport( 'joomla.application.component.view' ); */
 
 class HtmlView extends BaseHtmlView
@@ -34,12 +34,21 @@ class HtmlView extends BaseHtmlView
 
 		$this->t			= Utils::setVars('stat');
 		//$this->r = new AdminViews();
-        $this->items		= $this->get('Items');
-        $this->pagination	= $this->get('Pagination');
-        $this->state		= $this->get('State');
-        $this->filterForm   = $this->get('FilterForm');
-        $this->activeFilters = $this->get('ActiveFilters');
-		$this->maxandsum	= $this->get('MaxAndSum');
+
+		/** @var \Joomla\CMS\Application\CMSApplication $app */
+		$app = Factory::getApplication();
+		/** @var \Joomla\CMS\MVC\Factory\MVCFactoryServiceInterface $component */
+		$component = $app->bootComponent('com_phocadownload');
+		/** @var \Phoca\Component\Phocadownload\Administrator\Model\StatModel $model */
+		$model = $component->getMVCFactory()->createModel('Stat', 'Administrator');
+
+
+        $this->items		= $model->getItems();
+        $this->pagination	= $model->getPagination();
+        $this->state		= $model->getState();
+        $this->filterForm   = $model->getFilterForm();
+        $this->activeFilters = $model->getActiveFilters();
+		$this->maxandsum	= $model->getMaxAndSum();
 
 		foreach ($this->items as &$item) {
 			if ($item->textonly == 0) {

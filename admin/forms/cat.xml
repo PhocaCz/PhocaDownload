@@ -11,7 +11,7 @@
 
 <field name="project_name" type="text" class="form-control" size="128" label="COM_PHOCADOWNLOAD_FIELD_PROJECT_NAME_LABEL" description="COM_PHOCADOWNLOAD_FIELD_PROJECT_NAME_DESC" />
 
-<field name="parent_id" type="phocadownloadcategory" label="COM_PHOCADOWNLOAD_FIELD_PARENT_CATEGORY_LABEL" description="COM_PHOCADOWNLOAD_FIELD_PARENT_CATEGORY_DESC" />
+<field name="parent_id" type="PhocaDownloadCategory" label="COM_PHOCADOWNLOAD_FIELD_PARENT_CATEGORY_LABEL" description="COM_PHOCADOWNLOAD_FIELD_PARENT_CATEGORY_DESC" />
 
 
 
@@ -25,7 +25,7 @@
 <field name="deleteuserid" type="PhocaUsers" multiple="true" label="COM_PHOCADOWNLOAD_FIELD_DELETE_RIGHTS_LABEL" description="COM_PHOCADOWNLOAD_FIELD_DELETE_RIGHTS_DESC" size="1" layout="joomla.form.field.list-fancy-select" />
 
 
-<field name="image" type="phocaselectfilename" manager="image" label="COM_PHOCADOWNLOAD_FIELD_CATEGORY_IMAGE_LABEL"  description="COM_PHOCADOWNLOAD_FIELD_CATEGORY_IMAGE_DESC" class="form-control" size="40" />
+<field name="image" type="PhocaSelectFilename" manager="image" label="COM_PHOCADOWNLOAD_FIELD_CATEGORY_IMAGE_LABEL"  description="COM_PHOCADOWNLOAD_FIELD_CATEGORY_IMAGE_DESC" class="form-control" size="40" />
 
 
 <field name="description" type="editor" buttons="true" hide="pagebreak,readmore" class="form-control" label="COM_PHOCADOWNLOAD_FIELD_DESCRIPTION_LABEL" filter="\Joomla\CMS\Component\ComponentHelper::filterText" description="COM_PHOCADOWNLOAD_FIELD_DESCRIPTION_DESC" />

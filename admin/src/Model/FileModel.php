@@ -717,7 +717,7 @@ class FileModel extends AdminModel
 		$categoryId	= (int) $value;
 		$app	= Factory::getApplication();
 		$table	= $this->getTable();
-		$db		= $this->getDbo();
+		$db		= Factory::getContainer()->get('DatabaseDriver');;
 
 		// Check that the category exists
 		if ($categoryId) {
@@ -831,7 +831,7 @@ class FileModel extends AdminModel
 		$categoryId	= (int) $value;
 		$app = Factory::getApplication();
 		$table	= $this->getTable();
-		//$db		= $this->getDbo();
+		//$db		= Factory::getContainer()->get('DatabaseDriver');;
 
 		// Check that the category exists
 		if ($categoryId) {

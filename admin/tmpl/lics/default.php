@@ -13,6 +13,7 @@ use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Language\Text;
+
 $r = new Phoca\Component\Phocadownload\Administrator\Render\Adminviews();
 
 $app = Factory::getApplication();

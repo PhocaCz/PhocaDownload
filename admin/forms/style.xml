@@ -14,7 +14,7 @@
 
 <field name="filename" type="text" default="" label="COM_PHOCADOWNLOAD_FIELD_FILENAME_LABEL"  readonly="true" class="readonly" />
 
-<field name="ordering" type="phocadownloadOrdering" table="styles" class="form-select" label="COM_PHOCADOWNLOAD_FIELD_ORDERING_LABEL" description="COM_PHOCADOWNLOAD_FIELD_ORDERING_DESC" />
+<field name="ordering" type="PhocaDownloadOrdering" table="styles" class="form-select" label="COM_PHOCADOWNLOAD_FIELD_ORDERING_LABEL" description="COM_PHOCADOWNLOAD_FIELD_ORDERING_DESC" />
 
 <field name="source" type="editor" editor="codemirror|none" buttons="no" label="COM_PHOCADOWNLOAD_FIELD_CSS_LABEL" description="COM_PHOCADOWNLOAD_FIELD_CSS_DESC"  filter="raw" height="400" />
 

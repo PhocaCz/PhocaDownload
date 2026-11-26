@@ -92,7 +92,7 @@ $app = Factory::getApplication();
 			. ' LEFT JOIN #__users AS u ON u.id = a.checked_out '
 		*/
 		// Create a new query object.
-		$db		= $this->getDbo();
+		$db		= Factory::getContainer()->get('DatabaseDriver');;
 		$query	= $db->getQuery(true);
 
 		// Select the required fields from the table.

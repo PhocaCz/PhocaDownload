@@ -97,7 +97,7 @@ $app = Factory::getApplication();
 			. $orderby
 		*/
 		// Create a new query object.
-		$db		= $this->getDbo();
+		$db		= Factory::getContainer()->get('DatabaseDriver');;
 		$query	= $db->getQuery(true);
 
 		// Select the required fields from the table.
@@ -183,9 +183,9 @@ $app = Factory::getApplication();
 		return $query;
 	}
 
-	function getMaxAndSum() {
+	public function getMaxAndSum() {
 
-		$db		= $this->getDbo();
+		$db		= Factory::getContainer()->get('DatabaseDriver');;
 		$query	= $db->getQuery(true);
 
 		$query->select(
@@ -235,8 +235,10 @@ $app = Factory::getApplication();
 		$query->group('a.id, uc.name');
 
 		// Add the list ordering clause.
-		$orderCol	= $this->state->get('list.ordering');
-		$orderDirn	= $this->state->get('list.direction');
+		$orderCol	= $this->getState('list.ordering');
+		$orderDirn	= $this->getState('list.direction');
+
+
 		if ($orderCol == 'a.ordering' || $orderCol == 'category_title') {
 			$orderCol = 'category_title '.$orderDirn.', a.ordering';
 		}

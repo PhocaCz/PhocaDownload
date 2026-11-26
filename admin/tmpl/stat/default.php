@@ -13,7 +13,8 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
-$r = $this->r;
+
+$r = new Phoca\Component\Phocadownload\Administrator\Render\Adminviews();
 $app = Factory::getApplication();
 $user		= $app->getIdentity();
 $userId		= $user->id;

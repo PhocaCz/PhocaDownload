@@ -108,7 +108,7 @@ $app = Factory::getApplication();
 		*/
 
 		// Create a new query object.
-		$db		= $this->getDbo();
+		$db		= Factory::getContainer()->get('DatabaseDriver');;
 		$query	= $db->getQuery(true);
 
 		// Select the required fields from the table.
