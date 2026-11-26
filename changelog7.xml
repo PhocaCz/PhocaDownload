@@ -3,6 +3,22 @@
 	<changelog>
 		<element>com_phocadownload</element>
 		<type>component</type>
+		<version>7.0.0Alpha3</version>
+		<security>
+			<item><![CDATA[Fixed stored XSS via the Author Website field (front-end upload form)]]></item>
+			<item><![CDATA[Stricter URL validation: quotes, whitespace, angle brackets and backticks are no longer accepted (PhocaDownloadUtils::isURLAddress).]]></item>
+			<item><![CDATA[author_url is validated again before it is saved.]]></item>
+			<item><![CDATA[author and author_url are now escaped in the file view and the category file list. Previously stored values are neutralized too.]]></item>
+			<item><![CDATA[Added rel="noopener noreferrer" to the author link.]]></item>
+			<item><![CDATA[Escaped upload form values when the form is shown again after a validation error.]]></item>
+		</security>
+		<addition>
+			<item><![CDATA[Added new parameter: Allow Unsafe Uploads (Administration)]]></item>
+		</addition>
+	</changelog>
+	<changelog>
+		<element>com_phocadownload</element>
+		<type>component</type>
 		<version>7.0.0Alpha2</version>
 		<note>
 			<item><![CDATA[Maintenance release.]]></item>

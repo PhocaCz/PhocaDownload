@@ -85,9 +85,11 @@
 		<type>component</type>
 		<version>7.0.0Alpha3</version>
 		<infourl title="Phoca Download 7.0.0Alpha3">http://www.phoca.cz/version/index.php?phocadownload=7.0.0Alpha3</infourl>
+		<changelogurl>https://raw.githubusercontent.com/PhocaCz/PhocaDownload/master/changelog7.xml</changelogurl>
 		<downloads>
 			<downloadurl type="full" format="zip">https://github.com/PhocaCz/PhocaDownload/releases/download/7.0.0Alpha3/com_phocadownload_v7.0.0Alpha3.zip</downloadurl>
 		</downloads>
+		<sha512>407a3376fe5d6fa24b3a6c370e89a3d2d0845f076a65398c52fb80dd805cae9771e4c139494426b52610b4b945c036a2e8d14a4749e75fd510c7fef7fe409ef8</sha512>
 		<tags>
 			<tag>stable</tag>
 		</tags>
