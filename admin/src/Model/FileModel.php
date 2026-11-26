@@ -181,7 +181,7 @@ class FileModel extends AdminModel
 		return $condition;/** @var \Phoca\Component\Phocadownload\Administrator\Model\FileModel $model */
 	}
 
-	function approve(&$pks, $value = 1)
+	public function approve(&$pks, $value = 1)
 	{
 		// Initialise variables.
 		//$dispatcher	= JEventDispatcher::getInstance();
@@ -232,7 +232,7 @@ class FileModel extends AdminModel
 		return true;
 	}
 
-	function save($data) {
+	public function save($data) {
 
 		$app		= Factory::getApplication();
 		$input  	= Factory::getApplication()->getInput();
@@ -621,7 +621,7 @@ class FileModel extends AdminModel
 
 
 
-	function delete(&$cid = array()) {
+	public function delete(&$cid = array()) {
 
 		$result 			= false;
 

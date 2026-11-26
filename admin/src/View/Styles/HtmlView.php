@@ -62,7 +62,7 @@ class HtmlView extends BaseHtmlView
 
 		//require_once JPATH_COMPONENT.'/helpers/'.$this->t['tasks'].'.php';
 		$state	= $this->get('State');
-		//$class	= ucfirst($this->t['tasks']).'Helper';
+		//$class = ucfirst($this->t['tasks']).'Helper';
 		$canDo	= StylesHelper::getActions($this->t, $state->get('filter.category_id'));
 
 		ToolbarHelper::title( Text::_( $this->t['l'].'_STYLES' ), 'eye' );

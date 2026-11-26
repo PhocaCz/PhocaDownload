@@ -108,7 +108,7 @@ $app = Factory::getApplication();
 		$this->t['su_output']	= $sU->getSingleUploadHTML();
 		$this->t['su_url']		= Uri::base().'index.php?option=com_phocadownload&task=upload.upload&amp;'
 								  .$this->session->getName().'='.$this->session->getId().'&amp;'
-								  . Session::getFormToken().'=1&amp;viewback=phocadownloadmanager&amp;manager='.Utils::filterValue($this->manager, 'alphanumeric').'&amp;field='.Utils::filterValue($this->field, 'alphanumeric2').'&amp;'
+								  . Session::getFormToken().'=1&amp;viewback=manager&amp;manager='.Utils::filterValue($this->manager, 'alphanumeric').'&amp;field='.Utils::filterValue($this->field, 'alphanumeric2').'&amp;'
 								  .'folder='. Utils::filterValue($this->currentFolder, 'folderpath').'&amp;tab=upload';
 
 
@@ -200,10 +200,10 @@ $app = Factory::getApplication();
 		ToolbarHelper::title( Text::_( $this->t['l'].'_MULTIPLE_ADD' ), 'plus' );
 
 		if ($canDo->get('core.create')){
-			ToolbarHelper::save('manager.save', 'JTOOLBAR_SAVE');
+			ToolbarHelper::save('m.save', 'JTOOLBAR_SAVE');
 		}
 
-		ToolbarHelper::cancel('manager.cancel', 'JTOOLBAR_CLOSE');
+		ToolbarHelper::cancel('m.cancel', 'JTOOLBAR_CLOSE');
 		ToolbarHelper::divider();
 		ToolbarHelper::help( 'screen.'.$this->t['c'], true );
 	}

@@ -19,7 +19,7 @@ $group 	= Settings::getManagerGroup($this->manager);
 
 
 $checked 	= HTMLHelper::_('grid.id', $this->filei + count($this->folders), $this->files[$this->filei]->path_with_name_relative_no );
-$deleteCode = '<a class="ph-action-inline-icon-box ph-inline-task" href="javascript:void(0);" onclick="javascript:if (confirm(\''.Text::_('COM_PHOCADOWNLOAD_DELETE_FILE_SERVER_WARNING').'\')){ return Joomla.listItemTask(\'cb'.$this->filei + count($this->folders).'\',\'phocadownloadmanager.delete\');}" title="'.Text::_('COM_PHOCADOWNLOAD_DELETE').'"><span class="ph-cp-item ph-icon-task ph-icon-leftm"><i class="duotone icon-purge"></i></span></a>';
+$deleteCode = '<a class="ph-action-inline-icon-box ph-inline-task" href="javascript:void(0);" onclick="javascript:if (confirm(\''.Text::_('COM_PHOCADOWNLOAD_DELETE_FILE_SERVER_WARNING').'\')){ return Joomla.listItemTask(\'cb'.$this->filei + count($this->folders).'\',\'manager.delete\');}" title="'.Text::_('COM_PHOCADOWNLOAD_DELETE').'"><span class="ph-cp-item ph-icon-task ph-icon-leftm"><i class="duotone icon-purge"></i></span></a>';
 
 if ($this->manager == 'filemultiple') {
 

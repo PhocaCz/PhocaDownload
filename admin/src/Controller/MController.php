@@ -20,7 +20,7 @@ use Joomla\CMS\Router\Route;
 class MController extends FormController
 {
 	protected	$option 		= 'com_phocadownload';
-	protected	$view_list		= 'phocadownloadmanager';
+	protected	$view_list		= 'manager';
 	protected	$layout			= 'edit';
 
 // 	function __construct() {

@@ -91,7 +91,7 @@ If you need additional information beyond this GitHub repository, further docume
 ### Version (Joomla! 6.x)
 6.1.7
 ### Version (Joomla! 7.x)
-7.0.0Alpha2
+7.0.0Alpha3
 
 ### License
 

@@ -33,13 +33,24 @@ class HtmlView extends BaseHtmlView
 
 		$this->t		= Utils::setVars('file');
 		$this->r 		= new AdminView();
-		$this->state	= $this->get('State');
-		$this->form		= $this->get('Form');
-		$this->item		= $this->get('Item');
+
+		//$model = $this->getModel();
+
+		/** @var \Joomla\CMS\Application\CMSApplication $app */
+		$app = Factory::getApplication();
+
+		/** @var \Joomla\CMS\MVC\Factory\MVCFactoryServiceInterface $component */
+		$component = $app->bootComponent('com_phocadownload');
+
+		/** @var \Phoca\Component\Phocadownload\Administrator\Model\FileModel $model */
+		$model = $component->getMVCFactory()->createModel('File', 'Administrator', ['ignore_request' => true]);
+		
+		$this->state	= $model->getState();
+		$this->form		= $model->getForm();
+		$this->item		= $model->getItem();
 
 		$params = ComponentHelper::getParams('com_phocadownload');
-		/** @var CMSWebApplicationInterface $app */
-$app = Factory::getApplication();
+
 		$document = $app->getDocument();
 		$document->addScriptOptions(
 			'com_phocadownload.externalUrlParser',

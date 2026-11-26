@@ -60,7 +60,7 @@ class HtmlView extends BaseHtmlView
 		$app = Factory::getApplication();
 		//require_once JPATH_COMPONENT.'/helpers/'.$this->t['tasks'].'.php';
 		$state	= $this->get('State');
-		//$class	= ucfirst($this->t['tasks']).'Helper';
+		//$class = ucfirst($this->t['tasks']).'Helper';
 		$canDo	= FilesHelper::getActions($this->t, $state->get('filter.file_id'));
 		$user  = $app->getIdentity();
 		$bar = Toolbar::getInstance('toolbar');

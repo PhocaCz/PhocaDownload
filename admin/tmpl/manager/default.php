@@ -29,11 +29,11 @@ $r 			=  new AdminView();
 	Joomla.submitbutton = function(task)
 	{
 	
-		if (task == \'manager.cancel\') {
+		if (task == \'m.cancel\') {
 			Joomla.submitform(task);
 		}
 
-		if (task == \'manager.save\') {
+		if (task == \'m.save\') {
 			var phocadownloadmform = document.getElementById(\'adminForm\');
 			if (phocadownloadmform.boxchecked.value==0) {
 				alert( "'. Text::_( 'COM_PHOCADOWNLOAD_WARNING_SELECT_FILENAME_OR_FOLDER', true ).'" );
@@ -225,7 +225,7 @@ if ($this->t['displaytabs'] > 0) {
 	echo $r->startTab('createfolder', $tabs['createfolder'], $activeTab == 'createfolder' ? 'active' : '');
 
 
-	echo Upload::renderCreateFolder($this->session->getName(), $this->session->getId(), $this->currentFolder, 'phocadownloadmanager', 'manager='.Utils::filterValue($this->manager, 'alphanumeric').'&amp;tab=createfolder&amp;field='. Utils::filterValue($this->field, 'alphanumeric2') );
+	echo Upload::renderCreateFolder($this->session->getName(), $this->session->getId(), $this->currentFolder, 'manager', 'manager='.Utils::filterValue($this->manager, 'alphanumeric').'&amp;tab=createfolder&amp;field='. Utils::filterValue($this->field, 'alphanumeric2') );
 	echo $r->endTab();
 
 	echo $r->endTabs();

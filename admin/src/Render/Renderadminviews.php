@@ -394,7 +394,7 @@ $app = Factory::getApplication();
 		$config			= Factory::getConfig();
 		$publish_up 	= Factory::getDate($publishUp);
 		$publish_down 	= Factory::getDate($publishDown);
-		$tz 			= new DateTimeZone($config->get('offset'));
+		$tz 			= new \DateTimeZone($config->get('offset'));
 		$publish_up->setTimezone($tz);
 		$publish_down->setTimezone($tz);
 

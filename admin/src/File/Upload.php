@@ -489,7 +489,7 @@ $app = Factory::getApplication();
 			} else {
 				if($viewBack != '') {
 					$group 	= Settings::getManagerGroup($manager);
-					$link	= 'index.php?option=com_phocadownload&view=phocadownloadmanager&manager='.(string)$manager
+					$link	= 'index.php?option=com_phocadownload&view=manager&manager='.(string)$manager
 							.str_replace('&amp;', '&', $group['c']).'&'.$tabUrl.'&folder='.$folder.'&field='.$field;
 					$app->enqueueMessage( $msg, 'error');
 					$app->redirect($link);
@@ -754,7 +754,7 @@ $app = Factory::getApplication();
 		}
 
 		$link = Uri::base()
-			.'index.php?option=com_phocadownload&task=phocadownloadupload.createfolder&amp;'. $sessName.'='.$sessId.'&amp;'
+			.'index.php?option=com_phocadownload&task=upload.createfolder&amp;'. $sessName.'='.$sessId.'&amp;'
 			.Session::getFormToken().'=1&amp;viewback='.$viewBack.'&amp;'
 			.'folder='.Utils::filterValue($currentFolder, 'folderpath').$attribs;
 

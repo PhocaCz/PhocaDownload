@@ -31,42 +31,46 @@ use Phoca\Component\Phocadownload\Administrator\Utils\Utils;
 class MModel extends AdminModel
 {
 
-    use AdminModelTrait;
+	use AdminModelTrait;
 
-	protected $option 		= 'com_phocadownload';
-	protected $text_prefix 	= 'com_phocadownload';
-	public 		$typeAlias 	= 'com_phocadownload.phocadownloadm';
+	protected $option = 'com_phocadownload';
+	protected $text_prefix = 'com_phocadownload';
+	public $typeAlias = 'com_phocadownload.phocadownloadm';
 
-	protected $fileCount		= 0;
-	protected $categoryCount	= 0;
+	protected $fileCount = 0;
+	protected $categoryCount = 0;
 
-	function __construct() {
-		$this->fileCount 		= 0;
-		$this->categoryCount 	= 0;
+	function __construct()
+	{
+		$this->fileCount = 0;
+		$this->categoryCount = 0;
 		parent::__construct();
 	}
 
-		function setFileCount($count) {
+	function setFileCount($count)
+	{
 		$this->fileCount = $this->fileCount + $count;
 	}
 
-	function setCategoryCount($count) {
+	function setCategoryCount($count)
+	{
 		$this->categoryCount = $this->categoryCount + $count;
 	}
 
-	function save($data) {
+	function save($data)
+	{
 
-		$app		= Factory::getApplication();
+		$app = Factory::getApplication();
 
-		$foldercid	= $app->getInput()->get('foldercid', array(), 'raw');
-		$cid		= $app->getInput()->get('cid', 0, 'raw');
-		$data		= $app->getInput()->get('jform', array(0), 'array');
+		$foldercid = $app->getInput()->get('foldercid', array(), 'raw');
+		$cid = $app->getInput()->get('cid', 0, 'raw');
+		$data = $app->getInput()->get('jform', array(0), 'array');
 
 
 		// =================================================
 		// Make a copy for play and preview
-		$paramsC 	= ComponentHelper::getParams('com_phocadownload') ;
-		$papCopy 	= $paramsC->get( 'pap_copy', 0 );
+		$paramsC = ComponentHelper::getParams('com_phocadownload');
+		$papCopy = $paramsC->get('pap_copy', 0);
 		$data['pap_copy_m'] = 0;
 		if ($papCopy == 2 || $papCopy == 3) {
 			$data['pap_copy_m'] = 1;
@@ -74,41 +78,41 @@ class MModel extends AdminModel
 		// =================================================
 
 
-		if(isset($foldercid)) {
-			$data['foldercid']	= $foldercid;
+		if (isset($foldercid)) {
+			$data['foldercid'] = $foldercid;
 		}
-		if(isset($cid)) {
-			$data['cid']		= $cid;
+		if (isset($cid)) {
+			$data['cid'] = $cid;
 		}
 
-		if (isset($data['catid']) && (int)$data['catid'] > 0) {
-			$data['catid']		= (int)$data['catid'];
+		if (isset($data['catid']) && (int) $data['catid'] > 0) {
+			$data['catid'] = (int) $data['catid'];
 		} else {
-			$data['catid']		= 0;
+			$data['catid'] = 0;
 		}
 
 		//Get folder variables from Helper
-		$path 			= PhocaPath::getPathSet();
-		$origPath 		= $path['orig_abs_ds'];
+		$path = PhocaPath::getPathSet();
+		$origPath = $path['orig_abs_ds'];
 		$origPathServer = str_replace('\\', '/', Path::clean($path['orig_abs_ds']));
 
 
 
 		// Cache all existing categories
 		$query = 'SELECT id, title, parent_id'
-	    . ' FROM #__phocadownload_categories' ;
-		$this->getDatabase()->setQuery( $query );
-	    $existingCategories = $this->getDatabase()->loadObjectList() ;
+			. ' FROM #__phocadownload_categories';
+		$this->getDatabase()->setQuery($query);
+		$existingCategories = $this->getDatabase()->loadObjectList();
 
 		// Cache all existing files
 		$query = 'SELECT catid, filename'
-	    . ' FROM #__phocadownload';
-		$this->getDatabase()->setQuery( $query );
-	    $existingFiles = $this->getDatabase()->loadObjectList() ;
+			. ' FROM #__phocadownload';
+		$this->getDatabase()->setQuery($query);
+		$existingFiles = $this->getDatabase()->loadObjectList();
 
-		$result					= new \StdClass();
+		$result = new \StdClass();
 		$result->category_count = 0;
-		$result->image_count 	= 0;
+		$result->image_count = 0;
 
 
 
@@ -116,9 +120,9 @@ class MModel extends AdminModel
 		if (isset($data['foldercid'])) {
 			foreach ($data['foldercid'] as $foldername) {
 				if (strlen($foldername) > 0) {
-					$fullPath 		= $path['orig_abs_ds'].$foldername;
+					$fullPath = $path['orig_abs_ds'] . $foldername;
 
-					$result 		= $this->_createCategoriesRecursive( $origPathServer, $fullPath, $existingCategories, $existingFiles, $data['catid'], $data );
+					$result = $this->_createCategoriesRecursive($origPathServer, $fullPath, $existingCategories, $existingFiles, $data['catid'], $data);
 				}
 			}
 		}
@@ -130,43 +134,44 @@ class MModel extends AdminModel
 			// Make a copy for play and preview (1) --------
 			if (isset($data['pap_copy_m']) && $data['pap_copy_m'] == 1) {
 				//$paramsC 				= JComponentHelper::getParams('com_phocadownload') ;
-				$overwriteExistingFiles = $paramsC->get( 'overwrite_existing_files', 0 );
+				$overwriteExistingFiles = $paramsC->get('overwrite_existing_files', 0);
 			}
 			// ------------------------------------------------
 
 			foreach ($data['cid'] as $filename) {
 				if ($filename) {
 					//$ext = strtolower(JFile::getExt($filename));
-					$row = $this->getTable('File');
-
+					//$row = $this->getTable('File');
+					$db = Factory::getContainer()->get('DatabaseDriver');
+					$row = Factory::getApplication()->bootComponent('com_phocadownload')->getMVCFactory()->createTable('File', 'Table', ['dbo' => $db]);
 					$datam = [];
-					$datam['published']		= $data['published'];
-					$datam['catid']			= $data['catid'];
-					$datam['approved']		= $data['approved'];
-					$datam['language']		= $data['language'];
-					$datam['filename']		= $filename;
+					$datam['published'] = $data['published'];
+					$datam['catid'] = $data['catid'];
+					$datam['approved'] = $data['approved'];
+					$datam['language'] = $data['language'];
+					$datam['filename'] = $filename;
 
 
-					if ($data['title']	!= '') {
-						$datam['title']		= $data['title'];
+					if ($data['title'] != '') {
+						$datam['title'] = $data['title'];
 					} else {
-						$datam['title']		= PhocaFile::getTitleFromFilenameWithoutExt($filename);
+						$datam['title'] = PhocaFile::getTitleFromFilenameWithoutExt($filename);
 					}
 
-					if ($data['alias']	!= '') {
-						$datam['alias']		= $data['alias'];
+					if ($data['alias'] != '') {
+						$datam['alias'] = $data['alias'];
 					} else {
-						$datam['alias']		= $data['alias']; // PhocaFile::getAliasName($datam['title']);
+						$datam['alias'] = $data['alias']; // PhocaFile::getAliasName($datam['title']);
 					}
-					$datam['token']			= Utils::getToken($datam['title'].$datam['filename']);
+					$datam['token'] = Utils::getToken($datam['title'] . $datam['filename']);
 					// Make a copy for play and preview (2)
 					if (isset($data['pap_copy_m']) && $data['pap_copy_m'] == 1) {
-						$filenameExt 		= PhocaFile::getTitleFromFilenameWithExt($filename);
-						$storedfilename		= $filename;
-						$storedfoldername	= str_replace($filenameExt, '', $storedfilename);
+						$filenameExt = PhocaFile::getTitleFromFilenameWithExt($filename);
+						$storedfilename = $filename;
+						$storedfoldername = str_replace($filenameExt, '', $storedfilename);
 						$o = $this->_copyPreviewAndPlay($filenameExt, $storedfilename, $storedfoldername, $path, $overwriteExistingFiles);
-						$datam['filename_play']		= $o['filename_play'];
-						$datam['filename_preview'] 	= $o['filename_preview'];
+						$datam['filename_play'] = $o['filename_play'];
+						$datam['filename_preview'] = $o['filename_preview'];
 					}
 
 
@@ -180,21 +185,21 @@ class MModel extends AdminModel
 
 					// Create the timestamp for the date
 					//$row->date = gmdate('Y-m-d H:i:s');
-					$nullDate	= $this->getDatabase()->getNullDate();
-					$date	= Factory::getDate();
+					$nullDate = $this->getDatabase()->getNullDate();
+					$date = Factory::getDate();
 					$row->date = $date->toSql();
 
 
 
-					if(intval($row->publish_up) == 0) {
+					if (intval($row->publish_up) == 0) {
 						$row->publish_up = $row->date;//Factory::getDate()->toSql();
 					}
 
 					// Handle never unpublish date
-					if (trim((string)$row->publish_down) == Text::_('Never') || trim( (string)$row->publish_down ) == '') {
+					if (trim((string) $row->publish_down) == Text::_('Never') || trim((string) $row->publish_down) == '') {
 						$row->publish_down = $nullDate;
 					} else {
-						if (strlen(trim( $row->publish_down )) <= 10) {
+						if (strlen(trim($row->publish_down)) <= 10) {
 							$row->publish_down .= ' 00:00:00';
 						}
 						//$date = JFactory::getDate($row->publish_down, $tzoffset);
@@ -207,8 +212,8 @@ class MModel extends AdminModel
 					// if new item, order last in appropriate group
 
 					if (!$row->id) {
-						$where = 'catid = ' . (int) $row->catid ;
-						$row->ordering = $row->getNextOrder( $where );
+						$where = 'catid = ' . (int) $row->catid;
+						$row->ordering = $row->getNextOrder($where);
 					}
 
 
@@ -233,7 +238,7 @@ class MModel extends AdminModel
 
 		}
 
-		$msg = $this->categoryCount. ' ' .Text::_('COM_PHOCADOWNLOAD_CATEGORIES_ADDED') .', '.$this->fileCount. ' ' . Text::_('COM_PHOCADOWNLOAD_FILES_ADDED');
+		$msg = $this->categoryCount . ' ' . Text::_('COM_PHOCADOWNLOAD_CATEGORIES_ADDED') . ', ' . $this->fileCount . ' ' . Text::_('COM_PHOCADOWNLOAD_FILES_ADDED');
 		$app->enqueueMessage($msg);
 		$app->redirect(Route::_('index.php?option=com_phocadownload&view=files', false));
 
@@ -241,103 +246,120 @@ class MModel extends AdminModel
 
 	}
 
-	protected function _createCategoriesRecursive(&$origPathServer, $path, &$existingCategories, &$existingFiles, $parentId = 0, $data = array() ) {
+	protected function _createCategoriesRecursive(&$origPathServer, $path, &$existingCategories, &$existingFiles, $parentId = 0, $data = array())
+	{
 
-		$totalresult					= new \StdClass();
-		$totalresult->files_count 		= 0 ;
-		$totalresult->category_count	= 0 ;
-		$totalresult->image_count		= 0 ;
+		$totalresult = new \StdClass();
+		$totalresult->files_count = 0;
+		$totalresult->category_count = 0;
+		$totalresult->image_count = 0;
 
-		$categoryName 	= basename($path);
-		$id 			= $this->_getCategoryId( $existingCategories, $categoryName, $parentId ) ;
-		$category 		= null;
+		$categoryName = basename($path);
+		$id = $this->_getCategoryId($existingCategories, $categoryName, $parentId);
+		$category = null;
 
 		// Full path: eg. "/home/www/joomla/files/categ/subcat/"
-		$fullPath	   	= str_replace('\\', '/', Path::clean('/' . $path));
+		$fullPath = str_replace('\\', '/', Path::clean('/' . $path));
 		// Relative path eg "categ/subcat"
-		$relativePath 	= str_replace($origPathServer, '', $fullPath);
+		$relativePath = str_replace($origPathServer, '', $fullPath);
 
 		// Category doesn't exist
-		if ( $id == -1 ) {
-		  $row = $this->getTable('Cat');
+		if ($id == -1) {
+			//$row = $this->getTable('Cat');
+			//$db = Factory::getContainer()->get('DatabaseDriver');
+			//$row = Factory::getApplication()->bootComponent('com_phocacart')->getMVCFactory()->createTable('Category', 'Table', []);
+			//$row = new \Joomla\CMS\Table\Content($db);
+			$db = Factory::getContainer()->get('DatabaseDriver');
+			$row = Factory::getApplication()
+				->bootComponent('com_phocadownload')
+				->getMVCFactory()
+				->createTable('Cat', 'Table', ['dbo' => $db]);
 
-		  $row->published 	= $data['published'];
-		 // $row->approved	= $data['approved'];
-		  $row->language	= $data['language'];
-		  $row->parent_id 	= $parentId;
-		  $row->title 		= $categoryName;
+			$row->published = $data['published'];
+			// $row->approved	= $data['approved'];
+			$row->language = $data['language'];
+			$row->parent_id = $parentId;
+			$row->title = $categoryName;
 
-		  // Create the timestamp for the date
-		  $row->date 		= gmdate('Y-m-d H:i:s');
-		 // $row->alias 		= $row->title; //PhocaFile::getAliasName($categoryName);
-		  //$row->userfolder	= ltrim(str_replace('\\', '/', JPath::clean($relativePath )), '/');
-		  $row->ordering 	= $row->getNextOrder( "parent_id = " . $this->getDatabase()->Quote($row->parent_id) );
+			// Create the timestamp for the date
+			$row->date = gmdate('Y-m-d H:i:s');
+			// $row->alias 		= $row->title; //PhocaFile::getAliasName($categoryName);
+			//$row->userfolder	= ltrim(str_replace('\\', '/', JPath::clean($relativePath )), '/');
 
-		  if (!$row->check()) {
-			throw new \Exception($row->getError('Check Problem'), 500);
-			return false;
-		  }
+			$row->ordering = $row->getNextOrder("parent_id = " . $this->getDatabase()->Quote($row->parent_id));
+			
+			if (!$row->check()) {
+				$errors = $row->getErrors();
+				$message = !empty($errors) ? implode("\n", $errors) : ($row->getError() ?: 'Category check failed');
+				throw new \Exception($message, 500);
+			}
+			if (!$row->store()) {
+				$errors = $row->getErrors();
+				$message = !empty($errors) ? implode("\n", $errors) : ($row->getError() ?: 'Category check failed');
+				throw new \Exception($message, 500);
+			}
 
-		  if (!$row->store()) {
-			throw new \Exception($row->getError('Check Problem'), 500);
-			return false;
-		  }
-
-		  $category 			= new \stdClass();
-		  $category->title 		= $categoryName ;
-		  $category->parent_id 	= $parentId;
-		  $category->id 		= $row->id;
-		  $totalresult->category_count++;
-		  $id = $category->id;
-		  $existingCategories[] = &$category ;
-		  $this->setCategoryCount(1);//This subcategory was added
+			$category = new \stdClass();
+			$category->title = $categoryName;
+			$category->parent_id = $parentId;
+			$category->id = $row->id;
+			$totalresult->category_count++;
+			$id = $category->id;
+			$existingCategories[] = &$category;
+			$this->setCategoryCount(1);//This subcategory was added
 		}
 
 
 
 		// Add all files from this folder
-		$totalresult->image_count += $this->_addAllFilesFromFolder( $existingFiles, $id, $path, $relativePath, $data );
+		$totalresult->image_count += $this->_addAllFilesFromFolder($existingFiles, $id, $path, $relativePath, $data);
 		$this->setfileCount($totalresult->image_count);
 
 		// Do sub folders
-		$parentId 		= $id;
-		$folderList 	= Folder::folders( $path, $filter = '.', $recurse = false, $fullpath = true, $exclude = array() );
+		$parentId = $id;
+		$folderList = Folder::folders($path, $filter = '.', $recurse = false, $fullpath = true, $exclude = array());
 		// Iterate over the folders if they exist
 		if ($folderList !== false) {
 			foreach ($folderList as $folder) {
 				//$this->setCategoryCount(1);//This subcategory was added
-				$folderName = $relativePath .'/' . str_replace($origPathServer, '', $folder);
-				$result = $this->_createCategoriesRecursive( $origPathServer, $folder, $existingCategories, $existingFiles, $id , $data);
-				$totalresult->image_count += $result->image_count ;
-				$totalresult->category_count += $result->category_count ;
+				$folderName = $relativePath . '/' . str_replace($origPathServer, '', $folder);
+				$result = $this->_createCategoriesRecursive($origPathServer, $folder, $existingCategories, $existingFiles, $id, $data);
+				$totalresult->image_count += $result->image_count;
+				$totalresult->category_count += $result->category_count;
 			}
 		}
-		return $totalresult ;
+		return $totalresult;
 	}
 
-	protected function _getCategoryId( &$existingCategories, &$title, $parentId ) {
-	    $id = -1;
-		$i 	= 0;
+	protected function _getCategoryId(&$existingCategories, &$title, $parentId)
+	{
+		$id = -1;
+		$i = 0;
 		$count = count($existingCategories);
-		while ( $id == -1 && $i < $count ) {
+		while ($id == -1 && $i < $count) {
 
-			if ( $existingCategories[$i]->title == $title &&
-			     $existingCategories[$i]->parent_id == $parentId ) {
-				$id = $existingCategories[$i]->id ;
+			if (
+				$existingCategories[$i]->title == $title &&
+				$existingCategories[$i]->parent_id == $parentId
+			) {
+				$id = $existingCategories[$i]->id;
 			}
 			$i++;
 		}
 		return $id;
 	}
 
-	protected function _FileExist( &$existing_image, &$filename, $catid ) {
-	    $result = false ;
-		$i 		= 0;
+	protected function _FileExist(&$existing_image, &$filename, $catid)
+	{
+		$result = false;
+		$i = 0;
 		$count = count($existing_image);
 
-		while ( $result == false && $i < $count ) {
-			if ( $existing_image[$i]->filename == $filename &&
-			     $existing_image[$i]->catid == $catid ) {
+		while ($result == false && $i < $count) {
+			if (
+				$existing_image[$i]->filename == $filename &&
+				$existing_image[$i]->catid == $catid
+			) {
 				$result = true;
 			}
 			$i++;
@@ -345,75 +367,79 @@ class MModel extends AdminModel
 		return $result;
 	}
 
-	protected function _addAllFilesFromFolder(&$existingImages, $category_id, $fullPath, $rel_path, $data = array()) {
+	protected function _addAllFilesFromFolder(&$existingImages, $category_id, $fullPath, $rel_path, $data = array())
+	{
 		$count = 0;
-		$fileList = Folder::files( $fullPath );
+		$fileList = Folder::files($fullPath);
 		natcasesort($fileList);
 		// Iterate over the files if they exist
 		//file - abc.img, file_no - folder/abc.img
 
 		// Make a copy for play and preview (1) --------
 		if (isset($data['pap_copy_m']) && $data['pap_copy_m'] == 1) {
-			$path					= PhocaPath::getPathSet();
-			$storedfoldername		= ltrim(str_replace('\\', '/', Path::clean($rel_path  )), '/');
-			$paramsC 				= ComponentHelper::getParams('com_phocadownload') ;
-			$overwriteExistingFiles = $paramsC->get( 'overwrite_existing_files', 0 );
+			$path = PhocaPath::getPathSet();
+			$storedfoldername = ltrim(str_replace('\\', '/', Path::clean($rel_path)), '/');
+			$paramsC = ComponentHelper::getParams('com_phocadownload');
+			$overwriteExistingFiles = $paramsC->get('overwrite_existing_files', 0);
 		}
 		// ------------------------------------------------
 
 		if ($fileList !== false) {
 			foreach ($fileList as $filename) {
-			    $storedfilename	= ltrim(str_replace('\\', '/', Path::clean($rel_path . '/' . $filename )), '/');
+				$storedfilename = ltrim(str_replace('\\', '/', Path::clean($rel_path . '/' . $filename)), '/');
 
 				//$ext = strtolower(JFile::getExt($filename));
 
-				if (PhocaFile::exists($fullPath.'/'.$filename) &&
+				if (
+					PhocaFile::exists($fullPath . '/' . $filename) &&
 					substr($filename, 0, 1) != '.' &&
 					strtolower($filename) !== 'index.html' &&
-					!$this->_FileExist($existingImages, $storedfilename, $category_id) ) {
+					!$this->_FileExist($existingImages, $storedfilename, $category_id)
+				) {
 
-					$row = $this->getTable('File');
-
+					//$row = $this->getTable('File');
+					$db = Factory::getContainer()->get('DatabaseDriver');
+					$row = Factory::getApplication()->bootComponent('com_phocadownload')->getMVCFactory()->createTable('File', 'Table', ['dbo' => $db]);
 					$datam = [];
-					$datam['published']		= $data['published'];
-					$datam['catid']			= $category_id;
-					$datam['filename']		= $storedfilename;
-					$datam['approved']		= $data['approved'];
-					$datam['language']		= $data['language'];
+					$datam['published'] = $data['published'];
+					$datam['catid'] = $category_id;
+					$datam['filename'] = $storedfilename;
+					$datam['approved'] = $data['approved'];
+					$datam['language'] = $data['language'];
 
 					// Default values
 					if (!isset($data['publish_up']) || $data['publish_up'] == '0' || $data['publish_up'] == '') {
-						$datam['publish_up']		= '0000-00-00 00:00:00';
+						$datam['publish_up'] = '0000-00-00 00:00:00';
 					} else {
-						$datam['publish_up']		= $data['publish_up'];
+						$datam['publish_up'] = $data['publish_up'];
 					}
 
 					if (!isset($data['publish_down']) || $data['publish_down'] == '0' || $data['publish_down'] == '') {
-						$datam['publish_down']		= '0000-00-00 00:00:00';
+						$datam['publish_down'] = '0000-00-00 00:00:00';
 					} else {
-						$datam['publish_down']		= $data['publish_down'];
+						$datam['publish_down'] = $data['publish_down'];
 					}
 
-					if ($data['title']	!= '') {
-						$datam['title']		= $data['title'];
+					if ($data['title'] != '') {
+						$datam['title'] = $data['title'];
 					} else {
-						$datam['title']		= PhocaFile::getTitleFromFilenameWithoutExt($filename);
+						$datam['title'] = PhocaFile::getTitleFromFilenameWithoutExt($filename);
 					}
 
-					if ($data['alias']	!= '') {
-						$datam['alias']		= $data['alias'];
+					if ($data['alias'] != '') {
+						$datam['alias'] = $data['alias'];
 					} else {
-						$datam['alias']		= $data['alias'];//PhocaFile::get AliasName($datam['title']);
+						$datam['alias'] = $data['alias'];//PhocaFile::get AliasName($datam['title']);
 					}
-					$datam['token']			= Utils::getToken($datam['title'].$datam['filename']);
+					$datam['token'] = Utils::getToken($datam['title'] . $datam['filename']);
 
-					$image 				= new \stdClass();
+					$image = new \stdClass();
 
 					// Make a copy for play and preview (2)
 					if (isset($data['pap_copy_m']) && $data['pap_copy_m'] == 1) {
 						$o = $this->_copyPreviewAndPlay($filename, $storedfilename, $storedfoldername, $path, $overwriteExistingFiles);
-						$datam['filename_play']		= $o['filename_play'];
-						$datam['filename_preview'] 	= $o['filename_preview'];
+						$datam['filename_play'] = $o['filename_play'];
+						$datam['filename_preview'] = $o['filename_preview'];
 					}
 
 
@@ -430,8 +456,8 @@ class MModel extends AdminModel
 
 					// if new item, order last in appropriate group
 					if (!$row->id) {
-						$where = 'catid = ' . (int) $row->catid ;
-						$row->ordering = $row->getNextOrder( $where );
+						$where = 'catid = ' . (int) $row->catid;
+						$row->ordering = $row->getNextOrder($where);
 					}
 
 					// Make sure the Phoca download table is valid
@@ -453,31 +479,32 @@ class MModel extends AdminModel
 						$this->setFirstImageFolder($row->filename);
 					}*/
 
-					$image->filename 	= $storedfilename;
-					$image->catid 		= $category_id;
+					$image->filename = $storedfilename;
+					$image->catid = $category_id;
 
-					$existingImages[] 	= &$image ;
-					$count++ ;
+					$existingImages[] = &$image;
+					$count++;
 
 				}
 
 			}
 		}
 
-	//	$this->setfileCount($count);
+		//	$this->setfileCount($count);
 		return $count;
 	}
 
-	protected function _copyPreviewAndPlay($filename, $storedfilename, $storedfoldername, $path, $overwriteExistingFiles) {
+	protected function _copyPreviewAndPlay($filename, $storedfilename, $storedfoldername, $path, $overwriteExistingFiles)
+	{
 
-		$o['filename_play']		= '';
-		$o['filename_preview'] 	= '';
-		$canPlay			= PhocaFile::canPlay($filename);
-		$canPreview 		= PhocaFile::canPreview($filename);
-		$filepathPAP 		= Path::clean($path['orig_abs_pap_ds']. $storedfilename);
+		$o['filename_play'] = '';
+		$o['filename_preview'] = '';
+		$canPlay = PhocaFile::canPlay($filename);
+		$canPreview = PhocaFile::canPreview($filename);
+		$filepathPAP = Path::clean($path['orig_abs_pap_ds'] . $storedfilename);
 		//$filepathUserFolderPAP 		= JPath::clean($path['orig_abs_pap_ds']. $storedfoldername);
-		$filepath 			= Path::clean($path['orig_abs_ds']. $storedfilename);
-		$filepathPAPFolder	= Path::clean($path['orig_abs_pap_ds'] . '/'. PhocaFile::getFolderFromTheFile($storedfilename));
+		$filepath = Path::clean($path['orig_abs_ds'] . $storedfilename);
+		$filepathPAPFolder = Path::clean($path['orig_abs_pap_ds'] . '/' . PhocaFile::getFolderFromTheFile($storedfilename));
 
 		if ($canPlay || $canPreview) {
 
@@ -495,26 +522,26 @@ class MModel extends AdminModel
 			}
 
 			// Overwrite file and add no new item to database
-				$fileExistsPAP = 0;
-				if (PhocaFile::exists($filepathPAP) && $overwriteExistingFiles == 1) {
-					$fileExistsPAP = 1;
+			$fileExistsPAP = 0;
+			if (PhocaFile::exists($filepathPAP) && $overwriteExistingFiles == 1) {
+				$fileExistsPAP = 1;
 
-					if ($canPlay == 1) {
-						// set new file only no other is set or it is the same like currect - to overwrite updated version of the same file
-						if ($o['filename_play'] == '' || $o['filename_play'] == $o['filename']) {
-							$o['filename_play']		=  $storedfilename;
-						} else {
-							$uploadPAP = 0;
-						}
-					} else if ($canPreview == 1) {
-						// set new file only no other is set or it is the same like currect - to overwrite updated version of the same file
-						if ($o['filename_preview'] == '' || $o['filename_preview'] == $o['filename']) {
-							$o['filename_preview']	=  $storedfilename;
-						} else {
-							$uploadPAP = 0;
-						}
+				if ($canPlay == 1) {
+					// set new file only no other is set or it is the same like currect - to overwrite updated version of the same file
+					if ($o['filename_play'] == '' || $o['filename_play'] == $o['filename']) {
+						$o['filename_play'] = $storedfilename;
+					} else {
+						$uploadPAP = 0;
+					}
+				} else if ($canPreview == 1) {
+					// set new file only no other is set or it is the same like currect - to overwrite updated version of the same file
+					if ($o['filename_preview'] == '' || $o['filename_preview'] == $o['filename']) {
+						$o['filename_preview'] = $storedfilename;
+					} else {
+						$uploadPAP = 0;
 					}
 				}
+			}
 
 			if ($uploadPAP == 0) {
 
@@ -522,11 +549,11 @@ class MModel extends AdminModel
 				if (!PhocaFile::folderExists($filepathPAPFolder)) {
 					if (Folder::create($filepathPAPFolder)) {
 						$dataFile = "<html>\n<body bgcolor=\"#FFFFFF\">\n</body>\n</html>";
-						File::write($filepathPAPFolder . '/' ."index.html", $dataFile);
+						File::write($filepathPAPFolder . '/' . "index.html", $dataFile);
 					}
 					// else {
-						//$errUploadMsg = JText::_("COM_PHOCADOWNLOAD_UNABLE_TO_CREATE_FOLDER");
-						//return false;
+					//$errUploadMsg = JText::_("COM_PHOCADOWNLOAD_UNABLE_TO_CREATE_FOLDER");
+					//return false;
 					//}
 				}
 
@@ -554,9 +581,9 @@ class MModel extends AdminModel
 
 			if ($storePAP == 1) {
 				if ($canPlay == 1) {
-					$o['filename_play']		=  $storedfilename;
+					$o['filename_play'] = $storedfilename;
 				} else if ($canPreview == 1) {
-					$o['filename_preview']	=  $storedfilename;
+					$o['filename_preview'] = $storedfilename;
 				}
 			}
 		}
@@ -565,9 +592,10 @@ class MModel extends AdminModel
 	}
 
 
-	public function getForm($data = array(), $loadData = true) {
+	public function getForm($data = array(), $loadData = true)
+	{
 
-		$form 	= $this->loadForm('com_phocadownload.manager', 'manager', array('control' => 'jform', 'load_data' => $loadData));
+		$form = $this->loadForm('com_phocadownload.manager', 'manager', array('control' => 'jform', 'load_data' => $loadData));
 		if (empty($form)) {
 			return false;
 		}
@@ -580,6 +608,11 @@ class MModel extends AdminModel
 		return Table::getInstance($type, $prefix, $config);
 	}
 	*/
+
+	public function getTable($name = 'File', $prefix = 'Table', $options = [])
+	{
+		return parent::getTable('File', $prefix, $options);
+	}
 
 
 

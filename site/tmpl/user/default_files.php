@@ -163,7 +163,7 @@ if (is_array($rows)) {
 	// User should get info about active/not active file (if e.g. admin change the active status)
 	$publish_up 	= Factory::getDate($row->publish_up);
 	$publish_down 	= Factory::getDate($row->publish_down);
-	$tz 			= new DateTimeZone($config->get('offset'));
+	$tz 			= new \DateTimeZone($config->get('offset'));
 	$publish_up->setTimezone($tz);
 	$publish_down->setTimezone($tz);
 

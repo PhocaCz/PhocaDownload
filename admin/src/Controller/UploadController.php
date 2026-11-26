@@ -19,9 +19,9 @@ use Joomla\CMS\Language\Text;
 use Joomla\Filesystem\Path;
 use Joomla\Filesystem\Folder;
 use Joomla\Filesystem\File;
-use Phoca\Component\Phocadownload\Administrator\File\File as PhocaDownloadFile;
+use Phoca\Component\Phocadownload\Administrator\File\File as PhocaFile;
 use Phoca\Component\Phocadownload\Administrator\File\Upload;
-use Phoca\Component\Phocadownload\Administrator\Path\Path as PhocaDownloadPath;
+use Phoca\Component\Phocadownload\Administrator\Path\Path as PhocaPath;
 use Phoca\Component\Phocadownload\Administrator\Utils\Settings;
 /* jimport('joomla.client.helper'); */
 /* jimport('joomla.filesystem.file'); */
@@ -52,7 +52,7 @@ class UploadController extends CpController
 		$parent			= Factory::getApplication()->getInput()->get( 'folderbase', '', 'path' );
 		$tab			= Factory::getApplication()->getInput()->get( 'tab', 0, 'string' );
 		$field			= Factory::getApplication()->getInput()->get( 'field');
-		$viewBack		= Factory::getApplication()->getInput()->get( 'viewback', '', 'phocadownloadmanager' );
+		$viewBack		= Factory::getApplication()->getInput()->get( 'viewback', '', 'manager' );
 		$manager		= Factory::getApplication()->getInput()->get( 'manager', 'file', 'string' );
 
 
@@ -62,7 +62,7 @@ class UploadController extends CpController
 			$link	= 'index.php?option=com_phocadownload&view='.(string)$viewBack.'&manager='.(string)$manager
 						 .str_replace('&amp;', '&', $group['c']).'&folder='.$parent.'&tab='.(string)$tab.'&field='.$field;
 
-			$path	= PhocaDownloadPath::getPathSet($manager);// we use viewback to get right path
+			$path	= PhocaPath::getPathSet($manager);// we use viewback to get right path
 		} else {
 
 			$app->enqueueMessage( Text::_('COM_PHOCADOWNLOAD_ERROR_CONTROLLER_MANAGER_NOT_SET'));
