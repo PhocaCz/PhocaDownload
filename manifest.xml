@@ -77,7 +77,7 @@
 		<maintainer><![CDATA[ Phoca FOSS & Open Source Community ]]></maintainer>
 		<maintainerurl>https://github.com/PhocaCz</maintainerurl>
 		<section>Updates</section>
-		<targetplatform name="joomla" version="6\.*"/>
+		<targetplatform name="joomla" version="[56]\.*"/>
 		<client>administrator</client>
 	</update>
 </updates>
